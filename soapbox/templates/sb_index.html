@@ -1,0 +1,45 @@
+<{$xoops_module_header}>
+
+<div id="moduleName"><img src="<{$xoops_url}>/<{$imgdir}>/icon/open.png" width="36" height="24" />&nbsp;<{$lang_modulename}>&nbsp;<img src="<{$xoops_url}>/<{$imgdir}>/icon/close.png" width="36" height="24" /></div>
+<div id="pagePath"><a href="<{$xoops_url}>"><{$smarty.const._MD_SB_HOME}></a> &bull; <{$lang_modulename}></div>
+<h2><{$lang_mainhead}></h2>
+<div class="intro"><{$lang_maintext}></div>
+
+<{if $lang_nothing != ''}>
+<div class="nocontent"><div class="padded"><{$lang_nothing}></div></div>
+<{/if}>
+
+<div>
+<{foreach item=columna from=$cols}>
+
+	<div class="columnHeader">
+		<div class="rfloat"><{$smarty.const._MD_SB_BY}> <{$columna.authorname}></div>
+		<a href="column.php?columnID=<{$columna.columnID}>"><{$columna.name}></a>
+	</div>
+	<table class="clean"><tbody><tr><td>
+		<{if $columna.colimage != 'blank.png'}>
+			<div class="picleft"><img class="pic" src="<{$xoops_url}>/<{$uploaddir}>/<{$columna.colimage}>" /></div>
+		<{/if}>
+		<{foreach item=articulo from=$columna.content}>
+
+		<table class="clean"><tbody><tr>
+			<td>
+				<h3><a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/article.php?articleID=<{$articulo.articleID}>"><{$articulo.headline}></a></h3>
+			</td>
+			<td style="text-align: right;"><{$articulo.adminlinks}><{$articulo.userlinks}></td>
+		</tr></tbody></table>
+
+		<div class="teaser">
+			<span class="subdate"><{$articulo.datesub}></span> | <{$articulo.teaser}>
+		</div>
+		<{/foreach}>
+
+		<div class="coldesc"><{$columna.description}></div>
+		<div class="nine"><{$smarty.const._MD_SB_ARTCOUNT}><{$columna.totalarts}><{$smarty.const._MD_SB_ARTICLES}></div>
+	</td></tr></tbody></table>
+<{/foreach}>
+
+<div><{$columna.navbar}></div>
+
+</div>
+<{include file='db:system_notification_select.html'}>

@@ -1,0 +1,128 @@
+<{$xoops_module_header}>
+
+<div id="moduleName"><img src="<{$xoops_url}>/<{$imgdir}>/icon/open.png" width="36" height="24" />&nbsp;<{$lang_modulename}>&nbsp;<img src="<{$xoops_url}>/<{$imgdir}>/icon/close.png" width="36" height="24" /></div>
+<div id="pagePath"><a href="<{$xoops_url}>"><{$smarty.const._MD_SB_HOME}></a> &bull; <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/"><{$lang_modulename}></a> &bull; <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/column.php?columnID=<{$story.columnID}>"><{$story.colname}></a> &bull; <{$story.headline}></div>
+
+<h3 class="reddish"><{$story.colname}></h3>
+
+<table><tbody><tr>
+	<td>
+		<h3><{$story.headline}></a></h3>
+	</td>
+	<td style="text-align: right;"><{$story.adminlinks}><{$story.userlinks}></td>
+</tr></tbody></table>
+<div class="spacer6"> </div>
+<{if $story.colimage != 'blank.png'}>
+	<div class="picleft"><img class="pic" src="<{$xoops_url}>/<{$uploaddir}>/<{$story.colimage}>" width="80" /></div>
+<{/if}>
+
+<{if $listarts.links != 0 }>
+<div class="rightfloater">
+<table cellspacing="0" cellpadding="1" width="100%">
+<th style="font-size: 11px;"><{$smarty.const._MD_SB_MOREBY}><{$story.authorname}></th>
+<tr>
+<td><ul style="margin: 0;">
+<{foreach item=link from=$listarts.links}>
+<li class="box"><a style="font-size: 10px;" href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/article.php?articleID=<{$link.articleID}>"><{$link.arttitle}><br /><span class="smallpub"><{$link.published}></span></a></li>
+<{/foreach}>
+</ul></td>
+</tr>
+<tr><td><div class="pad18"><img src="<{$xoops_url}>/<{$imgdir}>/rarrow.gif" width="10" /><{$readmore}></div></td></tr>
+</table>
+</div>
+<{/if}>
+
+<div class="byline"><{$smarty.const._MD_SB_BY}><{$story.author}> | <{$story.posted}></div>
+<div class="texto"><{$story.bodytext}></div>
+
+<{if $story.artimage}>
+<div class="storypic"><img src="<{$xoops_url}>/<{$uploaddir}>/<{$story.artimage}>" /></div>
+<{/if}>
+
+<div class="storynav"><{if $pagenav}><{$smarty.const._MD_SB_PAGE}><{$pagenav}><{/if}></div>
+
+<div class="colteaser"><{$story.colname}>: <{$story.coldesc}></div>
+
+<div class="coldesc8"><{$smarty.const._MD_SB_ARTREAD}><{$story.counter}><{$smarty.const._MD_SB_TIMES}>
+
+<{if $showrating != 0}>
+	<{if $story.rating == '0.000'}>
+	| <{$story.rating}>
+	<{elseif $story.rating != '0.000'}>
+	| <{$story.rating}> | <{$story.votes}>.</div>
+	<{/if}>
+<{/if}>
+
+<div class="iconlinks">
+<{ if $authorpm_link }>
+<{$authorpm_link}>
+<{ /if }>
+<a href="print.php?articleID=<{$story.id}>"><img src="<{xoModuleIcons16 printer.png}>" border="0" alt="<{$smarty.const._MD_SB_PRINTERFRIENDLY}>" /></a>
+<a href="<{$mail_link}>" target="_top"><img src="<{xoModuleIcons16 mail_forward.png}>" border="0" alt="<{$smarty.const._MD_SB_SENDSTORY}>" /></a>
+</div>
+
+<{if $showrating != 0}>
+<form method="POST" action="article.php">
+  <input type="hidden" name="lid" value="<{$articleID}>">
+  <div align="center"></div>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class= "outer">
+    <tr > 
+      <td rowspan="2" align="right" width="29%" valign="middle" bgcolor="#CCCCCC">&nbsp;</td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">1 
+        <input type="radio" name="rating" value="1" border="0" checked>
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">2 
+        <input type="radio" name="rating" value="2" border="0">
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">3 
+        <input type="radio" name="rating" value="3" border="0">
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">4 
+        <input type="radio" name="rating" value="4" border="0">
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">5 
+        <input type="radio" name="rating" value="5" border="0">
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC" >6 
+        <input type="radio" name="rating" value="6" border="0">
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">7 
+        <input type="radio" name="rating" value="7" border="0">
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">8 
+        <input type="radio" name="rating" value="8" border="0">
+      </td>
+      <td align="center" width="4%" nowrap valign="middle" bgcolor="#CCCCCC">9 
+        <input type="radio" name="rating" value="9" border="0">
+      </td>
+      <td align="center" width="5%" nowrap valign="middle" bgcolor="#CCCCCC">10 
+        <input type="radio" name="rating" value="10" border="0">
+      </td>
+      <td rowspan="2" align="left" width="30%" valign="middle" bgcolor="#CCCCCC">&nbsp;</td>
+    </tr>
+  </table>
+	
+  <div align="center"> <br>
+	<{$rate_gtickets}>
+    <input type="submit" name="submit" value="<{$lang_ratethis}>">
+  </div>
+</form>
+<{/if}>
+
+<table border="0" width="100%" cellspacing="1" cellpadding="0" align="center" >
+   <tr> 
+    <td colspan="3" align ="left"> 
+      <div style="text-align: center; padding: 3px;
+		margin:3px;"> <{$commentsnav}> <{$lang_notice}></div>
+      <div style="margin:3px; padding: 3px;"> 
+        <!-- start comments loop -->
+        <{if $comment_mode == "flat"}> <{include file="db:system_comments_flat.html"}> 
+        <{elseif $comment_mode == "thread"}> <{include file="db:system_comments_thread.html"}> 
+        <{elseif $comment_mode == "nest"}> <{include file="db:system_comments_nest.html"}> 
+        <{/if}> 
+        <!-- end comments loop -->
+      </div>
+    </td>
+  </tr>
+</table>
+<{include file='db:system_notification_select.html'}>

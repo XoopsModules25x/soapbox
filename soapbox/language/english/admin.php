@@ -1,0 +1,150 @@
+<?php
+/**
+ * $Id: admin.php v 1.5 23 August 2004 hsalazar Exp $
+ * Module: Soapbox
+ * Version: v 1.5
+ * Release Date: 23 August 2004
+ * Author: hsalazar
+ * Licence: GNU
+ */
+
+define("_AM_SB_ABOUT","About");
+define("_AM_SB_ACTION","Action");
+define("_AM_SB_ADMINARTMNGMT","Articles Management");
+define("_AM_SB_ADMINCOLMNGMT","Columns management");
+define("_AM_SB_ALLOWCOMMENTS","Can article be commented?");
+define("_AM_SB_ARTAUTHORIZED","The article has been authorized.");
+define("_AM_SB_ARTBODY","Body text<span style='font-size: xx-small; font-weight: normal; display: block;'>(You can create multi-page articles by inserting the tag [pagebreak] wherever you want to put a break.)</span>");
+define("_AM_SB_ARTCOLNAME","Column name");
+define("_AM_SB_ARTCREATED","Created");
+define("_AM_SB_ARTCREATEDOK","The article was created successfully!");
+define("_AM_SB_ARTHEADLINE","Headline");
+define("_AM_SB_ARTID","Id");
+define("_AM_SB_ARTISDELETED","The article has been deleted.");
+define("_AM_SB_ARTISOFF","Article is offline");
+define("_AM_SB_ARTISON","Article is online");
+define("_AM_SB_ARTISSUB","Article is not yet approved");
+define("_AM_SB_ARTLEAD","Lead paragraph<span style='font-size: xx-small; font-weight: normal; display: block;'>(First paragraph of the article.)</span>");
+define("_AM_SB_ARTMODIFIED","The article was modified successfully!");
+define("_AM_SB_ARTNOTCREATED","Sorry. It was not possible to create this article!");
+define("_AM_SB_ARTNOTUPDATED","Sorry. It was not possible to update the article!");
+define("_AM_SB_ARTS","Articles");
+define("_AM_SB_ARTTEASER","Article teaser<span style='font-size: xx-small; font-weight: normal; display: block;'>(Paragraph to appear in the index pages.)</span>");
+define("_AM_SB_ARTSTEXT","This list shows the published articles present in the module, both online and offline.");
+define("_AM_SB_AUTHART","Authorize submission");
+define("_AM_SB_AUTHOR","Author");
+define("_AM_SB_AUTHORIZE","Authorize");
+define("_AM_SB_AUTOTEASER","Make teaser automatically?:");
+define("_AM_SB_AUTOTEASERAMOUNT","Auto-teaser characters:");
+define("_AM_SB_BACK2IDX","Cancelled. Taking you back to the index");
+define("_AM_SB_BLOCK"," Add to articles block?");
+define("_AM_SB_BLOCKS","Blocks");
+define("_AM_SB_BY","By ");
+define("_AM_SB_BREAKS"," Use linebreak conversion?");
+define("_AM_SB_CANCEL","Cancel");
+define("_AM_SB_CLEAR","Clear");
+define("_AM_SB_COLCREATED","New column was created and saved! Now please set its permissions.");
+define("_AM_SB_COLDESCRIPT","Column description");
+define("_AM_SB_COLIMAGE","Column image");
+define("_AM_SB_COLIMAGEUPLOAD"," Upload column image");
+define("_AM_SB_COLISDELETED","Column %s has been deleted");
+define("_AM_SB_COLMODIFIED","Chosen column was modified and saved!");
+define("_AM_SB_COLNAME","Column name");
+define("_AM_SB_COLPERMS","Column permissions");
+define("_AM_SB_COLPOSIT","Column position");
+define("_AM_SB_COLS","Columns");
+define("_AM_SB_COLSHEADER","Module Columns Admin");
+define("_AM_SB_COLSTEXT","This list shows the columns present in the module.");
+define("_AM_SB_CREATE","Create");
+define("_AM_SB_CREATEART","Create article");
+define("_AM_SB_CREATECOL","Create column");
+define("_AM_SB_CREATINGART"," > Creating new article");
+define("_AM_SB_CREATINGCOL"," > Creating new column");
+define("_AM_SB_CREATEIN","Create in Category:");
+define("_AM_SB_DELETE","Delete");
+define("_AM_SB_DELETEART","Delete article");
+define("_AM_SB_DELETECOL","Delete column");
+define("_AM_SB_DELETESUBM","Delete submission");
+define("_AM_SB_DELETETHISARTICLE","Delete this article?");
+define("_AM_SB_DELETETHISCOL","Are you sure you want to delete this column?");
+define("_AM_SB_DESCRIP","Column description");
+define("_AM_SB_DOHTML"," Enable HTML tags");
+define("_AM_SB_DOSMILEY"," Enable smiley icons");
+define("_AM_SB_DOXCODE"," Enable XOOPS codes");
+define("_AM_SB_EDITART","Edit article");
+define("_AM_SB_EDITCOL","Edit column");
+define("_AM_SB_EDITING"," > Editing '");
+define("_AM_SB_EDITSUBM","Edit submission");
+define("_AM_SB_FILEEXISTS","A file with that name already exists on server. Please choose another one!");
+define("_AM_SB_GOMOD","Go to module");
+define("_AM_SB_HELP","Help");
+define("_AM_SB_HILITE","Higlight blocks");
+define("_AM_SB_ID","Id");
+define("_AM_SB_IDXINTRO","Today, %s, this module's content is as follows:");
+define("_AM_SB_INDEX","Index");
+define("_AM_SB_INVENTORY","Items Summary");
+define("_AM_SB_MODADMIN"," Module admin: ");
+define("_AM_SB_MODART","Modify an article");
+define("_AM_SB_MODCOL","Modify existing column");
+define("_AM_SB_MODCONTENT","Module's content");
+define("_AM_SB_MODIFY","Modify");
+define("_AM_SB_MODIFYCOL","Modify column");
+define("_AM_SB_MODIFYTHISCOL","Modify this column?");
+define("_AM_SB_MODULEHEAD","Articles and columns");
+define("_AM_SB_NEEDONECOLUMN","To create an article, you must first create a column.");
+define("_AM_SB_NEWART","Create new article");
+define("_AM_SB_NEWCOL","Create column");
+define("_AM_SB_NO","No");
+define("_AM_SB_NOARTS","No articles to display");
+define("_AM_SB_NOCOLS","No columns to display");
+define("_AM_SB_NOCOLTOEDIT","There are no columns to edit!");
+define("_AM_SB_NOHILITE","No column highlighted");
+define("_AM_SB_NOPERMSSET","Cannot set permissions: No columns created yet!");
+define("_AM_SB_NOSUBMISSYET","There are presently no submissions waiting approval.");
+define("_AM_SB_NOTUPDATED","There was an error updating the database!");
+define("_AM_SB_OPTIONS","Options");
+define("_AM_SB_OPTS","Module Config Options");
+define("_AM_SB_ORDERUPDATED","Weight reordered");
+define("_AM_SB_PERMS","Permissions");
+define("_AM_SB_PERMSMNGMT","Permissions Management");
+define("_AM_SB_PERMSNOTE","<div><b>NOTE:</b> Please be aware that even if you&#8217ve set correct viewing permissions here, a group might not see the articles or blocks if you don&#8217t also grant that group permissions to access the module. To do that, go to <b>System admin > Groups</b>, choose the appropriate group and click the checkboxes to grant its members the access.</div>");
+define("_AM_SB_REORDERCOL","Reorder columns");
+define("_AM_SB_SELALL","All articles");
+define("_AM_SB_SELAPV","Approved articles");
+define("_AM_SB_SELOFF","Offline articles");
+define("_AM_SB_SELONL","Online articles");
+define("_AM_SB_SELSUB","Submitted articles");
+define("_AM_SB_SELECT_COLS","Select columns that each group is allowed to view");
+define("_AM_SB_SELECTSTATUS","Select a status: ");
+define("_AM_SB_SELECT_IMG","Select article image:");
+define("_AM_SB_SHOWARTS","Articles");
+define("_AM_SB_SHOWCOLS","Columns");
+define("_AM_SB_SHOWSUBMISSIONS","Articles pending authorization");
+define("_AM_SB_SHWALL","Showing all articles");
+define("_AM_SB_SHWAPV","Showing approved articles");
+define("_AM_SB_SHWOFF","Showing offline articles");
+define("_AM_SB_SHWONL","Showing online articles");
+define("_AM_SB_SHWSUB","Showing submitted articles");
+define("_AM_SB_STATUS","Status");
+define("_AM_SB_SUBS","Articles > Authorizing '");
+define("_AM_SB_SUBTEXT","This list shows submissions made by authors; these submissions are waiting for validation.");
+define("_AM_SB_SUBMITS","Submissions");
+define("_AM_SB_SUBMITSMNGMT","Submissions management");
+define("_AM_SB_SWITCHOFFLINE"," Take article offline?");
+define("_AM_SB_TOTART","Published articles:  <strong>%s</strong> ");
+define("_AM_SB_TOTCOL","Columns:  <strong>%s</strong> ");
+define("_AM_SB_TOTOFF","Off-line articles:  <strong>%s</strong> ");
+define("_AM_SB_TOTSUB","Submitted articles:  <strong>%s</strong> ");
+
+define("_AM_SB_UPLOADIMAGE","Upload article image:");
+define("_AM_SB_WEIGHT","Weight");
+define("_AM_SB_YES","Yes");
+//add by domifara
+define("_AM_SB_DATESUBNOCHANGE","date of this article do not change");
+define("_AM_SB_NOTIFY","Notify on publish?");
+define("_AM_SB_POSTED","Published:");
+define("_AM_SB_REORDERART","Reorder articles(weight)");
+//1.06
+//ModuleAdmin
+define('_AM_SB_MODULEADMIN_MISSING','Error: The ModuleAdmin class is missing. Please install the ModuleAdmin Class into /Frameworks (see /docs/readme.txt)');
+define("_AM_SB_NEED_APPROVAL","Need Approval:  <strong>%s</strong> ");

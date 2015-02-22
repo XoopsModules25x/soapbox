@@ -1,0 +1,21 @@
+LANGUAGE DIFFERENCES
+=====================
+
+Below are language differences from a version to next version.
+
+modinfo.php
+-------------------
+define("_MI_SB_SUBMITS", 'Submissions');
+define("_MI_SB_ADD_ARTICLE", 'Add Article');
+define("_MI_SB_ADD_COLUMN", 'Add Column');
+
+
+main.php
+--------------------
+define("_MD_SB_WGT", "Weight");
+
+
+admin.php
+--------------------
+define('_AM_SB_MODULEADMIN_MISSING','Error: The ModuleAdmin class is missing. Please install the ModuleAdmin Class into /Frameworks (see /docs/readme.txt)');
+define("_AM_SB_NEED_APPROVAL", "Need Approval:  <strong>%s</strong> ");
