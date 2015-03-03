@@ -9,7 +9,7 @@
  * Licence: GNU
  */
 if ( !defined("XOOPS_MAINFILE_INCLUDED") || !defined("XOOPS_ROOT_PATH") || !defined("XOOPS_URL") ) {
-	exit();
+    exit();
 }
 $modversion['name'] = _MI_SB_MD_NAME;
 $modversion['version'] = 1.60; //original ver1.5RC3 FIX by domifara
@@ -31,7 +31,6 @@ $modversion['author_email'] = "hsalazar@xoops.org";
 
 $modversion['warning'] = _MI_SB_WARNING;
 $modversion['author_word'] = _MI_SB_AUTHORMSG;
-
 
 $modversion['dirmoduleadmin'] = '/Frameworks/moduleclasses/moduleadmin';
 $modversion['icons16'] = '../../Frameworks/moduleclasses/icons/16';
@@ -78,38 +77,38 @@ global $xoopsDB, $xoopsUser;
 $hModule =& xoops_gethandler('module');
 $i = 0 ;
 if ($soapModule =& $hModule->getByDirname('soapbox')) {
-	$gperm_handler = & xoops_gethandler( 'groupperm' );
-	$hModConfig =& xoops_gethandler('config');
+    $gperm_handler = & xoops_gethandler( 'groupperm' );
+    $hModConfig =& xoops_gethandler('config');
 
-	$groups = (is_object($xoopsUser)) ? $xoopsUser -> getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $groups = (is_object($xoopsUser)) ? $xoopsUser -> getGroups() : XOOPS_GROUP_ANONYMOUS;
 
-	if (is_object($xoopsUser)) {
-		$user = $xoopsUser->getVar('uid');
-		$query = $xoopsDB -> query ( "SELECT author FROM " . $xoopsDB -> prefix ("sbcolumns") . " WHERE author = " . $xoopsUser->getVar('uid') );
-		if ($query) {
-			$isauthor = $xoopsDB -> getRowsNum($query);
-			if ( $xoopsUser -> isAdmin($soapModule -> getVar('mid')) || $isauthor >= 1 ) {
-				$i++;
-				$modversion['sub'][$i]['name'] = _MI_SB_SUB_SMNAME1;
-				$modversion['sub'][$i]['url'] = "submit.php?op=add";
-			}
-		}
-	}
-	unset ($isauthor);
-	$module_id = $soapModule->getVar('mid');
-	$soapConfig =& $hModConfig->getConfigsByCat(0, $soapModule->getVar('mid'));
-	if (isset($soapConfig['colsinmenu']) && $soapConfig['colsinmenu'] == 1 && is_object($xoopsUser)) {
-		$sql = $xoopsDB->query( "SELECT columnID, name FROM " . $xoopsDB->prefix( "sbcolumns" ) . "  ORDER BY weight" );
-		if ($sql) {
-			while (list($columnID, $name) = $xoopsDB->fetchRow($sql)) {
-				if ($gperm_handler->checkRight('Column Permissions', $columnID, $groups, $module_id)) {
-					$i++;
-					$modversion['sub'][$i]['name'] = $name;
-					$modversion['sub'][$i]['url'] = "column.php?columnID=" . $columnID . "";
-				} 
-			} 
-		}
-	}
+    if (is_object($xoopsUser)) {
+        $user = $xoopsUser->getVar('uid');
+        $query = $xoopsDB -> query ( "SELECT author FROM " . $xoopsDB -> prefix ("sbcolumns") . " WHERE author = " . $xoopsUser->getVar('uid') );
+        if ($query) {
+            $isauthor = $xoopsDB -> getRowsNum($query);
+            if ( $xoopsUser -> isAdmin($soapModule -> getVar('mid')) || $isauthor >= 1 ) {
+                $i++;
+                $modversion['sub'][$i]['name'] = _MI_SB_SUB_SMNAME1;
+                $modversion['sub'][$i]['url'] = "submit.php?op=add";
+            }
+        }
+    }
+    unset ($isauthor);
+    $module_id = $soapModule->getVar('mid');
+    $soapConfig =& $hModConfig->getConfigsByCat(0, $soapModule->getVar('mid'));
+    if (isset($soapConfig['colsinmenu']) && $soapConfig['colsinmenu'] == 1 && is_object($xoopsUser)) {
+        $sql = $xoopsDB->query( "SELECT columnID, name FROM " . $xoopsDB->prefix( "sbcolumns" ) . "  ORDER BY weight" );
+        if ($sql) {
+            while (list($columnID, $name) = $xoopsDB->fetchRow($sql)) {
+                if ($gperm_handler->checkRight('Column Permissions', $columnID, $groups, $module_id)) {
+                    $i++;
+                    $modversion['sub'][$i]['name'] = $name;
+                    $modversion['sub'][$i]['url'] = "column.php?columnID=" . $columnID . "";
+                }
+            }
+        }
+    }
 }
 
 $i=0;
@@ -332,8 +331,6 @@ xoops_load('xoopseditorhandler');
 $editor_handler = XoopsEditorHandler::getInstance();
 $modversion['config'][$i]['options'] = array_flip($editor_handler->getList());
 
-
-
 // Comments
 $modversion['hasComments'] = 1;
 $modversion['comments']['itemName'] = 'articleID';
@@ -422,5 +419,5 @@ $modversion['notification']['event'][$i]['mail_subject'] = _MI_SB_ARTICLE_APPROV
 
 // On Update
 if( ! empty( $_POST['fct'] ) && ! empty( $_POST['op'] ) && $_POST['fct'] == 'modulesadmin' && $_POST['op'] == 'update_ok' && $_POST['dirname'] == $modversion['dirname'] ) {
-	include dirname( __FILE__ ) . "/include/onupdate.inc.php" ;
+    include dirname( __FILE__ ) . "/include/onupdate.inc.php" ;
 }

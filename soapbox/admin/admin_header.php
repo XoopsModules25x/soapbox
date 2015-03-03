@@ -35,7 +35,6 @@ $thisModDir = $GLOBALS['xoopsModule']->getVar('dirname');
 
 require_once dirname(dirname(__FILE__)) . '/include/functions.php';
 
-
 // Load language files
 xoops_loadLanguage('admin', $thisModDir);
 xoops_loadLanguage('modinfo', $thisModDir);

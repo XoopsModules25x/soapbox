@@ -20,29 +20,28 @@ $entries = isset($_POST['entries']) ? intval($_POST['entries']) : 0;
 
 /* Available operations */
 switch ($op)
-	{
-	case "default":
-	default:
-		include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+    {
+    case "default":
+    default:
+        include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 
-		$startart = isset($_GET['startart']) ? intval($_GET['startart']) : 0;
-		$startcol = isset($_GET['startcol']) ? intval($_GET['startcol']) : 0;
-		$startsub = isset($_GET['startsub']) ? intval($_GET['startsub']) : 0;
-		$datesub = isset($_GET['datesub']) ? intval($_GET['datesub']) : 0;
+        $startart = isset($_GET['startart']) ? intval($_GET['startart']) : 0;
+        $startcol = isset($_GET['startcol']) ? intval($_GET['startcol']) : 0;
+        $startsub = isset($_GET['startsub']) ? intval($_GET['startsub']) : 0;
+        $datesub = isset($_GET['datesub']) ? intval($_GET['datesub']) : 0;
 
-		xoops_cp_header();
+        xoops_cp_header();
         echo $indexAdmin->addNavigation('main.php');
         $indexAdmin->addItemButton(_MI_SB_ADD_ARTICLE, 'article.php', 'add', '');
         $indexAdmin->addItemButton(_MI_SB_ADD_COLUMN, 'column.php', 'add', '');
         echo $indexAdmin->renderButton('right', '');
 
-		include_once XOOPS_ROOT_PATH.'/class/xoopsform/grouppermform.php';
-		include_once XOOPS_ROOT_PATH."/modules/".$xoopsModule->dirname()."/include/cleantags.php";
-		$module_id = $xoopsModule->getVar('mid');
+        include_once XOOPS_ROOT_PATH.'/class/xoopsform/grouppermform.php';
+        include_once XOOPS_ROOT_PATH."/modules/".$xoopsModule->dirname()."/include/cleantags.php";
+        $module_id = $xoopsModule->getVar('mid');
 
-
-		showArticles($xoopsModuleConfig['buttonsadmin']);
-		showColumns($xoopsModuleConfig['buttonsadmin']);
-	}
+        showArticles($xoopsModuleConfig['buttonsadmin']);
+        showColumns($xoopsModuleConfig['buttonsadmin']);
+    }
 
 include_once 'admin_footer.php';

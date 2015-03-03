@@ -34,8 +34,6 @@ $criteria->add(new Criteria('submit', 0));
 $totall = $_entrydata_handler->getArticleCount($criteria);
 unset($criteria);
 
-
-
 $indexAdmin->addInfoBox(_AM_SB_MODCONTENT );
 if ($totcol > 0) {
     $indexAdmin->addInfoBoxLine(
@@ -88,7 +86,6 @@ if ($totsub > 0) {
         _AM_SB_MODCONTENT, "<infolabel>" . _AM_SB_NEED_APPROVAL . "</infolabel>", $totsub, 'Green'
     );
 }
-
 
     echo $indexAdmin->addNavigation('index.php');
     echo $indexAdmin->renderIndex();

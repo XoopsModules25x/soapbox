@@ -57,35 +57,37 @@ function getLinkedUnameFromId($userid = 0, $name = 0) {
                     "<a href='" . XOOPS_URL . "/userinfo.php?uid=" . $userid . "'>" . $myts->htmlSpecialChars($username)
                         . "</a>";
             }
+
             return $linkeduser;
         }
     }
+
     return $myts->htmlSpecialChars($GLOBALS['xoopsConfig']['anonymous']);
 }
 
 /*
 function displayimage( $image = 'blank.gif', $path = '', $imgsource = '', $alttext = '' )
 {
-	global $xoopsConfig, $xoopsUser, $xoopsModule;
-	$myts =& MyTextSanitizer::getInstance();
-	$showimage = '';
+    global $xoopsConfig, $xoopsUser, $xoopsModule;
+    $myts =& MyTextSanitizer::getInstance();
+    $showimage = '';
 
-	if ($path) {
-		$showimage = "<a href='" . $myts->htmlSpecialChars(strip_tags($path)) . "'>";
-	} 
+    if ($path) {
+        $showimage = "<a href='" . $myts->htmlSpecialChars(strip_tags($path)) . "'>";
+    }
 
-	if (!is_dir(XOOPS_ROOT_PATH."/".$imgsource."/".$image) && file_exists(XOOPS_ROOT_PATH."/".$imgsource."/".$image)) {
-		$showimage .= "<img src='".XOOPS_URL."/".$myts->htmlSpecialChars(strip_tags($imgsource))."/".$myts->htmlSpecialChars(strip_tags($image))."' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
-	} else {
-		if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
-			$showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/images/brokenimg.png' border='0' alt='"._AM_SB_ISADMINNOTICE."' /></a>";
-		} else {
-			$showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/images/blank.png' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
-		} 
-	} 
-	// clearstatcache();
-	return $showimage;
-} 
+    if (!is_dir(XOOPS_ROOT_PATH."/".$imgsource."/".$image) && file_exists(XOOPS_ROOT_PATH."/".$imgsource."/".$image)) {
+        $showimage .= "<img src='".XOOPS_URL."/".$myts->htmlSpecialChars(strip_tags($imgsource))."/".$myts->htmlSpecialChars(strip_tags($image))."' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
+    } else {
+        if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
+            $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/images/brokenimg.png' border='0' alt='"._AM_SB_ISADMINNOTICE."' /></a>";
+        } else {
+            $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/images/blank.png' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
+        }
+    }
+    // clearstatcache();
+    return $showimage;
+}
 */
 function uploading(
     $allowed_mimetypes, $httppostfiles, $redirecturl = "index.php", $num = 0, $dir = "uploads", $redirect = 0
@@ -131,16 +133,16 @@ function htmlarray( $thishtmlpage, $thepath )
         if ( $htmlpage == $thishtmlpage )
         {
             $opt_selected = "selected='selected'";
-        } 
+        }
         else
         {
             $opt_selected = "";
-        } 
+        }
         echo "<option value='" . $htmlpage . "' $opt_selected>" . $htmlpage . "</option>";
-    } 
+    }
     echo "</select>";
     return $htmlpage;
-} 
+}
 */
 /*
 function filesarray( $filearray )
@@ -155,34 +157,34 @@ function filesarray( $filearray )
             if ( strtolower( $file ) != 'cvs' && !is_dir( $file ) )
             {
                 $files[$file] = $file;
-            } 
-        } 
-    } 
+            }
+        }
+    }
     closedir( $dir );
     asort( $files );
     reset( $files );
     return $files;
-} 
+}
 */
 /*
-function getuserForm($user) 
+function getuserForm($user)
 {
-	global $xoopsDB, $xoopsConfig;
-	$myts =& MyTextSanitizer::getInstance();
+    global $xoopsDB, $xoopsConfig;
+    $myts =& MyTextSanitizer::getInstance();
 
-	echo "<select name='author'>";
-	echo "<option value='-1'>------</option>";
-	$result = $xoopsDB->query("SELECT uid, uname FROM ".$xoopsDB->prefix("users")." ORDER BY uname");
+    echo "<select name='author'>";
+    echo "<option value='-1'>------</option>";
+    $result = $xoopsDB->query("SELECT uid, uname FROM ".$xoopsDB->prefix("users")." ORDER BY uname");
 
-	while(list($uid, $uname) = $xoopsDB->fetchRow($result)) {
-		if ( $uid == $user ){
-			$opt_selected = "selected='selected'";
-		} else {
-			$opt_selected = "";
-		}
-		echo "<option value='".intval($uid)."' $opt_selected>".$myts->htmlSpecialChars($uname)."</option>";
-	}
-	echo "</select>";
+    while(list($uid, $uname) = $xoopsDB->fetchRow($result)) {
+        if ( $uid == $user ){
+            $opt_selected = "selected='selected'";
+        } else {
+            $opt_selected = "";
+        }
+        echo "<option value='".intval($uid)."' $opt_selected>".$myts->htmlSpecialChars($uname)."</option>";
+    }
+    echo "</select>";
 }
 */
 
@@ -206,6 +208,7 @@ function getauthorName($author) {
     } else {
         $ret = $authorname;
     }
+
     return $ret;
     //-------------------------------------
 }
@@ -246,21 +249,21 @@ function showColumns($showCreate = 0) {
     }
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'>";
     echo "<tr>";
-	echo '<th class="txtcenter"><b>'._AM_SB_ID.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_WEIGHT.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_AUTHOR.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_ARTCOLNAME.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_DESCRIP.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_ACTION.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ID.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_WEIGHT.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_AUTHOR.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ARTCOLNAME.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_DESCRIP.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ACTION.'</b></td>';
     echo "</tr>";
 
     if ($numrows > 0) { // That is, if there ARE columns in the system
         //----------------------------
-		$cont=0;
+        $cont=0;
         foreach ($_categoryob_arr as $_categoryob) {
             //----------------------------
             //get vars
-			$cont++;
+            $cont++;
             $category      = $_categoryob->toArray(); //all assign
             $category_vars = $_categoryob->getVars();
             foreach ($category_vars as $k=> $v) {
@@ -271,14 +274,14 @@ function showColumns($showCreate = 0) {
             $author = getLinkedUnameFromId($author, 0);
             $modify = "<a href='column.php?op=mod&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SB_EDITCOL . "'></a>";
             $delete = "<a href='column.php?op=del&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SB_DELETECOL . "'></a>";
-			$style=(($cont%2)==0)?"even":"odd";
-			echo '<tr class="'.$style.'">';
-			echo '<td class="txtcenter">'.$category['columnID'].'</td>';
-			echo '<td class="txtcenter"><input type="text" name="columnweight[' . $category['columnID'] . ']" value="'.$weight.'" size="3" maxlength="3" style="text-align: center;"></td>';
-			echo '<td class="txtcenter">'. $category['author'] .'</td>';
-			echo '<td class="txtcenter">'. $category['name'] .'</td>';
-			echo '<td class="txtcenter">'. $category['description'] .'</td>';
-			echo '<td class="txtcenter">'. $modify." ". $delete. '</td>';
+            $style=(($cont%2)==0)?"even":"odd";
+            echo '<tr class="'.$style.'">';
+            echo '<td class="txtcenter">'.$category['columnID'].'</td>';
+            echo '<td class="txtcenter"><input type="text" name="columnweight[' . $category['columnID'] . ']" value="'.$weight.'" size="3" maxlength="3" style="text-align: center;"></td>';
+            echo '<td class="txtcenter">'. $category['author'] .'</td>';
+            echo '<td class="txtcenter">'. $category['name'] .'</td>';
+            echo '<td class="txtcenter">'. $category['description'] .'</td>';
+            echo '<td class="txtcenter">'. $modify." ". $delete. '</td>';
             echo "</tr>";
         }
     } else { // that is, $numrows = 0, there's no columns yet
@@ -468,25 +471,25 @@ function showArticles($showCreate = 0) {
         echo '<form action="article.php" method="post" name="reorderarticles\">';
     }
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'>";
-	echo '<tr>';
-	echo '<th class="txtcenter"><b>'._AM_SB_ARTID.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_WEIGHT.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_ARTCOLNAME.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_ARTHEADLINE.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_ARTCREATED.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_STATUS.'</b></td>';
-	echo '<th class="txtcenter"><b>'._AM_SB_ACTION.'</b></td>';
-	echo '</tr>';
+    echo '<tr>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ARTID.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_WEIGHT.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ARTCOLNAME.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ARTHEADLINE.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ARTCREATED.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_STATUS.'</b></td>';
+    echo '<th class="txtcenter"><b>'._AM_SB_ACTION.'</b></td>';
+    echo '</tr>';
 
     if ($numrows > 0) { // That is, if there ARE articles in the said condition
         // Retrieve rows for those items
 
         $colarray = array();
-		$cont=0;
+        $cont=0;
 
         foreach ($_entryob_arr as $key=> $_entryob) {
             //get vars
-			$cont++;
+            $cont++;
             //-------------------------------------
             $articles = $_entryob->toArray();
             //--------------------
@@ -497,8 +500,6 @@ function showArticles($showCreate = 0) {
                 . "/edit.png' ALT='" . _AM_SB_EDITART . "'></a>";
             $delete  = "<a href='article.php?op=del&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16
                 . "/delete.png' ALT='" . _AM_SB_DELETEART . "'></a>";
-
-
 
             //if ($offline == 0) {
             if ($articles['offline'] == 0) {
@@ -521,16 +522,15 @@ function showArticles($showCreate = 0) {
 //echo $cont.' - '.$offline.': '.$status.'</br>';
 
 $style=(($cont%2)==0)?"even":"odd";
-			echo '<tr class="'.$style.'">';
-			echo '<td align="center"><a href="'.XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/article.php?articleID='. $articles['articleID'] .'" title="'.$articles['headline'].'" target="_blank">'. $articles['articleID'] .'</a></td>';
-			echo '<td class="txtcenter"><input type="text" name="articleweight['.$articles['articleID'].']" value="' . $articles['weight'] .'" size="3" maxlength="3" style="text-align: center;"></td>';
-			echo '<td class="txtcenter">'. $colname .'</td>';
-			echo '<td>'. $articles['headline'] .'</td>';
-			echo '<td class="txtcenter">'. $created .'</td>';
-			echo '<td class="txtcenter">'. $status .'</td>';
-			echo '<td class="txtcenter">'. $modify . $delete .'</td>';
-			echo '</tr>';
-
+            echo '<tr class="'.$style.'">';
+            echo '<td align="center"><a href="'.XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/article.php?articleID='. $articles['articleID'] .'" title="'.$articles['headline'].'" target="_blank">'. $articles['articleID'] .'</a></td>';
+            echo '<td class="txtcenter"><input type="text" name="articleweight['.$articles['articleID'].']" value="' . $articles['weight'] .'" size="3" maxlength="3" style="text-align: center;"></td>';
+            echo '<td class="txtcenter">'. $colname .'</td>';
+            echo '<td>'. $articles['headline'] .'</td>';
+            echo '<td class="txtcenter">'. $created .'</td>';
+            echo '<td class="txtcenter">'. $status .'</td>';
+            echo '<td class="txtcenter">'. $modify . $delete .'</td>';
+            echo '</tr>';
 
         }
     } else { // that is, $numrows = 0, there's no columns yet
@@ -758,6 +758,7 @@ function soapbox_getacceptlang() {
             }
         }
     }
+
     return $al;
 }
 

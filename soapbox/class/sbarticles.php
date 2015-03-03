@@ -25,51 +25,51 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 if ( !defined("XOOPS_MAINFILE_INCLUDED") || !defined("XOOPS_ROOT_PATH") || !defined("XOOPS_URL") ) {
-	exit();
+    exit();
 }
 require_once XOOPS_ROOT_PATH."/modules/soapbox/include/cleantags.php";
 if (!defined('XOBJ_SB_DTYPE_FLOAT')){
-	define('XOBJ_SB_DTYPE_FLOAT', 21);
+    define('XOBJ_SB_DTYPE_FLOAT', 21);
 }
 class SoapboxSbarticles extends XoopsObject {
 
-	var $pre_offline;
-	var $_sbcolumns;
+    var $pre_offline;
+    var $_sbcolumns;
 
     function SoapboxSbarticles()
-	{
-		$this->initVar('articleID', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('columnID', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('headline', XOBJ_DTYPE_TXTBOX, "", false, 255);
-		$this->initVar('lead', XOBJ_DTYPE_OTHER, "", false);
-		$this->initVar('bodytext', XOBJ_DTYPE_OTHER, "", false);
-		$this->initVar('teaser', XOBJ_DTYPE_TXTAREA, "", false);
-		$this->initVar('uid', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('submit', XOBJ_DTYPE_INT, 1, false);
-		$this->initVar('datesub', XOBJ_DTYPE_LTIME, time() , false);
-		$this->initVar('counter', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('weight', XOBJ_DTYPE_INT, 1, false);
-		$this->initVar('html', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('smiley', XOBJ_DTYPE_INT, 1, false);
-		$this->initVar('xcodes', XOBJ_DTYPE_INT, 1, false);
-		$this->initVar('breaks', XOBJ_DTYPE_INT, 1, false);
-		$this->initVar('block', XOBJ_DTYPE_INT, 1, false);
-		$this->initVar('artimage', XOBJ_DTYPE_TXTBOX, "blank.png", false, 255);
-		$this->initVar('votes', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('rating', XOBJ_SB_DTYPE_FLOAT, 0.0000, false);
-		$this->initVar('commentable', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('offline', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('notifypub', XOBJ_DTYPE_INT, 0, false);
-		
-		$this->pre_offline = 1;
-		$this->_sbcolumns = false;
+    {
+        $this->initVar('articleID', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('columnID', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('headline', XOBJ_DTYPE_TXTBOX, "", false, 255);
+        $this->initVar('lead', XOBJ_DTYPE_OTHER, "", false);
+        $this->initVar('bodytext', XOBJ_DTYPE_OTHER, "", false);
+        $this->initVar('teaser', XOBJ_DTYPE_TXTAREA, "", false);
+        $this->initVar('uid', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('submit', XOBJ_DTYPE_INT, 1, false);
+        $this->initVar('datesub', XOBJ_DTYPE_LTIME, time() , false);
+        $this->initVar('counter', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('weight', XOBJ_DTYPE_INT, 1, false);
+        $this->initVar('html', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('smiley', XOBJ_DTYPE_INT, 1, false);
+        $this->initVar('xcodes', XOBJ_DTYPE_INT, 1, false);
+        $this->initVar('breaks', XOBJ_DTYPE_INT, 1, false);
+        $this->initVar('block', XOBJ_DTYPE_INT, 1, false);
+        $this->initVar('artimage', XOBJ_DTYPE_TXTBOX, "blank.png", false, 255);
+        $this->initVar('votes', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('rating', XOBJ_SB_DTYPE_FLOAT, 0.0000, false);
+        $this->initVar('commentable', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('offline', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('notifypub', XOBJ_DTYPE_INT, 0, false);
+        
+        $this->pre_offline = 1;
+        $this->_sbcolumns = false;
     }
 
-	//##################### HACK Methods ######################
-	//HACK for utf-8   clean when if utf-8 text is lost bytes
+    //##################### HACK Methods ######################
+    //HACK for utf-8   clean when if utf-8 text is lost bytes
     /**
     * returns a specific variable for the object in a proper format
-    * 
+    *
     * @access public
     * @param string $key key of the object's variable to be returned
     * @param string $format format to use for the output
@@ -78,19 +78,19 @@ class SoapboxSbarticles extends XoopsObject {
     function &getVar($key, $format = 's')
     {
         $ret = $this->vars[$key]['value'];
-		//HACK for lost last byte cleaning of multi byte string
-		//---------------------------------------
-		if (XOOPS_USE_MULTIBYTES == 1) {
-			switch ($this->vars[$key]['data_type']) {
-				case XOBJ_DTYPE_TXTBOX:
-				case XOBJ_DTYPE_TXTAREA:
-					$ret = $this->getJ_cleanLostByteTail($ret);
-					break 1;
-				default:
-					break 1;
-			}
-		}
-		//---------------------------------------
+        //HACK for lost last byte cleaning of multi byte string
+        //---------------------------------------
+        if (XOOPS_USE_MULTIBYTES == 1) {
+            switch ($this->vars[$key]['data_type']) {
+                case XOBJ_DTYPE_TXTBOX:
+                case XOBJ_DTYPE_TXTAREA:
+                    $ret = $this->getJ_cleanLostByteTail($ret);
+                    break 1;
+                default:
+                    break 1;
+            }
+        }
+        //---------------------------------------
         switch ($this->vars[$key]['data_type']) {
 
         case XOBJ_DTYPE_TXTBOX:
@@ -128,14 +128,14 @@ class SoapboxSbarticles extends XoopsObject {
                 $smiley = (!isset($this->vars['smiley']['value']) || $this->vars['smiley']['value'] == 1) ? 1 : 0;
                 $image = (!isset($this->vars['doimage']['value']) || $this->vars['doimage']['value'] == 1) ? 1 : 0;
                 $br = (!isset($this->vars['breaks']['value']) || $this->vars['breaks']['value'] == 1) ? 1 : 0;
-				//----------------
-				if ($html == 1 && $br != 0){
-					$text = preg_replace("/>((\015\012)|(\015)|(\012))/",">",$ret);
-					$text = preg_replace("/((\015\012)|(\015)|(\012))</","<",$ret);
-				}
-				$ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->displayTarea($ret, $html, $smiley, $xcode, $image, $br));
-				//----------------
-				break 1;
+                //----------------
+                if ($html == 1 && $br != 0){
+                    $text = preg_replace("/>((\015\012)|(\015)|(\012))/",">",$ret);
+                    $text = preg_replace("/((\015\012)|(\015)|(\012))</","<",$ret);
+                }
+                $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->displayTarea($ret, $html, $smiley, $xcode, $image, $br));
+                //----------------
+                break 1;
             case 'e':
             case 'edit':
                 $ret = htmlspecialchars($ret, ENT_QUOTES);
@@ -148,13 +148,13 @@ class SoapboxSbarticles extends XoopsObject {
                 $smiley = (!isset($this->vars['smiley']['value']) || $this->vars['smiley']['value'] == 1) ? 1 : 0;
                 $image = (!isset($this->vars['doimage']['value']) || $this->vars['doimage']['value'] == 1) ? 1 : 0;
                 $br = (!isset($this->vars['breaks']['value']) || $this->vars['breaks']['value'] == 1) ? 1 : 0;
-				//----------------
-				if ($html == 1 && $br != 0){
-					$text = preg_replace("/>((\015\012)|(\015)|(\012))/",">",$ret);
-					$text = preg_replace("/((\015\012)|(\015)|(\012))</","<",$ret);
-				}
+                //----------------
+                if ($html == 1 && $br != 0){
+                    $text = preg_replace("/>((\015\012)|(\015)|(\012))/",">",$ret);
+                    $text = preg_replace("/((\015\012)|(\015)|(\012))</","<",$ret);
+                }
                 $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->previewTarea($ret, $html, $smiley, $xcode, $image, $br));
-				//----------------
+                //----------------
                 break 1;
             case 'f':
             case 'formpreview':
@@ -171,11 +171,11 @@ class SoapboxSbarticles extends XoopsObject {
             $ret = intval($ret);
             break;
         case XOBJ_SB_DTYPE_FLOAT:
-			if ( function_exists('floatval') ) {
-	            $ret = floatval($ret);
-			} else {
-	            $ret = intval($ret);
-			}
+            if ( function_exists('floatval') ) {
+                $ret = floatval($ret);
+            } else {
+                $ret = intval($ret);
+            }
             break;
         case XOBJ_DTYPE_ARRAY:
             $ret =& unserialize($ret);
@@ -210,7 +210,7 @@ class SoapboxSbarticles extends XoopsObject {
                 switch (strtolower($format)) {
                 case 's':
                 case 'show':
-					$selected = explode('|', $ret);
+                    $selected = explode('|', $ret);
                     $options = explode('|', $this->vars[$key]['options']);
                     $i = 1;
                     $ret = array();
@@ -233,6 +233,7 @@ class SoapboxSbarticles extends XoopsObject {
             }
             break;
         }
+
         return $ret;
     }
 
@@ -288,13 +289,13 @@ class SoapboxSbarticles extends XoopsObject {
                 case XOBJ_DTYPE_INT:
                     $cleanv = intval($cleanv);
                     break;
-//HACK by domifara                    
+//HACK by domifara
                 case XOBJ_SB_DTYPE_FLOAT:
-					if ( function_exists('floatval') ) {
-	                    $cleanv = floatval($cleanv);
-					} else {
-	                    $cleanv = intval($cleanv);
-					}
+                    if ( function_exists('floatval') ) {
+                        $cleanv = floatval($cleanv);
+                    } else {
+                        $cleanv = intval($cleanv);
+                    }
                     break;
                 case XOBJ_DTYPE_EMAIL:
                     if ($v['required'] && $cleanv == '') {
@@ -340,43 +341,44 @@ class SoapboxSbarticles extends XoopsObject {
             return false;
         }
         $this->unsetDirty();
+
         return true;
     }
 
-	function getJ_cleanLostByteTail($text)
-	{
-		if (strtoupper(_CHARSET) == 'UTF-8'){
-			$text = preg_replace('/[\xC0-\xFD]$/',"",$text);
-			$text = preg_replace('/[\xE0-\xFD][\x80-\xBF]$/',"",$text);
-			$text = preg_replace('/[\xF0-\xFD][\x80-\xBF]{2}$/',"",$text);
-			$text = preg_replace('/[\xF8-\xFD][\x80-\xBF]{3}$/',"",$text);
-			$text = preg_replace('/[\xFC-\xFD][\x80-\xBF]{4}$/',"",$text);
-			$text = preg_replace('/^([\x80-\xBF]+)/',"",$text);
-		} elseif (strtoupper(_CHARSET) == 'EUC-JP'){
-		    if (preg_match('/[\x80-\xff]$/',$text)){
-			    $tmp = preg_replace('/\x8F[\x80-\xff]{2}/',"",$text); //EUC-jp EX 3 byte Foreign string
-			    $tmp = preg_replace('/[\x80-\xff]{2}/',"",$tmp);
-			    if (preg_match('/[\x80-\xff]$/',$tmp)){
-			    	$text = substr($text,0,-1) ;
-			    }
-			    if (preg_match('/^[\x80-\xff]/',$tmp)){
-			    	$text = substr($text,1) ;
-			    }
-		    }
-		} else {
-		    if (preg_match('/[\x80-\xff]$/',$text)){
-			    $tmp = preg_replace('/[\x80-\xff]{2}/',"",$text);
-			    if (preg_match('/[\x80-\xff]$/',$tmp)){
-			    	$text = substr($text,0,-1) ;
-			    }
-			    if (preg_match('/^[\x80-\xff]/',$tmp)){
-			    	$text = substr($text,1) ;
-			    }
-		    }
-	    }
-	
-		return $text ;
-	}
+    function getJ_cleanLostByteTail($text)
+    {
+        if (strtoupper(_CHARSET) == 'UTF-8'){
+            $text = preg_replace('/[\xC0-\xFD]$/',"",$text);
+            $text = preg_replace('/[\xE0-\xFD][\x80-\xBF]$/',"",$text);
+            $text = preg_replace('/[\xF0-\xFD][\x80-\xBF]{2}$/',"",$text);
+            $text = preg_replace('/[\xF8-\xFD][\x80-\xBF]{3}$/',"",$text);
+            $text = preg_replace('/[\xFC-\xFD][\x80-\xBF]{4}$/',"",$text);
+            $text = preg_replace('/^([\x80-\xBF]+)/',"",$text);
+        } elseif (strtoupper(_CHARSET) == 'EUC-JP'){
+            if (preg_match('/[\x80-\xff]$/',$text)){
+                $tmp = preg_replace('/\x8F[\x80-\xff]{2}/',"",$text); //EUC-jp EX 3 byte Foreign string
+                $tmp = preg_replace('/[\x80-\xff]{2}/',"",$tmp);
+                if (preg_match('/[\x80-\xff]$/',$tmp)){
+                    $text = substr($text,0,-1) ;
+                }
+                if (preg_match('/^[\x80-\xff]/',$tmp)){
+                    $text = substr($text,1) ;
+                }
+            }
+        } else {
+            if (preg_match('/[\x80-\xff]$/',$text)){
+                $tmp = preg_replace('/[\x80-\xff]{2}/',"",$text);
+                if (preg_match('/[\x80-\xff]$/',$tmp)){
+                    $text = substr($text,0,-1) ;
+                }
+                if (preg_match('/^[\x80-\xff]/',$tmp)){
+                    $text = substr($text,1) ;
+                }
+            }
+        }
+    
+        return $text ;
+    }
 
     /**
     * Returns an array representation of the object
@@ -389,6 +391,7 @@ class SoapboxSbarticles extends XoopsObject {
         foreach (array_keys($vars) as $i) {
             $ret[$i] = $this->getVar($i);
         }
+
         return $ret;
     }
 
@@ -396,11 +399,11 @@ class SoapboxSbarticles extends XoopsObject {
 
 class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
 
-	var $totalarts_AllPermcheck ; 
+    var $totalarts_AllPermcheck ;
     /**
      * create a new entry
-     * 
-     * @param bool $isNew flag the new objects as "new"?
+     *
+     * @param  bool   $isNew flag the new objects as "new"?
      * @return object SoapboxSbarticles
      */
     function &create($isNew = true)
@@ -409,18 +412,19 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
         if ($isNew) {
             $sbarticle->setNew();
         }
+
         return $sbarticle;
     }
     /**
      * retrieve a entry
-     * 
-     * @param int $articleID articleID of the entry
+     *
+     * @param  int   $articleID articleID of the entry
      * @return mixed reference to the {@link soapboxEntry} object, FALSE if failed
      */
     function &get($id)
     {
-		$ret = false ;
-		if (intval($id) > 0) {
+        $ret = false ;
+        if (intval($id) > 0) {
             $sql = "SELECT * FROM ".$this->db -> prefix( "sbarticles" )." WHERE articleID = '$id'" ;
             if (!$result = $this->db->query($sql)) {
                 return $ret;
@@ -429,23 +433,24 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
             if ($numrows == 1) {
                 $sbarticle = new SoapboxSbarticles();
                 $sbarticle->assignVars($this->db->fetchArray($result));
-				//pre_offline value buckup
-				if ($sbarticle->getVar('offline') || $sbarticle->getVar('submit')){
-					$sbarticle->pre_offline =  1;
-				}
+                //pre_offline value buckup
+                if ($sbarticle->getVar('offline') || $sbarticle->getVar('submit')){
+                    $sbarticle->pre_offline =  1;
+                }
+
                 return $sbarticle;
             }
         }
+
         return $ret;
     }
 
-
     /**
      * retrieve entrys from the database
-     * 
-     * @param object $criteria {@link CriteriaElement} conditions to be match
-     * @param bool $id_as_key use the articleID as key for the array?
-     * @return array array of {@link SoapboxSbarticles} objects
+     *
+     * @param  object $criteria  {@link CriteriaElement} conditions to be match
+     * @param  bool   $id_as_key use the articleID as key for the array?
+     * @return array  array of {@link SoapboxSbarticles} objects
      */
     function &getObjects($criteria = null, $id_as_key = false)
     {
@@ -465,7 +470,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
             return $ret;
         }
         while ($myrow = $this->db->fetchArray($result)) {
-			$sbarticle = new SoapboxSbarticles();
+            $sbarticle = new SoapboxSbarticles();
             $sbarticle->assignVars($myrow);
             if (!$id_as_key) {
                 $ret[] =& $sbarticle;
@@ -474,16 +479,17 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
             }
             unset($sbarticle);
         }
-		$this->db->freeRecordSet($result) ;
+        $this->db->freeRecordSet($result) ;
+
         return $ret;
     }
 
     /**
      * insert a new entry in the database
-     * 
-     * @param object $sbarticle reference to the {@link SoapboxSbarticles} object
-     * @param bool $force
-     * @return bool FALSE if failed, TRUE if already present and unchanged or successful
+     *
+     * @param  object $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param  bool   $force
+     * @return bool   FALSE if failed, TRUE if already present and unchanged or successful
      */
     function insert(&$sbarticle, $force = false)
     {
@@ -518,19 +524,20 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
             $articleID = $this->db->getInsertId();
         }
         $sbarticle->assignVar('articleID', $articleID);
+
         return true;
     }
 
     /**
      * delete a entry from the database
-     * 
-     * @param object $sbarticle reference to the entry to delete
-     * @param bool $force
-     * @return bool FALSE if failed.
+     *
+     * @param  object $sbarticle reference to the entry to delete
+     * @param  bool   $force
+     * @return bool   FALSE if failed.
      */
     function delete(&$sbarticle, $force = false)
     {
-     	global $xoopsModule ;
+         global $xoopsModule ;
         if (strtolower(get_class($sbarticle)) != strtolower('SoapboxSbarticles')) {
             return false;
         }
@@ -543,14 +550,15 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
         if (!$result) {
             return false;
         }
+
         return true;
     }
 
     /**
      * count entrys matching a condition
-     * 
-     * @param object $criteria {@link CriteriaElement} to match
-     * @return int count of entrys
+     *
+     * @param  object $criteria {@link CriteriaElement} to match
+     * @return int    count of entrys
      */
     function getCount($criteria = null)
     {
@@ -565,16 +573,17 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
             return 0;
         }
         list($count) = $this->db->fetchRow($result);
+
         return $count;
     }
 
     /**
      * updates a single field in a Article record
      *
-     * @param object $entry reference to the {@link SoapboxSbarticles} object
-     * @param string $fieldName name of the field to update
-     * @param string $fieldValue updated value for the field
-     * @return bool TRUE if success or unchanged, FALSE on failure
+     * @param  object $entry      reference to the {@link SoapboxSbarticles} object
+     * @param  string $fieldName  name of the field to update
+     * @param  string $fieldValue updated value for the field
+     * @return bool   TRUE if success or unchanged, FALSE on failure
      */
     function updateByField(&$entry, $fieldName, $fieldValue, $force = false)
     {
@@ -582,7 +591,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler {
             return false;
         }
         $entry->setVar($fieldName, $fieldValue);
+
         return $this->insert($entry , $force);
     }
 }
-?>

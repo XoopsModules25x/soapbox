@@ -37,4 +37,3 @@ define("_MB_SB_VOTE", " | Votes: ");
 define("_MB_SB_WEIGHT", "List by weight");
 define("_MB_SB_SPOTLIGHT","Enable Spotlight Feature");
 define("_MB_SB_SPOTLIGHT_TOPIC","Select column(s) to use");
-?>

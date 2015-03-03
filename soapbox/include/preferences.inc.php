@@ -72,7 +72,7 @@ if ( !is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin(
     }
 
     $modname = $module->getVar('name');
-	$button_tray = new XoopsFormElementTray("");
+    $button_tray = new XoopsFormElementTray("");
     if ($module->getInfo('adminindex')) {
 //      $form->addElement(new XoopsFormHidden('redirect', XOOPS_URL.'/modules/'.$module->getVar('dirname').'/'.$module->getInfo('adminindex')));
         $button_tray->addElement(new XoopsFormHidden('redirect', XOOPS_URL.'/modules/'.$module->getVar('dirname').'/admin/admin.php?fct=preferences&op=showmod&mod='.$module->getVar('mid'))); // GIJ Patch
@@ -154,10 +154,10 @@ if ( !is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin(
     $button_tray->addElement(new XoopsFormButton('', 'button', _GO, 'submit'));
     $form->addElement( $button_tray ) ;
     xoops_cp_header();
-	// GIJ patch start
-	include( './mymenu.php' ) ;
-	echo "<h3 style='text-align:left;'>".$module->getvar('name').' &nbsp; '._PREFERENCES."</h3>\n" ;
-	// GIJ patch end
+    // GIJ patch start
+    include( './mymenu.php' ) ;
+    echo "<h3 style='text-align:left;'>".$module->getvar('name').' &nbsp; '._PREFERENCES."</h3>\n" ;
+    // GIJ patch end
     $form->display();
     xoops_cp_footer();
     exit();
@@ -275,5 +275,3 @@ if ( !is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin(
     }
   }
 }
-
-?>
