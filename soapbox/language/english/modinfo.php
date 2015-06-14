@@ -152,14 +152,14 @@ define("_MI_SB_GLOBAL_NEWARTICLE_NOTIFYDSC","Receive notification when any new a
 define("_MI_SB_GLOBAL_NEWARTICLE_NOTIFYSBJ","[{X_SITENAME}] {X_MODULE} auto-notify : New article");
 
 define("_MI_SB_COLUMN_ARTICLESUBMIT_NOTIFY","Article submitted");
-define("_MI_SB_COLUMN_ARTICLESUBMIT_NOTIFYCAP","Notify me when a new article is submitted and waiting approval to the current column.");   
-define("_MI_SB_COLUMN_ARTICLESUBMIT_NOTIFYDSC","Receive notification when a new article is submitted and waiting approval in the current column.");      
-define("_MI_SB_COLUMN_ARTICLESUBMIT_NOTIFYSBJ","[{X_SITENAME}] {X_MODULE} auto-notify : New file submitted in column"); 
+define("_MI_SB_COLUMN_ARTICLESUBMIT_NOTIFYCAP","Notify me when a new article is submitted and waiting approval to the current column.");
+define("_MI_SB_COLUMN_ARTICLESUBMIT_NOTIFYDSC","Receive notification when a new article is submitted and waiting approval in the current column.");
+define("_MI_SB_COLUMN_ARTICLESUBMIT_NOTIFYSBJ","[{X_SITENAME}] {X_MODULE} auto-notify : New file submitted in column");
 
 define("_MI_SB_COLUMN_NEWARTICLE_NOTIFY","New article");
-define("_MI_SB_COLUMN_NEWARTICLE_NOTIFYCAP","Notify me when a new article is posted in the current column.");   
-define("_MI_SB_COLUMN_NEWARTICLE_NOTIFYDSC","Receive notification when a new article is posted in the current column.");      
-define("_MI_SB_COLUMN_NEWARTICLE_NOTIFYSBJ","[{X_SITENAME}] {X_MODULE} auto-notify : New article in column"); 
+define("_MI_SB_COLUMN_NEWARTICLE_NOTIFYCAP","Notify me when a new article is posted in the current column.");
+define("_MI_SB_COLUMN_NEWARTICLE_NOTIFYDSC","Receive notification when a new article is posted in the current column.");
+define("_MI_SB_COLUMN_NEWARTICLE_NOTIFYSBJ","[{X_SITENAME}] {X_MODULE} auto-notify : New article in column");
 
 define("_MI_SB_ARTICLE_APPROVE_NOTIFY","Article approved");
 define("_MI_SB_ARTICLE_APPROVE_NOTIFYCAP","Notify me when this article is approved.");
@@ -184,4 +184,3 @@ define("_MI_SB_FORM_TINYMCE","TinyMCE Editor");
 define("_MI_SB_SUBMITS", 'Submissions');
 define("_MI_SB_ADD_ARTICLE", 'Add Article');
 define("_MI_SB_ADD_COLUMN", 'Add Column');
-

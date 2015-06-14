@@ -7,6 +7,5 @@
  * Author: hsalazar
  * Licence: GNU
  */
-//not use this file 
+//not use this file
 exit();
-?>

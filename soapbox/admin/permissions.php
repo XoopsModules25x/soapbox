@@ -17,45 +17,45 @@ if (isset($_GET['op'])) $op = trim(strip_tags( $myts->stripSlashesGPC($_GET['op'
 if (isset($_POST['op'])) $op = trim(strip_tags( $myts->stripSlashesGPC($_POST['op']) ));
 
 switch ( $op )
-	{
-	case "default":
-	default:
-		$item_list2 = array();
-		$block2 = array();
+    {
+    case "default":
+    default:
+        $item_list2 = array();
+        $block2 = array();
 
-		xoops_cp_header();
+        xoops_cp_header();
         echo $indexAdmin->addNavigation('permissions.php');
-		//adminMenu(4, _AM_SB_PERMS);
+        //adminMenu(4, _AM_SB_PERMS);
 //		echo "<h3 style='color: #2F5376; '>". _AM_SB_PERMSMNGMT . "</h3>";
 
-//-------------------------------------	
-		//get category object
-		$_hcategory_handler = &xoops_getmodulehandler('sbcolumns',$xoopsModule->dirname());
-		$totalcols = $_hcategory_handler->getCount();
-		if ( !empty($totalcols) )
-			{
-			//----------------------------
-			$criteria = new CriteriaCompo();
-			$criteria->setSort( 'weight' ) ;
-			$_categoryob_arr =& $_hcategory_handler->getObjects($criteria);
-			unset($criteria);
-			foreach ($_categoryob_arr as $_categoryob)
-				{
-				$item_list2['cid'] = $_categoryob -> getVar('columnID');
-				$item_list2['title'] = $_categoryob -> getVar('name');
-				$form2 = new XoopsGroupPermForm( "", $xoopsModule -> getVar( 'mid' ), "Column permissions", _AM_SB_SELECT_COLS );
-				$block2[] = $item_list2;
-				foreach ( $block2 as $itemlists )
-					{
-					$form2 -> addItem( $itemlists['cid'], $itemlists['title'] );
-					} 
-				} 
-			echo $form2 -> render();
-			}
-		else
-			{
-			echo '<p><div style="text-align:center;"><b>'._AM_SB_NOPERMSSET.'</b></div></p>';
-			}
-	echo _AM_SB_PERMSNOTE;
-	} 
+//-------------------------------------
+        //get category object
+        $_hcategory_handler = &xoops_getmodulehandler('sbcolumns',$xoopsModule->dirname());
+        $totalcols = $_hcategory_handler->getCount();
+        if ( !empty($totalcols) )
+            {
+            //----------------------------
+            $criteria = new CriteriaCompo();
+            $criteria->setSort( 'weight' ) ;
+            $_categoryob_arr =& $_hcategory_handler->getObjects($criteria);
+            unset($criteria);
+            foreach ($_categoryob_arr as $_categoryob)
+                {
+                $item_list2['cid'] = $_categoryob -> getVar('columnID');
+                $item_list2['title'] = $_categoryob -> getVar('name');
+                $form2 = new XoopsGroupPermForm( "", $xoopsModule -> getVar( 'mid' ), "Column permissions", _AM_SB_SELECT_COLS );
+                $block2[] = $item_list2;
+                foreach ( $block2 as $itemlists )
+                    {
+                    $form2 -> addItem( $itemlists['cid'], $itemlists['title'] );
+                    }
+                }
+            echo $form2 -> render();
+            }
+        else
+            {
+            echo '<p><div style="text-align:center;"><b>'._AM_SB_NOPERMSSET.'</b></div></p>';
+            }
+    echo _AM_SB_PERMSNOTE;
+    }
 include_once 'admin_footer.php';

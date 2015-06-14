@@ -35,4 +35,3 @@ if ($com_itemid > 0) {
     $com_replytitle = $row['headline'];
 }
 include XOOPS_ROOT_PATH.'/include/comment_new.php';
-?>
