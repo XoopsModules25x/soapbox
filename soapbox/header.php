@@ -8,7 +8,8 @@
  * Licence: GNU
  */
 global $xoopsModule;
-include("../../mainfile.php");
+include dirname(dirname(__DIR__)) . '/mainfile.php';
 
-include_once XOOPS_ROOT_PATH."/modules/".$xoopsModule->dirname()."/include/functions.php";
-$myts = & MyTextSanitizer :: getInstance();
+include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->dirname() . "/include/functions.php";
+$myts = &MyTextSanitizer:: getInstance();
+xoops_load('XoopsRequest');

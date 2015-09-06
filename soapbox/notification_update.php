@@ -7,5 +7,5 @@
  * Author: hsalazar
  * Licence: GNU
  */
-include '../../mainfile.php';
-include XOOPS_ROOT_PATH.'/include/notification_update.php';
+include dirname(dirname(__DIR__)) . '/mainfile.php';
+include XOOPS_ROOT_PATH . '/include/notification_update.php';

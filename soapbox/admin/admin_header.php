@@ -9,44 +9,42 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project
- * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU Public License
+ * @copyright         XOOPS Project
+ * @license           http://www.gnu.org/licenses/gpl-2.0.html GNU Public License
  * @package
- * @author 			XOOPS Development Team
+ * @author            XOOPS Development Team
  *
  * Version : $Id:
  * ****************************************************************************
  */
 
-$path = dirname(dirname(dirname(dirname(__FILE__))));
-include_once $path . '/mainfile.php';
-include_once $path . '/include/cp_functions.php';
-require_once $path . '/include/cp_header.php';
-require "../include/gtickets.php" ;
+$moduleDirName = basename(dirname(__DIR__));
+include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+include_once $GLOBALS['xoops']->path('www/include/cp_functions.php');
+include_once $GLOBALS['xoops']->path('www/include/cp_header.php');
+include_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
+require dirname(__DIR__) . '/include/gtickets.php';
 
-include_once XOOPS_ROOT_PATH."/kernel/module.php";
-include_once XOOPS_ROOT_PATH."/class/xoopstree.php";
-include_once XOOPS_ROOT_PATH."/class/xoopslists.php";
-include_once XOOPS_ROOT_PATH."/class/xoopsformloader.php";
+include_once $GLOBALS['xoops']->path('www/kernel/module.php');
+include_once $GLOBALS['xoops']->path('www/class/xoopstree.php');
+include_once $GLOBALS['xoops']->path('www/class/xoopslists.php');
 
 global $xoopsModule;
 
-$thisModDir = $GLOBALS['xoopsModule']->getVar('dirname');
-
-require_once dirname(dirname(__FILE__)) . '/include/functions.php';
+require_once dirname(__DIR__) . '/include/functions.php';
 
 // Load language files
-xoops_loadLanguage('admin', $thisModDir);
-xoops_loadLanguage('modinfo', $thisModDir);
-xoops_loadLanguage('main', $thisModDir);
+// Load language files
+xoops_loadLanguage('admin', $moduleDirName);
+xoops_loadLanguage('modinfo', $moduleDirName);
+xoops_loadLanguage('main', $moduleDirName);
 
-$pathIcon16 = '../'.$xoopsModule->getInfo('icons16');
-$pathIcon32 = '../'.$xoopsModule->getInfo('icons32');
-$pathModuleAdmin = $xoopsModule->getInfo('dirmoduleadmin');
+xoops_load('XoopsRequest');
 
-if ( file_exists($GLOBALS['xoops']->path($pathModuleAdmin.'/moduleadmin.php'))){
-        include_once $GLOBALS['xoops']->path($pathModuleAdmin.'/moduleadmin.php');
-    }else{
-        redirect_header("../../../admin.php", 5, _AM_SB_MODULEADMIN_MISSING, false);
-    }
+$pathIcon16           = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
+$pathIcon32           = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons32'));
+$xoopsModuleAdminPath = $GLOBALS['xoops']->path('www/' . $GLOBALS['xoopsModule']->getInfo('dirmoduleadmin'));
+
+require_once "{$xoopsModuleAdminPath}/moduleadmin.php";
+
 $myts =& MyTextSanitizer::getInstance();

@@ -1,12 +1,21 @@
-============================
-Version 1.60 2012-12-18:
+1.61 Beta 1      NOT RELEASED
+=================================
+- moved all images, CSS, and JS files to /assets (mamba)
+- renamed .html Smarty templates to .tpl (mamba)
+- changed intval() to (int) (mamba)
+- changed dirname(__FILE__) to __DIR__ (mamba)
+- code cosmetics (mamba)
+- naming consistently language variables (mamba)
+
+
+1.60            2012-12-18:
 ============================
 - Conversion to XOOPS 2.5.0 GUI (mamba)
 - converting to dynamic Editor selection (mamba)
 - fixing date issues-
 
-============================
-Version 1.50 23 August 2004
+
+1.50 23 August 2004
 ============================
 This is version 1.5 of Soapbox. Actually, this is NOT the full version, but a stripped down one. It includes all the necessary files to run the module, but for the sake of keeping the size small, it has left out:
 
@@ -38,12 +47,12 @@ Changes for this release:
 + In the admin side, changed a bit the behavior of the submissions page.
 
 ============================
-Version 1.40 17 March 2004
+1.40 17 March 2004
 ============================
 + Fixed problems that produced blank page on block activation.
 
-============================
-Version 1.20 26 February 2004
+
+1.20 26 February 2004
 ============================
 More bugfixes and small changes
 
@@ -63,7 +72,6 @@ More bugfixes and small changes
 And a bunch more...
 
 
-============================
 Version 1.10 21 February 2004
 ============================
 First wave of changes
@@ -81,7 +89,7 @@ First wave of changes
 
 Credits and thanks are included in the help file. However, I'd like to add a very special thanks to Richard Strauss (carnuke) for going well beyond the call of duty in the testing phase of this module. Without his keen eye, this module would be quite buggy and incomplete. In a very literal sense, he has co-authored this module. Thanks, Richard!!!
 
-============================
-Version 1.00 18 February 2004
+
+1.00 18 February 2004
 ============================
 First public release.

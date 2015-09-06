@@ -3,7 +3,7 @@
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -24,14 +24,14 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-include '../../mainfile.php';
+include dirname(dirname(__DIR__)) . '/mainfile.php';
 // HACK for  Get file title 2004/4/19 by domifara
-$com_itemid = isset($HTTP_GET_VARS['com_itemid']) ? intval($HTTP_GET_VARS['com_itemid']) : 0;
+$com_itemid = isset($HTTP_GET_VARS['com_itemid']) ? (int)($HTTP_GET_VARS['com_itemid']) : 0;
 if ($com_itemid > 0) {
     // Get file title
-    $sql = "SELECT headline FROM " . $xoopsDB->prefix('sbarticles') . " WHERE articleID=" . $com_itemid . "";
-    $result = $xoopsDB->query($sql);
-    $row = $xoopsDB->fetchArray($result);
+    $sql            = "SELECT headline FROM " . $xoopsDB->prefix('sbarticles') . " WHERE articleID=" . $com_itemid . "";
+    $result         = $xoopsDB->query($sql);
+    $row            = $xoopsDB->fetchArray($result);
     $com_replytitle = $row['headline'];
 }
-include XOOPS_ROOT_PATH.'/include/comment_new.php';
+include XOOPS_ROOT_PATH . '/include/comment_new.php';

@@ -9,20 +9,15 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project
- * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU Public License
+ * @copyright         XOOPS Project
+ * @license           http://www.gnu.org/licenses/gpl-2.0.html GNU Public License
  * @package
- * @author 			XOOPS Development Team
+ * @author            XOOPS Development Team
  *
  * Version : $Id:
  * ****************************************************************************
  */
 
-echo "<div class='adminfooter'>\n"
-    ."  <div style='text-align: center;'>\n"
-    ."    <a href='http://www.xoops.org' rel='external'><img src='{$pathIcon32}/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>\n"
-    ."  </div>\n"
-    ."  " . _AM_MODULEADMIN_ADMIN_FOOTER . "\n"
-    ."</div>";
+echo "<div class='adminfooter'>\n" . "  <div style='text-align: center;'>\n" . "    <a href='http://xoops.org' rel='external'><img src='{$pathIcon32}/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>\n" . "  </div>\n" . "  " . _AM_MODULEADMIN_ADMIN_FOOTER . "\n" . "</div>";
 
 xoops_cp_footer();
