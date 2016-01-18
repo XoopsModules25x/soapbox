@@ -1,0 +1,31 @@
+.item-bookmarkme-sb {
+    width: 320px;
+    height: 25px;
+    float:left;
+}
+.item-bookmarkme-sb ul {
+}
+.item-bookmarkme-sb li {
+    float: left;
+    list-style: none outside none !important;
+}
+.item-bookmarkme-facebook {
+}
+.item-bookmarkme-twitter {
+}
+.item-bookmarkme-buzz {
+}
+.item-bookmarkme {
+    margin-bottom: 20px;
+    margin-top: 35px;
+    padding: 5px;
+}
+.item-bookmarkme-items {
+    padding: 10px;
+}
+.item-bookmarkme-items a {
+    padding: 1px;
+}
+.item-bookmarkme-title {
+    text-align: left;
+}
