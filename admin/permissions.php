@@ -47,7 +47,7 @@ switch ($op) {
             foreach ($_categoryob_arr as $_categoryob) {
                 $item_list2['cid']   = $_categoryob->getVar('columnID');
                 $item_list2['title'] = $_categoryob->getVar('name');
-                $form2               = new MyXoopsGroupPermForm("", $xoopsModule->getVar('mid'), "Column permissions", _AM_SOAPBOX_SELECT_COLS, 'admin/permissions.php');
+                $form2               = new myXoopsGroupPermForm("", $xoopsModule->getVar('mid'), "Column_permissions", _AM_SOAPBOX_SELECT_COLS, 'admin/permissions.php');
                 $block2[]            = $item_list2;
                 foreach ($block2 as $itemlists) {
                     $form2->addItem($itemlists['cid'], $itemlists['title']);

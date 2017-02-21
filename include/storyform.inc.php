@@ -52,9 +52,9 @@ $sform->addElement(new XoopsFormTextArea(_MD_SOAPBOX_ARTTEASER, 'teaser', $e_art
 //$editor_teaser=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _MD_SOAPBOX_ARTTEASER ,'teaser', $e_articles['teaser'] , '100%', '120px');
 //$sform->addElement($editor_teaser,true);
 
-$autoteaser_radio = new XoopsFormRadioYN(_MD_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _MD_SOAPBOX_YES . '', ' ' . _MD_SOAPBOX_NO . '');
-$sform->addElement($autoteaser_radio);
-$sform->addElement(new XoopsFormText(_MD_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
+//$autoteaser_radio = new XoopsFormRadioYN(_MD_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _MD_SOAPBOX_YES . '', ' ' . _MD_SOAPBOX_NO . '');
+//$sform->addElement($autoteaser_radio);
+//$sform->addElement(new XoopsFormText(_MD_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
 
 $sform->addElement(new XoopsFormDhtmlTextArea(_MD_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120));
 /*
@@ -88,8 +88,9 @@ if (is_object($xoopsUser)) {
     //----------
     // datesub
     //----------
-    $datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . "=>");
-    $datesub_tray    = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br />' . $datesub_caption, 'datesub', 15, time());
+    //$datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . "=>");
+    //$datesub_tray    = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br />' . $datesub_caption, 'datesub', 15, time());
+    $datesub_tray = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br />', 'datesub', 15, $e_articles['datesub']);
     // you don't want to change datesub
     $datesubnochage_checkbox = new XoopsFormCheckBox(_MD_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 0);
     $datesubnochage_checkbox->addOption(1, _MD_SOAPBOX_YES);

@@ -293,13 +293,13 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_INTROTEXTDSC';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = _MI_SOAPBOX_INTROTEXTDFLT;
-++$i;
-$modversion['config'][$i]['name']        = 'buttonsadmin';
-$modversion['config'][$i]['title']       = '_MI_SOAPBOX_BUTTSTXT';
-$modversion['config'][$i]['description'] = '_MI_SOAPBOX_BUTTSTXTDSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+//++$i;
+//$modversion['config'][$i]['name']        = 'buttonsadmin';
+//$modversion['config'][$i]['title']       = '_MI_SOAPBOX_BUTTSTXT';
+//$modversion['config'][$i]['description'] = '_MI_SOAPBOX_BUTTSTXTDSC';
+//$modversion['config'][$i]['formtype']    = 'yesno';
+//$modversion['config'][$i]['valuetype']   = 'int';
+//$modversion['config'][$i]['default']     = 0;
 
 //$modversion['config'][] = array(
 //    'name' => 'form_options',

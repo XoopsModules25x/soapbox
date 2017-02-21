@@ -11,5 +11,5 @@ global $xoopsModule;
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 
 include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->dirname() . "/include/functions.php";
-$myts = &MyTextSanitizer:: getInstance();
-xoops_load('XoopsRequest');
+$myts = MyTextSanitizer:: getInstance();
+xoops_load('Xmf\Request');

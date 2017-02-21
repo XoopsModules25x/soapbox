@@ -17,10 +17,12 @@ if ($moduleDirName !== "soapbox" && $moduleDirName !== "" && !preg_match('/^(\D+
 
 include_once XOOPS_ROOT_PATH . "/modules/" . $moduleDirName . "/include/cleantags.php";
 
-$articleID = XoopsRequest::getInt('$articleID', XoopsRequest::getInt('$articleID', 0, 'POST'), 'GET');
+$articleID = 0;
+if ( isset( $_GET['articleID'] ) ){$articleID = (int)($_GET['articleID']);}
+if ( isset( $_POST['articleID'] ) ){$articleID = (int)($_POST['articleID']);}
 
-if (0 === $articleID) {
-    redirect_header('index.php');
+if (empty($articleID))	{
+	redirect_header("index.php");
 }
 
 /**
@@ -30,7 +32,7 @@ function PrintPage($articleID)
 {
     global $moduleDirName;
     global $xoopsConfig, $xoopsModule, $xoopsModuleConfig;
-    $myts      = &MyTextSanitizer:: getInstance();
+    $myts      = MyTextSanitizer:: getInstance();
     $articleID = (int)($articleID);
     //get entry object
     $_entrydata_handler =& xoops_getmodulehandler('entryget', $moduleDirName);
