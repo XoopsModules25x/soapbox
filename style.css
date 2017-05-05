@@ -64,7 +64,7 @@ h4 { font-size: 120%; }
     margin-top: 4px;
     margin-bottom: 12px;
     line-height: 18px;
-    color: #666;
+    color: #000;
     display: block;
     }
 .intro2
@@ -72,7 +72,7 @@ h4 { font-size: 120%; }
     font-size: 12px;
     margin: 4px 0 0 0;
     line-height: 18px;
-    color: #666;
+    color: #000;
     }
 .nocontent
     {
@@ -123,13 +123,13 @@ h4 { font-size: 120%; }
 .teaser
     {
     line-height: 18px;
-    color: #666;
+    color: #000;
     margin: 0;
     }
 .coldesc
     {
     line-height: 18px;
-    color: #666;
+    color: #000;
     margin: 6px 0;
     font-size: 11px;
     font-style: italic;
@@ -167,7 +167,7 @@ li.box
     }
 div.texto, div.texto p
     {
-    color: #456;
+    color: #000;
     margin: 0;
     line-height: 125%;
     }
@@ -258,7 +258,7 @@ li.box
     font-variant: small-caps;
     letter-spacing: 1.5px;
     line-height: 150%;
-    color: #678;
+    color: #000;
     margin: 0 0 8px 0;
     border-bottom: 1px dashed #9AB;
     }
@@ -267,7 +267,7 @@ li.box
     font-weight: bold;
     font-variant: small-caps;
     letter-spacing: 1.5px;
-    color: #456;
+    color: #000;
     margin: 0;
     }
 
@@ -281,7 +281,7 @@ h2, h3, h4 {
     font-style: italic;
     letter-spacing: 0.8px;
     margin: 4px 0 12px 0;
-    color: #666;
+    color: #000;
     }
 
 .columnHeader
@@ -289,7 +289,7 @@ h2, h3, h4 {
     width: 99%;
     padding: 3px;
     background-color: #efefef;
-    color: #666;
+    color: #000;
     margin: 0 0 4px 0;
     font-size: 1.4em;
     font-weight: bold;
@@ -332,13 +332,13 @@ h2, h3, h4 {
     {
     font-size: 100%;
     line-height: 1.6em;
-    color: #666;
+    color: #000;
     margin: 0;
     }
 .coldesc
     {
     line-height: 18px;
-    color: #666;
+    color: #000;
     margin: 6px 0;
     font-family: Georgia, "Times New Roman", serif;
     font-size: 100%;
@@ -359,13 +359,13 @@ h2, h3, h4 {
 .intro8
     {
     line-height: 18px;
-    color: #666;
+    color: #000;
     margin: 1px 3px;
     }
 .coldesc8
     {
     line-height: 18px;
-    color: #666;
+    color: #000;
     margin: 6px 0 3px 0;
     padding: 0 3px;
     font-size: 10px;
@@ -380,7 +380,7 @@ h2, h3, h4 {
     }
 .byline
     {
-    color: #456;
+    color: #000;
     margin: 0 0 8px 0;
     line-height: 125%;
     }
@@ -392,13 +392,13 @@ h2, h3, h4 {
     {
     border-top: 1px solid silver;
     padding: 12px 0;
-    color: #789;
+    color: #000;
     clear: right;
     }
 .rightfloater
     {
     width: 150px;
-    border: 1px solid #456;
+    border: 1px solid #000;
     padding: 4px;
     margin: 0 0 8px 12px;
     float:right;
