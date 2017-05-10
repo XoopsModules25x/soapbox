@@ -69,14 +69,13 @@ $modversion['search']['func'] = 'sb_search';
 
 // Menu
 $modversion['hasMain'] = 1;
-//$modversion['sub'][1]['name'] = 'Блог KOSMOS';                     //Название 1-й ссылки 
-//$modversion['sub'][1]['url'] = "../../blog/column.php?columnID=1";  // Ссылка  
+
 global $xoopsDB, $xoopsUser;
-$hModule =& xoops_gethandler('module');
+$hModule = xoops_gethandler('module');
 $i       = 0;
-if ($soapModule =& $hModule->getByDirname('soapbox')) {
-    $gperm_handler = &xoops_gethandler('groupperm');
-    $hModConfig    =& xoops_gethandler('config');
+if ($soapModule = $hModule->getByDirname('soapbox')) {
+    $gperm_handler = xoops_gethandler('groupperm');
+    $hModConfig    = xoops_gethandler('config');
 
     $groups = (is_object($xoopsUser)) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
 

@@ -89,7 +89,6 @@ foreach ($_entryob_arr as $_entryob) {
     } else {
         $articles['image'] = '';
     }
-
     if ($xoopsModuleConfig['includerating'] == 1) {
         $xoopsTpl->assign('showrating', 1);
         $rating = $articles['rating'];
@@ -124,6 +123,6 @@ $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbupl
 $xoopsTpl->assign('sortname', $sortname);
 $xoopsTpl->assign('sortorder', $sortorder);
 
-$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/style.css" />');
+$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
 
 include(XOOPS_ROOT_PATH . "/footer.php");
