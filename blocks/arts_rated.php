@@ -51,8 +51,11 @@ function b_arts_rated($options)
             } elseif ($options[0] == "weight") {
                 $newarts['new'] = $_entryob->getVar('weight');
             } elseif ($options[0] == "rating") {
-                $newarts['new']   = number_format($_entryob->getVar('rating'), 2, '.', '');
-                $newarts['votes'] = $_entryob->getVar('votes');
+                $newarts['new']   = sprintf(
+                    _MB_SOAPBOX_SVOTES,
+                        number_format($_entryob->getVar('rating'), 2, '.', ''),
+                        $_entryob->getVar('votes')
+                    );
             } else {
                 $newarts['new'] = $myts->htmlSpecialChars(formatTimestamp($_entryob->getVar('datesub'), $soapConfig['dateformat']));
             }

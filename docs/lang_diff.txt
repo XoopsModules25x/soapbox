@@ -19,3 +19,7 @@ admin.php
 --------------------
 define('_AM_SOAPBOX_MODULEADMIN_MISSING','Error: The ModuleAdmin class is missing. Please install the ModuleAdmin Class into /Frameworks (see /docs/readme.txt)');
 define("_AM_SOAPBOX_NEED_APPROVAL", "Need Approval:  <strong>%s</strong> ");
+
+blocks.php
+--------------------
+define('_MB_SOAPBOX_SVOTES', 'Rating = %s, Votes = %s');
