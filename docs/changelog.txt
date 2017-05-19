@@ -6,6 +6,7 @@
 - changed dirname(__FILE__) to __DIR__ (mamba)
 - code cosmetics (mamba)
 - naming consistently language variables (mamba)
+- Fixing Rating (trabis)
 
 
 1.60            2012-12-18:

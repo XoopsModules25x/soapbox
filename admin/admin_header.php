@@ -39,7 +39,7 @@ xoops_loadLanguage('admin', $moduleDirName);
 xoops_loadLanguage('modinfo', $moduleDirName);
 xoops_loadLanguage('main', $moduleDirName);
 
-xoops_load('XoopsRequest');
+xoops_load('Xmf\Request');
 
 $pathIcon16           = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
 $pathIcon32           = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons32'));

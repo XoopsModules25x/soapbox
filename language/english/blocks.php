@@ -37,3 +37,5 @@ define('_MB_SOAPBOX_VOTE', ' | Votes: ');
 define('_MB_SOAPBOX_WEIGHT', 'List by weight');
 define('_MB_SOAPBOX_SPOTLIGHT', 'Enable Spotlight Feature');
 define('_MB_SOAPBOX_SPOTLIGHT_TOPIC', 'Select column(s) to use');
+// 1.61
+define('_MB_SOAPBOX_SVOTES', 'Rating = %s, Votes = %s');

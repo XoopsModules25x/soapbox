@@ -107,7 +107,7 @@ if ($xoopsModuleConfig['includerating'] == 1) {
     $xoopsTpl->assign('showrating', '1');
     //-------------------------------------
     //for ratefile update by domifara
-    $xoopsTpl->assign('rate_gtickets', $xoopsGTicket->getTicketHtml(__LINE__));
+    $xoopsTpl->assign('rate_gtickets', (new XoopsFormHiddenToken())->render());
     //-------------------------------------
     if ($articles['rating'] != 0.0000) {
         $articles['rating'] = "" . _MD_SOAPBOX_RATING . ": " . $myts->htmlSpecialChars(number_format($articles['rating'], 2));
@@ -187,6 +187,6 @@ if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) && $GLOBALS['x
 } else {
     include XOOPS_ROOT_PATH . "/include/comment_view.php";
 }
-$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/style.css" />');
+$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
 
 include_once XOOPS_ROOT_PATH . '/footer.php';

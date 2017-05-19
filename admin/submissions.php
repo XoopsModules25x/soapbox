@@ -122,9 +122,9 @@ function editarticle($articleID = '')
     //    $editor_teaser=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
     //    $sform->addElement($editor_teaser,true);
     //
-    $autoteaser_radio = new XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
-    $sform->addElement($autoteaser_radio);
-    $sform->addElement(new XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
+   // $autoteaser_radio = new XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+   // $sform->addElement($autoteaser_radio);
+  //  $sform->addElement(new XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
 
     // BODY
     //HACK by domifara for Wysiwyg
@@ -177,10 +177,11 @@ function editarticle($articleID = '')
     //----------
     // datesub
     //----------
-    $datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . "=>");
-    $datesub_tray    = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br />' . $datesub_caption, 'datesub', 15, time());
+    //$datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . "=>");
+    //$datesub_tray    = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br />' . $datesub_caption, 'datesub', 15, time());
+    $datesub_tray = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br />', 'datesub', 15, $e_articles['datesub']);
     // you don't want to change datesub
-    $datesubnochage_checkbox = new XoopsFormCheckBox(_AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 0);
+    $datesubnochage_checkbox = new XoopsFormCheckBox(_AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 1);
     $datesubnochage_checkbox->addOption(1, _AM_SOAPBOX_YES);
     $datesub_tray->addElement($datesubnochage_checkbox);
     $sform->addElement($datesub_tray);

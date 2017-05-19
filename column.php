@@ -24,7 +24,7 @@ if ($moduleDirName !== "soapbox" && $moduleDirName !== "" && !preg_match('/^(\D+
     echo("invalid dirname: " . htmlspecialchars($moduleDirName, ENT_QUOTES));
 }
 
-$columnID = XoopsRequest::getInt('columnID', 0, 'GET');
+$columnID = Xmf\Request::getInt('columnID', 0, 'GET');
 //---GET view sort --
 $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
 if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
@@ -36,7 +36,7 @@ if (!in_array($sortorder, array('ASC', 'DESC'))) {
 }
 //---------------
 include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-$start = XoopsRequest::getInt('start', 0, 'GET');
+$start = Xmf\Request::getInt('start', 0, 'GET');
 
 //-------------------------------------
 $_entrydata_handler =& xoops_getmodulehandler('entryget', $xoopsModule->dirname());
@@ -89,7 +89,6 @@ foreach ($_entryob_arr as $_entryob) {
     } else {
         $articles['image'] = '';
     }
-
     if ($xoopsModuleConfig['includerating'] == 1) {
         $xoopsTpl->assign('showrating', 1);
         $rating = $articles['rating'];
@@ -124,6 +123,6 @@ $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbupl
 $xoopsTpl->assign('sortname', $sortname);
 $xoopsTpl->assign('sortorder', $sortorder);
 
-$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/style.css" />');
+$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
 
 include(XOOPS_ROOT_PATH . "/footer.php");
