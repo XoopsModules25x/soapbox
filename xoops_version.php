@@ -10,7 +10,7 @@
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $modversion['name']                = _MI_SOAPBOX_MD_NAME;
-$modversion['version']             = 1.61;
+$modversion['version']             = 1.62;
 $modversion['description']         = _MI_SOAPBOX_MD_DESC;
 $modversion['author']              = 'hsalazar, domifara';
 $modversion['credits']             = 'Catzwolf';
