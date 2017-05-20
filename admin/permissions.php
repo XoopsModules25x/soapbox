@@ -1,62 +1,122 @@
 <?php
-// $Id: permissions.php,v 0.0.1 2005/10/27 20:30:00 domifara Exp $
+
+/*
+ You may not change or alter any portion of this comment or credits
+ of supporting developers from this source code or any supporting source code
+ which is considered copyrighted (c) material of the original comment or credit authors.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*/
+
 /**
- * $Id: permissions.php v 1.5 23 August 2004 hsalazar Exp $
- * Module: Soapbox
- * Version: v 1.5
- * Release Date: 23 August 2004
- * Author: hsalazar
- * Licence: GNU
+ * Module: soapbox
+ *
+ * @category        Module
+ * @package         soapbox
+ * @author          XOOPS Development Team <mambax7@gmail.com> - <http://xoops.org>
+ * @copyright       {@link http://xoops.org/ XOOPS Project}
+ * @license         {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @link            http://xoops.org/
+ * @since           1.0.0
  */
 
-include_once __DIR__ . '/admin_header.php';
-//include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+use Xmf\Request;
 
-include_once 'mygrouppermform.php';
-
-$indexAdmin = new ModuleAdmin();
-$op         = '';
-if (isset($_GET['op'])) {
-    $op = trim(strip_tags($myts->stripSlashesGPC($_GET['op'])));
+require_once __DIR__ . '/admin_header.php';
+//require_once __DIR__ . '/../include/config.inc.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+if ('' != Request::getString('submit', '')) {
+    redirect_header(XOOPS_URL . '/modules/' . $GLOBALS['xoopsModule']->dirname() . '/admin/permissions.php', 1, _MP_GPERMUPDATED);
 }
-if (isset($_POST['op'])) {
-    $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
+// Check admin have access to this page
+/*$group = $GLOBALS['xoopsUser']->getGroups ();
+$groups = xoops_getModuleOption ( 'admin_groups', $thisDirname );
+if (count ( array_intersect ( $group, $groups ) ) <= 0) {
+    redirect_header ( 'index.php', 3, _NOPERM );
+}*/
+
+$adminObject = \Xmf\Module\Admin::getInstance();
+$adminObject->displayNavigation(basename(__FILE__));
+xoops_cp_header();
+
+//$permission = soapbox_CleanVars($_POST, 'permission', 1, 'int');
+$permission                = Request::getInt('permission', 1, 'POST');
+$selected                  = array('', '', '', '');
+$selected[$permission - 1] = ' selected';
+
+echo "
+<form method='post' name='fselperm' action='permissions.php'>
+    <table border=0>
+        <tr>
+            <td>
+                <select name='permission' onChange='document.fselperm.submit()'>
+                    <option value='1'" . $selected[0] . '>' . _AM_SOAPBOX_PERMISSIONS_GLOBAL . "</option>
+                    <option value='2'" . $selected[1] . '>' . _AM_SOAPBOX_PERMISSIONS_APPROVE . "</option>
+                    <option value='3'" . $selected[2] . '>' . _AM_SOAPBOX_PERMISSIONS_SUBMIT . "</option>
+                    <option value='4'" . $selected[3] . '>' . _AM_SOAPBOX_PERMISSIONS_VIEW . '</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</form>';
+
+$module_id = $GLOBALS['xoopsModule']->getVar('mid');
+switch ($permission) {
+    case 1:
+        $formTitle   = _AM_SOAPBOX_PERMISSIONS_GLOBAL;
+        $permName    = 'soapbox_ac';
+        $permDesc    = _AM_SOAPBOX_PERMISSIONS_GLOBAL_DESC;
+        $globalPerms = array(
+            '4'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_4,
+            '8'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_8,
+            '16' => _AM_SOAPBOX_PERMISSIONS_GLOBAL_16
+        );
+        break;
+    case 2:
+        $formTitle = _AM_SOAPBOX_PERMISSIONS_APPROVE;
+        $permName  = 'soapbox_approve';
+        $permDesc  = _AM_SOAPBOX_PERMISSIONS_APPROVE_DESC;
+        break;
+    case 3:
+        $formTitle = _AM_SOAPBOX_PERMISSIONS_SUBMIT;
+        $permName  = 'soapbox_submit';
+        $permDesc  = _AM_SOAPBOX_PERMISSIONS_SUBMIT_DESC;
+        break;
+    case 4:
+        $formTitle = _AM_SOAPBOX_PERMISSIONS_VIEW;
+        $permName  = 'soapbox_view';
+        $permDesc  = _AM_SOAPBOX_PERMISSIONS_VIEW_DESC;
+        break;
 }
 
-switch ($op) {
-    case "default":
-    default:
-        $item_list2 = array();
-        $block2     = array();
+//$Form2 = new XoopsGroupPermForm ( "", $xoopsModule -> getVar ( 'mid'), "Column_permissions", _AM_SB_SELECT_COLS);
 
-        xoops_cp_header();
-        echo $indexAdmin->addNavigation('permissions.php');
-        //adminMenu(4, _AM_SOAPBOX_PERMS);
-        //        echo "<h3 style='color: #2F5376; '>". _AM_SOAPBOX_PERMSMNGMT . "</h3>";
-
-        //-------------------------------------
-        //get category object
-        $_hcategory_handler = &xoops_getmodulehandler('sbcolumns', $xoopsModule->dirname());
-        $totalcols          = $_hcategory_handler->getCount();
-        if (!empty($totalcols)) {
-            //----------------------------
-            $criteria = new CriteriaCompo();
-            $criteria->setSort('weight');
-            $_categoryob_arr =& $_hcategory_handler->getObjects($criteria);
-            unset($criteria);
-            foreach ($_categoryob_arr as $_categoryob) {
-                $item_list2['cid']   = $_categoryob->getVar('columnID');
-                $item_list2['title'] = $_categoryob->getVar('name');
-                $form2               = new MyXoopsGroupPermForm("", $xoopsModule->getVar('mid'), "Column permissions", _AM_SOAPBOX_SELECT_COLS, 'admin/permissions.php');
-                $block2[]            = $item_list2;
-                foreach ($block2 as $itemlists) {
-                    $form2->addItem($itemlists['cid'], $itemlists['title']);
-                }
-            }
-            echo $form2->render();
-        } else {
-            echo '<p><div style="text-align:center;"><b>' . _AM_SOAPBOX_NOPERMSSET . '</b></div></p>';
-        }
-        echo _AM_SOAPBOX_PERMSNOTE;
+$permform = new XoopsGroupPermForm($formTitle, $module_id, $permName, $permDesc, 'admin/permissions.php');
+if (1 == $permission) {
+    foreach ($globalPerms as $perm_id => $perm_name) {
+        $permform->addItem($perm_id, $perm_name);
+    }
+    echo $permform->render();
+    echo '<br><br>';
+} else {
+    $criteria = new CriteriaCompo();
+    $criteria->setSort('name');
+    $criteria->setOrder('ASC');
+    $cat_count = $sbColumnHandler->getCount($criteria);
+    $cat_arr   = $sbColumnHandler->getObjects($criteria);
+    unset($criteria);
+    foreach (array_keys($cat_arr) as $i) {
+        $permform->addItem($cat_arr[$i]->getVar('columnID'), $cat_arr[$i]->getVar('name'));
+    }
+    // Check if cat exist before rendering the form and redirect, if there aren't cat
+    if ($cat_count > 0) {
+        echo $permform->render();
+        echo '<br><br>';
+    } else {
+        redirect_header('column.php', 3, _AM_SOAPBOX_PERMISSIONS_NOPERMSSET);
+    }
 }
-include_once __DIR__ . '/admin_footer.php';
+unset($permform);
+require_once __DIR__ . '/admin_footer.php';

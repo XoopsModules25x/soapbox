@@ -1,5 +1,7 @@
 <ul>
-  <{foreach item=newarts from=$block.newarts}>
-    <li class="sbblock"><a href="<{$xoops_url}>/modules/<{$newarts.dir}>/article.php?articleID=<{$newarts.id}>" title="[<{$smarty.const._MB_SOAPBOX_PUBDATE}><{$newarts.new}>]"><{$newarts.linktext}></a></li>
-  <{/foreach}>
+    <{foreach item=newarts from=$block.newarts}>
+        <li class="sbblock"><a href="<{$xoops_url}>/modules/<{$newarts.dir}>/article.php?articleID=<{$newarts.id}>"
+                               title="[<{$smarty.const._MB_SOAPBOX_PUBDATE}><{$newarts.new}>]"><{$newarts.linktext}></a>
+        </li>
+    <{/foreach}>
 </ul>

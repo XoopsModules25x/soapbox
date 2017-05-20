@@ -14,37 +14,47 @@
  * @package
  * @author            XOOPS Development Team
  *
- * Version : $Id:
  * ****************************************************************************
  */
 
-$moduleDirName = basename(dirname(__DIR__));
-include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-include_once $GLOBALS['xoops']->path('www/include/cp_functions.php');
-include_once $GLOBALS['xoops']->path('www/include/cp_header.php');
-include_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
-require dirname(__DIR__) . '/include/gtickets.php';
+require_once __DIR__ . '/../../../include/cp_header.php';
+require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
-include_once $GLOBALS['xoops']->path('www/kernel/module.php');
-include_once $GLOBALS['xoops']->path('www/class/xoopstree.php');
-include_once $GLOBALS['xoops']->path('www/class/xoopslists.php');
+//require_once __DIR__ . '/../class/utility.php';
+//require_once __DIR__ . '/../include/common.php';
 
-global $xoopsModule;
+if (!isset($moduleDirName)) {
+    $moduleDirName = basename(dirname(__DIR__));
+}
 
-require_once dirname(__DIR__) . '/include/functions.php';
+require_once __DIR__ . '/../include/gtickets.php';
+
+require_once $GLOBALS['xoops']->path('www/kernel/module.php');
+require_once $GLOBALS['xoops']->path('www/class/xoopstree.php');
+require_once $GLOBALS['xoops']->path('www/class/xoopslists.php');
+
+require_once __DIR__ . '/../include/functions.php';
+require_once __DIR__ . '/../class/sbcolumns.php';
+
+if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
+} else {
+    $moduleHelper = Xmf\Module\Helper::getHelper('system');
+}
+$adminObject = Xmf\Module\Admin::getInstance();
+
+$pathIcon16      = Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon32      = Xmf\Module\Admin::iconUrl('', 32);
+$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
 
 // Load language files
-// Load language files
-xoops_loadLanguage('admin', $moduleDirName);
-xoops_loadLanguage('modinfo', $moduleDirName);
-xoops_loadLanguage('main', $moduleDirName);
+$moduleHelper->loadLanguage('admin');
+$moduleHelper->loadLanguage('modinfo');
+$moduleHelper->loadLanguage('main');
 
-xoops_load('XoopsRequest');
+$myts = MyTextSanitizer::getInstance();
 
-$pathIcon16           = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
-$pathIcon32           = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons32'));
-$xoopsModuleAdminPath = $GLOBALS['xoops']->path('www/' . $GLOBALS['xoopsModule']->getInfo('dirmoduleadmin'));
-
-require_once "{$xoopsModuleAdminPath}/moduleadmin.php";
-
-$myts =& MyTextSanitizer::getInstance();
+if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
+    require_once $GLOBALS['xoops']->path('class/template.php');
+    $xoopsTpl = new XoopsTpl();
+}
+$sbColumnHandler = new SoapboxSbcolumnsHandler();

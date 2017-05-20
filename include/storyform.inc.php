@@ -1,7 +1,6 @@
 <?php
-// $Id: storyform.inc.php,v 0.0.1 2005/10/27 20:30:00 domifara Exp $
 /**
- * $Id: storyform.inc.php v 1.5 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -10,31 +9,31 @@
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 if (file_exists(XOOPS_ROOT_PATH . '/language/' . $myts->htmlSpecialChars($xoopsConfig['language']) . '/calendar.php')) {
-    include_once XOOPS_ROOT_PATH . '/language/' . $myts->htmlSpecialChars($xoopsConfig['language']) . '/calendar.php';
+    require_once XOOPS_ROOT_PATH . '/language/' . $myts->htmlSpecialChars($xoopsConfig['language']) . '/calendar.php';
 } else {
-    include_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
+    require_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
 }
-//include_once XOOPS_ROOT_PATH . "/class/xoopstree.php";
-include_once XOOPS_ROOT_PATH . "/class/xoopslists.php";
-include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
+//require_once XOOPS_ROOT_PATH . "/class/xoopstree.php";
+require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
-$sform = new XoopsThemeForm(_MD_SOAPBOX_SUB_SMNAME, "storyform", $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+$sform = new XoopsThemeForm(_MD_SOAPBOX_SUB_SMNAME, 'storyform', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
 //get select category object
 if (is_object($xoopsUser)) {
     if ($xoopsUser->isAdmin($xoopsModule->getVar('mid'))) {
-        $_can_edit_categoryob_arr =& $_entrydata_handler->getColumns(null, true);
+        $canEditCategoryobArray = $entrydataHandler->getColumns(null, true);
     } else {
-        $_can_edit_categoryob_arr =& $_entrydata_handler->getColumnsByAuthor($xoopsUser->uid(), true);
+        $canEditCategoryobArray = $entrydataHandler->getColumnsByAuthor($xoopsUser->uid(), true);
     }
 
     //----------------------------
     $collist = array();
-    foreach ($_can_edit_categoryob_arr as $key => $_can_edit_categoryob) {
+    foreach ($canEditCategoryobArray as $key => $_can_edit_categoryob) {
         $collist[$key] = $_can_edit_categoryob->getVar('name');
     }
-    $col_select = new XoopsFormSelect('', 'columnID', (int)($e_articles['columnID']));
+    $col_select = new XoopsFormSelect('', 'columnID', (int)$e_articles['columnID']);
     $col_select->addOptionArray($collist);
-    $col_select_tray = new XoopsFormElementTray(_MD_SOAPBOX_COLUMN, "<br />");
+    $col_select_tray = new XoopsFormElementTray(_MD_SOAPBOX_COLUMN, '<br>');
     $col_select_tray->addElement($col_select);
     $sform->addElement($col_select_tray);
 }
@@ -68,17 +67,18 @@ $sform->addElement(new XoopsFormDhtmlTextArea(_MD_SOAPBOX_ARTBODY, 'bodytext', $
 
 // The article CAN have its own image :)
 // First, if the article's image doesn't exist, set its value to the blank file
-if (!file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage']) || empty($e_articles['artimage'])) {
-    $artimage = "blank.png";
+if (empty($e_articles['artimage'])
+    || !file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'])) {
+    $artimage = 'blank.png';
 }
 // Code to create the image selector
-$graph_array     = &XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+$graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
 $artimage_select = new XoopsFormSelect('', 'artimage', $e_articles['artimage']);
 $artimage_select->addOptionArray($graph_array);
-$artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . "\", \"\", \"" . XOOPS_URL . "\")'");
+$artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '", "", "' . XOOPS_URL . "\")'");
 $artimage_tray = new XoopsFormElementTray(_MD_SOAPBOX_SELECT_IMG, '&nbsp;');
 $artimage_tray->addElement($artimage_select);
-$artimage_tray->addElement(new XoopsFormLabel('', "<br /><br /><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt='' />"));
+$artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt='' />"));
 $sform->addElement($artimage_tray);
 
 if (is_object($xoopsUser)) {
@@ -88,8 +88,9 @@ if (is_object($xoopsUser)) {
     //----------
     // datesub
     //----------
-    $datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . "=>");
-    $datesub_tray    = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br />' . $datesub_caption, 'datesub', 15, time());
+    //$datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . "=>");
+    //$datesub_tray    = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br>' . $datesub_caption, 'datesub', 15, time());
+    $datesub_tray = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br>', 'datesub', 15, $e_articles['datesub']);
     // you don't want to change datesub
     $datesubnochage_checkbox = new XoopsFormCheckBox(_MD_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 0);
     $datesubnochage_checkbox->addOption(1, _MD_SOAPBOX_YES);
@@ -98,13 +99,14 @@ if (is_object($xoopsUser)) {
     //-----------
 
     // COMMENTS
-    if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] == 1) {
+    if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
+        && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
         // COMMENTS
         // Code to allow comments
         $addcommentable_radio = new XoopsFormRadioYN(_MD_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _MD_SOAPBOX_YES . '', ' ' . _MD_SOAPBOX_NO . '');
         $sform->addElement($addcommentable_radio);
     }
-    if (isset($xoopsModuleConfig['autoapprove']) && $xoopsModuleConfig['autoapprove'] == 1) {
+    if (isset($xoopsModuleConfig['autoapprove']) && $xoopsModuleConfig['autoapprove'] === 1) {
         if ($xoopsUser->isAdmin($xoopsModule->mid())) {
             // OFFLINE
             // Code to take article offline, for maintenance purposes

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: blocks.php v 1.5 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -10,7 +10,7 @@
 // Blocks
 define('_MB_SOAPBOX_ARTCLS', 'articles');
 define('_MB_SOAPBOX_ARTICLEID', 'Article Id');
-define('_MB_SOAPBOX_ARTSTOSHOW', '<br />Articles to show?&nbsp;');
+define('_MB_SOAPBOX_ARTSTOSHOW', '<br>Articles to show?&nbsp;');
 define('_MB_SOAPBOX_BY', 'By ');
 define('_MB_SOAPBOX_CHARS', 'Length of the title');
 define('_MB_SOAPBOX_DATE', 'Published date');
@@ -37,3 +37,5 @@ define('_MB_SOAPBOX_VOTE', ' | Votes: ');
 define('_MB_SOAPBOX_WEIGHT', 'List by weight');
 define('_MB_SOAPBOX_SPOTLIGHT', 'Enable Spotlight Feature');
 define('_MB_SOAPBOX_SPOTLIGHT_TOPIC', 'Select column(s) to use');
+// 1.61
+define('_MB_SOAPBOX_SVOTES', 'Rating = %s, Votes = %s');
