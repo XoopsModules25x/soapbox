@@ -55,8 +55,8 @@ $category = array();
 $category = $_categoryob->toArray(); //all assign
 
 $category['colid']      = $columnID;
-$category['author']     = getLinkedUnameFromId($category['author'], 0);
-$category['authorname'] = getAuthorName($category['author']);
+$category['author']     = SoapboxUtility::getLinkedUnameFromId($category['author'], 0);
+$category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
 $category['image']      = $category['colimage'];
 $category['total']      = $totalarts;
 $xoopsTpl->assign('category', $category);
@@ -72,7 +72,7 @@ foreach ($_entryob_arr as $_entryob) {
     $articles['id']      = $articles['articleID'];
     $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
     //        $articles['poster'] = XoopsUserUtility::getUnameFromId( $articles['uid'] );
-    $articles['poster']   = getLinkedUnameFromId($category['author']);
+    $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
     $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
     //--------------------
     if ($articles['submit'] !== 0) {

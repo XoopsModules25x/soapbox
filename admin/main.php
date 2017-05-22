@@ -46,8 +46,8 @@ switch ($op) {
         require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
         $module_id = $xoopsModule->getVar('mid');
 
-        showArticles($xoopsModuleConfig['buttonsadmin']);
-        showColumns($xoopsModuleConfig['buttonsadmin']);
+        SoapboxUtility::showArticles($xoopsModuleConfig['buttonsadmin']);
+        SoapboxUtility::showColumns($xoopsModuleConfig['buttonsadmin']);
 }
 
 require_once __DIR__ . '/admin_footer.php';

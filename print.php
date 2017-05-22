@@ -48,7 +48,7 @@ function PrintPage($articleID)
     $category = $_categoryob->toArray();
     //-------------------------------------
     //get author
-    $authorname = getAuthorName($category['author']);
+    $authorname = SoapboxUtility::getAuthorName($category['author']);
     //-------------------------------------
 
     $datetime = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));

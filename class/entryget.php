@@ -27,7 +27,7 @@ require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbcolumns.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbvotedata.php';
 
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/utility.php';
 
 /**
  * Soapbox entrydata handler class.
@@ -863,10 +863,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                 if ($xoopsUser->isAdmin($this->_module_id)) {
                     $hitcount_update = false;
                 } else {
+                    $hitcount_update = false;
                     if ($sbarticle->getVar('uid') !== $xoopsUser->uid()) {
                         $hitcount_update = true;
-                    } else {
-                        $hitcount_update = false;
                     }
                 }
             }
@@ -975,7 +974,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $ret            = '';
         $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
         $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
-        $al             = soapbox_getacceptlang();
+        $al             = SoapboxUtility::getAcceptLang();
         if ($al === 'ja') {
             if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
                 && @mb_internal_encoding(_CHARSET)) {

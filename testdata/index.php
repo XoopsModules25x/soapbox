@@ -20,10 +20,6 @@ use Xmf\Request;
 
 require_once __DIR__ . '/../../../mainfile.php';
 
-if (!isset($moduleDirName)) {
-    $moduleDirName = basename(dirname(__DIR__));
-}
-
 $op = Request::getCmd('op', '');
 
 switch ($op) {
@@ -36,15 +32,16 @@ switch ($op) {
 
 function loadSampleData()
 {
+    $moduleDirName = basename(dirname(__DIR__));
     xoops_loadLanguage('admin', $moduleDirName);
     $items = \Xmf\Yaml::readWrapped('item-data.yml');
     $cat   = \Xmf\Yaml::readWrapped('cat-data.yml');
 
-    \Xmf\Database\TableLoad::truncateTable('sbvotedata');
+    \Xmf\Database\TableLoad::truncateTable('sbarticles');
     \Xmf\Database\TableLoad::truncateTable('sbcolumns');
 
-    \Xmf\Database\TableLoad::loadTableFromArray('sbvotedata', $cat);
-    \Xmf\Database\TableLoad::loadTableFromArray('sbcolumns', $items);
+    \Xmf\Database\TableLoad::loadTableFromArray('sbcolumns', $cat);
+    \Xmf\Database\TableLoad::loadTableFromArray('sbarticles', $items);
 
     redirect_header('../admin/main.php', 1, _AM_SOAPBOX_SAMPLEDATA_SUCCESS);
 }

@@ -265,7 +265,7 @@ switch ($op) {
         $adminObject->displayNavigation(basename(__FILE__));
         $articleID = Request::getInt('articleID', Request::getInt('articleID', 0, 'GET'), 'POST');// (isset($_POST['articleID'])) ? (int)($_POST['articleID']) : (int)($_GET['articleID']);
         editarticle($articleID);
-        showSubmissions();
+        SoapboxUtility::showSubmissions();
         break;
 
     case 'authart':
@@ -446,7 +446,7 @@ switch ($op) {
         //adminMenu(3, _AM_SOAPBOX_SUBMITS);
         $adminObject->displayNavigation(basename(__FILE__));
         echo '<br>';
-        showSubmissions();
+        SoapboxUtility::showSubmissions();
         require_once __DIR__ . '/admin_footer.php';
         exit();
         break;

@@ -33,7 +33,7 @@ require_once $GLOBALS['xoops']->path('www/kernel/module.php');
 require_once $GLOBALS['xoops']->path('www/class/xoopstree.php');
 require_once $GLOBALS['xoops']->path('www/class/xoopslists.php');
 
-require_once __DIR__ . '/../include/functions.php';
+require_once __DIR__ . '/../class/utility.php';
 require_once __DIR__ . '/../class/sbcolumns.php';
 
 if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
@@ -42,8 +42,8 @@ if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
 }
 $adminObject = Xmf\Module\Admin::getInstance();
 
-$pathIcon16      = Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32      = Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon16    = Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon32    = Xmf\Module\Admin::iconUrl('', 32);
 $pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
 
 // Load language files

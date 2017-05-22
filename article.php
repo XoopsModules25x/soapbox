@@ -128,8 +128,8 @@ if (is_object($xoopsUser)) {
 $articles['adminlinks'] = $entrydataHandler->getadminlinks($_entryob, $_categoryob);
 $articles['userlinks']  = $entrydataHandler->getuserlinks($_entryob);
 
-$articles['author']     = getLinkedUnameFromId($category['author'], 0);
-$articles['authorname'] = getAuthorName($category['author']);
+$articles['author']     = SoapboxUtility::getLinkedUnameFromId($category['author'], 0);
+$articles['authorname'] = SoapboxUtility::getAuthorName($category['author']);
 $articles['colname']    = $category['name'];
 $articles['coldesc']    = $category['description'];
 $articles['colimage']   = $category['colimage'];
@@ -139,7 +139,7 @@ $xoopsTpl->assign('story', $articles);
 //-----------------------------
 $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
 $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
-$al             = soapbox_getacceptlang();
+$al             = SoapboxUtility::getAcceptLang();
 if ($al === 'ja') {
     if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
         && @mb_internal_encoding(_CHARSET)) {
@@ -174,7 +174,7 @@ if (!empty($_other_entryob_arr)) {
         $link['arttitle']  = $_other_entryob->getVar('headline');
         $link['published'] = $myts->htmlSpecialChars(formatTimestamp($_other_entryob->getVar('datesub'), $xoopsModuleConfig['dateformat']));
         //        $link['poster'] = XoopsUserUtility::getUnameFromId( $link['uid'] );
-        $link['poster']      = getLinkedUnameFromId($category['author']);
+        $link['poster']      = SoapboxUtility::getLinkedUnameFromId($category['author']);
         $link['bodytext']    = xoops_substr($link['bodytext'], 0, 255);
         $listarts['links'][] = $link;
     }

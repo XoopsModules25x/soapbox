@@ -75,7 +75,7 @@ switch ($op) {
             $category = $_categoryob->toArray(); //all assign
             //-------------------------------------
             //get author
-            $category['authorname'] = getAuthorName($category['author']);
+            $category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
             //-------------------------------------
             if ($category['colimage'] !== '') {
                 $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $category['colimage'] . '" /></span>';
@@ -96,7 +96,7 @@ switch ($op) {
                 $articles['id']      = $articles['articleID'];
                 $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
                 //        $articles['poster'] = XoopsUserUtility::getUnameFromId( $articles['uid'] );
-                $articles['poster']   = getLinkedUnameFromId($category['author']);
+                $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
                 $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
                 //--------------------
                 if ($articles['submit'] !== 0) {

@@ -426,7 +426,7 @@ switch ($op) {
                 }
                 $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
 
-                uploading($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+                SoapboxUtility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
 
                 $_entryob->setVar('artimage', $artimage_name);
             }

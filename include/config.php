@@ -23,7 +23,7 @@ $moduleDirName = basename(dirname(__DIR__));
 $capsDirName   = strtoupper($moduleDirName);
 
 //if (!defined($moduleDirName . '_DIRNAME')) {
-if (!defined(constant($capsDirName . '_DIRNAME'))) {
+if (!defined($capsDirName . '_DIRNAME')) {
     define($capsDirName . '_DIRNAME', $GLOBALS['xoopsModule']->dirname());
     define($capsDirName . '_PATH', XOOPS_ROOT_PATH . '/modules/' . constant($capsDirName . '_DIRNAME'));
     define($capsDirName . '_URL', XOOPS_URL . '/modules/' . constant($capsDirName . '_DIRNAME'));
@@ -34,7 +34,7 @@ if (!defined(constant($capsDirName . '_DIRNAME'))) {
 
 // Define here the place where main upload path
 
-$img_dir = $GLOBALS['xoopsModuleConfig']['uploaddir'];
+//$img_dir = $GLOBALS['xoopsModuleConfig']['uploaddir'];
 
 define($capsDirName . '_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' . $moduleDirName); // WITHOUT Trailing slash
 //define("SOAPBOX_UPLOAD_PATH", $img_dir); // WITHOUT Trailing slash
@@ -93,7 +93,7 @@ return array(
 */
 // module information
 $modCopyright = "<a href='http://xoops.org' title='XOOPS Project' target='_blank'>
-                     <img src='" . constant($moduleDirName . '_AUTHOR_LOGOIMG') . "' alt='XOOPS Project' /></a>";
+                     <img src='" . constant($capsDirName . '_AUTHOR_LOGOIMG') . "' alt='XOOPS Project' /></a>";
 
 /**
  * Class ModuleConfigurator

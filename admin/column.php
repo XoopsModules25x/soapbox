@@ -255,7 +255,7 @@ switch ($op) {
                     redirect_header('column.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
                 $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
-                uploading($allowed_mimetypes, $colimage_name, 'index.php', 0, $xoopsModuleConfig['sbuploaddir']);
+                SoapboxUtility::uploadFile($allowed_mimetypes, $colimage_name, 'index.php', 0, $xoopsModuleConfig['sbuploaddir']);
                 $_categoryob->setVar('colimage', $colimage_name);
             }
         }
@@ -363,7 +363,7 @@ switch ($op) {
     default:
         //$adminObject->displayNavigation(basename(__FILE__));
         editcol(0);
-        //    showColumns(0);
+        //    SoapboxUtility::showColumns(0);
 
         break;
 }
