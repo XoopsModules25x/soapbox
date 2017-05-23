@@ -66,7 +66,7 @@ function editarticle($articleID = '')
     //adminMenu(3, _AM_SOAPBOX_SUBMITS." > '". $_entryob->getVar('headline') ."'");
 
     //    echo "<h3 style='color: #2F5376; '>" . _AM_SOAPBOX_SUBMITSMNGMT . "</h3>";
-    $sform = new XoopsThemeForm(_AM_SOAPBOX_AUTHART . ': ' . $_entryob->getVar('headline'), 'op', xoops_getenv('PHP_SELF'));
+    $sform = new XoopsThemeForm(_AM_SOAPBOX_AUTHART . ': ' . $_entryob->getVar('headline'), 'op', xoops_getenv('PHP_SELF'), 'post', true);
 
     $sform->setExtra('enctype="multipart/form-data"');
 

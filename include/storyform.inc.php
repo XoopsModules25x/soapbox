@@ -17,7 +17,7 @@ if (file_exists(XOOPS_ROOT_PATH . '/language/' . $myts->htmlSpecialChars($xoopsC
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
-$sform = new XoopsThemeForm(_MD_SOAPBOX_SUB_SMNAME, 'storyform', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+$sform = new XoopsThemeForm(_MD_SOAPBOX_SUB_SMNAME, 'storyform', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
 //get select category object
 if (is_object($xoopsUser)) {
     if ($xoopsUser->isAdmin($xoopsModule->getVar('mid'))) {

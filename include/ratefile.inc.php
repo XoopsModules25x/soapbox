@@ -20,11 +20,11 @@ use Xmf\Request;
 //    exit;
 //}
 
-if (!Request::getString('submit', null, 'POST') || !Request::getInt('lid', null, 'POST')) {
+if (!Request::hasVar('submit', 'POST') || !Request::hasVar('lid', 'POST')) {
     exit;
 }
 
-if (Request::getString('submit', null, 'POST')) { //($_POST['submit']) {
+if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     //-------------------------
     //    if (!$GLOBALS['xoopsSecurity']->check()) {
     if (!$xoopsGTicket->check()) {

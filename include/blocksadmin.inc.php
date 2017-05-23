@@ -38,7 +38,7 @@ if (isset($temp)) {
 }
 
 //if (isset($_POST['previewblock'])) {
-if (Request::getInt('previewblock', null, 'POST')) {
+if (Request::hasVar('previewblock', 'POST')) {
     //if ( !admin_refcheck("/modules/$admin_mydirname/admin/") ) {
     //  exit('Invalid Referer');
     //}

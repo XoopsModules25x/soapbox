@@ -58,7 +58,7 @@ function editcol($columnID = '')
 
         //editcol(0);
 
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODCOL . ': ' . $_categoryob->getVar('name'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODCOL . ': ' . $_categoryob->getVar('name'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     } else {
         $_categoryob = $entrydataHandler->createColumn(true);
         $_categoryob->cleanVars();
@@ -79,7 +79,7 @@ function editcol($columnID = '')
 
         //editcol(0);
 
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWCOL, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWCOL, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     }
 
     $sform->setExtra('enctype="multipart/form-data"');

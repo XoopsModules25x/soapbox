@@ -55,7 +55,7 @@ function editarticle($articleID = 0)
 
         //adminMenu(2, _AM_SOAPBOX_ARTS._AM_SOAPBOX_EDITING. $_entryob->getVar('headline') ."'");
         //echo "<h3 style='color: #2F5376; '>" . _AM_SOAPBOX_ADMINARTMNGMT . "</h3>";
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODART . ': ' . $_entryob->getVar('headline'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODART . ': ' . $_entryob->getVar('headline'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     } else {
         //create new entry object
         $_entryob = $entrydataHandler->createArticle(true);
@@ -71,7 +71,7 @@ function editarticle($articleID = 0)
         }
         //adminMenu(2, _AM_SOAPBOX_ARTS._AM_SOAPBOX_CREATINGART);
         //echo "<h3 style='color: #2F5376; '>" . _AM_SOAPBOX_ADMINARTMNGMT . "</h3>";
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWART, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWART, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     }
 
     //get vars mode E
