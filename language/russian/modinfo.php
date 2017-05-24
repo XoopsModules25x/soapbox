@@ -11,10 +11,10 @@
 // Module Info
 // The name of this module
 global $xoopsModule;
-define('_MI_SOAPBOX_MD_NAME', 'Блог');
+define('_MI_SOAPBOX_NAME', 'Блог');
 
 // A brief description of this module
-define('_MI_SOAPBOX_MD_DESC', 'OpEd для Вашего сайта');
+define('_MI_SOAPBOX_DESC', 'OpEd для Вашего сайта');
 
 // Sub menus in main menu block
 define('_MI_SOAPBOX_SUB_SMNAME1', 'Добавить статью');
