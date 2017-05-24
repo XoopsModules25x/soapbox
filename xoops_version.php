@@ -1,7 +1,6 @@
 <?php
-// $Id: xoops_version.php,v 0.0.1 2005/10/24 20:30:00 domifara Exp $
 /**
- * $Id: xoops_version.php v 1.5 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -9,16 +8,18 @@
  * Licence: GNU
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
-$modversion['name']                = _MI_SOAPBOX_MD_NAME;
-$modversion['version']             = 1.61;
-$modversion['description']         = _MI_SOAPBOX_MD_DESC;
+$modversion['version']             = 1.70;
+$modversion['module_status']       = 'Beta 1';
+$modversion['release_date']        = '2017/05/23';
+$modversion['description']         = _MI_SOAPBOX_DESC;
+$modversion['name']                = _MI_SOAPBOX_NAME;
 $modversion['author']              = 'hsalazar, domifara';
 $modversion['credits']             = 'Catzwolf';
 $modversion['license']             = 'GNU GPL 2.0';
 $modversion['license_url']         = 'www.gnu.org/licenses/gpl-2.0.html';
 $modversion['help']                = 'page=help';
 $modversion['official']            = 0; //1 indicates supported by Xoops CORE Dev Team, 0 means 3rd party supported
-$modversion['image']               = 'assets/images/logo.png';
+$modversion['image']               = 'assets/images/logoModule.png';
 $modversion['dirname']             = basename(__DIR__);
 $modversion['author_realname']     = 'Horacio Salazar, domifara';
 $modversion['author_website_url']  = 'http://www.anacronista.com, http://domifara.lolipop.jp/xo/';
@@ -26,13 +27,11 @@ $modversion['author_website_name'] = 'Anacronista, DomifaraOOP';
 $modversion['author_email']        = 'hsalazar@xoops.org';
 $modversion['warning']             = _MI_SOAPBOX_WARNING;
 $modversion['author_word']         = _MI_SOAPBOX_AUTHORMSG;
-$modversion['dirmoduleadmin']      = 'Frameworks/moduleclasses/moduleadmin';
-$modversion['icons16']             = 'Frameworks/moduleclasses/icons/16';
-$modversion['icons32']             = 'Frameworks/moduleclasses/icons/32';
-
-//about
-$modversion['module_status']       = 'Beta 1';
-$modversion['release_date']        = '2015/09/03';
+//$modversion['dirmoduleadmin']      = 'Frameworks/moduleclasses/moduleadmin';
+//$modversion['sysicons16']          = 'Frameworks/moduleclasses/icons/16';
+//$modversion['sysicons32']          = 'Frameworks/moduleclasses/icons/32';
+$modversion['modicons16']          = 'assets/images/icons/16';
+$modversion['modicons32']          = 'assets/images/icons/32';
 $modversion['release_file']        = XOOPS_URL . '/modules/' . $modversion['dirname'] . '/docs/changelog.txt';
 $modversion['demo_site_url']       = '';
 $modversion['demo_site_name']      = '';
@@ -40,12 +39,9 @@ $modversion['module_website_url']  = 'http://xoops.org';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['release']             = '0';
 $modversion['min_php']             = '5.5';
-$modversion['min_xoops']           = '2.5.7.2';
-$modversion['min_admin']           = '1.1';
-//$modversion['min_db']= array('mysql'=>'5.0.7', 'mysqli'=>'5.0.7');
-$modversion['min_db'] = array(
-    'mysql'  => '5.0.7',
-    'mysqli' => '5.0.7');
+$modversion['min_xoops']           = '2.5.8';
+$modversion['min_admin']           = '1.2';
+$modversion['min_db']              = array('mysql' => '5.5');
 
 // Admin things
 $modversion['hasAdmin']    = 1;
@@ -70,21 +66,33 @@ $modversion['search']['func'] = 'sb_search';
 // Menu
 $modversion['hasMain'] = 1;
 
+// ------------------- Help files ------------------- //
+$modversion['helpsection'] = [
+    ['name' => _MI_SOAPBOX_OVERVIEW, 'link' => 'page=help'],
+    ['name' => _MI_SOAPBOX_DISCLAIMER, 'link' => 'page=disclaimer'],
+    ['name' => _MI_SOAPBOX_LICENSE, 'link' => 'page=license'],
+    ['name' => _MI_SOAPBOX_SUPPORT, 'link' => 'page=support'],
+];
+//Install/Uninstall Functions
+$modversion['onInstall']   = 'include/oninstall.php';
+$modversion['onUpdate']    = 'include/onupdate.php';
+$modversion['onUninstall'] = 'include/onuninstall.php';
+
 global $xoopsDB, $xoopsUser;
-$hModule = xoops_gethandler('module');
+$hModule = xoops_getHandler('module');
 $i       = 0;
 if ($soapModule = $hModule->getByDirname('soapbox')) {
-    $gperm_handler = xoops_gethandler('groupperm');
-    $hModConfig    = xoops_gethandler('config');
+    $gpermHandler = xoops_getHandler('groupperm');
+    $hModConfig   = xoops_getHandler('config');
 
-    $groups = (is_object($xoopsUser)) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
 
     if (is_object($xoopsUser)) {
         $user  = $xoopsUser->getVar('uid');
         $query = $xoopsDB->query('SELECT author FROM ' . $xoopsDB->prefix('sbcolumns') . ' WHERE author = ' . $xoopsUser->getVar('uid'));
         if ($query) {
             $isauthor = $xoopsDB->getRowsNum($query);
-            if ($xoopsUser->isAdmin($soapModule->getVar('mid')) || $isauthor >= 1) {
+            if ($isauthor >= 1 || $xoopsUser->isAdmin($soapModule->getVar('mid'))) {
                 ++$i;
                 $modversion['sub'][$i]['name'] = _MI_SOAPBOX_SUB_SMNAME1;
                 $modversion['sub'][$i]['url']  = 'submit.php?op=add';
@@ -93,12 +101,12 @@ if ($soapModule = $hModule->getByDirname('soapbox')) {
     }
     unset($isauthor);
     $module_id  = $soapModule->getVar('mid');
-    $soapConfig =& $hModConfig->getConfigsByCat(0, $soapModule->getVar('mid'));
-    if (isset($soapConfig['colsinmenu']) && $soapConfig['colsinmenu'] == 1 && is_object($xoopsUser)) {
+    $soapConfig = $hModConfig->getConfigsByCat(0, $soapModule->getVar('mid'));
+    if (is_object($xoopsUser) && isset($soapConfig['colsinmenu']) && 1 === $soapConfig['colsinmenu']) {
         $sql = $xoopsDB->query('SELECT columnID, name FROM ' . $xoopsDB->prefix('sbcolumns') . '  ORDER BY weight');
         if ($sql) {
             while (list($columnID, $name) = $xoopsDB->fetchRow($sql)) {
-                if ($gperm_handler->checkRight('Column Permissions', $columnID, $groups, $module_id)) {
+                if ($gpermHandler->checkRight('Column Permissions', $columnID, $groups, $module_id)) {
                     ++$i;
                     $modversion['sub'][$i]['name'] = $name;
                     $modversion['sub'][$i]['url']  = 'column.php?columnID=' . $columnID . '';
@@ -191,7 +199,15 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_PERPAGEDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 5;
-$modversion['config'][$i]['options']     = array('5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50);
+$modversion['config'][$i]['options']     = array(
+    '5'  => 5,
+    '10' => 10,
+    '15' => 15,
+    '20' => 20,
+    '25' => 25,
+    '30' => 30,
+    '50' => 50
+);
 ++$i;
 $modversion['config'][$i]['name']        = 'indexperpage';
 $modversion['config'][$i]['title']       = '_MI_SOAPBOX_PERPAGEINDEX';
@@ -199,7 +215,15 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_PERPAGEINDEXDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 5;
-$modversion['config'][$i]['options']     = array('5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50);
+$modversion['config'][$i]['options']     = array(
+    '5'  => 5,
+    '10' => 10,
+    '15' => 15,
+    '20' => 20,
+    '25' => 25,
+    '30' => 30,
+    '50' => 50
+);
 ++$i;
 $modversion['config'][$i]['name']        = 'sbimgdir';
 $modversion['config'][$i]['title']       = '_MI_SOAPBOX_IMGDIR';
@@ -271,7 +295,16 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_COLSPERINDEXDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 3;
-$modversion['config'][$i]['options']     = array('3' => 3, '5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50);
+$modversion['config'][$i]['options']     = array(
+    '3'  => 3,
+    '5'  => 5,
+    '10' => 10,
+    '15' => 15,
+    '20' => 20,
+    '25' => 25,
+    '30' => 30,
+    '50' => 50
+);
 ++$i;
 $modversion['config'][$i]['name']        = 'includerating';
 $modversion['config'][$i]['title']       = '_MI_SOAPBOX_ALLOWRATING';
@@ -293,13 +326,13 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_INTROTEXTDSC';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = _MI_SOAPBOX_INTROTEXTDFLT;
-//++$i;
-//$modversion['config'][$i]['name']        = 'buttonsadmin';
-//$modversion['config'][$i]['title']       = '_MI_SOAPBOX_BUTTSTXT';
-//$modversion['config'][$i]['description'] = '_MI_SOAPBOX_BUTTSTXTDSC';
-//$modversion['config'][$i]['formtype']    = 'yesno';
-//$modversion['config'][$i]['valuetype']   = 'int';
-//$modversion['config'][$i]['default']     = 0;
+++$i;
+$modversion['config'][$i]['name']        = 'buttonsadmin';
+$modversion['config'][$i]['title']       = '_MI_SOAPBOX_BUTTSTXT';
+$modversion['config'][$i]['description'] = '_MI_SOAPBOX_BUTTSTXTDSC';
+$modversion['config'][$i]['formtype']    = 'yesno';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default']     = 0;
 
 //$modversion['config'][] = array(
 //    'name' => 'form_options',
@@ -325,8 +358,8 @@ $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'dhtml';
 xoops_load('xoopseditorhandler');
-$editor_handler                      = XoopsEditorHandler::getInstance();
-$modversion['config'][$i]['options'] = array_flip($editor_handler->getList());
+$editorHandler                       = XoopsEditorHandler::getInstance();
+$modversion['config'][$i]['options'] = array_flip($editorHandler->getList());
 
 // Comments
 $modversion['hasComments']          = 1;
@@ -415,6 +448,8 @@ $modversion['notification']['event'][$i]['mail_template'] = 'article_approve_not
 $modversion['notification']['event'][$i]['mail_subject']  = _MI_SOAPBOX_ARTICLE_APPROVE_NOTIFYSBJ;
 
 // On Update
-if (!empty($_POST['fct']) && !empty($_POST['op']) && !empty($_POST['diranme']) && $_POST['fct'] == 'modulesadmin' && $_POST['op'] == 'update_ok' && $_POST['dirname'] == $modversion['dirname']) {
+if (!empty($_POST['fct']) && !empty($_POST['op']) && !empty($_POST['diranme']) && $_POST['fct'] === 'modulesadmin'
+    && $_POST['op'] === 'update_ok'
+    && $_POST['dirname'] === $modversion['dirname']) {
     include __DIR__ . '/include/onupdate.inc.php';
 }

@@ -1,68 +1,72 @@
 <?php
 
-require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/../../../include/cp_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
 
-$indexAdmin = new ModuleAdmin();
+$adminObject = \Xmf\Module\Admin::getInstance();
 
 //get category count
 //----------------------------
-$_entrydata_handler =& xoops_getmodulehandler('entrydata', $xoopsModule->dirname());
-$totcol             = $_entrydata_handler->getColumnCount();
+$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$totcol           = $entrydataHandler->getColumnCount();
 //----------------------------
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('submit', 0));
 $criteria->add(new Criteria('offline', 0));
-$totpub = $_entrydata_handler->getArticleCount($criteria);
+$totpub = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('submit', 0));
 $criteria->add(new Criteria('offline', 1));
-$totoff = $_entrydata_handler->getArticleCount($criteria);
+$totoff = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('submit', 1));
-$totsub = $_entrydata_handler->getArticleCount($criteria);
+$totsub = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('submit', 0));
-$totall = $_entrydata_handler->getArticleCount($criteria);
+$totall = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 
-$indexAdmin->addInfoBox(_AM_SOAPBOX_MODCONTENT);
+$adminObject->addInfoBox(_AM_SOAPBOX_MODCONTENT);
 if ($totcol > 0) {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . '<a href="main.php">' . _AM_SOAPBOX_TOTCOL . '</a><b>' . "</infolabel>", $totcol, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . '<a href="main.php">' . _AM_SOAPBOX_TOTCOL . '</a>' . '</infolabel>', '<span class="green">' . $totcol . '</span>'), '', 'green');
 } else {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . _AM_SOAPBOX_TOTCOL . "</infolabel>", $totcol, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . _AM_SOAPBOX_TOTCOL . '</infolabel>', '<span class="green">' . $totcol . '</span>'), '', 'Green');
 }
 if ($totpub > 0) {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . '<a href="main.php">' . _AM_SOAPBOX_TOTART . '</a><b>' . "</infolabel>", $totpub, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . '<a href="main.php">' . _AM_SOAPBOX_TOTART . '</a>' . '</infolabel>', '<span class="green">' . $totpub . '</span>'), '', 'green');
 } else {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . _AM_SOAPBOX_TOTART . "</infolabel>", $totpub, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . _AM_SOAPBOX_TOTART . '</infolabel>', '<span class="green">' . $totpub . '</span>'), '', 'green');
 }
 if ($totoff > 0) {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . '<a href="main.php">' . _AM_SOAPBOX_TOTOFF . '</a><b>' . "</infolabel>", $totoff, 'Red');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . '<a href="main.php">' . _AM_SOAPBOX_TOTOFF . '</a>' . '</infolabel>', '<span class="red">' . $totoff . '</span>'), '', 'red');
 } else {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . _AM_SOAPBOX_TOTOFF . "</infolabel>", $totoff, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . _AM_SOAPBOX_TOTOFF . '</infolabel>', '<span class="green">' . $totoff . '</span>'), '', 'green');
 }
 if ($totall > 0) {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . '<a href="main.php">' . _AM_SOAPBOX_TOTSUB . '</a><b>' . "</infolabel>", $totall, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . '<a href="main.php">' . _AM_SOAPBOX_TOTSUB . '</a>' . '</infolabel>', '<span class="green">' . $totall . '</span>'), '', 'green');
 } else {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . _AM_SOAPBOX_TOTSUB . "</infolabel>", $totall, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . _AM_SOAPBOX_TOTSUB . '</infolabel>', '<span class="green">' . $totall . '</span>'), '', 'green');
 }
 
 if ($totsub > 0) {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . '<a href="submissions.php">' . _AM_SOAPBOX_NEED_APPROVAL . '</a><b>' . "</infolabel>", $totsub, 'Red');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . '<a href="submissions.php">' . _AM_SOAPBOX_NEED_APPROVAL . '</a>' . '</infolabel>', '<span class="green">' . $totsub . '</span>'), '', 'red');
 } else {
-    $indexAdmin->addInfoBoxLine(_AM_SOAPBOX_MODCONTENT, "<infolabel>" . _AM_SOAPBOX_NEED_APPROVAL . "</infolabel>", $totsub, 'Green');
+    $adminObject->addInfoBoxLine(sprintf('<infolabel>' . _AM_SOAPBOX_NEED_APPROVAL . '</infolabel>', '<span class="green">' . $totsub . '</span>'), '', 'green');
 }
 
-echo $indexAdmin->addNavigation('index.php');
-echo $indexAdmin->renderIndex();
+require_once __DIR__ . '/../testdata/index.php';
+$adminObject->addItemButton(_AM_SOAPBOX_ADD_SAMPLEDATA, '__DIR__ . /../../testdata/index.php?op=load', 'add');
 
-include_once __DIR__ . '/admin_footer.php';
+$adminObject->displayNavigation(basename(__FILE__));
+$adminObject->displayButton('left', '');
+$adminObject->displayIndex();
+
+require_once __DIR__ . '/admin_footer.php';

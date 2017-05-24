@@ -1,37 +1,26 @@
 <?php
-// $Id: entrydata.php,v 0.0.1 2005/10/24 20:30:00 domifara Exp $
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://www.myweb.ne.jp/, http://xoops.org/, http://jp.xoops.org/ //
-// Project: XOOPS Project                                                    //
-// ------------------------------------------------------------------------- //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright    XOOPS Project http://xoops.org/
+ * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @package
+ * @since
+ * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
+ */
+
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $moduleDirName = basename(dirname(__DIR__));
-if ($moduleDirName !== "soapbox" && $moduleDirName !== "" && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
-    echo("invalid dirname: " . htmlspecialchars($this->mydirname));
+if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+    echo('invalid dirname: ' . htmlspecialchars($this->mydirname));
 }
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbcolumns.php';
@@ -51,16 +40,17 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
 {
     /**
      * constructor
-     * @param $db
+     * @param XoopsDatabase $db
      */
-    public function __construct(&$db)
+    public function __construct(XoopsDatabase $db)
     {
+        parent::__construct($db);
         global $moduleDirName;
-        $this->_sbAHandler = new SoapboxSbarticlesHandler($db);
-        $this->_sbCHandler = new SoapboxSbcolumnsHandler($db);
-        $this->_sbVHandler = new SoapboxSbvotedataHandler($db);
-        $_mymodule_handler =& xoops_gethandler('module');
-        $_mymodule         =& $_mymodule_handler->getByDirname('soapbox');
+        $this->sbArticleHandler = new SoapboxSbarticlesHandler($db);
+        $this->sbColumnHandler  = new SoapboxSbcolumnsHandler($db);
+        $this->sbVoteHandler    = new SoapboxSbvotedataHandler($db);
+        $_mymoduleHandler       = xoops_getHandler('module');
+        $_mymodule              = $_mymoduleHandler->getByDirname('soapbox');
         if (!is_object($_mymodule)) {
             exit('not found dirname');
         }
@@ -76,7 +66,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      */
     public function &createArticle($isNew = true)
     {
-        $ret =& $this->_sbAHandler->create($isNew);
+        $ret = $this->sbArticleHandler->create($isNew);
 
         return $ret;
     }
@@ -89,7 +79,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      */
     public function &createColumn($isNew = true)
     {
-        $ret =& $this->_sbCHandler->create($isNew);
+        $ret = $this->sbColumnHandler->create($isNew);
 
         return $ret;
     }
@@ -102,7 +92,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      */
     public function &createVotedata($isNew = true)
     {
-        $ret =& $this->_sbVHandler->create($isNew);
+        $ret = $this->sbVoteHandler->create($isNew);
 
         return $ret;
     }
@@ -110,13 +100,13 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
     /**
      * insert a new entry in the database
      *
-     * @param  object $sbarticle reference to the {@link SoapboxSbarticles} object
-     * @param  bool   $force
-     * @return bool   FALSE if failed, TRUE if already present and unchanged or successful
+     * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param  bool              $force
+     * @return bool              FALSE if failed, TRUE if already present and unchanged or successful
      */
-    public function insertArticle(&$sbarticle, $force = false)
+    public function insertArticle(SoapboxSbarticles $sbarticle, $force = false)
     {
-        if (!$this->_sbAHandler->insert($sbarticle, $force)) {
+        if (!$this->sbArticleHandler->insert($sbarticle, $force)) {
             return false;
         }
         // re count ----------------------------------
@@ -133,9 +123,9 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * @param  bool   $force
      * @return bool   FALSE if failed, TRUE if already present and unchanged or successful
      */
-    public function insertColumn(&$sbcolumn, $force = false)
+    public function insertColumn($sbcolumn, $force = false)
     {
-        if (!$this->_sbCHandler->insert($sbcolumn, $force)) {
+        if (!$this->sbColumnHandler->insert($sbcolumn, $force)) {
             return false;
         }
 
@@ -149,9 +139,9 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * @param  bool   $force
      * @return bool   FALSE if failed, TRUE if already present and unchanged or successful
      */
-    public function insertVotedata(&$sbvotedata, $force = false)
+    public function insertVotedata($sbvotedata, $force = false)
     {
-        if (!$this->_sbVHandler->insert($sbvotedata, $force)) {
+        if (!$this->sbVoteHandler->insert($sbvotedata, $force)) {
             return false;
         }
 
@@ -166,16 +156,16 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * @param  bool   $re_count
      * @return bool   FALSE if failed.
      */
-    public function deleteArticle(&$sbarticle, $force = false, $re_count = true)
+    public function deleteArticle($sbarticle, $force = false, $re_count = true)
     {
         // delete Article
-        if (!$this->_sbAHandler->delete($sbarticle, $force)) {
+        if (!$this->sbArticleHandler->delete($sbarticle, $force)) {
             return false;
         }
         // delete Votedata
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $sbarticle->getVar('articleID')));
-        $this->_sbVHandler->deleteEntrys($criteria, $force);
+        $this->sbVoteHandler->deleteEntrys($criteria, $force);
         unset($criteria);
         // delete comments
         xoops_comment_delete($this->_module_id, $sbarticle->getVar('articleID'));
@@ -195,10 +185,10 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * @param  bool   $force
      * @return bool   FALSE if failed.
      */
-    public function deleteColumn(&$sbcolumn, $force = false)
+    public function deleteColumn($sbcolumn, $force = false)
     {
         // delete Column
-        if (!$this->_sbCHandler->delete($sbcolumn, $force)) {
+        if (!$this->sbColumnHandler->delete($sbcolumn, $force)) {
             return false;
         }
         $criteria = new CriteriaCompo();
@@ -212,14 +202,14 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
     /**
      * delete a Votedata from the database
      *
-     * @param  object $sbvotedata reference to the Votedata to delete
-     * @param  bool   $force
+     * @param  Votedata $sbvotedata reference to the Votedata to delete
+     * @param  bool     $force
      * @return bool   FALSE if failed.
      */
-    public function deleteVotedata(&$sbvotedata, $force = false)
+    public function deleteVotedata($sbvotedata, $force = false)
     {
         // delete Votedata
-        if (!$this->_sbVHandler->delete($sbvotedata, $force)) {
+        if (!$this->sbVoteHandler->delete($sbvotedata, $force)) {
             return false;
         }
 
@@ -229,15 +219,15 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
     /**
      * delete  entrys from the database
      *
-     * @param  object $criteria {@link CriteriaElement} conditions to be match
-     * @param  bool   $force
-     * @param  bool   $re_count
+     * @param  CriteriaElement $criteria {@link CriteriaElement} conditions to be match
+     * @param  bool            $force
+     * @param  bool            $re_count
      * @return bool   FALSE if failed.
      */
-    public function deleteArticlesEntrys($criteria = null, $force = false, $re_count = false)
+    public function deleteArticlesEntrys(CriteriaElement $criteria = null, $force = false, $re_count = false)
     {
-        $_sbarticles_arr = $this->getArticles($criteria);
-        if (empty($_sbarticles_arr) || count($_sbarticles_arr) == 0) {
+        $_sbarticles_arr =& $this->getArticles($criteria);
+        if (empty($_sbarticles_arr) || count($_sbarticles_arr) === 0) {
             return false;
         }
         foreach ($_sbarticles_arr as $sbarticle) {
@@ -254,7 +244,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      */
     public function updateRating(&$sbarticle, $force = false) // updates rating data in itemtable for a given item
     {
-        if (strtolower(get_class($sbarticle)) != strtolower('SoapboxSbarticles')) {
+        if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
             return false;
         }
         $totalrating = 0.00;
@@ -263,7 +253,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
 
         $sbvotedata_arr =& $this->getVotedatasByArticleID($sbarticle->getVar('articleID'), true, 0, 0);
         $votesDB        = count($sbvotedata_arr);
-        if (empty($sbvotedata_arr) || $votesDB == 0) {
+        if (empty($sbvotedata_arr) || $votesDB === 0) {
             return false;
         }
         foreach ($sbvotedata_arr as $sbvotedata) {
@@ -271,7 +261,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
                 $totalrating += $sbvotedata->getVar('rating');
             }
         }
-        if (($totalrating) != 0 && $votesDB != 0) {
+        if ($totalrating !== 0 && $votesDB !== 0) {
             $finalrating = ($totalrating / $votesDB) + 0.00005;
             $finalrating = number_format($finalrating, 4);
         }
@@ -312,27 +302,27 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
     /**
      * updates a single field in a Article record
      *
-     * @param  object $sbarticle  reference to the {@link SoapboxSbarticles} object
-     * @param  string $fieldName  name of the field to update
-     * @param  string $fieldValue updated value for the field
+     * @param  SoapboxSbarticles $sbarticle  reference to the {@link SoapboxSbarticles} object
+     * @param  string            $fieldName  name of the field to update
+     * @param  string            $fieldValue updated value for the field
      * @return bool   TRUE if success or unchanged, FALSE on failure
      */
-    public function updateArticleByField(&$sbarticle, $fieldName, $fieldValue)
+    public function updateArticleByField($sbarticle, $fieldName, $fieldValue)
     {
-        return $this->_sbAHandler->updateByField($sbarticle, $fieldName, $fieldValue);
+        return $this->sbArticleHandler->updateByField($sbarticle, $fieldName, $fieldValue);
     }
 
     /**
      * updates a single field in a Column record
      *
-     * @param  object $sbcolumns  reference to the {@link SoapboxSbcolumns} object
-     * @param  string $fieldName  name of the field to update
-     * @param  string $fieldValue updated value for the field
+     * @param  SoapboxSbcolumns $sbcolumns  reference to the {@link SoapboxSbcolumns} object
+     * @param  string           $fieldName  name of the field to update
+     * @param  string           $fieldValue updated value for the field
      * @return bool   TRUE if success or unchanged, FALSE on failure
      */
-    public function updateColumnByField(&$sbcolumns, $fieldName, $fieldValue)
+    public function updateColumnByField($sbcolumns, $fieldName, $fieldValue)
     {
-        return $this->_sbCHandler->updateByField($sbcolumns, $fieldName, $fieldValue);
+        return $this->sbColumnHandler->updateByField($sbcolumns, $fieldName, $fieldValue);
     }
 
     /**
@@ -346,7 +336,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      */
     public function updateVotedataByField(&$sbvotedata, $fieldName, $fieldValue)
     {
-        return $this->_sbVHandler->updateByField($sbvotedata, $fieldName, $fieldValue);
+        return $this->sbVoteHandler->updateByField($sbvotedata, $fieldName, $fieldValue);
     }
 
     /**
@@ -361,17 +351,17 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
             return false;
         }
         foreach ($weight as $columnID => $order) {
-            $weight[$columnID] = (int)($order);
+            $weight[$columnID] = (int)$order;
         }
         array_unique($weight);
         foreach ($weight as $columnID => $order) {
             if (isset($columnID) && is_numeric($columnID) && isset($order)) {
                 $sbcolumn =& $this->getColumn($columnID);
                 if (is_object($sbcolumn)) {
-                    if (!is_numeric($order) or empty($order)) {
+                    if (!is_numeric($order) || empty($order)) {
                         $order = 0;
                     }
-                    $this->updateColumnByField($sbcolumn, "weight", $order);
+                    $this->updateColumnByField($sbcolumn, 'weight', $order);
                 }
             }
         }
@@ -391,17 +381,17 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
             return false;
         }
         foreach ($weight as $articleID => $order) {
-            $weight[$articleID] = (int)($order);
+            $weight[$articleID] = (int)$order;
         }
         array_unique($weight);
         foreach ($weight as $articleID => $order) {
             if (isset($articleID) && is_numeric($articleID) && isset($order)) {
                 $sbarticle =& $this->getArticle($articleID);
                 if (is_object($sbarticle)) {
-                    if (!is_numeric($order) or empty($order)) {
+                    if (!is_numeric($order) || empty($order)) {
                         $order = 0;
                     }
-                    $this->updateArticleByField($sbarticle, "weight", $order);
+                    $this->updateArticleByField($sbarticle, 'weight', $order);
                 }
             }
         }
@@ -417,20 +407,20 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * @return bool   FALSE if failed.
      * @internal param bool $force
      */
-    public function newColumnTriggerEvent(&$sbcolumn, $events = 'new_column')
+    public function newColumnTriggerEvent($sbcolumn, $events = 'new_column')
     {
-        if (strtolower(get_class($sbcolumn)) != strtolower('SoapboxSbcolumns')) {
+        if (strtolower(get_class($sbcolumn)) !== strtolower('SoapboxSbcolumns')) {
             return false;
         }
-        if ($sbcolumn->getVar('notifypub') != 1) {
+        if ($sbcolumn->getVar('notifypub') !== 1) {
             return false;
         }
         // Notify of new link (anywhere) and new link in category
-        $tags                 = array();
-        $tags['COLUMN_NAME']  = $sbcolumn->getVar('name');
-        $tags['COLUMN_URL']   = XOOPS_URL . '/modules/' . $this->_module_dirname . '/column.php?columnID=' . $sbcolumn->getVar('columnID');
-        $notification_handler = &xoops_gethandler('notification');
-        $notification_handler->triggerEvent('global', 0, 'new_column', $tags);
+        $tags                = array();
+        $tags['COLUMN_NAME'] = $sbcolumn->getVar('name');
+        $tags['COLUMN_URL']  = XOOPS_URL . '/modules/' . $this->_module_dirname . '/column.php?columnID=' . $sbcolumn->getVar('columnID');
+        $notificationHandler = xoops_getHandler('notification');
+        $notificationHandler->triggerEvent('global', 0, 'new_column', $tags);
 
         return true;
     }
@@ -445,7 +435,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      */
     public function newArticleTriggerEvent(&$sbarticle, $events = 'new_article')
     {
-        if (strtolower(get_class($sbarticle)) != strtolower('SoapboxSbarticles')) {
+        if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
             return false;
         }
         $sbcolumns =& $this->getColumn($sbarticle->getVar('columnID'));
@@ -460,20 +450,20 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         $tags['COLUMN_URL']   = XOOPS_URL . '/modules/' . $this->_module_dirname . '/column.php?columnID=' . $sbarticle->getVar('columnID');
         // Notify of to admin only for approve article_submit
         $tags['WAITINGSTORIES_URL'] = XOOPS_URL . '/modules/' . $this->_module_dirname . '/admin/submissions.php?op=col';
-        $notification_handler       = &xoops_gethandler('notification');
+        $notificationHandler        = xoops_getHandler('notification');
         //approve evevt
-        if ($events == 'article_submit') {
-            $notification_handler->triggerEvent('global', 0, 'article_submit', $tags);
-            $notification_handler->triggerEvent('column', $sbarticle->getVar('columnID'), 'article_submit', $tags);
-        } elseif ($events == 'approve') {
-            $notification_handler->triggerEvent('article', $sbarticle->getVar('articleID'), 'approve', $tags);
+        if ($events === 'article_submit') {
+            $notificationHandler->triggerEvent('global', 0, 'article_submit', $tags);
+            $notificationHandler->triggerEvent('column', $sbarticle->getVar('columnID'), 'article_submit', $tags);
+        } elseif ($events === 'approve') {
+            $notificationHandler->triggerEvent('article', $sbarticle->getVar('articleID'), 'approve', $tags);
         }
         //online
-        if ($sbarticle->getVar('offline') == 0 && $sbarticle->getVar('submit') == 0) {
+        if ($sbarticle->getVar('offline') === 0 && $sbarticle->getVar('submit') === 0) {
             //when offline ,update offline changed to visible --> event
-            if ($sbarticle->getVar('notifypub') == 1 && $sbarticle->pre_offline == 1) {
-                $notification_handler->triggerEvent('global', 0, 'new_article', $tags);
-                $notification_handler->triggerEvent('column', $sbarticle->getVar('columnID'), 'new_article', $tags);
+            if ($sbarticle->pre_offline === 1 && $sbarticle->getVar('notifypub') === 1) {
+                $notificationHandler->triggerEvent('global', 0, 'new_article', $tags);
+                $notificationHandler->triggerEvent('column', $sbarticle->getVar('columnID'), 'new_article', $tags);
             }
         }
 

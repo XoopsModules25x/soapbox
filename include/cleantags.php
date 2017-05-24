@@ -1,5 +1,5 @@
 <?php
-// $Id: cleantags.php,v 0.0.1 2005/10/26 13:30:00 domifara Exp $
+//
 /* This file comes from a post by tREXX [www.trexx.ch] in http://www.php.net/manual/en/function.strip-tags.php */
 //  ------------------------------------------------------------------------ //
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
@@ -26,7 +26,11 @@ if (!class_exists('SoapboxCleantags')) {
         public $stripattribpaterns;
 
         // render form as plain html
-        public function SoapboxCleantags()
+
+        /**
+         * SoapboxCleantags constructor.
+         */
+        public function __construct()
         {
             //        $this->allowedTags = '<h1><b><i><a><ul><li><pre><hr><blockquote>';
             $this->allowedTags = '<a><acronym><address><b><br><blockquote><cite><code><div><dd><del><dl><dt><em><h1><h2><h3><h4><h5><h6><hr><i><img><li><ol><p><pre><s><span><strong><sub><table><tr><td><th><u><ul>';
@@ -66,7 +70,7 @@ if (!class_exists('SoapboxCleantags')) {
          * @param  string $tagSource
          * @return mixed|string
          */
-        public function cleanAttributes($tagSource = "")
+        public function cleanAttributes($tagSource = '')
         {
             $tagSource = preg_replace($this->stripattribpaterns, "\\1forbidden\\3", $tagSource);
             if (preg_match($this->stripattribpaterns, $tagSource)) {

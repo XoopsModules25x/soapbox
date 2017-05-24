@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: arts_spot.php v 1.0 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.0
  * Release Date: 23 August 2004
@@ -15,27 +15,27 @@ function b_arts_spot_show($options)
 {
     $block_outdata = array();
     //-------------------------------------
-    $myts        = &MyTextSanitizer:: getInstance();
+    $myts        = MyTextSanitizer:: getInstance();
     $module_name = 'soapbox';
-    $hModule     =& xoops_gethandler('module');
-    $soapModule  =& $hModule->getByDirname($module_name);
+    $hModule     = xoops_getHandler('module');
+    $soapModule  = $hModule->getByDirname($module_name);
     if (!is_object($soapModule)) {
         return null;
     }
 
-    $hModConfig =& xoops_gethandler('config');
+    $hModConfig = xoops_getHandler('config');
     $module_id  = $soapModule->getVar('mid');
-    $soapConfig =& $hModConfig->getConfigsByCat(0, $module_id);
+    $soapConfig = $hModConfig->getConfigsByCat(0, $module_id);
     //-------------------------------------
     // To handle options in the template
-    if (isset($options[0]) && $options[0] == 1) {
+    if (isset($options[0]) && $options[0] === 1) {
         $block_outdata['showspotlight'] = 1;
     } else {
         $block_outdata['showspotlight'] = 0;
     }
     //-------------------------------------
     if (isset($options[1])) {
-        $options[1] = (int)($options[1]);
+        $options[1] = (int)$options[1];
     } else {
         $options[1] = 1;
     }
@@ -43,31 +43,31 @@ function b_arts_spot_show($options)
         $options[1] = 1;
     }
     //-------------------------------------
-    if (isset($options[2]) && $options[2] == 1) {
+    if (isset($options[2]) && $options[2] === 1) {
         $block_outdata['showdateask'] = 1;
     } else {
         $block_outdata['showdateask'] = 0;
     }
     //-------------------------------------
-    if (isset($options[3]) && $options[3] == 1) {
+    if (isset($options[3]) && $options[3] === 1) {
         $block_outdata['showbylineask'] = 1;
     } else {
         $block_outdata['showbylineask'] = 0;
     }
     //-------------------------------------
-    if (isset($options[4]) && $options[4] == 1) {
+    if (isset($options[4]) && $options[4] === 1) {
         $block_outdata['showstatsask'] = 1;
     } else {
         $block_outdata['showstatsask'] = 0;
     }
     //-------------------------------------
-    if (isset($options[5]) && $options[5] == 'ver') {
+    if (isset($options[5]) && $options[5] === 'ver') {
         $block_outdata['verticaltemplate'] = 1;
     } else {
         $block_outdata['verticaltemplate'] = 0;
     }
     //-------------------------------------
-    if (isset($options[6]) && $options[6] == 1) {
+    if (isset($options[6]) && $options[6] === 1) {
         $block_outdata['showpicask'] = 1;
     } else {
         $block_outdata['showpicask'] = 0;
@@ -78,12 +78,12 @@ function b_arts_spot_show($options)
         $sortname = 'datesub';
     }
     $sortorder = 'DESC';
-    if ($sortname == 'weight') {
+    if ($sortname === 'weight') {
         $sortorder = 'ASC';
     }
     //-------------------------------------
-    if (isset($options[8]) && (int)($options[8]) > 0) {
-        $options[8] = (int)($options[8]);
+    if (isset($options[8]) && (int)$options[8] > 0) {
+        $options[8] = (int)$options[8];
     } else {
         $options[8] = 65;
     }
@@ -95,7 +95,7 @@ function b_arts_spot_show($options)
     }
     if (!empty($opt_columnIDs) && is_array($opt_columnIDs)) {
         foreach ($opt_columnIDs as $v) {
-            $columnIDs[] = (int)($v);
+            $columnIDs[] = (int)$v;
         }
     } else {
         $columnIDs = null;
@@ -104,13 +104,13 @@ function b_arts_spot_show($options)
     //    $resultB = $xoopsDB -> query( "SELECT name, colimage FROM ". $xoopsDB -> prefix( "sbcolumns" ) . " WHERE columnID = " . $options[0] . " " );
     //    list ( $name, $colimage ) = $xoopsDB -> fetchRow( $resultB );
     //-------------------------------------
-    $_entrydata_handler =& xoops_getmodulehandler('entryget', $module_name);
+    $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
     //-------------------------------------
     // Retrieve the latest article in the selected column
-    $_entryob_arr =& $_entrydata_handler->getArticlesAllPermcheck((int)($options[1]), 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
-    $totalarts    = $_entrydata_handler->total_getArticlesAllPermcheck;
+    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
+    $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
     // If there's no article result (which means there's no article yet...
-    if (empty($_entryob_arr) || count($_entryob_arr) == 0) {
+    if (empty($_entryob_arr) || count($_entryob_arr) === 0) {
         $block_outdata['display'] = 0;
 
         return $block_outdata;
@@ -118,7 +118,7 @@ function b_arts_spot_show($options)
     $block_outdata['display'] = 1;
     //-------------------------------------
     $block_outdata['moduledir']   = $module_name;
-    $block_outdata['totalarts']   = (int)($totalarts);
+    $block_outdata['totalarts']   = (int)$totalarts;
     $block_outdata['modulename']  = $soapModule->getVar('name');
     $block_outdata['sbuploaddir'] = $myts->htmlSpecialChars($soapConfig['sbuploaddir']);
     //-------------------------------------
@@ -129,7 +129,7 @@ function b_arts_spot_show($options)
         //-------------------------------------
         $articles = $_entryob->toArray();
         //get category object
-        $_categoryob =& $_entryob->_sbcolumns;
+        $_categoryob = $_entryob->_sbcolumns;
         //get vars
         $category = $_categoryob->toArray();
         //spot
@@ -137,24 +137,24 @@ function b_arts_spot_show($options)
         $_outdata_arr           = $articles;
         $_outdata_arr['column'] = $category;
 
-        $_outdata_arr['authorname'] = XoopsUserUtility::getUnameFromId((int)($category['author']));
+        $_outdata_arr['authorname'] = XoopsUserUtility::getUnameFromId((int)$category['author']);
         $_outdata_arr['poster']     = XoopsUserUtility::getUnameFromId($articles['uid']);
         $_outdata_arr['date']       = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
         $_outdata_arr['rating']     = number_format($articles['rating'], 2, '.', '');
         // -- Then the teaser text and as sorted data
-        $_outdata_arr['subhead']      = xoops_substr($articles['headline'], 0, (int)($options[8]));
+        $_outdata_arr['subhead']      = xoops_substr($articles['headline'], 0, (int)$options[8]);
         $_outdata_arr['sublead']      = xoops_substr($articles['lead'], 0, 255);
         $_outdata_arr['subteaser']    = xoops_substr($articles['teaser'], 0, 255);
         $_outdata_arr ['subbodytext'] = xoops_substr($articles['bodytext'], 0, 255);
         $_outdata_arr ['bodytext']    = '';
 
-        if ($sortname == "datesub") {
+        if ($sortname === 'datesub') {
             $_outdata_arr['new'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
-        } elseif ($sortname == "counter") {
+        } elseif ($sortname === 'counter') {
             $_outdata_arr['new'] = _MB_SOAPBOX_HITS . $articles['counter'];
-        } elseif ($sortname == "weight") {
+        } elseif ($sortname === 'weight') {
             $_outdata_arr['new'] = _MB_SOAPBOX_WEIGHT . $articles['weight'];
-        } elseif ($sortname == "rating") {
+        } elseif ($sortname === 'rating') {
             $_outdata_arr['new'] = _MB_SOAPBOX_RATING . number_format($articles['rating'], 2, '.', '') . _MB_SOAPBOX_VOTE . $articles['votes'];
         } else {
             $_outdata_arr['new'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
@@ -175,139 +175,139 @@ function b_arts_spot_show($options)
 function b_arts_spot_edit($options)
 {
     global $xoopsDB;
-    $myts        = &MyTextSanitizer:: getInstance();
+    $myts        = MyTextSanitizer:: getInstance();
     $module_name = 'soapbox';
-    $hModule     =& xoops_gethandler('module');
-    $soapModule  =& $hModule->getByDirname($module_name);
+    $hModule     = xoops_getHandler('module');
+    $soapModule  = $hModule->getByDirname($module_name);
     if (!is_object($soapModule)) {
         return null;
     }
     $form = '';
     //-----
-    $chked = "";
-    $form .= _MB_SOAPBOX_SPOTLIGHT;
-    if ($options[0] == 1) {
-        $chked = " checked='checked'";
+    $chked = '';
+    $form  .= _MB_SOAPBOX_SPOTLIGHT;
+    if ($options[0] === 1) {
+        $chked = ' checked';
     }
-    $form .= "<input type='radio' name='options[0]' value='1'" . $chked . " />&nbsp;" . _YES;
-    $chked = "";
-    if ($options[0] == 0) {
-        $chked = " checked='checked'";
+    $form  .= "<input type='radio' name='options[0]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $chked = '';
+    if ($options[0] === 0) {
+        $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[0]' value='0'" . $chked . " />" . _NO . "<br />";
+    $form .= "&nbsp;<input type='radio' name='options[0]' value='0'" . $chked . ' />' . _NO . '<br>';
     //-----
     //-----
-    $form .= _MB_SOAPBOX_ARTSTOSHOW . "<input type='text' name='options[1]' value='" . $myts->htmlSpecialChars($options[1]) . "' />&nbsp; " . _MB_SOAPBOX_ARTCLS . ".<br />";
+    $form .= _MB_SOAPBOX_ARTSTOSHOW . "<input type='text' name='options[1]' value='" . $myts->htmlSpecialChars($options[1]) . "' />&nbsp; " . _MB_SOAPBOX_ARTCLS . '.<br>';
     //-----
-    $chked = "";
-    $form .= _MB_SOAPBOX_SHOWDATE;
-    if ($options[2] == 1) {
-        $chked = " checked='checked'";
+    $chked = '';
+    $form  .= _MB_SOAPBOX_SHOWDATE;
+    if ($options[2] === 1) {
+        $chked = ' checked';
     }
-    $form .= "<input type='radio' name='options[2]' value='1'" . $chked . " />&nbsp;" . _YES;
-    $chked = "";
-    if ($options[2] == 0) {
-        $chked = " checked='checked'";
+    $form  .= "<input type='radio' name='options[2]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $chked = '';
+    if ($options[2] === 0) {
+        $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[2]' value='0'" . $chked . " />" . _NO . "<br />";
+    $form .= "&nbsp;<input type='radio' name='options[2]' value='0'" . $chked . ' />' . _NO . '<br>';
     //-----
-    $chked = "";
-    $form .= _MB_SOAPBOX_SHOWBYLINE;
-    if ($options[3] == 1) {
-        $chked = " checked='checked'";
+    $chked = '';
+    $form  .= _MB_SOAPBOX_SHOWBYLINE;
+    if ($options[3] === 1) {
+        $chked = ' checked';
     }
-    $form .= "<input type='radio' name='options[3]' value='1'" . $chked . " />&nbsp;" . _YES;
-    $chked = "";
-    if ($options[3] == 0) {
-        $chked = ' checked="checked"';
+    $form  .= "<input type='radio' name='options[3]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $chked = '';
+    if ($options[3] === 0) {
+        $chked = ' checked';
     }
-    $form .= '&nbsp;<input type="radio" name="options[3]" value="0"' . $chked . ' />' . _NO . '<br />';
+    $form .= '&nbsp;<input type="radio" name="options[3]" value="0"' . $chked . ' />' . _NO . '<br>';
     //-----
-    $chked = "";
-    $form .= _MB_SOAPBOX_SHOWSTATS;
-    if ($options[4] == 1) {
-        $chked = " checked='checked'";
+    $chked = '';
+    $form  .= _MB_SOAPBOX_SHOWSTATS;
+    if ($options[4] === 1) {
+        $chked = ' checked';
     }
-    $form .= "<input type='radio' name='options[4]' value='1'" . $chked . " />&nbsp;" . _YES;
-    $chked = "";
-    if ($options[4] == 0) {
-        $chked = ' checked="checked"';
+    $form  .= "<input type='radio' name='options[4]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $chked = '';
+    if ($options[4] === 0) {
+        $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[4]' value='0' " . $chked . " />" . _NO . "<br />";
+    $form .= "&nbsp;<input type='radio' name='options[4]' value='0' " . $chked . ' />' . _NO . '<br>';
 
     $form .= _MB_SOAPBOX_TEMPLATE . "<select name='options[5]' >";
     $form .= "<option value='ver'";
-    if ($options[5] == 'ver') {
-        $form .= " selected='selected'";
+    if ($options[5] === 'ver') {
+        $form .= ' selected';
     }
-    $form .= ">" . _MB_SOAPBOX_VERTICAL . "</option>\n";
+    $form .= '>' . _MB_SOAPBOX_VERTICAL . "</option>\n";
     $form .= "<option value='hor'";
-    if ($options[5] == 'hor') {
-        $form .= " selected='selected'";
+    if ($options[5] === 'hor') {
+        $form .= ' selected';
     }
-    $form .= ">" . _MB_SOAPBOX_HORIZONTAL . "</option>";
-    $form .= "</select><br />";
+    $form .= '>' . _MB_SOAPBOX_HORIZONTAL . '</option>';
+    $form .= '</select><br>';
 
-    $chked = "";
-    $form .= _MB_SOAPBOX_SHOWPIC;
-    if ($options[6] == 1) {
-        $chked = " checked='checked'";
+    $chked = '';
+    $form  .= _MB_SOAPBOX_SHOWPIC;
+    if ($options[6] === 1) {
+        $chked = ' checked';
     }
-    $form .= "<input type='radio' name='options[6]' value='1' " . $chked . " />&nbsp;" . _YES;
+    $form .= "<input type='radio' name='options[6]' value='1' " . $chked . ' />&nbsp;' . _YES;
 
-    $chked = "";
-    if ($options[6] == 0) {
-        $chked = " checked='checked'";
+    $chked = '';
+    if ($options[6] === 0) {
+        $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[6]' value='0' " . $chked . " />" . _NO . "<br />";
+    $form .= "&nbsp;<input type='radio' name='options[6]' value='0' " . $chked . ' />' . _NO . '<br>';
     //---------- sortname ------
-    $form .= "" . _MB_SOAPBOX_ORDER . "&nbsp;<select name='options[7]'>";
+    $form .= '' . _MB_SOAPBOX_ORDER . "&nbsp;<select name='options[7]'>";
 
     $form .= "<option value='datesub'";
-    if ($options[7] == "datesub") {
-        $form .= " selected='selected'";
+    if ($options[7] === 'datesub') {
+        $form .= ' selected';
     }
-    $form .= ">" . _MB_SOAPBOX_DATE . "</option>\n";
+    $form .= '>' . _MB_SOAPBOX_DATE . "</option>\n";
 
     $form .= "<option value='counter'";
-    if ($options[7] == "counter") {
-        $form .= " selected='selected'";
+    if ($options[7] === 'counter') {
+        $form .= ' selected';
     }
-    $form .= ">" . _MB_SOAPBOX_HITS . "</option>\n";
+    $form .= '>' . _MB_SOAPBOX_HITS . "</option>\n";
 
     $form .= "<option value='weight'";
-    if ($options[7] == "weight") {
-        $form .= " selected='selected'";
+    if ($options[7] === 'weight') {
+        $form .= ' selected';
     }
-    $form .= ">" . _MB_SOAPBOX_WEIGHT . "</option>\n";
+    $form .= '>' . _MB_SOAPBOX_WEIGHT . "</option>\n";
 
     $form .= "<option value='rating'";
-    if ($options[7] == "rating") {
-        $form .= " selected='selected'";
+    if ($options[7] === 'rating') {
+        $form .= ' selected';
     }
-    $form .= ">" . _MB_SOAPBOX_RATING . "</option>\n";
+    $form .= '>' . _MB_SOAPBOX_RATING . "</option>\n";
 
     $form .= "</select>\n";
 
-    $form .= "&nbsp;<br>" . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "' />&nbsp;" . _MB_SOAPBOX_LENGTH . "";
+    $form .= '&nbsp;<br>' . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "' />&nbsp;" . _MB_SOAPBOX_LENGTH . '';
 
     //-------------------------------------
-    $_entrydata_handler =& xoops_getmodulehandler('entryget', $module_name);
-    $_categoryob_arr    =& $_entrydata_handler->getColumns();
-    $form .= "<br />" . _MB_SOAPBOX_SPOTLIGHT_TOPIC . "<br /><select name='options[]' multiple='multiple'>";
-    $form .= "<option value='0'>(ALL)</option>";
-    if (!empty($_categoryob_arr)) {
-        foreach ($_categoryob_arr as $_categoryob) {
+    $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
+    $categoryobArray  = $entrydataHandler->getColumns();
+    $form             .= '<br>' . _MB_SOAPBOX_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
+    $form             .= "<option value='0'>(ALL)</option>";
+    if (!empty($categoryobArray)) {
+        foreach ($categoryobArray as $_categoryob) {
             $categoryID = $_categoryob->getVar('columnID');
             $name       = $_categoryob->getVar('name');
-            $sel        = "";
+            $sel        = '';
             if (in_array($categoryID, $columnIDs)) {
-                $sel = " selected=\"selected\"";
+                $sel = ' selected="selected"';
             }
-            $form .= "<option value='" . $categoryID . "' " . $sel . ">" . $categoryID . " : " . $name . "</option>";
+            $form .= "<option value='" . $categoryID . "' " . $sel . '>' . $categoryID . ' : ' . $name . '</option>';
         }
     }
-    $form .= "</select><br />\n";
+    $form .= "</select><br>\n";
 
     return $form;
 }

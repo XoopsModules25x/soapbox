@@ -1,7 +1,6 @@
 <?php
-// $Id: article.php,v 0.0.1 2005/10/27 20:30:00 domifara Exp $
 /**
- * $Id: article.php v 1.5 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -11,7 +10,7 @@
 
 // -- General Stuff -- //
 require_once __DIR__ . '/admin_header.php';
-$indexAdmin = new ModuleAdmin();
+$adminObject = \Xmf\Module\Admin::getInstance();
 
 $op = '';
 if (isset($_GET['op'])) {
@@ -21,8 +20,8 @@ if (isset($_POST['op'])) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
-$_entrydata_handler =& xoops_getmodulehandler('entrydata', $xoopsModule->dirname());
-$totalcats          = $_entrydata_handler->getColumnCount();
+$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$totalcats        = $entrydataHandler->getColumnCount();
 if ($totalcats === 0) {
     redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
 }
@@ -35,31 +34,31 @@ function editarticle($articleID = 0)
 {
     global $xoopsGTicket, $indexAdmin;
     global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
-    $xoopsDB =& XoopsDatabaseFactory::getDatabaseConnection();
-    $myts    =& MyTextSanitizer::getInstance();
+    $xoopsDB = XoopsDatabaseFactory::getDatabaseConnection();
+    $myts    = MyTextSanitizer::getInstance();
 
     if (file_exists(XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php')) {
-        include_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
+        require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
+        require_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
     }
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
-    $articleID          = (int)($articleID);
-    $_entrydata_handler =& xoops_getmodulehandler('entrydata', $xoopsModule->dirname());
+    $articleID        = (int)$articleID;
+    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
     if (0 !== $articleID) {
         //articleID check
-        $_entryob =& $_entrydata_handler->getArticleOnePermcheck($articleID, false, false);
+        $_entryob = $entrydataHandler->getArticleOnePermcheck($articleID, false, false);
         if (!is_object($_entryob)) {
             redirect_header('index.php', 1, _AM_SOAPBOX_NOARTS);
         }
 
         //adminMenu(2, _AM_SOAPBOX_ARTS._AM_SOAPBOX_EDITING. $_entryob->getVar('headline') ."'");
         //echo "<h3 style='color: #2F5376; '>" . _AM_SOAPBOX_ADMINARTMNGMT . "</h3>";
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODART . ': ' . $_entryob->getVar('headline'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODART . ': ' . $_entryob->getVar('headline'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     } else {
         //create new entry object
-        $_entryob =& $_entrydata_handler->createArticle(true);
+        $_entryob = $entrydataHandler->createArticle(true);
         $_entryob->cleanVars();
 
         /**
@@ -72,7 +71,7 @@ function editarticle($articleID = 0)
         }
         //adminMenu(2, _AM_SOAPBOX_ARTS._AM_SOAPBOX_CREATINGART);
         //echo "<h3 style='color: #2F5376; '>" . _AM_SOAPBOX_ADMINARTMNGMT . "</h3>";
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWART, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')));
+        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWART, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     }
 
     //get vars mode E
@@ -90,14 +89,14 @@ function editarticle($articleID = 0)
     * Second var is the unique field ID for the categories
     * Last one is not set as we do not have sub menus in WF-FAQ
     */
-    $_can_edit_categoryob_arr =& $_entrydata_handler->getColumns(null, true);
-    $collist                  = array();
-    foreach ($_can_edit_categoryob_arr as $key => $_can_edit_categoryob) {
+    $canEditCategoryobArray = $entrydataHandler->getColumns(null, true);
+    $collist                = array();
+    foreach ($canEditCategoryobArray as $key => $_can_edit_categoryob) {
         $collist[$key] = $_can_edit_categoryob->getVar('name');
     }
-    $col_select = new XoopsFormSelect('', 'columnID', (int)($e_articles['columnID']));
+    $col_select = new XoopsFormSelect('', 'columnID', (int)$e_articles['columnID']);
     $col_select->addOptionArray($collist);
-    $col_select_tray = new XoopsFormElementTray(_AM_SOAPBOX_COLNAME, '<br />');
+    $col_select_tray = new XoopsFormElementTray(_AM_SOAPBOX_COLNAME, '<br>');
     $col_select_tray->addElement($col_select);
     $sform->addElement($col_select_tray);
 
@@ -110,7 +109,7 @@ function editarticle($articleID = 0)
     //    $editor_lead=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
     //    $sform->addElement($editor_lead,TRUE);
 
-    $editor_lead = new XoopsFormElementTray(_AM_SOAPBOX_ARTLEAD, '<br />');
+    $editor_lead = new XoopsFormElementTray(_AM_SOAPBOX_ARTLEAD, '<br>');
     if (class_exists('XoopsFormEditor')) {
         $options['name']   = 'lead';
         $options['value']  = $e_articles['lead'];
@@ -144,7 +143,7 @@ function editarticle($articleID = 0)
     //        $sform -> addElement( new XoopsFormDhtmlTextArea( _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120 ) );
     //    }
 
-    $optionsTrayNote = new XoopsFormElementTray(_AM_SOAPBOX_ARTBODY, '<br />');
+    $optionsTrayNote = new XoopsFormElementTray(_AM_SOAPBOX_ARTBODY, '<br>');
     if (class_exists('XoopsFormEditor')) {
         $options['name']   = 'bodytext';
         $options['value']  = $e_articles['bodytext'];
@@ -163,21 +162,22 @@ function editarticle($articleID = 0)
     // IMAGE
     // The article CAN have its own image :)
     // First, if the article's image doesn't exist, set its value to the blank file
-    if (!file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage']) || empty($e_articles['artimage'])) {
+    if (empty($e_articles['artimage'])
+        || !file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'])) {
         $artimage = 'blank.png';
     }
     // Code to create the image selector
-    $graph_array     = &XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+    $graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
     $artimage_select = new XoopsFormSelect('', 'artimage', $e_articles['artimage']);
     $artimage_select->addOptionArray($graph_array);
-    $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $xoopsModuleConfig['sbuploaddir'] . "\", \"\", \"" . XOOPS_URL . "\")'");
+    $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $xoopsModuleConfig['sbuploaddir'] . '", "", "' . XOOPS_URL . "\")'");
     $artimage_tray = new XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
     $artimage_tray->addElement($artimage_select);
-    $artimage_tray->addElement(new XoopsFormLabel('', "<br /><br /><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt='' />"));
+    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt='' />"));
     $sform->addElement($artimage_tray);
 
     // Code to call the file browser to select an image to upload
-    $sform->addElement(new XoopsFormFile(_AM_SOAPBOX_UPLOADIMAGE, 'cimage', (int)($xoopsModuleConfig['maxfilesize'])), false);
+    $sform->addElement(new XoopsFormFile(_AM_SOAPBOX_UPLOADIMAGE, 'cimage', (int)$xoopsModuleConfig['maxfilesize']), false);
 
     // WEIGHT
     $sform->addElement(new XoopsFormText(_AM_SOAPBOX_WEIGHT, 'weight', 4, 4, $e_articles['weight']));
@@ -185,8 +185,8 @@ function editarticle($articleID = 0)
     // datesub
     //----------
     //$datesub_caption = $myts->htmlSpecialChars( formatTimestamp( $e_articles['datesub'] , $xoopsModuleConfig['dateformat']) . "=>");
-    //$datesub_tray = new XoopsFormDateTime( _AM_SOAPBOX_POSTED.'<br />' . $datesub_caption ,'datesub' , 15, time()) ;
-    $datesub_tray = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br />', 'datesub', 15, $e_articles['datesub']);
+    //$datesub_tray = new XoopsFormDateTime( _AM_SOAPBOX_POSTED.'<br>' . $datesub_caption ,'datesub' , 15, time()) ;
+    $datesub_tray = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br>', 'datesub', 15, $e_articles['datesub']);
 
     // you don't want to change datesub
     $datesubnochage_checkbox = new XoopsFormCheckBox( _AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 1 );
@@ -196,7 +196,8 @@ function editarticle($articleID = 0)
     //-----------
 
     // COMMENTS
-    if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
+    if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
+        && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
         // COMMENTS
         // Code to allow comments
         $addcommentable_radio = new XoopsFormRadioYN(_AM_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
@@ -219,7 +220,7 @@ function editarticle($articleID = 0)
 
     // VARIOUS OPTIONS
     //----------
-    $options_tray = new XoopsFormElementTray(_AM_SOAPBOX_OPTIONS, '<br />');
+    $options_tray = new XoopsFormElementTray(_AM_SOAPBOX_OPTIONS, '<br>');
 
     $html_checkbox = new XoopsFormCheckBox('', 'html', $e_articles['html']);
     $html_checkbox->addOption(1, _AM_SOAPBOX_DOHTML);
@@ -279,8 +280,8 @@ function editarticle($articleID = 0)
 switch ($op) {
     case 'mod':
         xoops_cp_header();
-        echo $indexAdmin->addNavigation('article.php');
-        $articleID = isset($_POST['articleID']) ? (int)($_POST['articleID']) : (int)($_GET['articleID']);
+        $adminObject->displayNavigation(basename(__FILE__));
+        $articleID = isset($_POST['articleID']) ? (int)$_POST['articleID'] : (int)$_GET['articleID'];
         editarticle($articleID);
         break;
 
@@ -295,25 +296,25 @@ switch ($op) {
         if (!isset($_POST['articleID'])) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         } else {
-            $articleID = (int)($_POST['articleID']);
+            $articleID = (int)$_POST['articleID'];
         }
         //articleID check
         if (!isset($_POST['columnID'])) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         } else {
-            $columnID = (int)($_POST['columnID']);
+            $columnID = (int)$_POST['columnID'];
         }
 
         //get category object
-        $_categoryob =& $_entrydata_handler->getColumn($columnID);
+        $_categoryob = $entrydataHandler->getColumn($columnID);
         if (!is_object($_categoryob)) {
             redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
         }
 
-        $_entryob =& $_entrydata_handler->getArticle($articleID);
+        $_entryob = $entrydataHandler->getArticle($articleID);
         //new data or edit
         if (!is_object($_entryob)) {
-            $_entryob =& $_entrydata_handler->createArticle(true);
+            $_entryob = $entrydataHandler->createArticle(true);
             $_entryob->cleanVars();
         }
         //set
@@ -334,33 +335,33 @@ switch ($op) {
         }
 
         if (isset($_POST['weight'])) {
-            $_entryob->setVar('weight', (int)($_POST['weight']));
+            $_entryob->setVar('weight', (int)$_POST['weight']);
         }
 
         if (isset($_POST['commentable'])) {
-            $_entryob->setVar('commentable', (int)($_POST['commentable']));
+            $_entryob->setVar('commentable', (int)$_POST['commentable']);
         }
         if (isset($_POST['block'])) {
-            $_entryob->setVar('block', (int)($_POST['block']));
+            $_entryob->setVar('block', (int)$_POST['block']);
         }
         if (isset($_POST['offline'])) {
-            $_entryob->setVar('offline', (int)($_POST['offline']));
+            $_entryob->setVar('offline', (int)$_POST['offline']);
         }
         if (isset($_POST['notifypub'])) {
-            $_entryob->setVar('notifypub', (int)($_POST['notifypub']));
+            $_entryob->setVar('notifypub', (int)$_POST['notifypub']);
         }
 
         if (isset($_POST['breaks'])) {
-            $_entryob->setVar('breaks', (int)($_POST['breaks']));
+            $_entryob->setVar('breaks', (int)$_POST['breaks']);
         }
         if (isset($_POST['html'])) {
-            $_entryob->setVar('html', (int)($_POST['html']));
+            $_entryob->setVar('html', (int)$_POST['html']);
         }
         if (isset($_POST['smiley'])) {
-            $_entryob->setVar('smiley', (int)($_POST['smiley']));
+            $_entryob->setVar('smiley', (int)$_POST['smiley']);
         }
         if (isset($_POST['xcodes'])) {
-            $_entryob->setVar('xcodes', (int)($_POST['xcodes']));
+            $_entryob->setVar('xcodes', (int)$_POST['xcodes']);
         }
 
         if (isset($_POST['headline'])) {
@@ -373,26 +374,26 @@ switch ($op) {
             $_entryob->setVar('bodytext', $_POST['bodytext']);
         }
         if (isset($_POST['votes'])) {
-            $_entryob->setVar('votes', (int)($_POST['votes']));
+            $_entryob->setVar('votes', (int)$_POST['votes']);
         }
         if (isset($_POST['rating'])) {
-            $_entryob->setVar('rating', (int)($_POST['rating']));
+            $_entryob->setVar('rating', (int)$_POST['rating']);
         }
 
         if (isset($_POST['teaser'])) {
             $_entryob->setVar('teaser', $_POST['teaser']);
         }
 
-        $autoteaser = (isset($_POST['autoteaser'])) ? (int)($_POST['autoteaser']) : 0;
-        $charlength = (isset($_POST['teaseramount'])) ? (int)($_POST['teaseramount']) : 0;
+        $autoteaser = isset($_POST['autoteaser']) ? (int)$_POST['autoteaser'] : 0;
+        $charlength = isset($_POST['teaseramount']) ? (int)$_POST['teaseramount'] : 0;
         if ($autoteaser && $charlength) {
             $_entryob->setVar('teaser', xoops_substr($_entryob->getVar('bodytext', 'none'), 0, $charlength));
         }
         //datesub
-        $datesubnochage  = (isset($_POST['datesubnochage'])) ? (int)($_POST['datesubnochage']) : 0;
-        $datesub_date_sl = (isset($_POST['datesub'])) ? (int)(strtotime($_POST['datesub']['date'])) : 0;
-        $datesub_time_sl = (isset($_POST['datesub'])) ? (int)($_POST['datesub']['time']) : 0;
-        $datesub         = (isset($_POST['datesub'])) ? $datesub_date_sl + $datesub_time_sl : 0;
+        $datesubnochage  = isset($_POST['datesubnochage']) ? (int)$_POST['datesubnochage'] : 0;
+        $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
+        $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;
+        $datesub         = isset($_POST['datesub']) ? $datesub_date_sl + $datesub_time_sl : 0;
         //if (!$datesub || $_entryob->_isNew) {
         if (!$datesub) {
             $_entryob->setVar('datesub', time());
@@ -419,13 +420,13 @@ switch ($op) {
         if (isset($_FILES['cimage']['name'])) {
             $artimage_name = trim(strip_tags($myts->stripSlashesGPC($_FILES['cimage']['name'])));
             if ($artimage_name !== '') {
-                include_once XOOPS_ROOT_PATH . '/class/uploader.php';
+                require_once XOOPS_ROOT_PATH . '/class/uploader.php';
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $artimage_name)) {
                     redirect_header('index.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
                 $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
 
-                uploading($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+                SoapboxUtility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
 
                 $_entryob->setVar('artimage', $artimage_name);
             }
@@ -437,24 +438,24 @@ switch ($op) {
 
         // Save to database
         if ($_entryob->_isNew) {
-            if (!$_entrydata_handler->insertArticle($_entryob)) {
+            if (!$entrydataHandler->insertArticle($_entryob)) {
                 xoops_cp_header();
-                echo $indexAdmin->addNavigation('article.php');
-                print_r($_entryob->getErrors());
+                $adminObject->displayNavigation(basename(__FILE__));
+                //                print_r($_entryob->getErrors());
                 xoops_cp_footer();
                 //                exit();
                 redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
             } else {
                 // Notify of to admin only for approve
-                $_entrydata_handler->newArticleTriggerEvent($_entryob, 'new_article');
+                $entrydataHandler->newArticleTriggerEvent($_entryob, 'new_article');
                 redirect_header('index.php', 1, _AM_SOAPBOX_ARTCREATEDOK);
                 //
             }
         } else {
-            if (!$_entrydata_handler->insertArticle($_entryob)) {
-                redirect_header("index.php", 1, _AM_SOAPBOX_ARTNOTUPDATED);
+            if (!$entrydataHandler->insertArticle($_entryob)) {
+                redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTUPDATED);
             } else {
-                $_entrydata_handler->newArticleTriggerEvent($_entryob, 'new_article');
+                $entrydataHandler->newArticleTriggerEvent($_entryob, 'new_article');
                 redirect_header('index.php', 1, _AM_SOAPBOX_ARTMODIFIED);
                 //
             }
@@ -464,7 +465,7 @@ switch ($op) {
 
     case 'del':
 
-        $confirm = isset($_POST['confirm']) ? (int)($_POST['confirm']) : 0;
+        $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
 
         // confirmed, so delete
         if ($confirm === 1) {
@@ -477,34 +478,36 @@ switch ($op) {
             if (!isset($_POST['articleID'])) {
                 redirect_header('index.php', 1, _NOPERM);
             } else {
-                $articleID = (int)($_POST['articleID']);
+                $articleID = (int)$_POST['articleID'];
             }
 
-            $_entryob =& $_entrydata_handler->getArticle($articleID);
+            $_entryob = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);
             }
             //
-            if (!$_entrydata_handler->deleteArticle($_entryob)) {
+            if (!$entrydataHandler->deleteArticle($_entryob)) {
                 trigger_error('ERROR:not deleted from database');
                 exit();
             } else {
-                $headline = &$myts->htmlSpecialChars($_entryob->getVar('headline'));
+                $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
             }
         } else {
-            $articleID = isset($_POST['articleID']) ? (int)($_POST['articleID']) : (int)($_GET['articleID']);
-            $_entryob  =& $_entrydata_handler->getArticle($articleID);
+            $articleID = isset($_POST['articleID']) ? (int)$_POST['articleID'] : (int)$_GET['articleID'];
+            $_entryob  = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
-                redirect_header("index.php", 1, _NOPERM);
+                redirect_header('index.php', 1, _NOPERM);
             }
-            $headline = &$myts->htmlSpecialChars($_entryob->getVar('headline'));
+            $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
             xoops_cp_header();
-            echo $indexAdmin->addNavigation('article.php');
-            xoops_confirm(array('op'        => 'del',
-                                'articleID' => $articleID,
-                                'confirm'   => 1,
-                                'headline'  => $headline) + $xoopsGTicket->getTicketArray(__LINE__), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . "<br /><br>" . $headline, _AM_SOAPBOX_DELETE);
+            $adminObject->displayNavigation(basename(__FILE__));
+            xoops_confirm(array(
+                              'op'        => 'del',
+                              'articleID' => $articleID,
+                              'confirm'   => 1,
+                              'headline'  => $headline
+                          ) + $xoopsGTicket->getTicketArray(__LINE__), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
         exit();
@@ -514,17 +517,17 @@ switch ($op) {
         if (!$xoopsGTicket->check()) {
             redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
         }
-        $_entrydata_handler->reorderArticlesUpdate($_POST['articleweight']);
+        $entrydataHandler->reorderArticlesUpdate($_POST['articleweight']);
         redirect_header('index.php', 1, _AM_SOAPBOX_ORDERUPDATED);
         break;
 
     case 'default':
     default:
         xoops_cp_header();
-        echo $indexAdmin->addNavigation('article.php');
+        $adminObject->displayNavigation(basename(__FILE__));
         editarticle(0);
         //showArticles (0);
         break;
 
 }
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

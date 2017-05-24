@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: modinfo.php v 1.5 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -11,10 +11,10 @@
 // Module Info
 // The name of this module
 global $xoopsModule;
-define('_MI_SOAPBOX_MD_NAME', 'Soapbox');
+define('_MI_SOAPBOX_NAME', 'Soapbox');
 
 // A brief description of this module
-define('_MI_SOAPBOX_MD_DESC', 'OpEd for your site');
+define('_MI_SOAPBOX_DESC', 'OpEd for your site');
 
 // Sub menus in main menu block
 define('_MI_SOAPBOX_SUB_SMNAME1', 'Submit an article');
@@ -54,7 +54,7 @@ define('_MI_SOAPBOX_DATEFORMAT', '11. Date format:');
 define('_MI_SOAPBOX_DATEFORMATDSC', 'Sets the display date format for articles.');
 
 define('_MI_SOAPBOX_ALLOWCOMMENTS', '12. Control comments at the story level:');
-define('_MI_SOAPBOX_ALLOWCOMMENTSDSC', 'If you set this option to \'Yes\', you\'ll see comments only on those articles that have their comment checkbox marked in the admin form. <br /><br />Select \'No\' to have comments managed at the global level (look below under the tag \'Comment rules\'.');
+define('_MI_SOAPBOX_ALLOWCOMMENTSDSC', 'If you set this option to \'Yes\', you\'ll see comments only on those articles that have their comment checkbox marked in the admin form. <br><br>Select \'No\' to have comments managed at the global level (look below under the tag \'Comment rules\'.');
 
 define('_MI_SOAPBOX_MOREARTS', '13. Articles in author&#8217s side-box:');
 define('_MI_SOAPBOX_MOREARTSDSC', 'Specify the number of articles to display in the lateral box.');
@@ -74,13 +74,16 @@ define('_MI_SOAPBOX_INTROTITDFLT', 'Welcome to this space');
 
 define('_MI_SOAPBOX_INTROTEXT', '18. Introduction text:');
 define('_MI_SOAPBOX_INTROTEXTDSC', 'Text of the index page\'s introductory message.');
-define('_MI_SOAPBOX_INTROTEXTDFLT', 'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column\'s name to see all the articles associated to that column, or on an article\'s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.');
+define('_MI_SOAPBOX_INTROTEXTDFLT',
+       'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column\'s name to see all the articles associated to that column, or on an article\'s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.');
 
 define('_MI_SOAPBOX_BUTTSTXT', '19. Visible create buttons:');
 define('_MI_SOAPBOX_BUTTSTXTDSC', 'If set to \'Yes\', tables in the index page of the admin side will show a \'Create\' button. Default value: \'No\'.');
 
-define('_MI_SOAPBOX_WARNING', 'This module comes as is, without any guarantees whatsoever. Although this module is not beta, it is still under active development. This release can be used in a live website or a production environment, but its use is under your own responsibilityi, which means the author is not responsible.');
-define('_MI_SOAPBOX_AUTHORMSG', 'Soapbox is my first XOOPS module and as such contains all the errors of someone just beginning in the world of PHP and such things. My first steps in this world I gave them with the help of Catzwolf, now retired from the XOOPS world, and Soapbox owes him a lot, including both good pointers and mistakes.<br /><br />The history of Soapbox is told in more detail in the documentation, but I must thank here the valuable help of many XOOPS users, including herko, w4z004, marcan, ackbarr, Mithrandir, Predator and many more.<br /><br />Of course, I also take into account the help of those that have criticized, praised or commented the module, those who have looked in it more than it\'s designed to do, and in general to all those that have accepted the risk and installed the module in their sites for their enyojment. To you all, my friends, many thanks.');
+define('_MI_SOAPBOX_WARNING',
+       'This module comes as is, without any guarantees whatsoever. Although this module is not beta, it is still under active development. This release can be used in a live website or a production environment, but its use is under your own responsibilityi, which means the author is not responsible.');
+define('_MI_SOAPBOX_AUTHORMSG',
+       'Soapbox is my first XOOPS module and as such contains all the errors of someone just beginning in the world of PHP and such things. My first steps in this world I gave them with the help of Catzwolf, now retired from the XOOPS world, and Soapbox owes him a lot, including both good pointers and mistakes.<br><br>The history of Soapbox is told in more detail in the documentation, but I must thank here the valuable help of many XOOPS users, including herko, w4z004, marcan, ackbarr, Mithrandir, Predator and many more.<br><br>Of course, I also take into account the help of those that have criticized, praised or commented the module, those who have looked in it more than it\'s designed to do, and in general to all those that have accepted the risk and installed the module in their sites for their enyojment. To you all, my friends, many thanks.');
 
 // Names of admin menu items
 define('_MI_SOAPBOX_ADMENU1', 'Manager');
@@ -184,3 +187,16 @@ define('_MI_SOAPBOX_FORM_TINYMCE', 'TinyMCE Editor');
 define('_MI_SOAPBOX_SUBMITS', 'Submissions');
 define('_MI_SOAPBOX_ADD_ARTICLE', 'Add Article');
 define('_MI_SOAPBOX_ADD_COLUMN', 'Add Column');
+
+//Help
+define('_MI_SOAPBOX_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_SOAPBOX_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_SOAPBOX_BACK_2_ADMIN', 'Back to Administration of ');
+define('_MI_SOAPBOX_OVERVIEW', 'Overview');
+
+//define('_MI_SOAPBOX_HELP_DIR', __DIR__);
+
+//help multi-page
+define('_MI_SOAPBOX_DISCLAIMER', 'Disclaimer');
+define('_MI_SOAPBOX_LICENSE', 'License');
+define('_MI_SOAPBOX_SUPPORT', 'Support');

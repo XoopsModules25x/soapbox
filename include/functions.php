@@ -1,7 +1,7 @@
 <?php
-// $Id: functions.php,v 0.0.1 2005/10/27 20:30:00 domifara Exp $
+//
 /**
- * $Id: functions.php v 1.5 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -12,10 +12,10 @@
 
 //TinyD spaw
 global $xoopsModuleConfig, $xoopsModule;
-if (is_object($xoopsModule) && $xoopsModule->dirname() == 'soapbox' && !empty($xoopsModuleConfig)) {
-    if ($xoopsModuleConfig['form_options'] == 'spaw') {
+if (!empty($xoopsModuleConfig) && is_object($xoopsModule) && $xoopsModule->dirname() === 'soapbox') {
+    if ($xoopsModuleConfig['form_options'] === 'spaw') {
         if (is_readable(XOOPS_ROOT_PATH . '/common/spaw/spaw_control.class.php')) {
-            include_once XOOPS_ROOT_PATH . '/common/spaw/spaw_control.class.php';
+            require_once XOOPS_ROOT_PATH . '/common/spaw/spaw_control.class.php';
         }
     }
 }
@@ -32,29 +32,24 @@ function getLinkedUnameFromId($userid = 0, $name = 0)
     if (!is_numeric($userid)) {
         return $userid;
     }
-    $myts   =& MyTextSanitizer::getInstance();
-    $userid = (int)($userid);
+    $myts   = MyTextSanitizer::getInstance();
+    $userid = (int)$userid;
     if ($userid > 0) {
-        $member_handler =& xoops_gethandler('member');
-        $user           =& $member_handler->getUser($userid);
+        $memberHandler = xoops_getHandler('member');
+        $user          = $memberHandler->getUser($userid);
 
         if (is_object($user)) {
             $username  = $user->getVar('uname');
             $usernameu = $user->getVar('name');
 
-            if (($name) && !empty($usernameu)) {
+            if ($name && !empty($usernameu)) {
                 $username = $user->getVar('name');
             }
             if (!empty($usernameu)) {
-                $linkeduser
-                    = $myts->htmlSpecialChars($usernameu) . " [<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $userid
-                      . "'>" . $myts->htmlSpecialChars($username) . '</a>]';
+                $linkeduser = $myts->htmlSpecialChars($usernameu) . " [<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $userid . "'>" . $myts->htmlSpecialChars($username) . '</a>]';
             } else {
                 //                    $linkeduser = "<a href='".XOOPS_URL."/userinfo.php?uid=".$userid."'>". ucfirst($ts->htmlSpecialChars($username)) .'</a>';
-                $linkeduser
-                    =
-                    "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $userid . "'>" . $myts->htmlSpecialChars($username)
-                    . '</a>';
+                $linkeduser = "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $userid . "'>" . $myts->htmlSpecialChars($username) . '</a>';
             }
 
             return $linkeduser;
@@ -68,7 +63,7 @@ function getLinkedUnameFromId($userid = 0, $name = 0)
 function displayimage($image = 'blank.gif', $path = '', $imgsource = '', $alttext = '')
 {
     global $xoopsConfig, $xoopsUser, $xoopsModule;
-    $myts =& MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     $showimage = '';
 
     if ($path) {
@@ -89,24 +84,29 @@ function displayimage($image = 'blank.gif', $path = '', $imgsource = '', $alttex
 }
 */
 /**
- * @param $allowed_mimetypes
- * @param $httppostfiles
+ * @param        $allowed_mimetypes
+ * @param        $httppostfiles
  * @param string $redirecturl
  * @param int    $num
  * @param string $dir
  * @param int    $redirect
  */
 function uploading(
-    $allowed_mimetypes, $httppostfiles, $redirecturl = 'index.php', $num = 0, $dir = 'uploads', $redirect = 0
+    $allowed_mimetypes,
+    $httppostfiles,
+    $redirecturl = 'index.php',
+    $num = 0,
+    $dir = 'uploads',
+    $redirect = 0
 ) {
-    include_once XOOPS_ROOT_PATH . '/class/uploader.php';
-    $myts =& MyTextSanitizer::getInstance();
+    require_once XOOPS_ROOT_PATH . '/class/uploader.php';
+    $myts = MyTextSanitizer::getInstance();
 
     global $xoopsConfig, $xoopsModuleConfig, $_POST;
 
-    $maxfilesize   = (int)($xoopsModuleConfig['maxfilesize']);
-    $maxfilewidth  = (int)($xoopsModuleConfig['maximgwidth']);
-    $maxfileheight = (int)($xoopsModuleConfig['maximgheight']);
+    $maxfilesize   = (int)$xoopsModuleConfig['maxfilesize'];
+    $maxfilewidth  = (int)$xoopsModuleConfig['maximgwidth'];
+    $maxfileheight = (int)$xoopsModuleConfig['maximgheight'];
     $uploaddir     = XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars(strip_tags($dir)) . '/';
 
     $uploader = new XoopsMediaUploader($uploaddir, $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
@@ -137,7 +137,7 @@ function htmlarray($thishtmlpage, $thepath)
     echo "<option value='-1'>------</option>";
     foreach ($file_array as $htmlpage) {
         if ($htmlpage == $thishtmlpage) {
-            $opt_selected = "selected='selected'";
+            $opt_selected = "selected";
         } else {
             $opt_selected = "";
         }
@@ -172,7 +172,7 @@ function filesarray($filearray)
 function getuserForm($user)
 {
     global $xoopsDB, $xoopsConfig;
-    $myts =& MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
 
     echo "<select name='author'>";
     echo "<option value='-1'>------</option>";
@@ -180,7 +180,7 @@ function getuserForm($user)
 
     while (list($uid, $uname) = $xoopsDB->fetchRow($result)) {
         if ($uid == $user) {
-            $opt_selected = "selected='selected'";
+            $opt_selected = "selected";
         } else {
             $opt_selected = "";
         }
@@ -198,8 +198,8 @@ function getAuthorName($author)
 {
     $ret = '';
     //get author
-    $_authoruser_handler =& xoops_gethandler('user');
-    $_authoruser         =& $_authoruser_handler->get($author);
+    $_authoruserHandler = xoops_getHandler('user');
+    $_authoruser        = $_authoruserHandler->get($author);
     if (!is_object($_authoruser)) {
         $name3      = '';
         $uname3     = '';
@@ -210,8 +210,8 @@ function getAuthorName($author)
         $authorname = $name3;
     }
     //-------------------------------------
-     $ret = $authorname;
-    if (empty($authorname) || $authorname == '') {
+    $ret = $authorname;
+    if (empty($authorname) || $authorname === '') {
         $ret = $uname3;
     }
 
@@ -226,52 +226,51 @@ function showColumns($showCreate = 0)
 {
     global $xoopsGTicket;
     global $xoopsModuleConfig, $xoopsModule;
-    $pathIcon16 = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
-    $myts =& MyTextSanitizer::getInstance();
-    include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-    include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-    include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
+    $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+    $myts       = MyTextSanitizer::getInstance();
+    require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
     $module_id = $xoopsModule->getVar('mid');
-    $startcol  = isset($_GET['startcol']) ? (int)($_GET['startcol']) : 0;
+    $startcol  = isset($_GET['startcol']) ? (int)$_GET['startcol'] : 0;
 
     /* Code to show existing columns */
     echo "<h3 style='color: #2F5376; margin: 0 0 4px 0;'>" . _AM_SOAPBOX_SHOWCOLS . '</h3>';
-    echo "<span style=\"color: #567; margin: 3px 0 12px 0; font-size: small; display: block; \">" . _AM_SOAPBOX_COLSTEXT
-         . '</span>';
+    echo '<span style="color: #567; margin: 3px 0 12px 0; font-size: small; display: block; ">' . _AM_SOAPBOX_COLSTEXT . '</span>';
 
-//    if ($showCreate == 1) {
-//        echo
-//            "<a style='border: 1px solid #5E5D63; color: #000000; font-family: verdana, tahoma, arial, helvetica, sans-serif; font-size: 1em; padding: 4px 8px; text-align:center;' href='column.php'>"
-//            . _AM_SOAPBOX_CREATECOL . "</a><br /><br />";
-//    }
+    //    if ($showCreate == 1) {
+    //        echo
+    //            "<a style='border: 1px solid #5E5D63; color: #000000; font-family: verdana, tahoma, arial, helvetica, sans-serif; font-size: 1em; padding: 4px 8px; text-align:center;' href='column.php'>"
+    //            . _AM_SOAPBOX_CREATECOL . "</a><br><br>";
+    //    }
     // To create existing columns table
     //----------------------------
     //get category object
-    $_entrydata_handler =& xoops_getmodulehandler('entrydata', $xoopsModule->dirname());
-    $numrows            = $_entrydata_handler->getColumnCount();
-    $criteria           = new CriteriaCompo();
+    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+    $numrows          = $entrydataHandler->getColumnCount();
+    $criteria         = new CriteriaCompo();
     $criteria->setSort('weight');
-    $criteria->setLimit((int)($xoopsModuleConfig['perpage']));
-    $criteria->setStart((int)($startcol));
-    $_categoryob_arr =& $_entrydata_handler->getColumns($criteria);
+    $criteria->setLimit((int)$xoopsModuleConfig['perpage']);
+    $criteria->setStart((int)$startcol);
+    $categoryobArray = $entrydataHandler->getColumns($criteria);
     unset($criteria);
     if ($numrows > 0) {
-        echo "<form action=\"column.php\" method=\"post\" name=\"reordercols\">";
+        echo '<form action="column.php" method="post" name="reordercols">';
     }
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'>";
-    echo "<tr>";
+    echo '<tr>';
     echo '<th class="txtcenter"><b>' . _AM_SOAPBOX_ID . '</b></td>';
     echo '<th class="txtcenter"><b>' . _AM_SOAPBOX_WEIGHT . '</b></td>';
     echo '<th class="txtcenter"><b>' . _AM_SOAPBOX_AUTHOR . '</b></td>';
     echo '<th class="txtcenter"><b>' . _AM_SOAPBOX_ARTCOLNAME . '</b></td>';
     echo '<th class="txtcenter"><b>' . _AM_SOAPBOX_DESCRIP . '</b></td>';
     echo '<th class="txtcenter"><b>' . _AM_SOAPBOX_ACTION . '</b></td>';
-    echo "</tr>";
+    echo '</tr>';
 
     if ($numrows > 0) { // That is, if there ARE columns in the system
         //----------------------------
         $cont = 0;
-        foreach ($_categoryob_arr as $_categoryob) {
+        foreach ($categoryobArray as $_categoryob) {
             //----------------------------
             //get vars
             ++$cont;
@@ -285,7 +284,7 @@ function showColumns($showCreate = 0)
             $author = getLinkedUnameFromId($author, 0);
             $modify = "<a href='column.php?op=mod&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SOAPBOX_EDITCOL . "'></a>";
             $delete = "<a href='column.php?op=del&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETECOL . "'></a>";
-            $style  = (($cont % 2) == 0) ? "even" : "odd";
+            $style  = (($cont % 2) === 0) ? 'even' : 'odd';
             echo '<tr class="' . $style . '">';
             echo '<td class="txtcenter">' . $category['columnID'] . '</td>';
             echo '<td class="txtcenter"><input type="text" name="columnweight[' . $category['columnID'] . ']" value="' . $weight . '" size="3" maxlength="3" style="text-align: center;"></td>';
@@ -293,25 +292,25 @@ function showColumns($showCreate = 0)
             echo '<td class="txtcenter">' . $category['name'] . '</td>';
             echo '<td class="txtcenter">' . $category['description'] . '</td>';
             echo '<td class="txtcenter">' . $modify . ' ' . $delete . '</td>';
-            echo "</tr>";
+            echo '</tr>';
         }
     } else { // that is, $numrows = 0, there's no columns yet
         echo '<tr>';
-        echo "<td class='head' align='center' colspan= '7'>" . _AM_SOAPBOX_NOCOLS . "</td>";
+        echo "<td class='head' align='center' colspan= '7'>" . _AM_SOAPBOX_NOCOLS . '</td>';
         echo '</tr>';
         $category['columnID'] = '0';
     }
     echo "</table>\n";
-    $pagenav = new XoopsPageNav($numrows, (int)($xoopsModuleConfig['perpage']), $startcol, 'startcol', 'columnID=' . $category['columnID']);
+    $pagenav = new XoopsPageNav($numrows, (int)$xoopsModuleConfig['perpage'], $startcol, 'startcol', 'columnID=' . $category['columnID']);
     echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
-    echo "<br />\n";
+    echo "<br>\n";
 
     if ($numrows > 0) {
         echo "<input type='hidden' name='op' value='reorder' />";
         //--------------------
         echo $xoopsGTicket->getTicketHtml(__LINE__);
         //--------------------
-        echo "<div style=\"margin-bottom: 18px;\"><input type=\"submit\" name=\"submit\" class=\"formButton\" value=\"" . _AM_SOAPBOX_REORDERCOL . "\" /></div>";
+        echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERCOL . '" /></div>';
         echo '</form>';
     }
 }
@@ -323,20 +322,20 @@ function showArticles($showCreate = 0)
 {
     global $xoopsGTicket;
     global $xoopsModuleConfig, $xoopsModule;
-    $myts =& MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
 
-    $pathIcon16 = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
-    include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-    include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-    include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-    include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
+    $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+    require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+    require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
 
     $module_id = $xoopsModule->getVar('mid');
-    $startart  = isset($_GET['startart']) ? (int)($_GET['startart']) : 0;
+    $startart  = isset($_GET['startart']) ? (int)$_GET['startart'] : 0;
     if (isset($_POST['entries'])) {
-        $entries = (int)($_POST['entries']);
+        $entries = (int)$_POST['entries'];
     } else {
-        $entries = isset($_GET['entries']) ? (int)($_GET['entries']) : 0;
+        $entries = isset($_GET['entries']) ? (int)$_GET['entries'] : 0;
     }
     //---GET view sort --
     $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
@@ -349,164 +348,142 @@ function showArticles($showCreate = 0)
     }
     //---------------
     /* Code to show existing articles */
-    echo "<h3 style='color: #2F5376; margin: 0 0 4px 0;'>" . _AM_SOAPBOX_SHOWARTS . "</h3>";
-    echo "<span style=\"color: #567; margin: 3px 0 12px 0; font-size: small; display: block; \">" . _AM_SOAPBOX_ARTSTEXT
-         . "</span>";
+    echo "<h3 style='color: #2F5376; margin: 0 0 4px 0;'>" . _AM_SOAPBOX_SHOWARTS . '</h3>';
+    echo '<span style="color: #567; margin: 3px 0 12px 0; font-size: small; display: block; ">' . _AM_SOAPBOX_ARTSTEXT . '</span>';
 
-//    if ($showCreate == 1) {
-//        echo
-//            "<a style='border: 1px solid #5E5D63; color: #000000; font-family: verdana, tahoma, arial, helvetica, sans-serif; font-size: 1em; padding: 4px 8px; text-align:center;' href='article.php'>"
-//            . _AM_SOAPBOX_CREATEART . "</a><br /><br />";
-//    }
+    //    if ($showCreate == 1) {
+    //        echo
+    //            "<a style='border: 1px solid #5E5D63; color: #000000; font-family: verdana, tahoma, arial, helvetica, sans-serif; font-size: 1em; padding: 4px 8px; text-align:center;' href='article.php'>"
+    //            . _AM_SOAPBOX_CREATEART . "</a><br><br>";
+    //    }
     // Articles count
-    $_entrydata_handler =& xoops_getmodulehandler('entrydata', $xoopsModule->dirname());
+    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
     //----------------------------
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('submit', 0));
     $criteria->add(new Criteria('offline', 0));
-    $tot_published = $_entrydata_handler->getArticleCount($criteria);
+    $tot_published = $entrydataHandler->getArticleCount($criteria);
     unset($criteria);
     //----------------------------
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('submit', 0));
     $criteria->add(new Criteria('offline', 1));
-    $tot_offline = $_entrydata_handler->getArticleCount($criteria);
+    $tot_offline = $entrydataHandler->getArticleCount($criteria);
     unset($criteria);
     //----------------------------
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('submit', 1));
-    $tot_submitted = $_entrydata_handler->getArticleCount($criteria);
+    $tot_submitted = $entrydataHandler->getArticleCount($criteria);
     unset($criteria);
     //----------------------------
-    $tot_all = $_entrydata_handler->getArticleCount();
+    $tot_all = $entrydataHandler->getArticleCount();
     //----------------------------
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('submit', 0));
-    $tot_ok = $_entrydata_handler->getArticleCount($criteria);
+    $tot_ok = $entrydataHandler->getArticleCount($criteria);
     unset($criteria);
     //----------------------------
 
     // Prepare string for table head
-    if ($entries == 0) {
+    if ($entries === 0) {
         $string = _AM_SOAPBOX_SHWALL;
     }
-    if ($entries == 1) {
+    if ($entries === 1) {
         $string = _AM_SOAPBOX_SHWONL;
     }
-    if ($entries == 2) {
+    if ($entries === 2) {
         $string = _AM_SOAPBOX_SHWOFF;
     }
-    if ($entries == 3) {
+    if ($entries === 3) {
         $string = _AM_SOAPBOX_SHWSUB;
     }
-    if ($entries == 4) {
+    if ($entries === 4) {
         $string = _AM_SOAPBOX_SHWAPV;
     }
 
     /* Code to show selected articles */
-    echo "<form name='pick' id='pick' action='" . $myts->htmlSpecialChars(xoops_getenv('PHP_SELF'))
-         . "' method='POST' style='margin: 0;'>";
-
-    ?>
-<table width='100%' cellspacing='1' cellpadding='2' border='0' style='border-left: 1px solid silver; border-top: 1px solid silver; border-right: 1px solid silver;'>
-    <tr>
-        <td class='odd'><span style='font-weight: bold; font-variant: small-caps;'><?php echo $string ?></span></td>
-        <td class='odd' width='40%' align='right'><?php echo _AM_SOAPBOX_SELECTSTATUS;
-    ?>
-            <select name='entries' onchange='submit()'>
-                <option value='0'
-                    <?php
-    if ($entries == 0) {
-        echo "selected='selected'";
-    }
-    ?>>
-                    <?php echo _AM_SOAPBOX_SELALL;
-    ?>
-                    [<?php echo $tot_all;
-    ?>]
-                </option>
-                <option value='1' <?php if ($entries == 1) {
-    echo "selected='selected'";
-}
-    ?>><?php echo _AM_SOAPBOX_SELONL;
-    ?>
-                    [<?php echo $tot_published;
-    ?>]
-                </option>
-                <option value='2' <?php if ($entries == 2) {
-    echo "selected='selected'";
-}
-    ?>>
-                    <?php echo _AM_SOAPBOX_SELOFF;
-    ?>
-                    [<?php echo $tot_offline;
-    ?>]
-                </option>
-                <option value='3' <?php if ($entries == 3) {
-    echo "selected='selected'";
-}
-    ?>>
-                    <?php echo _AM_SOAPBOX_SELSUB;
-    ?>
-                    [<?php echo $tot_submitted;
-    ?>]
-                </option>
-                <option value='4' <?php if ($entries == 4) {
-    echo "selected='selected'";
-}
-    ?>><?php echo _AM_SOAPBOX_SELAPV;
-    ?>
-                    [<?php echo $tot_ok;
-    ?>]
-                </option>
-            </select>
-        </td>
-    </tr>
-</table>
-</form>
-<?php
-
+    echo "<form name='pick' id='pick' action='" . $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')) . "' method='POST' style='margin: 0;'>"; ?>
+    <table width='100%' cellspacing='1' cellpadding='2' border='0'
+           style='border-left: 1px solid silver; border-top: 1px solid silver; border-right: 1px solid silver;'>
+        <tr>
+            <td class='odd'><span style='font-weight: bold; font-variant: small-caps;'><?php echo $string ?></span></td>
+            <td class='odd' width='40%' align='right'><?php echo _AM_SOAPBOX_SELECTSTATUS; ?>
+                <select name='entries' onchange='submit()'>
+                    <option value='0'
+                        <?php
+                        if ($entries === 0) {
+                            echo 'selected';
+                        } ?>>
+                        <?php echo _AM_SOAPBOX_SELALL; ?>
+                        [<?php echo $tot_all; ?>]
+                    </option>
+                    <option value='1' <?php if ($entries === 1) {
+                        echo 'selected';
+                    } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
+                        [<?php echo $tot_published; ?>]
+                    </option>
+                    <option value='2' <?php if ($entries === 2) {
+                        echo 'selected';
+                    } ?>>
+                        <?php echo _AM_SOAPBOX_SELOFF; ?>
+                        [<?php echo $tot_offline; ?>]
+                    </option>
+                    <option value='3' <?php if ($entries === 3) {
+                        echo 'selected';
+                    } ?>>
+                        <?php echo _AM_SOAPBOX_SELSUB; ?>
+                        [<?php echo $tot_submitted; ?>]
+                    </option>
+                    <option value='4' <?php if ($entries === 4) {
+                        echo 'selected';
+                    } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
+                        [<?php echo $tot_ok; ?>]
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    </form>
+    <?php
 
     //----------------------------
     // Put column names in an array, to avoid a query in the while loop further ahead
     switch ($entries) {
-        case 1 :
+        case 1:
             $submit  = 0;
             $offline = 0;
             break;
-        case 2 :
+        case 2:
             //----------------------------
             $submit  = 0;
             $offline = 1;
             break;
-        case 3 :
+        case 3:
             //----------------------------
             $submit  = 1;
             $offline = null;
             break;
-        case 4 :
+        case 4:
             //----------------------------
             $submit = 0;
             break;
-        case 0 :
+        case 0:
         default:
             $submit  = null;
             $offline = null;
             break;
     }
-//    function &getArticlesAllPermcheck(
-//         $limit=0, $start=0,
-//         $checkRight = true, $published = true, $submit = 0, $offline = 0, $block = null ,
-//         $sortname = 'datesub', $sortorder = 'DESC',
-//         $select_sbcolumns = null , $NOTarticleIDs = null ,
-//         $approve_submit = false ,
-//         $id_as_key = false )
+    //    function &getArticlesAllPermcheck(
+    //         $limit=0, $start=0,
+    //         $checkRight = true, $published = true, $submit = 0, $offline = 0, $block = null ,
+    //         $sortname = 'datesub', $sortorder = 'DESC',
+    //         $select_sbcolumns = null , $NOTarticleIDs = null ,
+    //         $approve_submit = false ,
+    //         $id_as_key = false )
     //-------------------------------------
-    $_entryob_arr =& $_entrydata_handler->getArticlesAllPermcheck(
-        (int)($xoopsModuleConfig['perpage']), $startart, false, false, $submit, $offline, null, $sortname, $sortorder, null, null, false, true
-    );
+    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['perpage'], $startart, false, false, $submit, $offline, null, $sortname, $sortorder, null, null, false, true);
     // Get number of articles in the selected condition ($cond)
-    $numrows = $_entrydata_handler->total_getArticlesAllPermcheck;
+    $numrows = $entrydataHandler->total_getArticlesAllPermcheck;
     if ($numrows > 0) {
         echo '<form action="article.php" method="post" name="reorderarticles\">';
     }
@@ -536,32 +513,27 @@ function showArticles($showCreate = 0)
             $colname = !empty($_entryob->_sbcolumns) ? $_entryob->_sbcolumns->getVar('name') : '';
             //--------------------
             $created = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
-            $modify  = "<a href='article.php?op=mod&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16
-                       . "/edit.png' ALT='" . _AM_SOAPBOX_EDITART . "'></a>";
-            $delete  = "<a href='article.php?op=del&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16
-                       . "/delete.png' ALT='" . _AM_SOAPBOX_DELETEART . "'></a>";
+            $modify  = "<a href='article.php?op=mod&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SOAPBOX_EDITART . "'></a>";
+            $delete  = "<a href='article.php?op=del&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETEART . "'></a>";
 
             //if ($offline == 0) {
-            if ($articles['offline'] == 0) {
+            if ($articles['offline'] === 0) {
                 $status = "<img src='" . $pathIcon16 . "/1.png' alt='" . _AM_SOAPBOX_ARTISON . "'>";
             } else {
                 //if ($offline == 1 && $submit == 0) {
-                if ($articles['offline'] == 1 && $submit == 0) {
-                    $status
-                        = "<img src='" . $pathIcon16 . "/0.png' alt='" . _AM_SOAPBOX_ARTISOFF . "'>";
+                if ($submit === 0 && $articles['offline'] === 1) {
+                    $status = "<img src='" . $pathIcon16 . "/0.png' alt='" . _AM_SOAPBOX_ARTISOFF . "'>";
                 } else {
-                    if ($submit == 1) {
-                        $status
-                            = "<img src=" . XOOPS_URL . "/modules/" . $xoopsModule->dirname()
-                              . "/assets/images/icon/sub.gif alt='" . _AM_SOAPBOX_ARTISSUB . "'>";
+                    if ($submit === 1) {
+                        $status = '<img src=' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . "/assets/images/icon/sub.gif alt='" . _AM_SOAPBOX_ARTISSUB . "'>";
                     }
                 }
             }
 
-//mb ----------------------------
-//echo $cont.' - '.$offline.': '.$status.'</br>';
+            //mb ----------------------------
+            //echo $cont.' - '.$offline.': '.$status.'</br>';
 
-            $style = (($cont % 2) == 0) ? "even" : "odd";
+            $style = (($cont % 2) === 0) ? 'even' : 'odd';
             echo '<tr class="' . $style . '">';
             echo '<td align="center"><a href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?articleID=' . $articles['articleID'] . '" title="' . $articles['headline'] . '" target="_blank">' . $articles['articleID'] . '</a></td>';
             echo '<td class="txtcenter"><input type="text" name="articleweight[' . $articles['articleID'] . ']" value="' . $articles['weight'] . '" size="3" maxlength="3" style="text-align: center;"></td>';
@@ -573,13 +545,12 @@ function showArticles($showCreate = 0)
             echo '</tr>';
         }
     } else { // that is, $numrows = 0, there's no columns yet
-        echo "<tr>";
-        echo "<td class='head' align='center' colspan= '7'>" . _AM_SOAPBOX_NOARTS . "</td>";
-        echo "</tr>";
+        echo '<tr>';
+        echo "<td class='head' align='center' colspan= '7'>" . _AM_SOAPBOX_NOARTS . '</td>';
+        echo '</tr>';
     }
     echo "</table>\n";
-    $pagenav = new XoopsPageNav($numrows, (int)($xoopsModuleConfig['perpage']), $startart, 'startart',
-                                'entries=' . $entries . '&sortname=' . $sortname . '&sortorder=' . $sortorder);
+    $pagenav = new XoopsPageNav($numrows, (int)$xoopsModuleConfig['perpage'], $startart, 'startart', 'entries=' . $entries . '&sortname=' . $sortname . '&sortorder=' . $sortorder);
     echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
 
     if ($numrows > 0) {
@@ -587,10 +558,10 @@ function showArticles($showCreate = 0)
         //--------------------
         echo $xoopsGTicket->getTicketHtml(__LINE__);
         //--------------------
-        echo "<div style=\"margin-bottom: 18px;\"><input type=\"submit\" name=\"submit\" class=\"formButton\" value=\"" . _AM_SOAPBOX_REORDERART . "\" /></div>";
-        echo "</form>";
+        echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERART . '" /></div>';
+        echo '</form>';
     }
-    echo "<br />\n";
+    echo "<br>\n";
 }
 
 function showSubmissions()
@@ -598,15 +569,15 @@ function showSubmissions()
     global $xoopsGTicket;
     global $xoopsModuleConfig, $xoopsModule;
 
-    $pathIcon16 = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
-    $myts =& MyTextSanitizer::getInstance();
-    include_once XOOPS_ROOT_PATH . "/class/xoopslists.php";
-    include_once XOOPS_ROOT_PATH . "/class/pagenav.php";
-    include_once XOOPS_ROOT_PATH . "/class/xoopsform/grouppermform.php";
-    include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->dirname() . "/include/cleantags.php";
+    $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+    $myts       = MyTextSanitizer::getInstance();
+    require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+    require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
     $module_id = $xoopsModule->getVar('mid');
-    $startsub  = isset($_GET['startsub']) ? (int)($_GET['startsub']) : 0;
-    $datesub   = isset($_GET['datesub']) ? (int)($_GET['datesub']) : 0;
+    $startsub  = isset($_GET['startsub']) ? (int)$_GET['startsub'] : 0;
+    $datesub   = isset($_GET['datesub']) ? (int)$_GET['datesub'] : 0;
 
     //---GET view sort --
     $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
@@ -619,35 +590,33 @@ function showSubmissions()
     }
     //---------------
     /* Code to show submitted articles */
-    echo "<h3 style='color: #2F5376; margin: 0 0 4px 0;'>" . _AM_SOAPBOX_SHOWSUBMISSIONS . "</h3>";
-    echo "<span style=\"color: #567; margin: 3px 0 12px 0; font-size: small; display: block; \">" . _AM_SOAPBOX_SUBTEXT . "</span>";
+    echo "<h3 style='color: #2F5376; margin: 0 0 4px 0;'>" . _AM_SOAPBOX_SHOWSUBMISSIONS . '</h3>';
+    echo '<span style="color: #567; margin: 3px 0 12px 0; font-size: small; display: block; ">' . _AM_SOAPBOX_SUBTEXT . '</span>';
     echo "<table width='100%' cellspacing=1 cellpadding=3 border=0 class = outer>";
-    echo "<tr>";
-    echo "<td width='40' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTID . "</b></td>";
-    echo "<td width='20%' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTCOLNAME . "</b></td>";
-    echo "<td width='45%' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTHEADLINE . "</b></td>";
-    echo "<td width='90' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTCREATED . "</b></td>";
-    echo "<td width='60' class='bg3' align='center'><b>" . _AM_SOAPBOX_ACTION . "</b></td>";
-    echo "</tr>";
+    echo '<tr>';
+    echo "<td width='40' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTID . '</b></td>';
+    echo "<td width='20%' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTCOLNAME . '</b></td>';
+    echo "<td width='45%' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTHEADLINE . '</b></td>';
+    echo "<td width='90' class='bg3' align='center'><b>" . _AM_SOAPBOX_ARTCREATED . '</b></td>';
+    echo "<td width='60' class='bg3' align='center'><b>" . _AM_SOAPBOX_ACTION . '</b></td>';
+    echo '</tr>';
 
     // Put column names in an array, to avoid a query in the while loop farther ahead
     /* Code to show submitted articles */
     // Articles count
-//    function &getArticlesAllPermcheck(
-//         $limit=0, $start=0,
-//         $checkRight = true, $published = true, $submit = 0, $offline = 0, $block = null ,
-//         $sortname = 'datesub', $sortorder = 'DESC',
-//         $select_sbcolumns = null , $NOTarticleIDs = null ,
-//         $approve_submit = false ,
-//         $id_as_key = false )
+    //    function &getArticlesAllPermcheck(
+    //         $limit=0, $start=0,
+    //         $checkRight = true, $published = true, $submit = 0, $offline = 0, $block = null ,
+    //         $sortname = 'datesub', $sortorder = 'DESC',
+    //         $select_sbcolumns = null , $NOTarticleIDs = null ,
+    //         $approve_submit = false ,
+    //         $id_as_key = false )
     // Articles count
-    $_entrydata_handler =& xoops_getmodulehandler('entrydata', $xoopsModule->dirname());
+    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
     //-------------------------------------
-    $_entryob_arr =& $_entrydata_handler->getArticlesAllPermcheck(
-        (int)($xoopsModuleConfig['perpage']), $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false
-    );
+    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['perpage'], $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false);
     // Get number of articles in the selected condition ($cond)
-    $numrows = $_entrydata_handler->total_getArticlesAllPermcheck;
+    $numrows = $entrydataHandler->total_getArticlesAllPermcheck;
 
     if ($numrows > 0) { // That is, if there ARE unauthorized articles in the system
         foreach ($_entryob_arr as $_entryob) {
@@ -660,24 +629,23 @@ function showSubmissions()
             $modify  = "<a href='submissions.php?op=mod&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SOAPBOX_EDITSUBM . "'></a>";
             $delete  = "<a href='submissions.php?op=del&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETESUBM . "'></a>";
 
-            echo "<tr>";
-            echo "<td class='head' align='center'>" . $articles['articleID'] . "</td>";
-            echo "<td class='even' align='left'>" . $colname . "</td>";
-            echo "<td class='even' align='left'>" . $articles['headline'] . "</td>";
-            echo "<td class='even' align='center'>" . $created . "</td>";
-            echo "<td class='even' align='center'>" . $modify . $delete . "</td>";
-            echo "</tr>";
+            echo '<tr>';
+            echo "<td class='head' align='center'>" . $articles['articleID'] . '</td>';
+            echo "<td class='even' align='left'>" . $colname . '</td>';
+            echo "<td class='even' align='left'>" . $articles['headline'] . '</td>';
+            echo "<td class='even' align='center'>" . $created . '</td>';
+            echo "<td class='even' align='center'>" . $modify . $delete . '</td>';
+            echo '</tr>';
         }
     } else { // that is, $numrows = 0, there's no columns yet
-        echo "<tr>";
-        echo "<td class='head' align='center' colspan= '7'>" . _AM_SOAPBOX_NOSUBMISSYET . "</td>";
-        echo "</tr>";
+        echo '<tr>';
+        echo "<td class='head' align='center' colspan= '7'>" . _AM_SOAPBOX_NOSUBMISSYET . '</td>';
+        echo '</tr>';
     }
     echo "</table>\n";
-    $pagenav = new XoopsPageNav($numrows, $xoopsModuleConfig['perpage'], $startsub, 'startsub',
-                                '&sortname=' . $sortname . '&sortorder=' . $sortorder);
+    $pagenav = new XoopsPageNav($numrows, $xoopsModuleConfig['perpage'], $startsub, 'startsub', '&sortname=' . $sortname . '&sortorder=' . $sortorder);
     echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
-    echo "<br />\n";
+    echo "<br>\n";
 }
 
 //HACK bydomifara for add method
@@ -694,7 +662,7 @@ function soapbox_getacceptlang()
             $al     = strtolower($al);
             $al_len = strlen($al);
             if ($al_len > 2) {
-                if (preg_match("/([a-z]{2});q=[0-9.]+$/", $al, $al_match)) {
+                if (preg_match('/([a-z]{2});q=[0-9.]+$/', $al, $al_match)) {
                     $al = $al_match[1];
                     break;
                 } else {

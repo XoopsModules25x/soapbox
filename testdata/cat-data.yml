@@ -1,0 +1,20 @@
+---
+# 259pack.xf3f_sbcolumns
+-
+  columnID: 1
+  author: 1
+  name: "Arthur Miller"
+  description: "Blog dedicated to Arthur Miller"
+  total: 3
+  weight: 1
+  colimage: "arthurmiller.jpg"
+  created: 1494657056
+-
+  columnID: 2
+  author: 1
+  name: "XOOPS"
+  description: "Blog about XOOPS CMS"
+  total: 4
+  weight: 1
+  colimage: "xoops.png"
+  created: 1494670921

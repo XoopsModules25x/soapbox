@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: admin.php v 1.5 23 August 2004 hsalazar Exp $
+ *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -107,7 +107,8 @@ define('_AM_SOAPBOX_OPTS', 'Module Config Options');
 define('_AM_SOAPBOX_ORDERUPDATED', 'Weight reordered');
 define('_AM_SOAPBOX_PERMS', 'Permissions');
 define('_AM_SOAPBOX_PERMSMNGMT', 'Permissions Management');
-define('_AM_SOAPBOX_PERMSNOTE', '<div><b>NOTE:</b> Please be aware that even if you&#8217ve set correct viewing permissions here, a group might not see the articles or blocks if you don&#8217t also grant that group permissions to access the module. To do that, go to <b>System admin > Groups</b>, choose the appropriate group and click the checkboxes to grant its members the access.</div>');
+define('_AM_SOAPBOX_PERMSNOTE',
+       '<div><b>NOTE:</b> Please be aware that even if you&#8217ve set correct viewing permissions here, a group might not see the articles or blocks if you don&#8217t also grant that group permissions to access the module. To do that, go to <b>System admin > Groups</b>, choose the appropriate group and click the checkboxes to grant its members the access.</div>');
 define('_AM_SOAPBOX_REORDERCOL', 'Reorder columns');
 define('_AM_SOAPBOX_SELALL', 'All articles');
 define('_AM_SOAPBOX_SELAPV', 'Approved articles');
@@ -148,3 +149,27 @@ define('_AM_SOAPBOX_REORDERART', 'Reorder articles(weight)');
 //ModuleAdmin
 define('_AM_SOAPBOX_MODULEADMIN_MISSING', 'Error: The ModuleAdmin class is missing. Please install the ModuleAdmin Class into /Frameworks (see /docs/readme.txt)');
 define('_AM_SOAPBOX_NEED_APPROVAL', 'Need Approval:  <strong>%s</strong> ');
+//Permissions
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL', 'Global permissions');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_DESC', 'Only users in the group that you select may global this');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_4', 'Rate from user');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_8', 'Submit from user side');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_16', 'Auto approve');
+define('_AM_SOAPBOX_PERMISSIONS_APPROVE', 'Permissions to approve');
+define('_AM_SOAPBOX_PERMISSIONS_APPROVE_DESC', 'Only users in the group that you select may approve this');
+define('_AM_SOAPBOX_PERMISSIONS_VIEW', 'Permissions to view');
+define('_AM_SOAPBOX_PERMISSIONS_VIEW_DESC', 'Only users in the group that you select may view this');
+define('_AM_SOAPBOX_PERMISSIONS_SUBMIT', 'Permissions to submit');
+define('_AM_SOAPBOX_PERMISSIONS_SUBMIT_DESC', 'Only users in the group that you select may submit this');
+define('_AM_SOAPBOX_PERMISSIONS_NOPERMSSET', 'Permission cannot be set: No Rate created yet! Please create a Rate first.');
+
+define('_AM_SOAPBOX_UPGRADEFAILED0', "Update failed - couldn't rename field '%s'");
+define('_AM_SOAPBOX_UPGRADEFAILED1', "Update failed - couldn't add new fields");
+define('_AM_SOAPBOX_UPGRADEFAILED2', "Update failed - couldn't rename table '%s'");
+define('_AM_SOAPBOX_ERROR_COLUMN', 'Could not create column in database : %s');
+define('_AM_SOAPBOX_ERROR_BAD_XOOPS', 'This module requires XOOPS %s+ (%s installed)');
+define('_AM_SOAPBOX_ERROR_BAD_PHP', 'This module requires PHP version %s+ (%s installed)');
+define('_AM_SOAPBOX_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module');
+
+define('_AM_SOAPBOX_ADD_SAMPLEDATA', 'Add Sample Data (will delete ALL current data)');
+define('_AM_SOAPBOX_SAMPLEDATA_SUCCESS', 'Sample Date uploaded successfully');

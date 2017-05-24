@@ -1,5 +1,30 @@
-1.61 Beta 1      NOT RELEASED
-=================================
+<h5>1.70 Beta 1      [2017-05-23]</h5>
+<hr>
+- XOOPS 2.5.9, PHP 7 (mamba)
+- removed @version (mamba)
+- PSR-2 code cosmetics (mamba)
+- addNavigation(basename(__FILE__))  (mamba)
+- dirname(__FILE__) to __DIR__ (mamba)
+- replaced < br /> with < br > (mamba)
+- Unnecessary double quotes (mamba)
+- reference mismatch (mamba)
+- Hardening to type safe (mamba)
+- update Help (mamba)
+- changed _handler to Handler (mamba)
+- removed '/' from void HTML elements (&lt;br&gt;, &lt;img&gt;, etc) (mamba)
+- HTML 5: removed 'selected' and 'checked' (mamba)
+- updated file headers for consistency (mamba)
+- renamed several $indexAdmin with $adminObject for consistency (mamba)
+- Updates for PayPal changes (zyspec)
+- fixed rating check (aerograf)
+- moved functions to Utility class (mamba)
+- started conversion to XMF (mamba)
+    - updated addInfoBoxLine entries (mamba)
+    - displayNavigation(basename(__FILE__))  (mamba)
+    - changed to ->displayButton('left') (mamba)
+
+<h5>1.61 Beta 1      [NOT RELEASED]</h5>
+<hr>
 - moved all images, CSS, and JS files to /assets (mamba)
 - renamed .html Smarty templates to .tpl (mamba)
 - changed intval() to (int) (mamba)
@@ -9,15 +34,15 @@
 - Fixing Rating (trabis)
 
 
-1.60            2012-12-18:
-============================
+<h5>1.60            [2012-12-18]</h5>
+<hr>
 - Conversion to XOOPS 2.5.0 GUI (mamba)
 - converting to dynamic Editor selection (mamba)
 - fixing date issues-
 
 
-1.50 23 August 2004
-============================
+<h5>1.50 23     [August 2004]</h5>
+<hr>
 This is version 1.5 of Soapbox. Actually, this is NOT the full version, but a stripped down one. It includes all the necessary files to run the module, but for the sake of keeping the size small, it has left out:
 
 + The language files, which will be available in a separate download once the debugging is complete.
@@ -47,14 +72,14 @@ Changes for this release:
 + In the admin side, the articles page now includes the list of articles.
 + In the admin side, changed a bit the behavior of the submissions page.
 
-============================
-1.40 17 March 2004
-============================
+
+<h5>1.40 17     [March 2004]</h5>
+<hr>
 + Fixed problems that produced blank page on block activation.
 
 
-1.20 26 February 2004
-============================
+<h5>1.20 26     [February 2004]</h5>
+<hr>
 More bugfixes and small changes
 
 16 March 2004 v1.30
@@ -73,8 +98,8 @@ More bugfixes and small changes
 And a bunch more...
 
 
-Version 1.10 21 February 2004
-============================
+<h5>1.10 21     [February 2004]</h5>
+<hr>
 First wave of changes
 + DONE: Images are separated in two directories, so it's feasible to define a different uploads directory but still have the module's operational images available. Thanks, svaha.
 + DONE: If for some reason a column's author has no real name on his/her profile, the module will use instead the username. Thanks, csloh.
@@ -91,6 +116,6 @@ First wave of changes
 Credits and thanks are included in the help file. However, I'd like to add a very special thanks to Richard Strauss (carnuke) for going well beyond the call of duty in the testing phase of this module. Without his keen eye, this module would be quite buggy and incomplete. In a very literal sense, he has co-authored this module. Thanks, Richard!!!
 
 
-1.00 18 February 2004
-============================
+<h5>1.00 18 [February 2004]</h5>
+<hr>
 First public release.

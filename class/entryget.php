@@ -1,44 +1,33 @@
 <?php
-// $Id: entryget.php,v 0.0.1 2005/10/30 12:30:00 domifara Exp $
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://www.myweb.ne.jp/, http://xoops.org/, http://jp.xoops.org/ //
-// Project: XOOPS Project                                                    //
-// ------------------------------------------------------------------------- //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright    XOOPS Project http://xoops.org/
+ * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @package
+ * @since
+ * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
+ */
+
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $moduleDirName = basename(dirname(__DIR__));
-if ($moduleDirName !== "soapbox" && $moduleDirName !== "" && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
-    echo("invalid dirname: " . htmlspecialchars($moduleDirName));
+if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+    echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
 }
 
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbcolumns.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbvotedata.php';
 
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/utility.php';
 
 /**
  * Soapbox entrydata handler class.
@@ -55,23 +44,23 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * holds reference to entry  handler(DAO) class
      * @access private
      */
-    public $_sbaHandler;
+    private $sbArticleHandler;
 
     /**
      * holds reference to user handler(DAO) class
      */
-    public $_sbCHandler;
+    private $sbColumnHandler;
 
     /**
      * holds reference to membership handler(DAO) class
      */
-    public $_sbVHandler;
+    private $sbVoteHandler;
 
     /**
      * holds temporary module_id
      */
-    public $_module_id;
-    public $_module_dirname;
+    private $_module_id;
+    private $_module_dirname;
     /**#@-*/
 
     public $total_getArticlesAllPermcheck;
@@ -83,19 +72,20 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
 
     /**
      * constructor
-     * @param $db
+     * @param XoopsDatabase $db
      */
-    public function __construct(&$db)
+    public function __construct(XoopsDatabase $db)
     {
+        parent::__construct($db);
         $moduleDirName = basename(dirname(__DIR__));
-        if ($moduleDirName !== "soapbox" && $moduleDirName !== "" && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
-            echo("invalid dirname: " . htmlspecialchars($moduleDirName));
+        if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+            echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
         }
-        $this->_sbAHandler = new SoapboxSbarticlesHandler($db);
-        $this->_sbCHandler = new SoapboxSbcolumnsHandler($db);
-        $this->_sbVHandler = new SoapboxSbvotedataHandler($db);
-        $_mymodule_handler =& xoops_gethandler('module');
-        $_mymodule         =& $_mymodule_handler->getByDirname($moduleDirName);
+        $this->sbArticleHandler = new SoapboxSbarticlesHandler($db);
+        $this->sbColumnHandler  = new SoapboxSbcolumnsHandler($db);
+        $this->sbVoteHandler    = new SoapboxSbvotedataHandler($db);
+        $_mymoduleHandler       = xoops_getHandler('module');
+        $_mymodule              = $_mymoduleHandler->getByDirname($moduleDirName);
         if (!is_object($_mymodule)) {
             exit('not found dirname');
         }
@@ -107,11 +97,11 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * retrieve a Article
      *
      * @param  int $id ID for the Article
-     * @return object SoapboxSbarticles reference to the Article
+     * @return SoapboxSbarticles SoapboxSbarticles reference to the Article
      */
     public function &getArticle($id)
     {
-        $ret =& $this->_sbAHandler->get($id);
+        $ret = $this->sbArticleHandler->get($id);
 
         return $ret;
     }
@@ -120,11 +110,11 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * retrieve a Column
      *
      * @param  int $id ID for the Article
-     * @return object SoapboxSbarticles reference to the Column
+     * @return SoapboxSbarticles SoapboxSbarticles reference to the Column
      */
     public function &getColumn($id)
     {
-        $ret =& $this->_sbCHandler->get($id);
+        $ret = $this->sbColumnHandler->get($id);
 
         return $ret;
     }
@@ -133,11 +123,11 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * retrieve a Votedata
      *
      * @param  int $id ID for the Article
-     * @return object SoapboxSbvotedata reference to the Votedata
+     * @return SoapboxSbvotedata SoapboxSbvotedata reference to the Votedata
      */
     public function &getVotedata($id)
     {
-        $ret =& $this->_sbVHandler->get($id);
+        $ret = $this->sbVoteHandler->get($id);
 
         return $ret;
     }
@@ -145,13 +135,13 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * retrieve Articles from the database
      *
-     * @param  object $criteria  {@link CriteriaElement}
-     * @param  bool   $id_as_key use the Article's ID as key for the array?
+     * @param  CriteriaElement $criteria  {@link CriteriaElement}
+     * @param  bool            $id_as_key use the Article's ID as key for the array?
      * @return array  array of {@link SoapboxSbarticles} objects
      */
-    public function &getArticles($criteria = null, $id_as_key = false)
+    public function &getArticles(CriteriaElement $criteria = null, $id_as_key = false)
     {
-        $ret =& $this->_sbAHandler->getObjects($criteria, $id_as_key);
+        $ret = $this->sbArticleHandler->getObjects($criteria, $id_as_key);
 
         return $ret;
     }
@@ -159,13 +149,13 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * retrieve Columns from the database
      *
-     * @param  object $criteria  {@link CriteriaElement}
-     * @param  bool   $id_as_key use the Column's ID as key for the array?
+     * @param  CriteriaElement $criteria  {@link CriteriaElement}
+     * @param  bool            $id_as_key use the Column's ID as key for the array?
      * @return array  array of {@link SoapboxSbcolumns} objects
      */
-    public function &getColumns($criteria = null, $id_as_key = false)
+    public function &getColumns(CriteriaElement $criteria = null, $id_as_key = false)
     {
-        $ret =& $this->_sbCHandler->getObjects($criteria, $id_as_key);
+        $ret = $this->sbColumnHandler->getObjects($criteria, $id_as_key);
 
         return $ret;
     }
@@ -173,13 +163,13 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * retrieve Votedatas from the database
      *
-     * @param  object $criteria  {@link CriteriaElement}
-     * @param  bool   $id_as_key use the Votedata's ID as key for the array?
+     * @param  CriteriaElement $criteria  {@link CriteriaElement}
+     * @param  bool            $id_as_key use the Votedata's ID as key for the array?
      * @return array  array of {@link SoapboxSbvotedata} objects
      */
-    public function &getVotedatas($criteria = null, $id_as_key = false)
+    public function &getVotedatas(CriteriaElement $criteria = null, $id_as_key = false)
     {
-        $ret =& $this->_sbVHandler->getObjects($criteria, $id_as_key);
+        $ret = $this->sbVoteHandler->getObjects($criteria, $id_as_key);
 
         return $ret;
     }
@@ -187,34 +177,34 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * count Article matching certain conditions
      *
-     * @param  object $criteria {@link CriteriaElement} object
+     * @param  CriteriaElement $criteria {@link CriteriaElement} object
      * @return int
      */
-    public function getArticleCount($criteria = null)
+    public function getArticleCount(CriteriaElement $criteria = null)
     {
-        return $this->_sbAHandler->getCount($criteria);
+        return $this->sbArticleHandler->getCount($criteria);
     }
 
     /**
      * count Column matching certain conditions
      *
-     * @param  object $criteria {@link CriteriaElement} object
+     * @param  CriteriaElement $criteria {@link CriteriaElement} object
      * @return int
      */
-    public function getColumnCount($criteria = null)
+    public function getColumnCount(CriteriaElement $criteria = null)
     {
-        return $this->_sbCHandler->getCount($criteria);
+        return $this->sbColumnHandler->getCount($criteria);
     }
 
     /**
      * count Votedata matching certain conditions
      *
-     * @param  object $criteria {@link CriteriaElement} object
+     * @param  CriteriaElement $criteria {@link CriteriaElement} object
      * @return int
      */
-    public function getVotedataCount($criteria = null)
+    public function getVotedataCount(CriteriaElement $criteria = null)
     {
-        return $this->_sbVHandler->getCount($criteria);
+        return $this->sbVoteHandler->getCount($criteria);
     }
 
     /**
@@ -223,7 +213,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param $sbcolumns is int , array or {@link SoapboxSbcolumns} objec
      * @return array ( int columnID's)
      */
-    public function getColumnsItemIDs(&$sbcolumns)
+    public function getColumnsItemIDs($sbcolumns)
     {
         $ret       = array();
         $columnIDs = array();
@@ -231,26 +221,26 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbcolumns)) {
-            if (strtolower(get_class($sbcolumns)) == strtolower('SoapboxSbcolumns')) {
+            if (strtolower(get_class($sbcolumns)) === strtolower('SoapboxSbcolumns')) {
                 $columnIDs[] = $sbcolumns->getVar('columnID');
             }
         } else {
             if (is_array($sbcolumns)) {
-                if (count($sbcolumns) == 0) {
+                if (count($sbcolumns) === 0) {
                     return $ret;
                 }
                 $sbcolumns = array_unique($sbcolumns);
                 foreach ($sbcolumns as $k => $v) {
                     if (is_object($v)) {
-                        if (strtolower(get_class($v)) == strtolower('SoapboxSbcolumns')) {
+                        if (strtolower(get_class($v)) === strtolower('SoapboxSbcolumns')) {
                             $columnIDs[] = $v->getVar('columnID');
                         }
                     } else {
-                        $columnIDs[] = (int)($v);
+                        $columnIDs[] = (int)$v;
                     }
                 }
             } else {
-                $columnIDs[] = (int)($sbcolumns);
+                $columnIDs[] = (int)$sbcolumns;
             }
         }
         $ret = array_unique($columnIDs);
@@ -264,7 +254,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param $sbarticles is int , array or {@link SoapboxSbarticles} objec
      * @return array ( int articleID's)
      */
-    public function getArticlesItemIDs(&$sbarticles)
+    public function getArticlesItemIDs($sbarticles)
     {
         $ret        = array();
         $articleIDs = array();
@@ -272,26 +262,26 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbarticles)) {
-            if (strtolower(get_class($sbarticles)) == strtolower('SoapboxSbarticles')) {
+            if (strtolower(get_class($sbarticles)) === strtolower('SoapboxSbarticles')) {
                 $articleIDs[] = $sbarticles->getVar('articleID');
             }
         } else {
             if (is_array($sbarticles)) {
-                if (count($sbarticles) == 0) {
+                if (count($sbarticles) === 0) {
                     return $ret;
                 }
                 $sbarticles = array_unique($sbarticles);
                 foreach ($sbarticles as $k => $v) {
                     if (is_object($v)) {
-                        if (strtolower(get_class($v)) == strtolower('SoapboxSbarticles')) {
+                        if (strtolower(get_class($v)) === strtolower('SoapboxSbarticles')) {
                             $articleIDs[] = $v->getVar('articleID');
                         }
                     } else {
-                        $articleIDs[] = (int)($v);
+                        $articleIDs[] = (int)$v;
                     }
                 }
             } else {
-                $articleIDs[] = (int)($sbarticles);
+                $articleIDs[] = (int)$sbarticles;
             }
         }
         $ret = array_unique($articleIDs);
@@ -302,23 +292,31 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get sbcolumns objects with pemission check , sort
      *
-     * @param int    $limit        number of records to return
-     * @param int    $start        offset of first record to return
-     * @param bool   $checkRight   true is with pemission check
-     * @param string $sortname     sort oder by filed name
-     * @param string $sortorder    sort oder by option (one filed name)
-     * @param var    $sbcolumns    is select int columnID or array columnIDs ,object or objects
-     * @param var    $NOTsbcolumns is no select columnID or array columnIDs ,object or objects
-     * @param bool   $id_as_key    use the Column's ID as key for the array?
+     * @param int       $limit        number of records to return
+     * @param int       $start        offset of first record to return
+     * @param bool      $checkRight   true is with pemission check
+     * @param string    $sortname     sort oder by filed name
+     * @param string    $sortorder    sort oder by option (one filed name)
+     * @param int|array $sbcolumns    is select int columnID or array columnIDs ,object or objects
+     * @param int|array $NOTsbcolumns is no select columnID or array columnIDs ,object or objects
+     * @param bool      $id_as_key    use the Column's ID as key for the array?
      * @set int total count of entrys to total_getColumnsAllPermcheck
      * @return array array of {@link SoapboxSbcolumns} objects
      */
-    public function &getColumnsAllPermcheck($limit = 0, $start = 0, $checkRight = true, $sortname = 'weight', $sortorder = 'ASC', $sbcolumns = null, $NOTsbcolumns = null, $id_as_key = false)
-    {
+    public function &getColumnsAllPermcheck(
+        $limit = 0,
+        $start = 0,
+        $checkRight = true,
+        $sortname = 'weight',
+        $sortorder = 'ASC',
+        $sbcolumns = null,
+        $NOTsbcolumns = null,
+        $id_as_key = false
+    ) {
         global $xoopsUser;
         $ret                                = array();
         $this->total_getColumnsAllPermcheck = 0;
-        $groups                             = (is_object($xoopsUser)) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $groups                             = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
         $columnIDs                          = array();
         $notcolumnIDs                       = array();
         $can_read_columnIDs                 = array();
@@ -332,8 +330,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         if ($checkRight) {
             $gperm_name         = 'Column Permissions';
-            $gperm_handler      = &xoops_gethandler('groupperm');
-            $can_read_columnIDs = $gperm_handler->getItemIds($gperm_name, $groups, $this->_module_id);
+            $gpermHandler       = xoops_getHandler('groupperm');
+            $can_read_columnIDs = $gpermHandler->getItemIds($gperm_name, $groups, $this->_module_id);
         }
         //--------------------------
         $criteria      = new CriteriaCompo();
@@ -359,14 +357,14 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if (empty($this->total_getColumnsAllPermcheck)) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) != '') {
+        if (isset($sortname) && trim($sortname) !== '') {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) != '') {
+        if (isset($sortorder) && trim($sortorder) !== '') {
             $criteria->setOrder($sortorder);
         }
-        $criteria->setLimit((int)($limit));
-        $criteria->setStart((int)($start));
+        $criteria->setLimit((int)$limit);
+        $criteria->setStart((int)$start);
         $ret =& $this->getColumns($criteria, $id_as_key);
 
         unset($criteria);
@@ -395,8 +393,21 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @set int total count of entrys to total_getArticlesAllPermcheck
      * @return array array of {@link SoapboxSbarticles} objects
      */
-    public function &getArticlesAllPermcheck($limit = 0, $start = 0, $checkRight = true, $published = true, $submit = 0, $offline = 0, $block = null, $sortname = 'datesub', $sortorder = 'DESC', $select_sbcolumns = null, $NOTsbarticles = null, $approve_submit = false, $id_as_key = false)
-    {
+    public function &getArticlesAllPermcheck(
+        $limit = 0,
+        $start = 0,
+        $checkRight = true,
+        $published = true,
+        $submit = 0,
+        $offline = 0,
+        $block = null,
+        $sortname = 'datesub',
+        $sortorder = 'DESC',
+        $select_sbcolumns = null,
+        $NOTsbarticles = null,
+        $approve_submit = false,
+        $id_as_key = false
+    ) {
         global $xoopsUser;
         $ret                                 = array();
         $this->total_getArticlesAllPermcheck = 0;
@@ -407,13 +418,14 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if ($checkRight || isset($select_sbcolumns) || $approve_submit) {
             //get category object
             $_sbcolumns_arr =& $this->getColumnsAllPermcheck(0, 0, $checkRight, null, null, $select_sbcolumns, null, true);
-            if (empty($_sbcolumns_arr) || count($_sbcolumns_arr) == 0) {
+            if (empty($_sbcolumns_arr) || count($_sbcolumns_arr) === 0) {
                 return $ret;
             }
             foreach ($_sbcolumns_arr as $key => $_sbcolumn) {
                 $can_read_columnIDs[] = $_sbcolumn->getVar('columnID');
                 if (is_object($xoopsUser)) {
-                    if ($xoopsUser->isAdmin($this->_module_id) || $xoopsUser->getVar('uid') == $_sbcolumn->getVar('author')) {
+                    if ($xoopsUser->isAdmin($this->_module_id)
+                        || $xoopsUser->getVar('uid') === $_sbcolumn->getVar('author')) {
                         $can_read_column_authors[] = $_sbcolumn->getVar('columnID');
                     }
                 }
@@ -443,15 +455,15 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         //------
         if (isset($submit)) {
-            $criteria_public->add(new Criteria('submit', (int)($submit)));
+            $criteria_public->add(new Criteria('submit', (int)$submit));
             $criteria_public_used = true;
         }
         if (isset($offline)) {
-            $criteria_public->add(new Criteria('offline', (int)($offline)));
+            $criteria_public->add(new Criteria('offline', (int)$offline));
             $criteria_public_used = true;
         }
         if (isset($block)) {
-            $criteria_public->add(new Criteria('block', (int)($block)));
+            $criteria_public->add(new Criteria('block', (int)$block));
             $criteria_public_used = true;
         }
         if (isset($NOTsbarticles)) {
@@ -491,17 +503,17 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if (empty($this->total_getArticlesAllPermcheck)) {
             return $ret;
         } else {
-            if (isset($sortname) && trim($sortname) != '') {
+            if (isset($sortname) && trim($sortname) !== '') {
                 $criteria->setSort($sortname);
             }
-            if (isset($sortorder) && trim($sortorder) != '') {
+            if (isset($sortorder) && trim($sortorder) !== '') {
                 $criteria->setOrder($sortorder);
             }
-            $criteria->setLimit((int)($limit));
-            $criteria->setStart((int)($start));
+            $criteria->setLimit((int)$limit);
+            $criteria->setStart((int)$start);
             $sbarticle_arr =& $this->getArticles($criteria, $id_as_key);
             foreach ($sbarticle_arr as $k => $sbarticle) {
-                $sbarticle_arr[$k]->_sbcolumns =& $_sbcolumns_arr[$sbarticle->getVar('columnID')];
+                $sbarticle_arr[$k]->_sbcolumns = $_sbcolumns_arr[$sbarticle->getVar('columnID')];
             }
         }
         unset($criteria);
@@ -513,9 +525,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get object with check Perm a entry
      *
-     * @param       $id
-     * @param  bool $checkRight
-     * @param  bool $approve_submit
+     * @param        $id
+     * @param  bool  $checkRight
+     * @param  bool  $approve_submit
      * @return mixed reference to the {@link SoapboxSbarticles} object, FALSE if failed
      *                              object, FALSE if failed
      * @internal param int $articleID articleID of the entry
@@ -531,42 +543,43 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         //        $gperm_name = 'Column Permissions';
         //        $groups = ( is_object($xoopsUser) ) ? $xoopsUser -> getGroups() : XOOPS_GROUP_ANONYMOUS;
-        //        $gperm_handler = & xoops_gethandler( 'groupperm' );
-        //        if ( !$gperm_handler -> checkRight( $gperm_name,$sbarticle->getVar('columnID'), $groups, $this->_module_id ) ) {
+        //        $gpermHandler = xoops_getHandler( 'groupperm' );
+        //        if ( !$gpermHandler -> checkRight( $gperm_name,$sbarticle->getVar('columnID'), $groups, $this->_module_id ) ) {
         //            return $ret;
         //        }
         //get category object
         $_sbcolumns_arr =& $this->getColumnsAllPermcheck(1, 0, $checkRight, null, null, $sbarticle->getVar('columnID'), null, true);
         if ($checkRight) {
-            if (empty($_sbcolumns_arr) || count($_sbcolumns_arr) == 0) {
+            if (empty($_sbcolumns_arr) || count($_sbcolumns_arr) === 0) {
                 return $ret;
             }
-            $sbarticle->_sbcolumns =& $_sbcolumns_arr[$sbarticle->getVar('columnID')];
-            if ($sbarticle->getVar('offline') != 0) {
+            $sbarticle->_sbcolumns = $_sbcolumns_arr[$sbarticle->getVar('columnID')];
+            if ($sbarticle->getVar('offline') !== 0) {
                 return $ret;
             }
             if (is_object($xoopsUser)) {
                 if ($approve_submit) {
-                    if ($xoopsUser->isAdmin($this->_module_id) || $xoopsUser->getVar('uid') == $sbarticle->_sbcolumns->getVar('author')) {
+                    if ($xoopsUser->isAdmin($this->_module_id)
+                        || $xoopsUser->getVar('uid') === $sbarticle->_sbcolumns->getVar('author')) {
                         //true
-                        $ret =& $sbarticle;
+                        $ret = $sbarticle;
 
                         return $ret;
                     }
                 }
             }
-            if ($sbarticle->getVar('datesub') == 0) {
+            if ($sbarticle->getVar('datesub') === 0) {
                 return $ret;
             }
             if ($sbarticle->getVar('datesub') > time()) {
                 return $ret;
             }
-            if ($sbarticle->getVar('submit') != 0) {
+            if ($sbarticle->getVar('submit') !== 0) {
                 return $ret;
             }
         }
         //true
-        $ret =& $sbarticle;
+        $ret = $sbarticle;
 
         return $ret;
     }
@@ -585,32 +598,38 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @return array Array of {@link SoapboxSbarticles} objects (if $asobject is TRUE)
      *                         objects (if $asobject is TRUE)
      */
-    public function &getArticlesByColumnID($columnID, $asobject = false, $limit = 0, $start = 0, $sortname = null, $sortorder = null)
-    {
+    public function &getArticlesByColumnID(
+        $columnID,
+        $asobject = false,
+        $limit = 0,
+        $start = 0,
+        $sortname = null,
+        $sortorder = null
+    ) {
         $ret                               = array();
         $this->total_getArticlesByColumnID = 0;
 
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('columnID', $columnID));
         $this->total_getArticlesByColumnID = $this->getArticleCount($criteria);
-        if (empty($this->total_getArticlesByColumnID) || $this->total_getArticlesByColumnID == 0) {
+        if (empty($this->total_getArticlesByColumnID) || $this->total_getArticlesByColumnID === 0) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) != '') {
+        if (isset($sortname) && trim($sortname) !== '') {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) != '') {
+        if (isset($sortorder) && trim($sortorder) !== '') {
             $criteria->setOrder($sortorder);
         }
-        $criteria->setLimit((int)($limit));
-        $criteria->setStart((int)($start));
+        $criteria->setLimit((int)$limit);
+        $criteria->setStart((int)$start);
         $sbarticle_arr =& $this->getArticles($criteria, true);
         unset($criteria);
-        if (empty($sbarticle_arr) || count($sbarticle_arr) == 0) {
+        if (empty($sbarticle_arr) || count($sbarticle_arr) === 0) {
             return $ret;
         }
         if ($asobject) {
-            $ret =& $sbarticle_arr;
+            $ret = $sbarticle_arr;
         } else {
             foreach ($sbarticle_arr as $key => $sbarticle) {
                 $ret[] = $key;
@@ -632,31 +651,37 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @return array Array of {@link SoapboxSbvotedata} objects (if $asobject is TRUE)
      *                         objects (if $asobject is TRUE)
      */
-    public function &getVotedatasByArticleID($articleID, $asobject = false, $limit = 0, $start = 0, $sortname = null, $sortorder = null)
-    {
+    public function &getVotedatasByArticleID(
+        $articleID,
+        $asobject = false,
+        $limit = 0,
+        $start = 0,
+        $sortname = null,
+        $sortorder = null
+    ) {
         $ret                                 = array();
         $this->total_getVotedatasByArticleID = 0;
         $criteria                            = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $articleID));
         $this->total_getVotedatasByArticleID = $this->getVotedataCount($criteria);
-        if (empty($this->total_getVotedatasByArticleID) || $this->total_getVotedatasByArticleID == 0) {
+        if (empty($this->total_getVotedatasByArticleID) || $this->total_getVotedatasByArticleID === 0) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) != '') {
+        if (isset($sortname) && trim($sortname) !== '') {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) != '') {
+        if (isset($sortorder) && trim($sortorder) !== '') {
             $criteria->setOrder($sortorder);
         }
-        $criteria->setLimit((int)($limit));
-        $criteria->setStart((int)($start));
+        $criteria->setLimit((int)$limit);
+        $criteria->setStart((int)$start);
         $sbvotedata_arr =& $this->getVotedatas($criteria, true);
         unset($criteria);
-        if (empty($sbvotedata_arr) || count($sbvotedata_arr) == 0) {
+        if (empty($sbvotedata_arr) || count($sbvotedata_arr) === 0) {
             return $ret;
         }
         if ($asobject) {
-            $ret =& $sbvotedata_arr;
+            $ret = $sbvotedata_arr;
         } else {
             foreach ($sbvotedata_arrr as $key => $sbvotedata) {
                 $ret[] = $key;
@@ -677,31 +702,37 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param  null $sortorder
      * @return array array of objects or arrays
      */
-    public function &getColumnsByAuthor($user_id, $asobject = false, $limit = 0, $start = 0, $sortname = null, $sortorder = null)
-    {
+    public function &getColumnsByAuthor(
+        $user_id,
+        $asobject = false,
+        $limit = 0,
+        $start = 0,
+        $sortname = null,
+        $sortorder = null
+    ) {
         $ret                            = array();
         $this->total_getColumnsByAuthor = 0;
         $criteria                       = new CriteriaCompo();
         $criteria->add(new Criteria('author', $user_id));
         $this->total_getColumnsByAuthor = $this->getColumnCount($criteria);
-        if (empty($this->total_getColumnsByAuthor) || $this->total_getColumnsByAuthor == 0) {
+        if (empty($this->total_getColumnsByAuthor) || $this->total_getColumnsByAuthor === 0) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) != '') {
+        if (isset($sortname) && trim($sortname) !== '') {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) != '') {
+        if (isset($sortorder) && trim($sortorder) !== '') {
             $criteria->setOrder($sortorder);
         }
-        $criteria->setLimit((int)($limit));
-        $criteria->setStart((int)($start));
+        $criteria->setLimit((int)$limit);
+        $criteria->setStart((int)$start);
         $sbcolumns_arr =& $this->getColumns($criteria, true);
         unset($criteria);
-        if (empty($sbcolumns_arr) || count($sbcolumns_arr) == 0) {
+        if (empty($sbcolumns_arr) || count($sbcolumns_arr) === 0) {
             return $ret;
         }
         if ($asobject) {
-            $ret =& $sbcolumns_arr;
+            $ret = $sbcolumns_arr;
         } else {
             foreach ($sbcolumns_arr as $key => $sbcolumns) {
                 $ret[] = $key;
@@ -714,29 +745,35 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get a list of columns that article objects
      *
-     * @param       $_sbarticle_arr
-     * @param  bool $asobject
-     * @param  int  $limit
-     * @param  int  $start
-     * @param  null $sortname
-     * @param  null $sortorder
+     * @param        $_sbarticle_arr
+     * @param  bool  $asobject
+     * @param  int   $limit
+     * @param  int   $start
+     * @param  null  $sortname
+     * @param  null  $sortorder
      * @return array array of {@link SoapboxSbcolumns} objects
-     *                         objects
+     *                              objects
      * @internal param object $sbarticle reference to the {@link SoapboxSbarticles} object object
      * @internal param bool $id_as_key use the columnID as key for the array?
      */
-    public function &getColumnsByArticles(&$_sbarticle_arr, $asobject = false, $limit = 0, $start = 0, $sortname = null, $sortorder = null)
-    {
+    public function &getColumnsByArticles(
+        $_sbarticle_arr,
+        $asobject = false,
+        $limit = 0,
+        $start = 0,
+        $sortname = null,
+        $sortorder = null
+    ) {
         $ret       = array();
         $columnIDs = array();
         if (is_array($_sbarticle_arr)) {
             foreach ($_sbarticle_arr as $sbarticle) {
-                if (strtolower(get_class($sbarticle)) != strtolower('SoapboxSbarticles')) {
+                if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
                     $columnIDs[] = $sbarticle->getVar('columnID');
                 }
             }
         } else {
-            if (strtolower(get_class($sbarticle)) != strtolower('SoapboxSbarticles')) {
+            if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
                 $columnIDs[] = $_sbarticle_arr->getVar('columnID');
             }
         }
@@ -747,21 +784,21 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
 
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('columnID', '(' . implode(',', array_unique($columnIDs)) . ')', 'IN'));
-        if (isset($sortname) && trim($sortname) != '') {
+        if (isset($sortname) && trim($sortname) !== '') {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) != '') {
+        if (isset($sortorder) && trim($sortorder) !== '') {
             $criteria->setOrder($sortorder);
         }
-        $criteria->setLimit((int)($limit));
-        $criteria->setStart((int)($start));
+        $criteria->setLimit((int)$limit);
+        $criteria->setStart((int)$start);
         $sbcolumns_arr =& $this->getColumns($criteria, true);
         unset($criteria);
-        if (empty($sbcolumns_arr) || count($sbcolumns_arr) == 0) {
+        if (empty($sbcolumns_arr) || count($sbcolumns_arr) === 0) {
             return $ret;
         }
         if ($asobject) {
-            $ret =& $sbcolumns_arr;
+            $ret = $sbcolumns_arr;
         } else {
             foreach ($sbcolumns_arr as $key => $sbcolumns) {
                 $ret[] = $key;
@@ -803,33 +840,32 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * update count up hit's counter of sbarticles obects ,with author user check
      *
-     * @param  object $sbarticle reference to the {@link SoapboxSbarticles} object
-     * @param  bool   $force
+     * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param  bool              $force
      * @return bool   FALSE if failed, TRUE
      */
-    public function getUpArticlecount(&$sbarticle, $force = false)
+    public function getUpArticlecount(SoapboxSbarticles $sbarticle, $force = false)
     {
         global $xoopsUser, $xoopsModuleConfig;
 
-        if (strtolower(get_class($sbarticle)) != strtolower('SoapboxSbarticles')) {
+        if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
             return false;
         }
-        $groups = (is_object($xoopsUser)) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
         //update count
         $hitcount_update = false;
-        if ($groups == XOOPS_GROUP_ANONYMOUS) {
+        if ($groups === XOOPS_GROUP_ANONYMOUS) {
             $hitcount_update = true;
         } else {
-            if ($xoopsModuleConfig['adminhits'] == 1) {
+            if ($xoopsModuleConfig['adminhits'] === 1) {
                 $hitcount_update = true;
             } else {
                 if ($xoopsUser->isAdmin($this->_module_id)) {
                     $hitcount_update = false;
                 } else {
-                    if ($sbarticle->getVar('uid') != $xoopsUser->uid()) {
+                    $hitcount_update = false;
+                    if ($sbarticle->getVar('uid') !== $xoopsUser->uid()) {
                         $hitcount_update = true;
-                    } else {
-                        $hitcount_update = false;
                     }
                 }
             }
@@ -837,7 +873,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if ($hitcount_update) {
             $hitcount = $sbarticle->getVar('counter') + 1;
 
-            return $this->_sbAHandler->updateByField($sbarticle, "counter", $hitcount, $force);
+            return $this->sbArticleHandler->updateByField($sbarticle, 'counter', $hitcount, $force);
         }
 
         return false;
@@ -846,27 +882,74 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get edit icon display html layout for admin or author
      *
-     * @param  object $sbarticle reference to the {@link SoapboxSbarticles} object
-     * @param  object $sbcolumns reference to the {@link SoapboxSbcolumns} object
+     * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
      * @return string (html tags)
      */
-    public function getadminlinks(&$sbarticle, &$sbcolumns)
+    public function getadminlinks(SoapboxSbarticles $sbarticle, &$sbcolumns)
     {
         global $xoopsUser, $xoopsModule;
-        $pathIcon16 = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
-        $myts       = &MyTextSanitizer:: getInstance();
+        $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+        $myts       = MyTextSanitizer:: getInstance();
         // Functional links
         $ret = '';
         if (is_object($xoopsUser)) {
             if ($xoopsUser->isAdmin($this->_module_id)) {
-                if ($sbarticle->getVar('submit') != 0) {
-                    $ret = "<a href=\"" . XOOPS_URL . '/modules/' . $this->_module_dirname . "/admin/submissions.php?op=mod&articleID=" . $sbarticle->getVar('articleID') . "\" target=\"_blank\">" . "<img src='" . $pathIcon16 . "/edit.png' border=\"0\" alt=\"" . _MD_SOAPBOX_EDITART . "\" width=\"16\" height=\"16\">" . "</a>&nbsp;";
+                if ($sbarticle->getVar('submit') !== 0) {
+                    $ret = '<a href="'
+                           . XOOPS_URL
+                           . '/modules/'
+                           . $this->_module_dirname
+                           . '/admin/submissions.php?op=mod&articleID='
+                           . $sbarticle->getVar('articleID')
+                           . '" target="_blank">'
+                           . "<img src='"
+                           . $pathIcon16
+                           . "/edit.png' border=\"0\" alt=\""
+                           . _MD_SOAPBOX_EDITART
+                           . '" width="16" height="16">'
+                           . '</a>&nbsp;';
                 } else {
-                    $ret = "<a href=\"" . XOOPS_URL . '/modules/' . $this->_module_dirname . "/admin/article.php?op=mod&articleID=" . $sbarticle->getVar('articleID') . "\" target=\"_blank\">" . "<img src='" . $pathIcon16 . "/edit.png' border=\"0\" alt=\"" . _MD_SOAPBOX_EDITART . "\" width=\"16\" height=\"16\">" . "</a>&nbsp;";
+                    $ret = '<a href="'
+                           . XOOPS_URL
+                           . '/modules/'
+                           . $this->_module_dirname
+                           . '/admin/article.php?op=mod&articleID='
+                           . $sbarticle->getVar('articleID')
+                           . '" target="_blank">'
+                           . "<img src='"
+                           . $pathIcon16
+                           . "/edit.png' border=\"0\" alt=\""
+                           . _MD_SOAPBOX_EDITART
+                           . '" width="16" height="16">'
+                           . '</a>&nbsp;';
                 }
-                $ret .= "<a href=\"" . XOOPS_URL . '/modules/' . $this->_module_dirname . "/admin/article.php?op=del&articleID=" . $sbarticle->getVar('articleID') . "\" target=\"_blank\">" . "<img src='" . $pathIcon16 . "/delete.png' border=\"0\" alt=\"" . _MD_SOAPBOX_DELART . "\" width=\"16\" height=\"16\">" . "</a>&nbsp;";
-            } elseif ($xoopsUser->uid() == $sbcolumns->getVar('author')) {
-                $ret = "<a href=\"" . XOOPS_URL . '/modules/' . $this->_module_dirname . "/submit.php?op=edit&articleID=" . $sbarticle->getVar('articleID') . "\" target=\"_blank\">" . "<img src='" . $pathIcon16 . "/edit.png' border=\"0\" alt=\"" . _MD_SOAPBOX_EDITART . "\" width=\"16\" height=\"16\">" . "</a>&nbsp;";
+                $ret .= '<a href="'
+                        . XOOPS_URL
+                        . '/modules/'
+                        . $this->_module_dirname
+                        . '/admin/article.php?op=del&articleID='
+                        . $sbarticle->getVar('articleID')
+                        . '" target="_blank">'
+                        . "<img src='"
+                        . $pathIcon16
+                        . "/delete.png' border=\"0\" alt=\""
+                        . _MD_SOAPBOX_DELART
+                        . '" width="16" height="16">'
+                        . '</a>&nbsp;';
+            } elseif ($xoopsUser->uid() === $sbcolumns->getVar('author')) {
+                $ret = '<a href="'
+                       . XOOPS_URL
+                       . '/modules/'
+                       . $this->_module_dirname
+                       . '/submit.php?op=edit&articleID='
+                       . $sbarticle->getVar('articleID')
+                       . '" target="_blank">'
+                       . "<img src='"
+                       . $pathIcon16
+                       . "/edit.png' border=\"0\" alt=\""
+                       . _MD_SOAPBOX_EDITART
+                       . '" width="16" height="16">'
+                       . '</a>&nbsp;';
             } else {
                 $ret = '';
             }
@@ -878,29 +961,59 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get print ,mail icon html layout for guest or nomal user
      *
-     * @param  object $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
      * @return string (html tags)
      */
-    public function getuserlinks(&$sbarticle)
+    public function getuserlinks(SoapboxSbarticles $sbarticle)
     {
         global $xoopsConfig, $xoopsModule;
-        $pathIcon16 = $GLOBALS['xoops']->url('www/' . $GLOBALS['xoopsModule']->getInfo('icons16'));
+        $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
 
-        $myts = &MyTextSanitizer:: getInstance();
+        $myts = MyTextSanitizer:: getInstance();
         // Functional links
         $ret            = '';
         $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
         $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
-        $al             = soapbox_getacceptlang();
-        if ($al == "ja") {
-            if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader') && @mb_internal_encoding(_CHARSET)) {
+        $al             = SoapboxUtility::getAcceptLang();
+        if ($al === 'ja') {
+            if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
+                && @mb_internal_encoding(_CHARSET)) {
                 $mbmail_subject = mb_convert_encoding($mbmail_subject, 'SJIS', _CHARSET);
                 $mbmail_body    = mb_convert_encoding($mbmail_body, 'SJIS', _CHARSET);
             }
         }
         $mbmail_subject = rawurlencode($mbmail_subject);
         $mbmail_body    = rawurlencode($mbmail_body);
-        $ret            = "<a href=\"" . XOOPS_URL . '/modules/' . $this->_module_dirname . "/print.php?articleID=" . $sbarticle->getVar('articleID') . "\" target=\"_blank\">" . "<img src='" . $pathIcon16 . "/printer.png' border=\"0\" alt=\"" . _MD_SOAPBOX_PRINTART . "\" width=\"16\" height=\"16\">" . "</a>&nbsp;" . "<a href=\"mailto:?subject=" . $myts->htmlSpecialChars($mbmail_subject) . "&amp;body=" . $myts->htmlSpecialChars($mbmail_body) . ":  " . XOOPS_URL . "/modules/" . $this->_module_dirname . "/article.php?articleID=" . $sbarticle->getVar('articleID') . " \" target=\"_blank\">" . "<img src='" . $pathIcon16 . "/mail_forward.png' border=\"0\" alt=\"" . _MD_SOAPBOX_SENDTOFRIEND . "\" width=\"16\" height=\"16\">" . "</a>&nbsp;";
+        $ret            = '<a href="'
+                          . XOOPS_URL
+                          . '/modules/'
+                          . $this->_module_dirname
+                          . '/print.php?articleID='
+                          . $sbarticle->getVar('articleID')
+                          . '" target="_blank">'
+                          . "<img src='"
+                          . $pathIcon16
+                          . "/printer.png' border=\"0\" alt=\""
+                          . _MD_SOAPBOX_PRINTART
+                          . '" width="16" height="16">'
+                          . '</a>&nbsp;'
+                          . '<a href="mailto:?subject='
+                          . $myts->htmlSpecialChars($mbmail_subject)
+                          . '&amp;body='
+                          . $myts->htmlSpecialChars($mbmail_body)
+                          . ':  '
+                          . XOOPS_URL
+                          . '/modules/'
+                          . $this->_module_dirname
+                          . '/article.php?articleID='
+                          . $sbarticle->getVar('articleID')
+                          . ' " target="_blank">'
+                          . "<img src='"
+                          . $pathIcon16
+                          . "/mail_forward.png' border=\"0\" alt=\""
+                          . _MD_SOAPBOX_SENDTOFRIEND
+                          . '" width="16" height="16">'
+                          . '</a>&nbsp;';
 
         return $ret;
     }

@@ -12,6 +12,7 @@ if (!class_exists('XoopsGTicket')) {
         private $_latest_token = '';
 
         // render form as plain html
+
         /**
          * @param  string $salt
          * @param  int    $timeout
@@ -24,6 +25,7 @@ if (!class_exists('XoopsGTicket')) {
         }
 
         // returns an object of XoopsFormHidden including theh ticket
+
         /**
          * @param  string $salt
          * @param  int    $timeout
@@ -36,18 +38,20 @@ if (!class_exists('XoopsGTicket')) {
         }
 
         // add a ticket as Hidden Element into XoopsForm
+
         /**
          * @param        $form
          * @param string $salt
          * @param int    $timeout
          * @param string $area
          */
-        public function addTicketXoopsFormElement(&$form, $salt = '', $timeout = 1800, $area = '')
+        public function addTicketXoopsFormElement($form, $salt = '', $timeout = 1800, $area = '')
         {
             $form->addElement(new XoopsFormHidden('XOOPS_G_TICKET', $this->issue($salt, $timeout, $area)));
         }
 
         // returns an array for xoops_confirm() ;
+
         /**
          * @param  string $salt
          * @param  int    $timeout
@@ -60,6 +64,7 @@ if (!class_exists('XoopsGTicket')) {
         }
 
         // return GET parameter string.
+
         /**
          * @param  string $salt
          * @param  bool   $noamp
@@ -73,6 +78,7 @@ if (!class_exists('XoopsGTicket')) {
         }
 
         // issue a ticket
+
         /**
          * @param  string $salt
          * @param  int    $timeout
@@ -84,7 +90,10 @@ if (!class_exists('XoopsGTicket')) {
             global $xoopsModule;
 
             if ('' === $salt) {
-                $salt = '$2y$07$' . strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+                if (function_exists('mcrypt_create_iv') && !defined('PHALANGER')) {
+                    // $salt = '$2y$07$' . strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+                    $salt = '$2y$07$' . str_replace('+', '.', base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)));
+                }
             }
             // create a token
             list($usec, $sec) = explode(' ', microtime());
@@ -114,13 +123,15 @@ if (!class_exists('XoopsGTicket')) {
                 'expire'  => time() + $timeout,
                 'referer' => $referer,
                 'area'    => $area,
-                'token'   => $token);
+                'token'   => $token
+            );
 
             // paid md5ed token as a ticket
             return md5($token . XOOPS_DB_PREFIX);
         }
 
         // check a ticket
+
         /**
          * @param  bool   $post
          * @param  string $area
@@ -194,10 +205,10 @@ if (!class_exists('XoopsGTicket')) {
             }
 
             // check area or referer
-            if (@$found_stub['area'] == $area) {
+            if (@$found_stub['area'] === $area) {
                 $area_check = true;
             }
-            if (!empty($found_stub['referer']) && strstr(@$_SERVER['HTTP_REFERER'], $found_stub['referer'])) {
+            if (!empty($found_stub['referer']) && false !== strpos(@$_SERVER['HTTP_REFERER'], $found_stub['referer'])) {
                 $referer_check = true;
             }
 
@@ -220,6 +231,7 @@ if (!class_exists('XoopsGTicket')) {
         }
 
         // Ticket Using
+
         /**
          * @return bool
          */
@@ -233,6 +245,7 @@ if (!class_exists('XoopsGTicket')) {
         }
 
         // return errors
+
         /**
          * @param  bool $ashtml
          * @return array|string
@@ -242,7 +255,7 @@ if (!class_exists('XoopsGTicket')) {
             if ($ashtml) {
                 $ret = '';
                 foreach ($this->_errors as $msg) {
-                    $ret .= "$msg<br />\n";
+                    $ret .= "$msg<br>\n";
                 }
             } else {
                 $ret = $this->_errors;
@@ -265,7 +278,7 @@ if (!function_exists('admin_refcheck')) {
      * @param  string $chkref
      * @return bool
      */
-    function admin_refcheck($chkref = "")
+    function admin_refcheck($chkref = '')
     {
         if (empty($_SERVER['HTTP_REFERER'])) {
             return true;
@@ -273,7 +286,7 @@ if (!function_exists('admin_refcheck')) {
             $ref = $_SERVER['HTTP_REFERER'];
         }
         $cr = XOOPS_URL;
-        if ($chkref != "") {
+        if ($chkref !== '') {
             $cr .= $chkref;
         }
         if (strpos($ref, $cr) !== 0) {
