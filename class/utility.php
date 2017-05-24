@@ -124,7 +124,7 @@ class SoapboxUtility extends XoopsObject
         // check for minimum PHP version
         $success = true;
         $verNum  = PHP_VERSION;
-        $reqVer  =& $module->getInfo('min_php');
+        $reqVer  = $module->getInfo('min_php');
         if (false !== $reqVer && '' !== $reqVer) {
             if (version_compare($verNum, $reqVer, '<')) {
                 $module->setErrors(sprintf(_AM_SOAPBOX_ERROR_BAD_PHP, $reqVer, $verNum));

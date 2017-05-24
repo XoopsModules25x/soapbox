@@ -96,9 +96,9 @@ $modCopyright = "<a href='http://xoops.org' title='XOOPS Project' target='_blank
                      <img src='" . constant($capsDirName . '_AUTHOR_LOGOIMG') . "' alt='XOOPS Project' /></a>";
 
 /**
- * Class ModuleConfigurator
+ * Class SoapboxConfigurator
  */
-class ModuleConfigurator
+class SoapboxConfigurator
 {
     public $uploadFolders   = [];
     public $blankFiles      = [];
@@ -108,7 +108,7 @@ class ModuleConfigurator
     public $name;
 
     /**
-     * ModuleConfigurator constructor.
+     * SoapboxConfigurator constructor.
      */
     public function __construct()
     {

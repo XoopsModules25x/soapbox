@@ -92,7 +92,7 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
     $moduleHelper->loadLanguage('modinfo');
 
     if ($previousVersion < 240) {
-        $configurator = new ModuleConfigurator();
+        $configurator = new SoapboxConfigurator();
         $classUtility = ucfirst($moduleDirName) . 'Utility';
         if (!class_exists($classUtility)) {
             xoops_load('utility', $moduleDirName);
