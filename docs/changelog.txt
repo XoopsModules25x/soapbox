@@ -22,6 +22,7 @@
     - updated addInfoBoxLine entries (mamba)
     - displayNavigation(basename(__FILE__))  (mamba)
     - changed to ->displayButton('left') (mamba)
+- CSS file location fixes (aerograf)
 
 <h5>1.61 Beta 1      [NOT RELEASED]</h5>
 <hr>
