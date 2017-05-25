@@ -11,10 +11,10 @@
 // Module Info
 // The name of this module
 global $xoopsModule;
-define('_MI_SOAPBOX_MD_NAME', 'Блог');
+define('_MI_SOAPBOX_NAME', 'Блог');
 
 // A brief description of this module
-define('_MI_SOAPBOX_MD_DESC', 'OpEd для Вашего сайта');
+define('_MI_SOAPBOX_DESC', 'OpEd для Вашего сайта');
 
 // Sub menus in main menu block
 define('_MI_SOAPBOX_SUB_SMNAME1', 'Добавить статью');
@@ -184,3 +184,15 @@ define('_MI_SOAPBOX_FORM_TINYMCE', 'TinyMCE Editor');
 define('_MI_SOAPBOX_SUBMITS', 'На проверку');
 define('_MI_SOAPBOX_ADD_ARTICLE', 'Добавить статью');
 define('_MI_SOAPBOX_ADD_COLUMN', 'Добавить колонку');
+//Help
+define('_MI_SOAPBOX_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_SOAPBOX_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_SOAPBOX_BACK_2_ADMIN', 'Вернуться в администрацию ');
+define('_MI_SOAPBOX_OVERVIEW', 'Обзор');
+
+//define('_MI_SOAPBOX_HELP_DIR', __DIR__);
+
+//help multi-page
+define('_MI_SOAPBOX_DISCLAIMER', 'Disclaimer');
+define('_MI_SOAPBOX_LICENSE', 'Лицензия');
+define('_MI_SOAPBOX_SUPPORT', 'Поддержка');

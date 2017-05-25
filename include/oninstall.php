@@ -43,7 +43,7 @@ function xoops_module_pre_install_soapbox(XoopsModule $module)
         return false;
     }
 
-    $mod_tables =& $module->getInfo('tables');
+    $mod_tables = $module->getInfo('tables');
     foreach ($mod_tables as $table) {
         $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
     }
@@ -76,7 +76,7 @@ function xoops_module_install_soapbox(XoopsModule $module)
     $moduleHelper->loadLanguage('admin');
     $moduleHelper->loadLanguage('modinfo');
 
-    $configurator = new ModuleConfigurator();
+    $configurator = new SoapboxConfigurator();
     $classUtility = ucfirst($moduleDirName) . 'Utility';
     if (!class_exists($classUtility)) {
         xoops_load('utility', $moduleDirName);

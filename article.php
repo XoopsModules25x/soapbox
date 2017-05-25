@@ -190,6 +190,6 @@ if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
 } else {
     include XOOPS_ROOT_PATH . '/include/comment_view.php';
 }
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

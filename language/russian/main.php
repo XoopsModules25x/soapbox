@@ -69,7 +69,7 @@ define('_MD_SOAPBOX_THANKYOU', 'Спасибо, что нашли время, ч
 define('_MD_SOAPBOX_TIMES', ' раз(а).');
 define('_MD_SOAPBOX_TIMESREAD', 'Прочитано: ');
 define('_MD_SOAPBOX_UNKNOWNERROR', 'ОШИБКА. Обратная переадресация!');
-define('_MD_SOAPBOX_VOTEAPPRE', 'Ваш голос ценен.');
+define('_MD_SOAPBOX_VOTEAPPRE', 'Ваш голос учтен.');
 define('_MD_SOAPBOX_VOTEONCE', 'Пожалуйста, не голосуйте за тот же ресурс более одного раза.');
 define('_MD_SOAPBOX_VOTE', ' | Голосов: ');
 define('_MD_SOAPBOX_VOTES', 'Голосов');
