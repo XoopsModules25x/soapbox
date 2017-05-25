@@ -39,6 +39,7 @@ function loadSampleData()
 
     \Xmf\Database\TableLoad::truncateTable('sbarticles');
     \Xmf\Database\TableLoad::truncateTable('sbcolumns');
+    \Xmf\Database\TableLoad::truncateTable('sbvotedata');
 
     \Xmf\Database\TableLoad::loadTableFromArray('sbarticles', $items);
     \Xmf\Database\TableLoad::loadTableFromArray('sbcolumns', $cat);

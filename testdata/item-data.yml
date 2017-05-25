@@ -18,8 +18,8 @@
   breaks: 1
   block: 1
   artimage: "nopicture.png"
-  votes: 1
-  rating: 5.0001
+  votes: 0
+  rating: 0.0000
   commentable: 1
   offline: 0
   notifypub: 0
@@ -41,8 +41,8 @@
   breaks: 1
   block: 1
   artimage: "xoops.png"
-  votes: 1
-  rating: 6.0001
+  votes: 0
+  rating: 0.0000
   commentable: 0
   offline: 0
   notifypub: 0
