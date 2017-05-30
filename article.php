@@ -123,6 +123,25 @@ if (is_object($xoopsUser)) {
 } else {
     $xoopsTpl->assign('user_pmlink', '');
 }
+// Теги
+$moduleHandler = xoops_getHandler('module');
+$tagsModule    = $moduleHandler->getByDirname('tag');
+if (is_object($tagsModule)) {
+    include_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+
+    $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
+    $catid  = 0;
+    $tagbar = tagBar($itemid, $catid);
+    if ($tagbar) {
+        $xoopsTpl->assign('tagbar', $tagbar);
+        $tagsmeta = implode(' ', $tagbar['tags']);
+    } else {
+        $tagsmeta = '';
+    }
+} else {
+    $xoopsTpl->assign('tagbar', false);
+    $tagsmeta = '';
+}
 
 // Functional links
 $articles['adminlinks'] = $entrydataHandler->getadminlinks($_entryob, $_categoryob);
@@ -190,6 +209,6 @@ if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
 } else {
     include XOOPS_ROOT_PATH . '/include/comment_view.php';
 }
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

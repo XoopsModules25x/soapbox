@@ -74,7 +74,7 @@ function xoops_module_pre_update_soapbox(XoopsModule $module)
 
 function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = null)
 {
-    //    global $xoopsDB;
+    global $xoopsDB;
     require_once __DIR__ . '/../../../mainfile.php';
     require_once __DIR__ . '/../include/config.php';
 
@@ -92,15 +92,15 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
     $moduleHelper->loadLanguage('modinfo');
 
     if ($previousVersion < 240) {
-        $configurator = new ModuleConfigurator();
+        $configurator = new SoapboxConfigurator();
         $classUtility = ucfirst($moduleDirName) . 'Utility';
         if (!class_exists($classUtility)) {
             xoops_load('utility', $moduleDirName);
         }
 
         //delete old HTML templates
-        if (count($configurator['templateFolders']) > 0) {
-            foreach ($configurator['templateFolders'] as $folder) {
+        if (count($configurator->{'templateFolders'}) > 0) {
+            foreach ($configurator->{'templateFolders'} as $folder) {
                 $templateFolder = $GLOBALS['xoops']->path('modules/' . $moduleDirName . $folder);
                 if (is_dir($templateFolder)) {
                     $templateList = array_diff(scandir($templateFolder), array('..', '.'));
@@ -114,7 +114,7 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
                     }
                 }
             }
-        }
+        } 
 
         //  ---  DELETE OLD FILES ---------------
         if (count($configurator->oldFiles) > 0) {

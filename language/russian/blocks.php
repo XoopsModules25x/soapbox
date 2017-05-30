@@ -37,3 +37,5 @@ define('_MB_SOAPBOX_VOTE', ' | Голосов: ');
 define('_MB_SOAPBOX_WEIGHT', 'Список по весу');
 define('_MB_SOAPBOX_SPOTLIGHT', 'Включить подсветку особеннстей');
 define('_MB_SOAPBOX_SPOTLIGHT_TOPIC', 'Выбрать колонку(и)');
+// 1.61
+define('_MB_SOAPBOX_SVOTES', 'Рейтинг = %s, Голосов = %s');

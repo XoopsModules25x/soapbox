@@ -243,7 +243,7 @@ switch ($op) {
         require_once __DIR__ . '/include/storyform.inc.php';
 
         //$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css" />');
-        $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/style.css" />');
+        $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/css/style.css" />');
         include XOOPS_ROOT_PATH . '/footer.php';
         break;
 }

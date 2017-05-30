@@ -130,9 +130,9 @@ function editarticle($articleID = 0)
     //    $editor_teaser=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
     //    $sform->addElement($editor_teaser,true);
     //
-    $autoteaser_radio = new XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
-    $sform->addElement($autoteaser_radio);
-    $sform->addElement(new XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
+   // $autoteaser_radio = new XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+   // $sform->addElement($autoteaser_radio);
+   // $sform->addElement(new XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
 
     // BODY
     //HACK by domifara for Wysiwyg
@@ -189,20 +189,11 @@ function editarticle($articleID = 0)
     $datesub_tray = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br>', 'datesub', 15, $e_articles['datesub']);
 
     // you don't want to change datesub
-    //    $datesubnochage_checkbox = new XoopsFormCheckBox( _AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 0 );
-    //    $datesubnochage_checkbox->addOption(1, _AM_SOAPBOX_YES);
-    //    $datesub_tray -> addElement( $datesubnochage_checkbox );
+    $datesubnochage_checkbox = new XoopsFormCheckBox( _AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 1 );
+    $datesubnochage_checkbox->addOption(1, _AM_SOAPBOX_YES);
+    $datesub_tray -> addElement( $datesubnochage_checkbox );
     $sform->addElement($datesub_tray);
     //-----------
-   // Тэги
-    $moduleHandler = xoops_getHandler('module');
-    $tagsModule    = $moduleHandler->getByDirname('tag');
-    if (is_object($tagsModule)) {
-        include_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
-        $catid  = 0;
-        $sform->addElement(new XoopsFormTag('item_tag', 60, 255, $itemid, $catid = 0));
-    }
 
     // COMMENTS
     if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
@@ -391,14 +382,14 @@ switch ($op) {
 
         if (isset($_POST['teaser'])) {
             $_entryob->setVar('teaser', $_POST['teaser']);
-        } 
+        }
 
         $autoteaser = isset($_POST['autoteaser']) ? (int)$_POST['autoteaser'] : 0;
         $charlength = isset($_POST['teaseramount']) ? (int)$_POST['teaseramount'] : 0;
         if ($autoteaser && $charlength) {
             $_entryob->setVar('teaser', xoops_substr($_entryob->getVar('bodytext', 'none'), 0, $charlength));
         }
-        //datesub  
+        //datesub
         $datesubnochage  = isset($_POST['datesubnochage']) ? (int)$_POST['datesubnochage'] : 0;
         $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
         $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;
@@ -411,7 +402,7 @@ switch ($op) {
                 $_entryob->setVar('datesub', $datesub);
             }
         }
-         
+
         $_entryob->setVar('submit', 0);
 
         // ARTICLE IMAGE
@@ -444,13 +435,7 @@ switch ($op) {
             $_entryob->setVar('artimage', 'blank.png');
         }
         //-----------------
-        //-- module Tag
-    $moduleHandler = xoops_getHandler('module');
-    $tagsModule    = $moduleHandler->getByDirname('tag');
-    if (is_object($tagsModule)) {
-        $tagHandler = xoops_getModuleHandler('tag', 'tag');
-        $tagHandler->updateByItem($_POST['item_tag'], $articleID, $xoopsModule->getVar('dirname'), $catid = 0);
-    }
+
         // Save to database
         if ($_entryob->_isNew) {
             if (!$entrydataHandler->insertArticle($_entryob)) {

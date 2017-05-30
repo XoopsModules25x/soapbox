@@ -107,7 +107,8 @@ define('_AM_SOAPBOX_OPTS', 'Модуль параметров конфигура
 define('_AM_SOAPBOX_ORDERUPDATED', 'Переупорядочить по весу');
 define('_AM_SOAPBOX_PERMS', 'Права доступа');
 define('_AM_SOAPBOX_PERMSMNGMT', 'Управление правами доступа');
-define('_AM_SOAPBOX_PERMSNOTE', '<div><b>ЗАМЕТКА:</b> Обратите внимание, что даже если Вы установите здесь права просмотра а группа не может видеть статьи или блоки, то Вам необходимо установить параметры доступа для групп к модулю. Чтобы сделать это, перейдите <b>Система > Группы</b>, выберите соответствующие группы и установите флажки, чтобы предоставить доступ.</div>');
+define('_AM_SOAPBOX_PERMSNOTE', 
+	   '<div><b>ЗАМЕТКА:</b> Обратите внимание, что даже если Вы установите здесь права просмотра а группа не может видеть статьи или блоки, то Вам необходимо установить параметры доступа для групп к модулю. Чтобы сделать это, перейдите <b>Система > Группы</b>, выберите соответствующие группы и установите флажки, чтобы предоставить доступ.</div>');
 define('_AM_SOAPBOX_REORDERCOL', 'Изменение порядка колонок');
 define('_AM_SOAPBOX_SELALL', 'Все статьи');
 define('_AM_SOAPBOX_SELAPV', 'Одобренные статьи');
@@ -148,3 +149,27 @@ define('_AM_SOAPBOX_REORDERART', 'Упорядочить статьи (вес)')
 //ModuleAdmin
 define('_AM_SOAPBOX_MODULEADMIN_MISSING', 'Ошибка: Класс ModuleAdmin отсутствует. Пожалуйста, установите ModuleAdmin класса в /Frameworks (смотреть /docs/readme.txt)');
 define('_AM_SOAPBOX_NEED_APPROVAL', 'Необходимо одобрение:  <strong>%s</strong> ');
+//Permissions
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL', 'Глобальные разрешения');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_DESC', 'Только пользователи из выбранной Вами группы могут глобально');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_4', 'Участвовать в рейтинге');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_8', 'Отправлять статьи');
+define('_AM_SOAPBOX_PERMISSIONS_GLOBAL_16', 'Авто одобрение');
+define('_AM_SOAPBOX_PERMISSIONS_APPROVE', 'Возможность одобрять статьи');
+define('_AM_SOAPBOX_PERMISSIONS_APPROVE_DESC', 'Только выбранные Вами пользователи могут подтвердить');
+define('_AM_SOAPBOX_PERMISSIONS_VIEW', 'Разрешения для просмотра');
+define('_AM_SOAPBOX_PERMISSIONS_VIEW_DESC', 'Только пользователи из выбранной Вами группы могут просматривать');
+define('_AM_SOAPBOX_PERMISSIONS_SUBMIT', 'Отправлять статьи');
+define('_AM_SOAPBOX_PERMISSIONS_SUBMIT_DESC', 'Только пользователи из выбранной вами группы могут отправить');
+define('_AM_SOAPBOX_PERMISSIONS_NOPERMSSET', 'Невозможно установить разрешение: Не установлен рейтинг! Сначала создайте рейтинг.');
+
+define('_AM_SOAPBOX_UPGRADEFAILED0', "Ошибка обновления - не удалось переименовать поле '%s'");
+define('_AM_SOAPBOX_UPGRADEFAILED1', "Ошибка обновления - не удалось добавить новые поля");
+define('_AM_SOAPBOX_UPGRADEFAILED2', "Ошибка обновления - невозможно переименовать таблицу '%s'");
+define('_AM_SOAPBOX_ERROR_COLUMN', 'Не удалось создать столбец в базе данных: %s');
+define('_AM_SOAPBOX_ERROR_BAD_XOOPS', 'Этот модуль требует XOOPS %s+ (%s установлено)');
+define('_AM_SOAPBOX_ERROR_BAD_PHP', 'Этот модуль требует PHP версии %s+ (%s установлено)');
+define('_AM_SOAPBOX_ERROR_TAG_REMOVAL', 'Не удалось удалить теги из модуля тегов');
+
+define('_AM_SOAPBOX_ADD_SAMPLEDATA', 'Добавить пример данных (удалит ВСЕ текущие данные)');
+define('_AM_SOAPBOX_SAMPLEDATA_SUCCESS', 'Примеры успешно загружены');

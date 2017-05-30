@@ -200,3 +200,7 @@ define('_MI_SOAPBOX_OVERVIEW', 'Overview');
 define('_MI_SOAPBOX_DISCLAIMER', 'Disclaimer');
 define('_MI_SOAPBOX_LICENSE', 'License');
 define('_MI_SOAPBOX_SUPPORT', 'Support');
+
+//Tag
+define('_MI_SOAPBOX_USETAG', 'Use tags?');
+define('_MI_SOAPBOX_USETAGDSC', 'Tags module required \"TAG\"');
