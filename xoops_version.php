@@ -362,13 +362,13 @@ $editorHandler                       = XoopsEditorHandler::getInstance();
 $modversion['config'][$i]['options'] = array_flip($editorHandler->getList());
 
 // Теги
-//++$i;
-//$modversion['config'][$i]['name'] = 'usetag';
-//$modversion['config'][$i]['title'] = '_MI_SOAPBOX_USETAG';
-//$modversion['config'][$i]['description'] = '_MI_SOAPBOX_USETAGDSC';
-//$modversion['config'][$i]['formtype'] = 'yesno';
-//$modversion['config'][$i]['valuetype'] = 'int';
-//$modversion['config'][$i]['default'] = 0;
+++$i;
+$modversion['config'][$i]['name'] = 'usetag';
+$modversion['config'][$i]['title'] = '_MI_SOAPBOX_USETAG';
+$modversion['config'][$i]['description'] = '_MI_SOAPBOX_USETAGDSC';
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = 0;
 
 // Comments
 $modversion['hasComments']          = 1;

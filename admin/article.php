@@ -195,6 +195,7 @@ function editarticle($articleID = 0)
     $sform->addElement($datesub_tray);
     //-----------
    // Тэги
+   if ( xoops_getModuleOption( 'usetag', 'soapbox') ) {
     $moduleHandler = xoops_getHandler('module');
     $tagsModule    = $moduleHandler->getByDirname('tag');
     if (is_object($tagsModule)) {
@@ -203,7 +204,7 @@ function editarticle($articleID = 0)
         $catid  = 0;
         $sform->addElement(new XoopsFormTag('item_tag', 60, 255, $itemid, $catid = 0));
     }
-
+    }
     // COMMENTS
     if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
         && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
