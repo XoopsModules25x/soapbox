@@ -15,10 +15,10 @@
  *
  * @category        Module
  * @package         soapbox
- * @author          XOOPS Development Team <mambax7@gmail.com> - <http://xoops.org>
- * @copyright       {@link http://xoops.org/ XOOPS Project}
+ * @author          XOOPS Development Team <mambax7@gmail.com> - <https://xoops.org>
+ * @copyright       {@link https://xoops.org/ XOOPS Project}
  * @license         {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @link            http://xoops.org/
+ * @link            https://xoops.org/
  * @since           1.0.0
  */
 
