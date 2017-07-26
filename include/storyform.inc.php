@@ -78,7 +78,7 @@ $artimage_select->addOptionArray($graph_array);
 $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '", "", "' . XOOPS_URL . "\")'");
 $artimage_tray = new XoopsFormElementTray(_MD_SOAPBOX_SELECT_IMG, '&nbsp;');
 $artimage_tray->addElement($artimage_select);
-$artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt='' />"));
+$artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
 $sform->addElement($artimage_tray);
 
 if (is_object($xoopsUser)) {
@@ -88,7 +88,7 @@ if (is_object($xoopsUser)) {
     //----------
     // datesub
     //----------
-    //$datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . "=>");
+    //$datesub_caption = $myts->htmlSpecialChars(formatTimestamp($e_articles['datesub'], $xoopsModuleConfig['dateformat']) . '=>');
     //$datesub_tray    = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br>' . $datesub_caption, 'datesub', 15, time());
     $datesub_tray = new XoopsFormDateTime(_MD_SOAPBOX_POSTED . '<br>', 'datesub', 15, $e_articles['datesub']);
     // you don't want to change datesub
@@ -141,7 +141,7 @@ $button_tray->addElement(new XoopsFormButton('', 'post', _MD_SOAPBOX_CREATE, 'su
 
 $sform->addElement($button_tray);
 //-----------
-$xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
+//$xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
 //-----------
 $sform->display();
 unset($hidden);

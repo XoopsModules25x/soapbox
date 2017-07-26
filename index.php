@@ -78,7 +78,7 @@ switch ($op) {
             $category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
             //-------------------------------------
             if ($category['colimage'] !== '') {
-                $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $category['colimage'] . '" /></span>';
+                $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $category['colimage'] . '"></span>';
             } else {
                 $category['imagespan'] = '';
             }
@@ -124,7 +124,7 @@ switch ($op) {
             unset($category);
         }
 }
-//$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css" />');
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
+//$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css">');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 
 include XOOPS_ROOT_PATH . '/footer.php';

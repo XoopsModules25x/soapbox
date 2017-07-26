@@ -140,7 +140,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
             unset($ele_tray, $ele, $hidden);
         }
         $button_tray->addElement(new XoopsFormHidden('op', 'save'));
-        $xoopsGTicket->addTicketXoopsFormElement($button_tray, __LINE__, 1800, 'mymenu');
+        //        $xoopsGTicket->addTicketXoopsFormElement($button_tray, __LINE__, 1800, 'mymenu');
         $button_tray->addElement(new XoopsFormButton('', 'button', _GO, 'submit'));
         $form->addElement($button_tray);
         xoops_cp_header();
@@ -157,8 +157,8 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
         //if ( !admin_refcheck("/modules/$admin_mydirname/admin/") ) {
         //  exit('Invalid referer');
         //}
-        if (!$xoopsGTicket->check(true, 'mymenu')) {
-            redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+        if (!$GLOBALS['xoopsSecurity']->check('mymenu')) {
+            redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         require_once XOOPS_ROOT_PATH . '/class/template.php';
         $xoopsTpl = new XoopsTpl();

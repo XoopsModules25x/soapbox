@@ -23,9 +23,7 @@ require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 //require_once __DIR__ . '/../class/utility.php';
 //require_once __DIR__ . '/../include/common.php';
 
-if (!isset($moduleDirName)) {
-    $moduleDirName = basename(dirname(__DIR__));
-}
+$moduleDirName = basename(dirname(__DIR__));
 
 require_once __DIR__ . '/../include/gtickets.php';
 

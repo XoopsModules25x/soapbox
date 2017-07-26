@@ -40,7 +40,7 @@ require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 $start = Request::getInt('start', 0, 'GET');
 
 //-------------------------------------
-$entrydataHandler = xoops_getModuleHandler('entryget', $xoopsModule->dirname());
+$entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
 //-------------------------------------
 $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['indexperpage'], $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
 $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
@@ -126,6 +126,6 @@ $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbupl
 $xoopsTpl->assign('sortname', $sortname);
 $xoopsTpl->assign('sortorder', $sortorder);
 
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 
 include XOOPS_ROOT_PATH . '/footer.php';

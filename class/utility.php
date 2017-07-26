@@ -22,9 +22,8 @@ class SoapboxUtility extends XoopsObject
                     file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
                 }
             }
-        }
-        catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n", '<br/>';
+        } catch (Exception $e) {
+            echo 'Caught exception: ', $e->getMessage(), "\n", '<br>';
         }
     }
 
@@ -43,7 +42,7 @@ class SoapboxUtility extends XoopsObject
         //                return copy($file, $folder);
         //            }
         //        } catch (Exception $e) {
-        //            echo 'Caught exception: ', $e->getMessage(), "\n", "<br/>";
+        //            echo 'Caught exception: ', $e->getMessage(), "\n", "<br>";
         //        }
         //        return false;
     }
@@ -74,17 +73,24 @@ class SoapboxUtility extends XoopsObject
      * @static
      * @param XoopsModule $module
      *
+     * @param null|string $requiredVer
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerXoops(XoopsModule $module)
+    public static function checkVerXoops(XoopsModule $module = null, $requiredVer = null)
     {
-        xoops_loadLanguage('admin', $module->dirname());
+        $moduleDirName = basename(dirname(__DIR__));
+        if (null === $module) {
+            $module = XoopsModule::getByDirname($moduleDirName);
+        }
+        xoops_loadLanguage('admin', $moduleDirName);
         //check for minimum XOOPS version
-        $currentVer  = substr(XOOPS_VERSION, 6); // get the numeric part of string
-        $currArray   = explode('.', $currentVer);
-        $requiredVer = '' . $module->getInfo('min_xoops'); //making sure it's a string
-        $reqArray    = explode('.', $requiredVer);
-        $success     = true;
+        $currentVer = substr(XOOPS_VERSION, 6); // get the numeric part of string
+        $currArray  = explode('.', $currentVer);
+        if (null === $requiredVer) {
+            $requiredVer = '' . $module->getInfo('min_xoops'); //making sure it's a string
+        }
+        $reqArray = explode('.', $requiredVer);
+        $success  = true;
         foreach ($reqArray as $k => $v) {
             if (isset($currArray[$k])) {
                 if ($currArray[$k] > $v) {
@@ -186,12 +192,12 @@ class SoapboxUtility extends XoopsObject
         }
 
         if (!is_dir(XOOPS_ROOT_PATH."/".$imgsource."/".$image) && file_exists(XOOPS_ROOT_PATH."/".$imgsource."/".$image)) {
-            $showimage .= "<img src='".XOOPS_URL."/".$myts->htmlSpecialChars(strip_tags($imgsource))."/".$myts->htmlSpecialChars(strip_tags($image))."' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
+            $showimage .= "<img src='".XOOPS_URL."/".$myts->htmlSpecialChars(strip_tags($imgsource))."/".$myts->htmlSpecialChars(strip_tags($image))."' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))."></a>";
         } else {
             if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
-                $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/brokenimg.png' border='0' alt='"._AM_SOAPBOX_ISADMINNOTICE."' /></a>";
+                $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/brokenimg.png' border='0' alt='"._AM_SOAPBOX_ISADMINNOTICE."'></a>";
             } else {
-                $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/blank.png' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
+                $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/blank.png' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))."></a>";
             }
         }
         // clearstatcache();
@@ -339,7 +345,6 @@ class SoapboxUtility extends XoopsObject
      */
     public static function showColumns($showCreate = 0)
     {
-        global $xoopsGTicket;
         global $xoopsModuleConfig, $xoopsModule;
         $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
         $myts       = MyTextSanitizer::getInstance();
@@ -421,11 +426,11 @@ class SoapboxUtility extends XoopsObject
         echo "<br>\n";
 
         if ($numrows > 0) {
-            echo "<input type='hidden' name='op' value='reorder' />";
+            echo "<input type='hidden' name='op' value='reorder'>";
             //--------------------
-            echo $xoopsGTicket->getTicketHtml(__LINE__);
+            echo $GLOBALS['xoopsSecurity']->getTokenHTML();
             //--------------------
-            echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERCOL . '" /></div>';
+            echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERCOL . '"></div>';
             echo '</form>';
         }
     }
@@ -435,7 +440,6 @@ class SoapboxUtility extends XoopsObject
      */
     public static function showArticles($showCreate = 0)
     {
-        global $xoopsGTicket;
         global $xoopsModuleConfig, $xoopsModule;
         $myts = MyTextSanitizer::getInstance();
 
@@ -533,25 +537,25 @@ class SoapboxUtility extends XoopsObject
                             [<?php echo $tot_all; ?>]
                         </option>
                         <option value='1' <?php if ($entries === 1) {
-                            echo 'selected';
-                        } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
+                                echo 'selected';
+                            } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
                             [<?php echo $tot_published; ?>]
                         </option>
                         <option value='2' <?php if ($entries === 2) {
-                            echo 'selected';
-                        } ?>>
+                                echo 'selected';
+                            } ?>>
                             <?php echo _AM_SOAPBOX_SELOFF; ?>
                             [<?php echo $tot_offline; ?>]
                         </option>
                         <option value='3' <?php if ($entries === 3) {
-                            echo 'selected';
-                        } ?>>
+                                echo 'selected';
+                            } ?>>
                             <?php echo _AM_SOAPBOX_SELSUB; ?>
                             [<?php echo $tot_submitted; ?>]
                         </option>
                         <option value='4' <?php if ($entries === 4) {
-                            echo 'selected';
-                        } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
+                                echo 'selected';
+                            } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
                             [<?php echo $tot_ok; ?>]
                         </option>
                     </select>
@@ -669,11 +673,11 @@ class SoapboxUtility extends XoopsObject
         echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
 
         if ($numrows > 0) {
-            echo "<input type='hidden' name='op' value='reorder' />";
+            echo "<input type='hidden' name='op' value='reorder'>";
             //--------------------
-            echo $xoopsGTicket->getTicketHtml(__LINE__);
+            echo $GLOBALS['xoopsSecurity']->getTokenHTML();
             //--------------------
-            echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERART . '" /></div>';
+            echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERART . '"></div>';
             echo '</form>';
         }
         echo "<br>\n";
@@ -681,7 +685,6 @@ class SoapboxUtility extends XoopsObject
 
     public static function showSubmissions()
     {
-        global $xoopsGTicket;
         global $xoopsModuleConfig, $xoopsModule;
 
         $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
@@ -790,5 +793,4 @@ class SoapboxUtility extends XoopsObject
 
         return $al;
     }
-
 }

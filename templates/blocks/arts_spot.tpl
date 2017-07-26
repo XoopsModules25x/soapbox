@@ -31,7 +31,7 @@
                             <{if $art.column.colimage != "blank.png" }>
                                 <div style="float: left; width: 80px; margin-right: 10px; border: 1px solid black; ">
                                     <img src="<{$xoops_url}>/<{$block.sbuploaddir}>/<{$art.column.colimage}>"
-                                         width="80"/></div>
+                                         width="80"></div>
                             <{/if}>
                         <{/if}>
                         <{$art.teaser}></div>
@@ -77,7 +77,7 @@
                                 <{if $art.column.colimage != "blank.png" }>
                                     <div style="float: left; width: 80px; margin-right: 10px; border: 1px solid black; ">
                                         <img src="<{$xoops_url}>/<{$block.sbuploaddir}>/<{$art.column.colimage}>"
-                                             width="80"/></div>
+                                             width="80"></div>
                                 <{/if}>
                             <{/if}>
                             <{$art.teaser}></div>

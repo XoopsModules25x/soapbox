@@ -64,11 +64,11 @@ function PrintPage($articleID)
     echo "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'>\n";
     echo "<html>\n<head>\n";
     echo '<title>' . $sitename . "</title>\n";
-    echo "<meta http-equiv='Content-Type' content='text/html; charset=" . _CHARSET . "' />\n";
-    echo "<meta name='AUTHOR' content='" . $sitename . "' />\n";
-    echo "<meta name='COPYRIGHT' content='Copyright (c) 2004 by " . $sitename . "' />\n";
-    echo "<meta name='DESCRIPTION' content='" . $slogan . "' />\n";
-    echo "<meta name='GENERATOR' content='" . XOOPS_VERSION . "' />\n\n\n";
+    echo "<meta http-equiv='Content-Type' content='text/html; charset=" . _CHARSET . "'>\n";
+    echo "<meta name='AUTHOR' content='" . $sitename . "'>\n";
+    echo "<meta name='COPYRIGHT' content='Copyright (c) 2004 by " . $sitename . "'>\n";
+    echo "<meta name='DESCRIPTION' content='" . $slogan . "'>\n";
+    echo "<meta name='GENERATOR' content='" . XOOPS_VERSION . "'>\n\n\n";
 
     //hack start 2003-3-18 by toshimitsu
     //Column: --> _MD_SOAPBOX_COLUMNPRN , Author: --> _MD_SOAPBOX_AUTHORPRN
@@ -78,7 +78,7 @@ function PrintPage($articleID)
          . XOOPS_URL
          . '/modules/'
          . $xoopsModule->dirname()
-         . "/assets/images/sb_slogo.png' border='0' alt='' /><h2 style='margin: 0;'>"
+         . "/assets/images/sb_slogo.png' border='0' alt=''><h2 style='margin: 0;'>"
          . $articles['headline']
          . '</h2></div>
                 <div></div>

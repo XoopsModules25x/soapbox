@@ -97,8 +97,8 @@ function b_arts_new_edit($options)
     $form .= '>' . _MB_SOAPBOX_RATING . "</option>\n";
 
     $form .= "</select>\n";
-    $form .= '&nbsp;' . _MB_SOAPBOX_DISP . "&nbsp;<input type='text' name='options[]' value='" . $myts->htmlSpecialChars($options[1]) . "' />&nbsp;" . _MB_SOAPBOX_ARTCLS . '';
-    $form .= '&nbsp;<br>' . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $myts->htmlSpecialChars($options[2]) . "' />&nbsp;" . _MB_SOAPBOX_LENGTH . '';
+    $form .= '&nbsp;' . _MB_SOAPBOX_DISP . "&nbsp;<input type='text' name='options[]' value='" . $myts->htmlSpecialChars($options[1]) . "'>&nbsp;" . _MB_SOAPBOX_ARTCLS . '';
+    $form .= '&nbsp;<br>' . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $myts->htmlSpecialChars($options[2]) . "'>&nbsp;" . _MB_SOAPBOX_LENGTH . '';
 
     return $form;
 }

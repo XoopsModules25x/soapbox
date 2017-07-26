@@ -63,9 +63,7 @@ function xoops_module_install_soapbox(XoopsModule $module)
     require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
     require_once __DIR__ . '/../include/config.php';
 
-    if (!isset($moduleDirName)) {
-        $moduleDirName = basename(dirname(__DIR__));
-    }
+    $moduleDirName = basename(dirname(__DIR__));
 
     if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
     } else {

@@ -116,7 +116,7 @@ class SoapboxSbcolumns extends XoopsObject
                         $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->displayTarea($ret, $html, $smiley, $xcode, $image, $br));
@@ -139,7 +139,7 @@ class SoapboxSbcolumns extends XoopsObject
                         $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->previewTarea($ret, $html, $smiley, $xcode, $image, $br));

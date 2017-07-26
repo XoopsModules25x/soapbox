@@ -10,7 +10,7 @@
 // Blocks
 define('_MB_SOAPBOX_ARTCLS', 'статьи');
 define('_MB_SOAPBOX_ARTICLEID', 'Id статьи');
-define('_MB_SOAPBOX_ARTSTOSHOW', '<br />Показать статьи?&nbsp;');
+define('_MB_SOAPBOX_ARTSTOSHOW', '<br>Показать статьи?&nbsp;');
 define('_MB_SOAPBOX_BY', 'Автор: ');
 define('_MB_SOAPBOX_CHARS', 'Длина заголовка');
 define('_MB_SOAPBOX_DATE', 'Дата публикации');

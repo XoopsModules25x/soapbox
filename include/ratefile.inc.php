@@ -1,6 +1,4 @@
 <?php
-//
-
 /**
  *
  * Module: Soapbox
@@ -27,7 +25,7 @@ if (!Request::hasVar('submit', 'POST') || !Request::hasVar('lid', 'POST')) {
 if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     //-------------------------
     //    if (!$GLOBALS['xoopsSecurity']->check()) {
-    if (!$xoopsGTicket->check()) {
+    if (!$GLOBALS['xoopsSecurity']->check()) {
         redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
     }
     //-------------------------

@@ -222,11 +222,11 @@ switch ($op) {
         $module_img_dir = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/images/icon/';
         echo "<div id='moduleName'><img src='"
              . $module_img_dir
-             . "open.png' width='36' height='24' />&nbsp;"
+             . "open.png' width='36' height='24'>&nbsp;"
              . $xoopsModule->name()
              . "&nbsp;<img src='"
              . $module_img_dir
-             . "close.png' width='36' height='24' /></div><div id='pagePath'><a href='"
+             . "close.png' width='36' height='24'></div><div id='pagePath'><a href='"
              . XOOPS_URL
              . "'>"
              . _MD_SOAPBOX_HOME
@@ -242,8 +242,8 @@ switch ($op) {
         echo "<div style='margin: 8px 0; line-height: 160%; width: 100%;'>" . _MD_SOAPBOX_GOODDAY . '<b>' . $name . '</b>, ' . _MD_SOAPBOX_SUB_SNEWNAMEDESC . '</div>';
         require_once __DIR__ . '/include/storyform.inc.php';
 
-        //$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css" />');
-        $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/css/style.css" />');
+        //$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css">');
+        $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/css/style.css">');
         include XOOPS_ROOT_PATH . '/footer.php';
         break;
 }

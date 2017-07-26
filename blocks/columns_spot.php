@@ -203,51 +203,51 @@ function b_columns_spot_edit($options)
     if ($options[0] === 1) {
         $chked = ' checked';
     }
-    $form  .= "<input type='radio' name='options[0]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $form  .= "<input type='radio' name='options[0]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
     if ($options[0] === 0) {
         $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[0]' value='0'" . $chked . ' />' . _NO . '<br>';
+    $form .= "&nbsp;<input type='radio' name='options[0]' value='0'" . $chked . '>' . _NO . '<br>';
     //-----
     //-----
-    $form .= _MB_SOAPBOX_ARTSTOSHOW . "<input type='text' name='options[1]' value='" . $myts->htmlSpecialChars($options[1]) . "' />&nbsp; " . _MB_SOAPBOX_ARTCLS . '.<br>';
+    $form .= _MB_SOAPBOX_ARTSTOSHOW . "<input type='text' name='options[1]' value='" . $myts->htmlSpecialChars($options[1]) . "'>&nbsp; " . _MB_SOAPBOX_ARTCLS . '.<br>';
     //-----
     $chked = '';
     $form  .= _MB_SOAPBOX_SHOWDATE;
     if ($options[2] === 1) {
         $chked = ' checked';
     }
-    $form  .= "<input type='radio' name='options[2]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $form  .= "<input type='radio' name='options[2]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
     if ($options[2] === 0) {
         $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[2]' value='0'" . $chked . ' />' . _NO . '<br>';
+    $form .= "&nbsp;<input type='radio' name='options[2]' value='0'" . $chked . '>' . _NO . '<br>';
     //-----
     $chked = '';
     $form  .= _MB_SOAPBOX_SHOWBYLINE;
     if ($options[3] === 1) {
         $chked = ' checked';
     }
-    $form  .= "<input type='radio' name='options[3]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $form  .= "<input type='radio' name='options[3]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
     if ($options[3] === 0) {
         $chked = ' checked';
     }
-    $form .= '&nbsp;<input type="radio" name="options[3]" value="0"' . $chked . ' />' . _NO . '<br>';
+    $form .= '&nbsp;<input type="radio" name="options[3]" value="0"' . $chked . '>' . _NO . '<br>';
     //-----
     $chked = '';
     $form  .= _MB_SOAPBOX_SHOWSTATS;
     if ($options[4] === 1) {
         $chked = ' checked';
     }
-    $form  .= "<input type='radio' name='options[4]' value='1'" . $chked . ' />&nbsp;' . _YES;
+    $form  .= "<input type='radio' name='options[4]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
     if ($options[4] === 0) {
         $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[4]' value='0' " . $chked . ' />' . _NO . '<br>';
+    $form .= "&nbsp;<input type='radio' name='options[4]' value='0' " . $chked . '>' . _NO . '<br>';
 
     $form .= _MB_SOAPBOX_TEMPLATE . "<select name='options[5]' >";
     $form .= "<option value='ver'";
@@ -267,13 +267,13 @@ function b_columns_spot_edit($options)
     if ($options[6] === 1) {
         $chked = ' checked';
     }
-    $form .= "<input type='radio' name='options[6]' value='1' " . $chked . ' />&nbsp;' . _YES;
+    $form .= "<input type='radio' name='options[6]' value='1' " . $chked . '>&nbsp;' . _YES;
 
     $chked = '';
     if ($options[6] === 0) {
         $chked = ' checked';
     }
-    $form .= "&nbsp;<input type='radio' name='options[6]' value='0' " . $chked . ' />' . _NO . '<br>';
+    $form .= "&nbsp;<input type='radio' name='options[6]' value='0' " . $chked . '>' . _NO . '<br>';
     //---------- sortname ------
     $form .= '' . _MB_SOAPBOX_ORDER . "&nbsp;<select name='options[7]'>";
 
@@ -303,7 +303,7 @@ function b_columns_spot_edit($options)
 
     $form .= "</select>\n";
 
-    $form .= '&nbsp;<br>' . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "' />&nbsp;" . _MB_SOAPBOX_LENGTH . '';
+    $form .= '&nbsp;<br>' . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "'>&nbsp;" . _MB_SOAPBOX_LENGTH . '';
 
     //-------------------------------------
     // Try to see what tabs are visibles (if we are in restricted view of course)

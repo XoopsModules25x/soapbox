@@ -78,9 +78,7 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
     require_once __DIR__ . '/../../../mainfile.php';
     require_once __DIR__ . '/../include/config.php';
 
-    if (!isset($moduleDirName)) {
-        $moduleDirName = basename(dirname(__DIR__));
-    }
+    $moduleDirName = basename(dirname(__DIR__));
 
     if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
     } else {
@@ -103,7 +101,7 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
             foreach ($configurator['templateFolders'] as $folder) {
                 $templateFolder = $GLOBALS['xoops']->path('modules/' . $moduleDirName . $folder);
                 if (is_dir($templateFolder)) {
-                    $templateList = array_diff(scandir($templateFolder), array('..', '.'));
+                    $templateList = array_diff(scandir($templateFolder, SCANDIR_SORT_NONE), array('..', '.'));
                     foreach ($templateList as $k => $v) {
                         $fileInfo = new SplFileInfo($templateFolder . $v);
                         if ($fileInfo->getExtension() === 'html' && $fileInfo->getFilename() !== 'index.html') {
