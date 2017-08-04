@@ -25,7 +25,7 @@ require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
 $moduleDirName = basename(dirname(__DIR__));
 
-require_once __DIR__ . '/../include/gtickets.php';
+//require_once __DIR__ . '/../include/gtickets.php';
 
 require_once $GLOBALS['xoops']->path('www/kernel/module.php');
 require_once $GLOBALS['xoops']->path('www/class/xoopstree.php');

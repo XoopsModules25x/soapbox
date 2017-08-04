@@ -36,7 +36,7 @@ if (!in_array($sortorder, array('ASC', 'DESC'))) {
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 //for ratefile update by domifara
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
 
 $articleID = Request::getInt('articleID', 0, 'GET'); //isset($_GET['articleID']) ? (int)($_GET['articleID']) : 0;
 $startpage = Request::getInt('page', 0, 'GET'); //isset($_GET['page']) ? (int)($_GET['page']) : 0;

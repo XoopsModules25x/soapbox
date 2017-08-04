@@ -22,7 +22,7 @@ if (!is_object($xoopsUser)) {
     redirect_header('index.php', 1, _NOPERM);
 }
 
-include XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/gtickets.php';
+//include XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/gtickets.php';
 
 $xoopsConfig['module_cache'] = 0; //disable caching since the URL will be the same, but content different from one user to another
 include XOOPS_ROOT_PATH . '/header.php';

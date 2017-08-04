@@ -190,7 +190,7 @@ define('_MI_SOAPBOX_ADD_ARTICLE', 'Добавить статью');
 define('_MI_SOAPBOX_ADD_COLUMN', 'Добавить колонку');
 //Help
 define('_MI_SOAPBOX_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_SOAPBOX_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_SOAPBOX_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_SOAPBOX_BACK_2_ADMIN', 'Вернуться в администрацию ');
 define('_MI_SOAPBOX_OVERVIEW', 'Обзор');
 
