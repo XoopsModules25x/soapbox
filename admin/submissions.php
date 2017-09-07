@@ -78,7 +78,7 @@ function editarticle($articleID = '')
     } else {
         $_can_editcategoryobArray = $entrydataHandler->getColumns(null, true);
         //----------------------------
-        $collist = array();
+        $collist = [];
         foreach ($_can_editcategoryobArray as $key => $_can_edit_categoryob) {
             $collist[$key] = $_can_edit_categoryob->getVar('name');
         }
@@ -428,12 +428,12 @@ switch ($op) {
             $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
             xoops_cp_header();
             $adminObject->displayNavigation(basename(__FILE__));
-            xoops_confirm(array(
+            xoops_confirm([
                               'op'        => 'del',
                               'articleID' => $articleID,
                               'confirm'   => 1,
                               'headline'  => $headline
-                          ), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
+                          ], 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
             require_once __DIR__ . '/admin_footer.php';
         }
         exit();

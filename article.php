@@ -25,11 +25,11 @@ if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+
 }
 //---GET view sort --
 $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
     $sortname = 'datesub';
 }
 $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, array('ASC', 'DESC'))) {
+if (!in_array($sortorder, ['ASC', 'DESC'])) {
     $sortorder = 'DESC';
 }
 //---------------
@@ -51,8 +51,8 @@ if (isset($_POST['submit']) && !empty($_POST['lid'])) {
 }
 //-------------------------------------
 //view start
-$articles = array();
-$category = array();
+$articles = [];
+$category = [];
 //module entry data handler
 $entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
 if (empty($articleID)) {
@@ -160,14 +160,14 @@ $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbupl
 
 //-------------------------------------
 //box view
-$listarts = array();
+$listarts = [];
 //-------------------------------------
 $_other_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['morearts'], 0, true, true, 0, 0, null, $sortname, $sortorder, $_categoryob, $articles['articleID'], true, false);
 $totalartsbyauthor  = (int)$entrydataHandler->total_getArticlesAllPermcheck + 1;
 
 if (!empty($_other_entryob_arr)) {
     foreach ($_other_entryob_arr as $_other_entryob) {
-        $link = array();
+        $link = [];
         $link = $_other_entryob->toArray();
         //--------------------
         $link['id']        = $link['articleID'];

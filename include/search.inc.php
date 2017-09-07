@@ -14,11 +14,11 @@
  * @param $userid
  * @return array
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 function sb_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsUser;
-    $ret = array();
+    $ret = [];
     if (!is_object($xoopsUser) || $xoopsUser->getVar('uid') === 0) {
         return $ret;
     }
@@ -31,10 +31,10 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
     //-------------------------------------
     $entrydataHandler = xoops_getModuleHandler('entryget', 'soapbox');
     //-------------------------------------
-    $canread_columnIDs        = array();
-    $canread_columnnames      = array();
-    $_userinfo_authors_column = array();
-    $_column_authors_uid      = array();
+    $canread_columnIDs        = [];
+    $canread_columnnames      = [];
+    $_userinfo_authors_column = [];
+    $_column_authors_uid      = [];
     //get category object
     $categoryobArray = $entrydataHandler->getColumnsAllPermcheck(0, 0, true, null, null, null, null, false);
     foreach ($categoryobArray as $k => $_categoryob) {

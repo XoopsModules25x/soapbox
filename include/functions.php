@@ -8,7 +8,7 @@
  * Author: hsalazar
  * Licence: GNU
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 //TinyD spaw
 global $xoopsModuleConfig, $xoopsModule;
@@ -337,11 +337,11 @@ function showArticles($showCreate = 0)
     }
     //---GET view sort --
     $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-    if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+    if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
         $sortname = 'datesub';
     }
     $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-    if (!in_array($sortorder, array('ASC', 'DESC'))) {
+    if (!in_array($sortorder, ['ASC', 'DESC'])) {
         $sortorder = 'DESC';
     }
     //---------------
@@ -499,7 +499,7 @@ function showArticles($showCreate = 0)
     if ($numrows > 0) { // That is, if there ARE articles in the said condition
         // Retrieve rows for those items
 
-        $colarray = array();
+        $colarray = [];
         $cont     = 0;
 
         foreach ($_entryob_arr as $key => $_entryob) {
@@ -578,11 +578,11 @@ function showSubmissions()
 
     //---GET view sort --
     $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-    if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+    if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
         $sortname = 'datesub';
     }
     $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-    if (!in_array($sortorder, array('ASC', 'DESC'))) {
+    if (!in_array($sortorder, ['ASC', 'DESC'])) {
         $sortorder = 'DESC';
     }
     //---------------

@@ -9,11 +9,11 @@
  * @param $options
  * @return array
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 function b_arts_new_show($options)
 {
     $myts          = MyTextSanitizer:: getInstance();
-    $block_outdata = array();
+    $block_outdata = [];
     $module_name   = 'soapbox';
     $hModule       = xoops_getHandler('module');
     $soapModule    = $hModule->getByDirname($module_name);
@@ -24,7 +24,7 @@ function b_arts_new_show($options)
     $module_id  = $soapModule->getVar('mid');
     $soapConfig = $hModConfig->getConfigsByCat(0, $module_id);
     //-------------------------------------
-    if (!in_array($options[0], array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+    if (!in_array($options[0], ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
         $options[0] = 'datesub';
     }
     $sortorder = 'DESC';

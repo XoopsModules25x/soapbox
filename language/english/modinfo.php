@@ -74,16 +74,22 @@ define('_MI_SOAPBOX_INTROTITDFLT', 'Welcome to this space');
 
 define('_MI_SOAPBOX_INTROTEXT', '18. Introduction text:');
 define('_MI_SOAPBOX_INTROTEXTDSC', 'Text of the index page\'s introductory message.');
-define('_MI_SOAPBOX_INTROTEXTDFLT',
-       'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column\'s name to see all the articles associated to that column, or on an article\'s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.');
+define(
+    '_MI_SOAPBOX_INTROTEXTDFLT',
+       'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column\'s name to see all the articles associated to that column, or on an article\'s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.'
+);
 
 define('_MI_SOAPBOX_BUTTSTXT', '19. Visible create buttons:');
 define('_MI_SOAPBOX_BUTTSTXTDSC', 'If set to \'Yes\', tables in the index page of the admin side will show a \'Create\' button. Default value: \'No\'.');
 
-define('_MI_SOAPBOX_WARNING',
-       'This module comes as is, without any guarantees whatsoever. Although this module is not beta, it is still under active development. This release can be used in a live website or a production environment, but its use is under your own responsibilityi, which means the author is not responsible.');
-define('_MI_SOAPBOX_AUTHORMSG',
-       'Soapbox is my first XOOPS module and as such contains all the errors of someone just beginning in the world of PHP and such things. My first steps in this world I gave them with the help of Catzwolf, now retired from the XOOPS world, and Soapbox owes him a lot, including both good pointers and mistakes.<br><br>The history of Soapbox is told in more detail in the documentation, but I must thank here the valuable help of many XOOPS users, including herko, w4z004, marcan, ackbarr, Mithrandir, Predator and many more.<br><br>Of course, I also take into account the help of those that have criticized, praised or commented the module, those who have looked in it more than it\'s designed to do, and in general to all those that have accepted the risk and installed the module in their sites for their enyojment. To you all, my friends, many thanks.');
+define(
+    '_MI_SOAPBOX_WARNING',
+       'This module comes as is, without any guarantees whatsoever. Although this module is not beta, it is still under active development. This release can be used in a live website or a production environment, but its use is under your own responsibilityi, which means the author is not responsible.'
+);
+define(
+    '_MI_SOAPBOX_AUTHORMSG',
+       'Soapbox is my first XOOPS module and as such contains all the errors of someone just beginning in the world of PHP and such things. My first steps in this world I gave them with the help of Catzwolf, now retired from the XOOPS world, and Soapbox owes him a lot, including both good pointers and mistakes.<br><br>The history of Soapbox is told in more detail in the documentation, but I must thank here the valuable help of many XOOPS users, including herko, w4z004, marcan, ackbarr, Mithrandir, Predator and many more.<br><br>Of course, I also take into account the help of those that have criticized, praised or commented the module, those who have looked in it more than it\'s designed to do, and in general to all those that have accepted the risk and installed the module in their sites for their enyojment. To you all, my friends, many thanks.'
+);
 
 // Names of admin menu items
 define('_MI_SOAPBOX_ADMENU1', 'Manager');

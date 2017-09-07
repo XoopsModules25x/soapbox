@@ -54,8 +54,10 @@ define('_MI_SOAPBOX_DATEFORMAT', '11. Формат даты:');
 define('_MI_SOAPBOX_DATEFORMATDSC', 'Устанавливает формат даты для статей.');
 
 define('_MI_SOAPBOX_ALLOWCOMMENTS', '12. Контроль комментарии на уровне сюжета:');
-define('_MI_SOAPBOX_ALLOWCOMMENTSDSC',
-       'Если установить этот параметр "Да", Вы увидите комментарии только тех статей, которые имеют комментарии отмеченые флажком. <br><br>Выберите "Нет", чтобы получать комментарии, управляемые на глобальном уровне (смотрите ниже под тегом \'Правила комментариев\'.');
+define(
+    '_MI_SOAPBOX_ALLOWCOMMENTSDSC',
+       'Если установить этот параметр "Да", Вы увидите комментарии только тех статей, которые имеют комментарии отмеченые флажком. <br><br>Выберите "Нет", чтобы получать комментарии, управляемые на глобальном уровне (смотрите ниже под тегом \'Правила комментариев\'.'
+);
 
 define('_MI_SOAPBOX_MOREARTS', '13. Кол-во статей в боковом поле:');
 define('_MI_SOAPBOX_MOREARTSDSC', 'Укажите количество статей для показа в боковом поле.');
@@ -75,16 +77,22 @@ define('_MI_SOAPBOX_INTROTITDFLT', 'Добро пожаловать');
 
 define('_MI_SOAPBOX_INTROTEXT', '18. Введение текст:');
 define('_MI_SOAPBOX_INTROTEXTDSC', 'Текст на главной странице, вводное сообщение.');
-define('_MI_SOAPBOX_INTROTEXTDFLT',
-       'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column\'s name to see all the articles associated to that column, or on an article\'s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.');
+define(
+    '_MI_SOAPBOX_INTROTEXTDFLT',
+       'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column\'s name to see all the articles associated to that column, or on an article\'s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.'
+);
 
 define('_MI_SOAPBOX_BUTTSTXT', '19. Показать кнопки в меню Менеджер:');
 define('_MI_SOAPBOX_BUTTSTXTDSC', 'Если установлено значение "Да", в таблице Менеджер со стороны администратора будут паказаны кнопки создания колонок и статей. Значение по умолчанию: "Нет".');
 
-define('_MI_SOAPBOX_WARNING',
-       'Этот модуль поставляется как есть, без каких-либо гарантий вообще. Хотя этот модуль не бета, это все еще в стадии активного развития. Этот релиз может быть использован в живом сайте или производственной среде, но его использование под Вашим собственным responsibilityi, что означает, что автор не несет ответственности.');
-define('_MI_SOAPBOX_AUTHORMSG',
-       'Soapbox is my first XOOPS module and as such contains all the errors of someone just beginning in the world of PHP and such things. My first steps in this world I gave them with the help of Catzwolf, now retired from the XOOPS world, and Soapbox owes him a lot, including both good pointers and mistakes.<br><br>The history of Soapbox is told in more detail in the documentation, but I must thank here the valuable help of many XOOPS users, including herko, w4z004, marcan, ackbarr, Mithrandir, Predator and many more.<br><br>Of course, I also take into account the help of those that have criticized, praised or commented the module, those who have looked in it more than it\'s designed to do, and in general to all those that have accepted the risk and installed the module in their sites for their enyojment. To you all, my friends, many thanks.');
+define(
+    '_MI_SOAPBOX_WARNING',
+       'Этот модуль поставляется как есть, без каких-либо гарантий вообще. Хотя этот модуль не бета, это все еще в стадии активного развития. Этот релиз может быть использован в живом сайте или производственной среде, но его использование под Вашим собственным responsibilityi, что означает, что автор не несет ответственности.'
+);
+define(
+    '_MI_SOAPBOX_AUTHORMSG',
+       'Soapbox is my first XOOPS module and as such contains all the errors of someone just beginning in the world of PHP and such things. My first steps in this world I gave them with the help of Catzwolf, now retired from the XOOPS world, and Soapbox owes him a lot, including both good pointers and mistakes.<br><br>The history of Soapbox is told in more detail in the documentation, but I must thank here the valuable help of many XOOPS users, including herko, w4z004, marcan, ackbarr, Mithrandir, Predator and many more.<br><br>Of course, I also take into account the help of those that have criticized, praised or commented the module, those who have looked in it more than it\'s designed to do, and in general to all those that have accepted the risk and installed the module in their sites for their enyojment. To you all, my friends, many thanks.'
+);
 
 // Names of admin menu items
 define('_MI_SOAPBOX_ADMENU1', 'Менеджер');

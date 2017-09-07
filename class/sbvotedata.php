@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team, Jan Pedersen (Mithrandir)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
 
 /**
@@ -191,7 +191,7 @@ class SoapboxSbvotedata extends XoopsObject
                             $selected = explode('|', $ret);
                             $options  = explode('|', $this->vars[$key]['options']);
                             $i        = 1;
-                            $ret      = array();
+                            $ret      = [];
                             foreach ($options as $op) {
                                 if (in_array($i, $selected)) {
                                     $ret[] = $op;
@@ -260,7 +260,7 @@ class SoapboxSbvotedata extends XoopsObject
      */
     public function toArray()
     {
-        $ret  = array();
+        $ret  = [];
         $vars =& $this->getVars();
         foreach (array_keys($vars) as $i) {
             $ret[$i] =& $this->getVar($i);
@@ -332,7 +332,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
      */
     public function &getObjects(CriteriaElement $criteria = null, $id_as_key = false, $as_object = true)
     {
-        $ret   = array();
+        $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbvotedata');
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {

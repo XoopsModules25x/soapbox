@@ -7,7 +7,7 @@
  * Author: hsalazar
  * Licence: GNU
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $modversion['version']             = 1.70;
 $modversion['module_status']       = 'Beta 1';
 $modversion['release_date']        = '2017/05/23';
@@ -41,7 +41,7 @@ $modversion['release']             = '0';
 $modversion['min_php']             = '5.5';
 $modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = array('mysql' => '5.5');
+$modversion['min_db']              = ['mysql' => '5.5'];
 
 // Admin things
 $modversion['hasAdmin']    = 1;
@@ -199,7 +199,7 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_PERPAGEDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 5;
-$modversion['config'][$i]['options']     = array(
+$modversion['config'][$i]['options']     = [
     '5'  => 5,
     '10' => 10,
     '15' => 15,
@@ -207,7 +207,7 @@ $modversion['config'][$i]['options']     = array(
     '25' => 25,
     '30' => 30,
     '50' => 50
-);
+];
 ++$i;
 $modversion['config'][$i]['name']        = 'indexperpage';
 $modversion['config'][$i]['title']       = '_MI_SOAPBOX_PERPAGEINDEX';
@@ -215,7 +215,7 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_PERPAGEINDEXDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 5;
-$modversion['config'][$i]['options']     = array(
+$modversion['config'][$i]['options']     = [
     '5'  => 5,
     '10' => 10,
     '15' => 15,
@@ -223,7 +223,7 @@ $modversion['config'][$i]['options']     = array(
     '25' => 25,
     '30' => 30,
     '50' => 50
-);
+];
 ++$i;
 $modversion['config'][$i]['name']        = 'sbimgdir';
 $modversion['config'][$i]['title']       = '_MI_SOAPBOX_IMGDIR';
@@ -280,7 +280,7 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_MOREARTSDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 3;
-$modversion['config'][$i]['options']     = array('3' => 3, '5' => 5, '10' => 10, '15' => 15, '20' => 20);
+$modversion['config'][$i]['options']     = ['3' => 3, '5' => 5, '10' => 10, '15' => 15, '20' => 20];
 ++$i;
 $modversion['config'][$i]['name']        = 'colsinmenu';
 $modversion['config'][$i]['title']       = '_MI_SOAPBOX_COLSINMENU';
@@ -295,7 +295,7 @@ $modversion['config'][$i]['description'] = '_MI_SOAPBOX_COLSPERINDEXDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 3;
-$modversion['config'][$i]['options']     = array(
+$modversion['config'][$i]['options']     = [
     '3'  => 3,
     '5'  => 5,
     '10' => 10,
@@ -304,7 +304,7 @@ $modversion['config'][$i]['options']     = array(
     '25' => 25,
     '30' => 30,
     '50' => 50
-);
+];
 ++$i;
 $modversion['config'][$i]['name']        = 'includerating';
 $modversion['config'][$i]['title']       = '_MI_SOAPBOX_ALLOWRATING';
@@ -379,12 +379,12 @@ $i                                                            = 0;
 $modversion['notification']['category'][$i]['name']           = 'global';
 $modversion['notification']['category'][$i]['title']          = _MI_SOAPBOX_GLOBAL_NOTIFY;
 $modversion['notification']['category'][$i]['description']    = _MI_SOAPBOX_GLOBAL_NOTIFYDSC;
-$modversion['notification']['category'][$i]['subscribe_from'] = array('index.php', 'column.php', 'article.php');
+$modversion['notification']['category'][$i]['subscribe_from'] = ['index.php', 'column.php', 'article.php'];
 ++$i;
 $modversion['notification']['category'][$i]['name']           = 'column';
 $modversion['notification']['category'][$i]['title']          = _MI_SOAPBOX_COLUMN_NOTIFY;
 $modversion['notification']['category'][$i]['description']    = _MI_SOAPBOX_COLUMN_NOTIFYDSC;
-$modversion['notification']['category'][$i]['subscribe_from'] = array('index.php');
+$modversion['notification']['category'][$i]['subscribe_from'] = ['index.php'];
 $modversion['notification']['category'][$i]['item_name']      = 'columnID';
 $modversion['notification']['category'][$i]['allow_bookmark'] = 1;
 ++$i;

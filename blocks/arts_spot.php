@@ -10,10 +10,10 @@
  * @return array
  */
 /* This function spotlights a column, with a spotlight article and links to others */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 function b_arts_spot_show($options)
 {
-    $block_outdata = array();
+    $block_outdata = [];
     //-------------------------------------
     $myts        = MyTextSanitizer:: getInstance();
     $module_name = 'soapbox';
@@ -74,7 +74,7 @@ function b_arts_spot_show($options)
     }
     //-------------------------------------
     $sortname = $options[7];
-    if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+    if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
         $sortname = 'datesub';
     }
     $sortorder = 'DESC';
@@ -89,7 +89,7 @@ function b_arts_spot_show($options)
     }
     //-------------------------------------
     // Try to see what tabs are visibles (if we are in restricted view of course)
-    $opt_columnIDs = array();
+    $opt_columnIDs = [];
     if (!empty($options[9])) {
         $opt_columnIDs = array_slice($options, 9);
     }
@@ -133,7 +133,7 @@ function b_arts_spot_show($options)
         //get vars
         $category = $_categoryob->toArray();
         //spot
-        $_outdata_arr           = array();
+        $_outdata_arr           = [];
         $_outdata_arr           = $articles;
         $_outdata_arr['column'] = $category;
 

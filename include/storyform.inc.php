@@ -7,7 +7,7 @@
  * Author: hsalazar
  * Licence: GNU
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 if (file_exists(XOOPS_ROOT_PATH . '/language/' . $myts->htmlSpecialChars($xoopsConfig['language']) . '/calendar.php')) {
     require_once XOOPS_ROOT_PATH . '/language/' . $myts->htmlSpecialChars($xoopsConfig['language']) . '/calendar.php';
 } else {
@@ -27,7 +27,7 @@ if (is_object($xoopsUser)) {
     }
 
     //----------------------------
-    $collist = array();
+    $collist = [];
     foreach ($canEditCategoryobArray as $key => $_can_edit_categoryob) {
         $collist[$key] = $_can_edit_categoryob->getVar('name');
     }

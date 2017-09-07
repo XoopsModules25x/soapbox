@@ -112,7 +112,7 @@ function editcol($columnID = '')
     $criteria->setOrder('ASC');
     $criteria->setLimit(199);
     $criteria->setStart($userstart);
-    $user_list_arr = array($authorid => $authoruname) + $memberHandler->getUserList($criteria);
+    $user_list_arr = [$authorid => $authoruname] + $memberHandler->getUserList($criteria);
 
     $nav = new XoopsPageNav($usercount, 200, $userstart, 'userstart', $myts->htmlSpecialChars('op=mod&columnID=' . $columnID));
 
@@ -254,7 +254,7 @@ switch ($op) {
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['sbuploaddir'] . '/' . $colimage_name)) {
                     redirect_header('column.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
-                $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
+                $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
                 SoapboxUtility::uploadFile($allowed_mimetypes, $colimage_name, 'index.php', 0, $xoopsModuleConfig['sbuploaddir']);
                 $_categoryob->setVar('colimage', $colimage_name);
             }
@@ -334,12 +334,12 @@ switch ($op) {
             $name = $myts->htmlSpecialChars($_categoryob->getVar('name'));
             xoops_cp_header();
             $adminObject->displayNavigation(basename(__FILE__));
-            xoops_confirm(array(
+            xoops_confirm([
                               'op'       => 'del',
                               'columnID' => $columnID,
                               'confirm'  => 1,
                               'name'     => $name
-                          ), 'column.php', _AM_SOAPBOX_DELETETHISCOL . '<br><br>' . $name, _AM_SOAPBOX_DELETE);
+                          ], 'column.php', _AM_SOAPBOX_DELETETHISCOL . '<br><br>' . $name, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
         exit();

@@ -42,22 +42,22 @@ define($capsDirName . '_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . $moduleDirName);
 
 //constant($cloned_lang . '_CATEGORY_NOTIFY')
 
-$uploadFolders = array(
+$uploadFolders = [
     constant($capsDirName . '_UPLOAD_PATH'),
     constant($capsDirName . '_UPLOAD_PATH') . '/images',
     constant($capsDirName . '_UPLOAD_PATH') . '/images/thumbnails'
-);
+];
 
-$copyFiles = array(
+$copyFiles = [
     constant($capsDirName . '_UPLOAD_PATH'),
     constant($capsDirName . '_UPLOAD_PATH') . '/images',
     constant($capsDirName . '_UPLOAD_PATH') . '/images/thumbnails'
-);
+];
 
-$oldFiles = array(
+$oldFiles = [
     '/include/update_functions.php',
     '/include/install_functions.php'
-);
+];
 
 //Configurator
 /*

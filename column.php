@@ -28,11 +28,11 @@ if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+
 $columnID = Request::getInt('columnID', 0, 'GET');
 //---GET view sort --
 $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
     $sortname = 'datesub';
 }
 $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, array('ASC', 'DESC'))) {
+if (!in_array($sortorder, ['ASC', 'DESC'])) {
     $sortorder = 'DESC';
 }
 //---------------
@@ -51,7 +51,7 @@ if (empty($_entryob_arr) || $totalarts === 0) {
 $_categoryob = $_entryob_arr[0]->_sbcolumns;
 //get vars
 
-$category = array();
+$category = [];
 $category = $_categoryob->toArray(); //all assign
 
 $category['colid']      = $columnID;
@@ -65,7 +65,7 @@ $xoopsTpl->assign('category', $category);
 foreach ($_entryob_arr as $_entryob) {
     //-----------
     unset($articles);
-    $articles = array();
+    $articles = [];
     //get vars
     $articles = $_entryob->toArray();
     //--------------------

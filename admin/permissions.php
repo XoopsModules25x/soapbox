@@ -43,7 +43,7 @@ xoops_cp_header();
 
 //$permission = soapbox_CleanVars($_POST, 'permission', 1, 'int');
 $permission                = Request::getInt('permission', 1, 'POST');
-$selected                  = array('', '', '', '');
+$selected                  = ['', '', '', ''];
 $selected[$permission - 1] = ' selected';
 
 echo "
@@ -68,11 +68,11 @@ switch ($permission) {
         $formTitle   = _AM_SOAPBOX_PERMISSIONS_GLOBAL;
         $permName    = 'soapbox_ac';
         $permDesc    = _AM_SOAPBOX_PERMISSIONS_GLOBAL_DESC;
-        $globalPerms = array(
+        $globalPerms = [
             '4'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_4,
             '8'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_8,
             '16' => _AM_SOAPBOX_PERMISSIONS_GLOBAL_16
-        );
+        ];
         break;
     case 2:
         $formTitle = _AM_SOAPBOX_PERMISSIONS_APPROVE;
