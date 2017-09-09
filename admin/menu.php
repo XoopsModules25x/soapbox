@@ -15,7 +15,6 @@ if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
     $moduleHelper = Xmf\Module\Helper::getHelper('system');
 }
 
-
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
 //$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
 
@@ -35,15 +34,17 @@ $adminmenu[] = [
     'icon'  => $pathIcon32 . '/manage.png'
 ];
 
-//++$i;
-//$adminmenu[$i]['title'] =  _MI_SOAPBOX_ADMENU2;
-//$adminmenu[$i]['link']  = 'admin/column.php';
-//$adminmenu[$i]['icon']  = $pathIcon32 . '/categoryadd.png';
+//$adminmenu[] = [
+//'title' =>   _MI_SOAPBOX_ADMENU2,
+//'link' =>  'admin/column.php',
+//'icon' =>  $pathIcon32 . '/categoryadd.png',
+//];
 
-//++$i;
-//$adminmenu[$i]['title'] = _MI_SOAPBOX_ADMENU3;
-//$adminmenu[$i]['link']  = 'admin/article.php';
-//$adminmenu[$i]['icon']  = $pathIcon32 . '/add.png';
+//$adminmenu[] = [
+//'title' =>  _MI_SOAPBOX_ADMENU3,
+//'link' =>  'admin/article.php',
+//'icon' =>  $pathIcon32 . '/add.png',
+//];
 
 $adminmenu[] = [
     'title' => _MI_SOAPBOX_SUBMITS,
