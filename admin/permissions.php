@@ -37,9 +37,9 @@ if (count ( array_intersect ( $group, $groups ) ) <= 0) {
     redirect_header ( 'index.php', 3, _NOPERM );
 }*/
 
+xoops_cp_header();
 $adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
-xoops_cp_header();
 
 //$permission = soapbox_CleanVars($_POST, 'permission', 1, 'int');
 $permission                = Request::getInt('permission', 1, 'POST');

@@ -123,6 +123,34 @@ if (is_object($xoopsUser)) {
 } else {
     $xoopsTpl->assign('user_pmlink', '');
 }
+// Теги
+if ( xoops_getModuleOption( 'usetag', 'soapbox') ) {
+$moduleHandler = xoops_getHandler('module');
+$tagsModule    = $moduleHandler->getByDirname('tag');
+if (is_object($tagsModule)) {
+    include_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+
+    $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
+    $catid  = 0;
+    $tagbar = tagBar($itemid, $catid);
+    if ($tagbar) {
+        $xoopsTpl->assign('tagbar', $tagbar);
+        $tagsmeta = implode(' ', $tagbar['tags']);
+    } else {
+        $tagsmeta = '';
+    }
+} else {
+    $xoopsTpl->assign('tagbar', false);
+    $tagsmeta = '';
+}
+}
+//if ( xoops_getModuleOption( 'usetag', 'soapbox') ){
+//	require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+//	$xoopsTpl->assign( 'tags', true );
+//	$xoopsTpl->assign( 'tagbar', tagBar( $_REQUEST['articleID'], 0 ) );
+//} else {
+//	$xoopsTpl->assign( 'tags', false );
+//}
 
 // Functional links
 $articles['adminlinks'] = $entrydataHandler->getadminlinks($_entryob, $_categoryob);
