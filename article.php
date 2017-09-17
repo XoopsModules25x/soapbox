@@ -25,18 +25,18 @@ if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+
 }
 //---GET view sort --
 $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
     $sortname = 'datesub';
 }
 $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, array('ASC', 'DESC'))) {
+if (!in_array($sortorder, ['ASC', 'DESC'])) {
     $sortorder = 'DESC';
 }
 //---------------
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 //for ratefile update by domifara
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
 
 $articleID = Request::getInt('articleID', 0, 'GET'); //isset($_GET['articleID']) ? (int)($_GET['articleID']) : 0;
 $startpage = Request::getInt('page', 0, 'GET'); //isset($_GET['page']) ? (int)($_GET['page']) : 0;
@@ -51,8 +51,8 @@ if (isset($_POST['submit']) && !empty($_POST['lid'])) {
 }
 //-------------------------------------
 //view start
-$articles = array();
-$category = array();
+$articles = [];
+$category = [];
 //module entry data handler
 $entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
 if (empty($articleID)) {
@@ -108,7 +108,7 @@ if ($xoopsModuleConfig['includerating'] === 1) {
     $xoopsTpl->assign('showrating', '1');
     //-------------------------------------
     //for ratefile update by domifara
-    $xoopsTpl->assign('rate_gtickets', $xoopsGTicket->getTicketHtml(__LINE__));
+    $xoopsTpl->assign('rate_gtickets', $GLOBALS['xoopsSecurity']->getTokenHTML());
     //-------------------------------------
     if ($articles['rating'] != 0.0000) {
         $articles['rating'] = '' . _MD_SOAPBOX_RATING . ': ' . $myts->htmlSpecialChars(number_format($articles['rating'], 2));
@@ -119,7 +119,7 @@ if ($xoopsModuleConfig['includerating'] === 1) {
 }
 
 if (is_object($xoopsUser)) {
-    $xoopsTpl->assign('authorpm_link', "<a href=\"javascript:openWithSelfMain('" . XOOPS_URL . '/pmlite.php?send2=1&amp;to_userid=' . $category['author'] . "', 'pmlite', 450, 380);\"><img src='" . $pathIcon16 . "/mail_new.png' alt=\"" . _MD_SOAPBOX_WRITEAUTHOR . '" /></a>');
+    $xoopsTpl->assign('authorpm_link', "<a href=\"javascript:openWithSelfMain('" . XOOPS_URL . '/pmlite.php?send2=1&amp;to_userid=' . $category['author'] . "', 'pmlite', 450, 380);\"><img src='" . $pathIcon16 . "/mail_new.png' alt=\"" . _MD_SOAPBOX_WRITEAUTHOR . '"></a>');
 } else {
     $xoopsTpl->assign('user_pmlink', '');
 }
@@ -188,14 +188,14 @@ $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbupl
 
 //-------------------------------------
 //box view
-$listarts = array();
+$listarts = [];
 //-------------------------------------
 $_other_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['morearts'], 0, true, true, 0, 0, null, $sortname, $sortorder, $_categoryob, $articles['articleID'], true, false);
 $totalartsbyauthor  = (int)$entrydataHandler->total_getArticlesAllPermcheck + 1;
 
 if (!empty($_other_entryob_arr)) {
     foreach ($_other_entryob_arr as $_other_entryob) {
-        $link = array();
+        $link = [];
         $link = $_other_entryob->toArray();
         //--------------------
         $link['id']        = $link['articleID'];
@@ -218,6 +218,6 @@ if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
 } else {
     include XOOPS_ROOT_PATH . '/include/comment_view.php';
 }
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

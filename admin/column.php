@@ -29,7 +29,7 @@ $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname())
  */
 function editcol($columnID = '')
 {
-    global $xoopsGTicket, $indexAdmin;
+    global $indexAdmin;
     global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
     $adminObject = Xmf\Module\Admin::getInstance();
     $xoopsDB     = XoopsDatabaseFactory::getDatabaseConnection();
@@ -112,7 +112,7 @@ function editcol($columnID = '')
     $criteria->setOrder('ASC');
     $criteria->setLimit(199);
     $criteria->setStart($userstart);
-    $user_list_arr = array($authorid => $authoruname) + $memberHandler->getUserList($criteria);
+    $user_list_arr = [$authorid => $authoruname] + $memberHandler->getUserList($criteria);
 
     $nav = new XoopsPageNav($usercount, 200, $userstart, 'userstart', $myts->htmlSpecialChars('op=mod&columnID=' . $columnID));
 
@@ -144,7 +144,7 @@ function editcol($columnID = '')
     $colimage_select->setExtra("onchange='showImgSelected(\"image3\", \"colimage\", \"" . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '", "", "' . XOOPS_URL . "\")'");
     $colimage_tray = new XoopsFormElementTray(_AM_SOAPBOX_COLIMAGE, '&nbsp;');
     $colimage_tray->addElement($colimage_select);
-    $colimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_category['colimage'] . "' name='image3' id='image3' alt='' />"));
+    $colimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_category['colimage'] . "' name='image3' id='image3' alt=''>"));
     $sform->addElement($colimage_tray);
 
     // Code to call the file browser to select an image to upload
@@ -180,7 +180,7 @@ function editcol($columnID = '')
 
     $sform->addElement($button_tray);
     //-----------
-    $xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
+    //    $xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
     //-----------
     $sform->display();
     unset($hidden);
@@ -194,8 +194,8 @@ switch ($op) {
 
     case 'addcol':
         //-------------------------
-        if (!$xoopsGTicket->check()) {
-            redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         //-------------------------
         //articleID check
@@ -254,7 +254,7 @@ switch ($op) {
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['sbuploaddir'] . '/' . $colimage_name)) {
                     redirect_header('column.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
-                $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
+                $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
                 SoapboxUtility::uploadFile($allowed_mimetypes, $colimage_name, 'index.php', 0, $xoopsModuleConfig['sbuploaddir']);
                 $_categoryob->setVar('colimage', $colimage_name);
             }
@@ -296,8 +296,8 @@ switch ($op) {
         // confirmed, so delete
         if ($confirm === 1) {
             //-------------------------
-            if (!$xoopsGTicket->check()) {
-                redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+            if (!$GLOBALS['xoopsSecurity']->check()) {
+                redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
             }
             //-------------------------
             //columnID check
@@ -334,12 +334,12 @@ switch ($op) {
             $name = $myts->htmlSpecialChars($_categoryob->getVar('name'));
             xoops_cp_header();
             $adminObject->displayNavigation(basename(__FILE__));
-            xoops_confirm(array(
+            xoops_confirm([
                               'op'       => 'del',
                               'columnID' => $columnID,
                               'confirm'  => 1,
                               'name'     => $name
-                          ) + $xoopsGTicket->getTicketArray(__LINE__), 'column.php', _AM_SOAPBOX_DELETETHISCOL . '<br><br>' . $name, _AM_SOAPBOX_DELETE);
+                          ], 'column.php', _AM_SOAPBOX_DELETETHISCOL . '<br><br>' . $name, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
         exit();
@@ -351,8 +351,8 @@ switch ($op) {
 
     case 'reorder':
         //-------------------------
-        if (!$xoopsGTicket->check()) {
-            redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         $entrydataHandler->reorderColumnsUpdate($_POST['columnweight']);
         redirect_header('./column.php', 1, _AM_SOAPBOX_ORDERUPDATED);

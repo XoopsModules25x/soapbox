@@ -10,14 +10,14 @@
  */
 
 /**
- * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team, Jan Pedersen (Mithrandir)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
 
 /**
@@ -112,7 +112,7 @@ class SoapboxSbvotedata extends XoopsObject
                         $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->displayTarea($ret, $html, $smiley, $xcode, $image, $br));
@@ -135,7 +135,7 @@ class SoapboxSbvotedata extends XoopsObject
                         $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->previewTarea($ret, $html, $smiley, $xcode, $image, $br));
@@ -191,7 +191,7 @@ class SoapboxSbvotedata extends XoopsObject
                             $selected = explode('|', $ret);
                             $options  = explode('|', $this->vars[$key]['options']);
                             $i        = 1;
-                            $ret      = array();
+                            $ret      = [];
                             foreach ($options as $op) {
                                 if (in_array($i, $selected)) {
                                     $ret[] = $op;
@@ -260,7 +260,7 @@ class SoapboxSbvotedata extends XoopsObject
      */
     public function toArray()
     {
-        $ret  = array();
+        $ret  = [];
         $vars =& $this->getVars();
         foreach (array_keys($vars) as $i) {
             $ret[$i] =& $this->getVar($i);
@@ -332,7 +332,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
      */
     public function &getObjects(CriteriaElement $criteria = null, $id_as_key = false, $as_object = true)
     {
-        $ret   = array();
+        $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbvotedata');
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {

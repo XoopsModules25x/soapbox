@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    XOOPS Project http://xoops.org/
+ * @copyright    XOOPS Project https://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
@@ -140,7 +140,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
             unset($ele_tray, $ele, $hidden);
         }
         $button_tray->addElement(new XoopsFormHidden('op', 'save'));
-        $xoopsGTicket->addTicketXoopsFormElement($button_tray, __LINE__, 1800, 'mymenu');
+        //        $xoopsGTicket->addTicketXoopsFormElement($button_tray, __LINE__, 1800, 'mymenu');
         $button_tray->addElement(new XoopsFormButton('', 'button', _GO, 'submit'));
         $form->addElement($button_tray);
         xoops_cp_header();
@@ -157,8 +157,8 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
         //if ( !admin_refcheck("/modules/$admin_mydirname/admin/") ) {
         //  exit('Invalid referer');
         //}
-        if (!$xoopsGTicket->check(true, 'mymenu')) {
-            redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+        if (!$GLOBALS['xoopsSecurity']->check('mymenu')) {
+            redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         require_once XOOPS_ROOT_PATH . '/class/template.php';
         $xoopsTpl = new XoopsTpl();
@@ -190,6 +190,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                     // if default theme has been changed
                     if (!$theme_updated && $config->getVar('conf_catid') == XOOPS_CONF
                         && $config->getVar('conf_name') === 'theme_set') {
+                        /** @var \XoopsMemberHandler $memberHandler */
                         $memberHandler = xoops_getHandler('member');
                         $memberHandler->updateUsersByField('theme', $_POST[$config->getVar('conf_name')]);
                         $theme_updated = true;
@@ -207,6 +208,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
 
                             // generate compiled files for the new theme
                             // block files only for now..
+                            /** @var \XoopsTplfileHandler $tplfileHandler */
                             $tplfileHandler = xoops_getHandler('tplfile');
                             $dtemplates     = $tplfileHandler->find('default', 'block');
                             $dcount         = count($dtemplates);
@@ -226,6 +228,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                             }
 
                             // generate image cache files from image binary data, save them under cache/
+                            /** @var \XoopsImagesetimgHandler $imageHandler */
                             $imageHandler = xoops_getHandler('imagesetimg');
                             $imageFiles   = $imageHandler->getObjects(new Criteria('tplset_name', $newtplset), true);
                             foreach (array_keys($imageFiles) as $i) {
@@ -244,7 +247,9 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                         && $config->getVar('conf_name') === 'startpage') {
                         $memberHandler = xoops_getHandler('member');
                         $groups        = $memberHandler->getGroupList();
+                        /** @var \XoopsGroupPermHandler $gpermHandler */
                         $gpermHandler  = xoops_getHandler('groupperm');
+                        /** @var \XoopsModuleHandler $moduleHandler */
                         $moduleHandler = xoops_getHandler('module');
                         $module        = $moduleHandler->getByDirname($new_value);
                         foreach ($groups as $groupid => $groupname) {

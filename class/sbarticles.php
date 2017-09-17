@@ -10,14 +10,14 @@
  */
 
 /**
- * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
 if (!defined('XOBJ_SOAPBOX_DTYPE_FLOAT')) {
     define('XOBJ_SOAPBOX_DTYPE_FLOAT', 21);
@@ -132,7 +132,7 @@ class SoapboxSbarticles extends XoopsObject
                                    || $this->vars['breaks']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->displayTarea($ret, $html, $smiley, $xcode, $image, $br));
@@ -156,7 +156,7 @@ class SoapboxSbarticles extends XoopsObject
                                    || $this->vars['breaks']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->previewTarea($ret, $html, $smiley, $xcode, $image, $br));
@@ -219,7 +219,7 @@ class SoapboxSbarticles extends XoopsObject
                             $selected = explode('|', $ret);
                             $options  = explode('|', $this->vars[$key]['options']);
                             $i        = 1;
-                            $ret      = array();
+                            $ret      = [];
                             foreach ($options as $op) {
                                 if (in_array($i, $selected)) {
                                     $ret[] = $op;
@@ -396,7 +396,7 @@ class SoapboxSbarticles extends XoopsObject
      */
     public function toArray()
     {
-        $ret  = array();
+        $ret  = [];
         $vars =& $this->getVars();
         foreach (array_keys($vars) as $i) {
             $ret[$i] =& $this->getVar($i);
@@ -474,7 +474,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler
      */
     public function &getObjects(CriteriaElement $criteria = null, $id_as_key = false, $as_object = true)
     {
-        $ret   = array();
+        $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbarticles');
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
@@ -528,13 +528,59 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler
         // RMV-NOTIFY
         if ($sbarticle->isNew()) {
             $articleID = $this->db->genId($this->db->prefix('sbarticles') . '_articleID_seq');
-            $sql       = sprintf('INSERT INTO %s (articleID, columnID, headline, lead, bodytext, teaser, uid, submit, datesub, counter, weight, html, smiley, xcodes, breaks, BLOCK, artimage, votes, rating, commentable, offline, notifypub) VALUES (%u, %u, %s, %s, %s, %s, %u, %u, %u, %u, %u, %u, %u, %u, %u, %u, %s, %u, %f, %u, %u, %u )',
-                                 $this->db->prefix('sbarticles'), $articleID, $columnID, $this->db->quoteString($headline), $this->db->quoteString($lead), $this->db->quoteString($bodytext), $this->db->quoteString($teaser), $uid, $submit, $datesub, $counter, $weight, $html, $smiley, $xcodes, $breaks,
-                                 $block, $this->db->quoteString($artimage), $votes, $rating, $commentable, $offline, $notifypub);
+            $sql       = sprintf(
+                'INSERT INTO %s (articleID, columnID, headline, lead, bodytext, teaser, uid, submit, datesub, counter, weight, html, smiley, xcodes, breaks, BLOCK, artimage, votes, rating, commentable, offline, notifypub) VALUES (%u, %u, %s, %s, %s, %s, %u, %u, %u, %u, %u, %u, %u, %u, %u, %u, %s, %u, %f, %u, %u, %u )',
+                                 $this->db->prefix('sbarticles'),
+                $articleID,
+                $columnID,
+                $this->db->quoteString($headline),
+                $this->db->quoteString($lead),
+                $this->db->quoteString($bodytext),
+                $this->db->quoteString($teaser),
+                $uid,
+                $submit,
+                $datesub,
+                $counter,
+                $weight,
+                $html,
+                $smiley,
+                $xcodes,
+                $breaks,
+                                 $block,
+                $this->db->quoteString($artimage),
+                $votes,
+                $rating,
+                $commentable,
+                $offline,
+                $notifypub
+            );
         } else {
-            $sql = sprintf('UPDATE %s SET columnID = %u , headline = %s , lead = %s , bodytext = %s , teaser = %s , uid = %u , submit = %u , datesub = %u , counter = %u , weight = %u , html = %u , smiley = %u , xcodes = %u , breaks = %u , BLOCK = %u , artimage = %s , votes = %u , rating = %f , commentable = %u , offline = %u , notifypub = %u WHERE articleID = %u',
-                           $this->db->prefix('sbarticles'), $columnID, $this->db->quoteString($headline), $this->db->quoteString($lead), $this->db->quoteString($bodytext), $this->db->quoteString($teaser), $uid, $submit, $datesub, $counter, $weight, $html, $smiley, $xcodes, $breaks, $block,
-                           $this->db->quoteString($artimage), $votes, $rating, $commentable, $offline, $notifypub, $articleID);
+            $sql = sprintf(
+                'UPDATE %s SET columnID = %u , headline = %s , lead = %s , bodytext = %s , teaser = %s , uid = %u , submit = %u , datesub = %u , counter = %u , weight = %u , html = %u , smiley = %u , xcodes = %u , breaks = %u , BLOCK = %u , artimage = %s , votes = %u , rating = %f , commentable = %u , offline = %u , notifypub = %u WHERE articleID = %u',
+                           $this->db->prefix('sbarticles'),
+                $columnID,
+                $this->db->quoteString($headline),
+                $this->db->quoteString($lead),
+                $this->db->quoteString($bodytext),
+                $this->db->quoteString($teaser),
+                $uid,
+                $submit,
+                $datesub,
+                $counter,
+                $weight,
+                $html,
+                $smiley,
+                $xcodes,
+                $breaks,
+                $block,
+                           $this->db->quoteString($artimage),
+                $votes,
+                $rating,
+                $commentable,
+                $offline,
+                $notifypub,
+                $articleID
+            );
         }
         if (false !== $force) {
             $result = $this->db->queryF($sql);

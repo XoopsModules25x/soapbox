@@ -1,6 +1,4 @@
 <?php
-//
-
 /**
  *
  * Module: Soapbox
@@ -12,7 +10,7 @@
 
 use Xmf\Request;
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 //if (!isset($_POST['submit'])) {
 //    exit;
 //}
@@ -27,7 +25,7 @@ if (!Request::hasVar('submit', 'POST') || !Request::hasVar('lid', 'POST')) {
 if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     //-------------------------
     //    if (!$GLOBALS['xoopsSecurity']->check()) {
-    if (!$xoopsGTicket->check()) {
+    if (!$GLOBALS['xoopsSecurity']->check()) {
         redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
     }
     //-------------------------

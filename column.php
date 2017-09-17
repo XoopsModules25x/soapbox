@@ -28,11 +28,11 @@ if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+
 $columnID = Request::getInt('columnID', 0, 'GET');
 //---GET view sort --
 $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
     $sortname = 'datesub';
 }
 $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, array('ASC', 'DESC'))) {
+if (!in_array($sortorder, ['ASC', 'DESC'])) {
     $sortorder = 'DESC';
 }
 //---------------
@@ -40,7 +40,7 @@ require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 $start = Request::getInt('start', 0, 'GET');
 
 //-------------------------------------
-$entrydataHandler = xoops_getModuleHandler('entryget', $xoopsModule->dirname());
+$entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
 //-------------------------------------
 $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['indexperpage'], $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
 $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
@@ -51,7 +51,7 @@ if (empty($_entryob_arr) || $totalarts === 0) {
 $_categoryob = $_entryob_arr[0]->_sbcolumns;
 //get vars
 
-$category = array();
+$category = [];
 $category = $_categoryob->toArray(); //all assign
 
 $category['colid']      = $columnID;
@@ -65,7 +65,7 @@ $xoopsTpl->assign('category', $category);
 foreach ($_entryob_arr as $_entryob) {
     //-----------
     unset($articles);
-    $articles = array();
+    $articles = [];
     //get vars
     $articles = $_entryob->toArray();
     //--------------------
@@ -126,6 +126,6 @@ $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbupl
 $xoopsTpl->assign('sortname', $sortname);
 $xoopsTpl->assign('sortorder', $sortorder);
 
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 
 include XOOPS_ROOT_PATH . '/footer.php';

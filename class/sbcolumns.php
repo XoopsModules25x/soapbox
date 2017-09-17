@@ -10,14 +10,14 @@
  */
 
 /**
- * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
 
 /**
@@ -116,7 +116,7 @@ class SoapboxSbcolumns extends XoopsObject
                         $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->displayTarea($ret, $html, $smiley, $xcode, $image, $br));
@@ -139,7 +139,7 @@ class SoapboxSbcolumns extends XoopsObject
                         $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
                         //----------------
                         if ($html === 1 && $br !== 0) {
-                            $text = preg_replace("/>((\015\012)|(\015)|(\012))/", '>', $ret);
+                            $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
                         $ret = $GLOBALS['SoapboxCleantags']->cleanTags($ts->previewTarea($ret, $html, $smiley, $xcode, $image, $br));
@@ -195,7 +195,7 @@ class SoapboxSbcolumns extends XoopsObject
                             $selected = explode('|', $ret);
                             $options  = explode('|', $this->vars[$key]['options']);
                             $i        = 1;
-                            $ret      = array();
+                            $ret      = [];
                             foreach ($options as $op) {
                                 if (in_array($i, $selected)) {
                                     $ret[] = $op;
@@ -264,7 +264,7 @@ class SoapboxSbcolumns extends XoopsObject
      */
     public function toArray()
     {
-        $ret  = array();
+        $ret  = [];
         $vars =& $this->getVars();
         foreach (array_keys($vars) as $i) {
             $ret[$i] =& $this->getVar($i);
@@ -342,7 +342,7 @@ class SoapboxSbcolumnsHandler extends XoopsPersistableObjectHandler
         $as_object = true
     ) //&getObjects($criteria = null, $id_as_key = false)
     {
-        $ret   = array();
+        $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbcolumns');
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
@@ -396,11 +396,31 @@ class SoapboxSbcolumnsHandler extends XoopsPersistableObjectHandler
         // RMV-NOTIFY
         if ($sbcolumn->isNew()) {
             $columnID = $this->db->genId($this->db->prefix('sbcolumns') . '_columnID_seq');
-            $sql      = sprintf('INSERT INTO %s (columnID, author, NAME, description, total, weight, colimage, created) VALUES (%u, %u, %s, %s, %u, %u, %s, %u)', $this->db->prefix('sbcolumns'), $columnID, $author, $this->db->quoteString($name), $this->db->quoteString($description), $total, $weight,
-                                $this->db->quoteString($colimage), $created);
+            $sql      = sprintf(
+                'INSERT INTO %s (columnID, author, NAME, description, total, weight, colimage, created) VALUES (%u, %u, %s, %s, %u, %u, %s, %u)',
+                $this->db->prefix('sbcolumns'),
+                $columnID,
+                $author,
+                $this->db->quoteString($name),
+                $this->db->quoteString($description),
+                $total,
+                $weight,
+                                $this->db->quoteString($colimage),
+                $created
+            );
         } else {
-            $sql = sprintf('UPDATE %s SET author = %s, NAME = %s, description = %s, total = %u, weight = %u, colimage = %s, created = %u WHERE columnID = %u', $this->db->prefix('sbcolumns'), $author, $this->db->quoteString($name), $this->db->quoteString($description), $total, $weight,
-                           $this->db->quoteString($colimage), $created, $columnID);
+            $sql = sprintf(
+                'UPDATE %s SET author = %s, NAME = %s, description = %s, total = %u, weight = %u, colimage = %s, created = %u WHERE columnID = %u',
+                $this->db->prefix('sbcolumns'),
+                $author,
+                $this->db->quoteString($name),
+                $this->db->quoteString($description),
+                $total,
+                $weight,
+                           $this->db->quoteString($colimage),
+                $created,
+                $columnID
+            );
         }
         if (false !== $force) {
             $result = $this->db->queryF($sql);

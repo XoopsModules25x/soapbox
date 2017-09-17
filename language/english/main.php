@@ -35,8 +35,10 @@ define('_MD_SOAPBOX_INTARTICLE', 'Have a look at this article at %s');
 define('_AM_SOAPBOX_ISADMINNOTICE', 'Image not found. Please check this!');
 define('_MD_SOAPBOX_MAINHEAD', 'Welcome to %s');
 define('_MD_SOAPBOX_MAININDEXTOTAL', 'Articles under this column: ');
-define('_MD_SOAPBOX_MAININTRO',
-       'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column&#8217s name to see all the articles associated to that column, or on an article&#8217s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.');
+define(
+    '_MD_SOAPBOX_MAININTRO',
+       'In this area of the site you will find our catalogue of editorial columns, as well as the latest article from each of our authors. Click on a column&#8217s name to see all the articles associated to that column, or on an article&#8217s name to read directly the article. Depending on privileges, you can rate each article, select notification options or leave your comments.'
+);
 define('_MD_SOAPBOX_MAINNOSELECTCAT', 'You did not select a valid column');
 define('_MD_SOAPBOX_MAINNOTOPICS', 'There are no articles in this column');
 define('_MD_SOAPBOX_MORE', '>> Read more...');
@@ -64,8 +66,10 @@ define('_MD_SOAPBOX_SELECT_IMG', 'Choose image');
 define('_MD_SOAPBOX_SENDSTORY', 'Send this article to a friend');
 define('_MD_SOAPBOX_SUB_SMNAME', 'Fill this form to send your article');
 define('_MD_SOAPBOX_SUB_SNEWNAME', 'Submit an article to %s');
-define('_MD_SOAPBOX_SUB_SNEWNAMEDESC',
-       'please fill the following form to submit your new article to our site. As you&#8217re well aware, it&#8217ll have to be validated by an administrator before it gets published. However, if the administrator has activated the auto-approve setting, your article will be instantly published.');
+define(
+    '_MD_SOAPBOX_SUB_SNEWNAMEDESC',
+       'please fill the following form to submit your new article to our site. As you&#8217re well aware, it&#8217ll have to be validated by an administrator before it gets published. However, if the administrator has activated the auto-approve setting, your article will be instantly published.'
+);
 define('_MD_SOAPBOX_SUBMITART', 'Submit an article');
 define('_MD_SOAPBOX_THANKYOU', 'Thank you for taking the time to vote here at %s');
 define('_MD_SOAPBOX_TIMES', ' times.');

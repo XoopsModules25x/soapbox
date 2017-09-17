@@ -12,7 +12,7 @@
  * @param  null  $event
  * @return array
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 function sb_notify_iteminfo($category, $item_id, $event = null)
 {
     /*
@@ -37,7 +37,7 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
     $pathparts     = explode('/', __DIR__);
     $moduleDirName = $pathparts[array_search('modules', $pathparts) + 1];
     $item_id       = (int)$item_id;
-    $item          = array();
+    $item          = [];
     if ($category === 'global') {
         $item['name'] = '';
         $item['url']  = '';

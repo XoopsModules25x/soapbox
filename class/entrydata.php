@@ -10,14 +10,14 @@
  */
 
 /**
- * @copyright    XOOPS Project http://xoops.org/
+ * @copyright    XOOPS Project https://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(dirname(__DIR__));
 if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($this->mydirname));
@@ -416,7 +416,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
             return false;
         }
         // Notify of new link (anywhere) and new link in category
-        $tags                = array();
+        $tags                = [];
         $tags['COLUMN_NAME'] = $sbcolumn->getVar('name');
         $tags['COLUMN_URL']  = XOOPS_URL . '/modules/' . $this->_module_dirname . '/column.php?columnID=' . $sbcolumn->getVar('columnID');
         $notificationHandler = xoops_getHandler('notification');
@@ -443,7 +443,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
             return false;
         }
         // Notify of new link (anywhere) and new link in category
-        $tags                 = array();
+        $tags                 = [];
         $tags['ARTICLE_NAME'] = $sbarticle->getVar('headline');
         $tags['ARTICLE_URL']  = XOOPS_URL . '/modules/' . $this->_module_dirname . '/article.php?articleID=' . $sbarticle->getVar('articleID');
         $tags['COLUMN_NAME']  = $sbcolumns->getVar('name');

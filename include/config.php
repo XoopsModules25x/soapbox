@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    XOOPS Project http://xoops.org/
+ * @copyright    XOOPS Project https://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
@@ -42,22 +42,22 @@ define($capsDirName . '_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . $moduleDirName);
 
 //constant($cloned_lang . '_CATEGORY_NOTIFY')
 
-$uploadFolders = array(
+$uploadFolders = [
     constant($capsDirName . '_UPLOAD_PATH'),
     constant($capsDirName . '_UPLOAD_PATH') . '/images',
     constant($capsDirName . '_UPLOAD_PATH') . '/images/thumbnails'
-);
+];
 
-$copyFiles = array(
+$copyFiles = [
     constant($capsDirName . '_UPLOAD_PATH'),
     constant($capsDirName . '_UPLOAD_PATH') . '/images',
     constant($capsDirName . '_UPLOAD_PATH') . '/images/thumbnails'
-);
+];
 
-$oldFiles = array(
+$oldFiles = [
     '/include/update_functions.php',
     '/include/install_functions.php'
-);
+];
 
 //Configurator
 /*
@@ -92,8 +92,8 @@ return array(
 );
 */
 // module information
-$modCopyright = "<a href='http://xoops.org' title='XOOPS Project' target='_blank'>
-                     <img src='" . constant($capsDirName . '_AUTHOR_LOGOIMG') . "' alt='XOOPS Project' /></a>";
+$modCopyright = "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
+                     <img src='" . constant($capsDirName . '_AUTHOR_LOGOIMG') . "' alt='XOOPS Project'></a>";
 
 /**
  * Class SoapboxConfigurator

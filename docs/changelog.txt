@@ -1,3 +1,7 @@
+<h5>1.70 Beta 2      [NOT RELEASED]</h5>
+<hr>
+- clear sbvotedata table when adding test data
+
 <h5>1.70 Beta 1      [2017-05-23]</h5>
 <hr>
 - XOOPS 2.5.9, PHP 7 (mamba)

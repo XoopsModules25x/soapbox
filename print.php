@@ -64,18 +64,37 @@ function PrintPage($articleID)
 
     echo "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'>\n";
     echo "<html>\n<head>\n";
+<<<<<<< HEAD
     echo "<title>" . $sitename . "</title>\n";
     echo "<meta http-equiv='Content-Type' content='text/html; charset=" . _CHARSET . "' />\n";
     echo "<meta name='AUTHOR' content='" . $sitename . "' />\n";
     echo "<meta name='COPYRIGHT' content='Copyright (c) 2004 by " . $sitename . "' />\n";
     echo "<meta name='DESCRIPTION' content='" . $slogan . "' />\n";
     echo "<meta name='GENERATOR' content='" . XOOPS_VERSION . "' />\n\n\n";
+=======
+    echo '<title>' . $sitename . "</title>\n";
+    echo "<meta http-equiv='Content-Type' content='text/html; charset=" . _CHARSET . "'>\n";
+    echo "<meta name='AUTHOR' content='" . $sitename . "'>\n";
+    echo "<meta name='COPYRIGHT' content='Copyright (c) 2004 by " . $sitename . "'>\n";
+    echo "<meta name='DESCRIPTION' content='" . $slogan . "'>\n";
+    echo "<meta name='GENERATOR' content='" . XOOPS_VERSION . "'>\n\n\n";
+>>>>>>> 0e88b92725b9d7bfd44a660f56e46bb3b12b199c
 
     //hack start 2003-3-18 by toshimitsu
     //Column: --> _MD_SOAPBOX_COLUMNPRN , Author: --> _MD_SOAPBOX_AUTHORPRN
     echo "<body bgcolor='#ffffff' text='#000000'>
             <div style='width: 600px; border: 1px solid #000; padding: 20px;'>
+<<<<<<< HEAD
                 <div style='text-align: center; display: block; padding-bottom: 12px; margin: 0 0 6px 0; border-bottom: 2px solid #ccc;'><img src='" . XOOPS_URL . "/modules/" . $xoopsModule->dirname() . "/assets/images/sb_slogo.png' border='0' alt='' /><h2 style='margin: 0;'>" . $articles['headline'] . "</h2></div>
+=======
+                <div style='text-align: center; display: block; padding-bottom: 12px; margin: 0 0 6px 0; border-bottom: 2px solid #ccc;'><img src='"
+         . XOOPS_URL
+         . '/modules/'
+         . $xoopsModule->dirname()
+         . "/assets/images/sb_slogo.png' border='0' alt=''><h2 style='margin: 0;'>"
+         . $articles['headline']
+         . '</h2></div>
+>>>>>>> 0e88b92725b9d7bfd44a660f56e46bb3b12b199c
                 <div></div>
                 <div>" . _MD_SOAPBOX_COLUMNPRN . "<b>" . $category['name'] . "</b></div>
                 <div style='padding-bottom: 6px; border-bottom: 1px solid #ccc;'>" . _MD_SOAPBOX_AUTHORPRN . " <b>" . $authorname . "</b></div>

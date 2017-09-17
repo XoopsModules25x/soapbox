@@ -8,7 +8,7 @@
  * Author: hsalazar
  * Licence: GNU
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 //TinyD spaw
 global $xoopsModuleConfig, $xoopsModule;
@@ -71,12 +71,12 @@ function displayimage($image = 'blank.gif', $path = '', $imgsource = '', $alttex
     }
 
     if (!is_dir(XOOPS_ROOT_PATH."/".$imgsource."/".$image) && file_exists(XOOPS_ROOT_PATH."/".$imgsource."/".$image)) {
-        $showimage .= "<img src='".XOOPS_URL."/".$myts->htmlSpecialChars(strip_tags($imgsource))."/".$myts->htmlSpecialChars(strip_tags($image))."' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
+        $showimage .= "<img src='".XOOPS_URL."/".$myts->htmlSpecialChars(strip_tags($imgsource))."/".$myts->htmlSpecialChars(strip_tags($image))."' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))."></a>";
     } else {
         if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
-            $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/brokenimg.png' border='0' alt='"._AM_SOAPBOX_ISADMINNOTICE."' /></a>";
+            $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/brokenimg.png' border='0' alt='"._AM_SOAPBOX_ISADMINNOTICE."'></a>";
         } else {
-            $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/blank.png' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))." /></a>";
+            $showimage .= "<img src='".XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/assets/images/blank.png' border='0' alt=".$myts->htmlSpecialChars(strip_tags($alttext))."></a>";
         }
     }
     // clearstatcache();
@@ -224,7 +224,6 @@ function getAuthorName($author)
  */
 function showColumns($showCreate = 0)
 {
-    global $xoopsGTicket;
     global $xoopsModuleConfig, $xoopsModule;
     $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
     $myts       = MyTextSanitizer::getInstance();
@@ -306,11 +305,11 @@ function showColumns($showCreate = 0)
     echo "<br>\n";
 
     if ($numrows > 0) {
-        echo "<input type='hidden' name='op' value='reorder' />";
+        echo "<input type='hidden' name='op' value='reorder'>";
         //--------------------
-        echo $xoopsGTicket->getTicketHtml(__LINE__);
+        echo $GLOBALS['xoopsSecurity']->getTokenHTML();
         //--------------------
-        echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERCOL . '" /></div>';
+        echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERCOL . '"></div>';
         echo '</form>';
     }
 }
@@ -320,7 +319,6 @@ function showColumns($showCreate = 0)
  */
 function showArticles($showCreate = 0)
 {
-    global $xoopsGTicket;
     global $xoopsModuleConfig, $xoopsModule;
     $myts = MyTextSanitizer::getInstance();
 
@@ -339,11 +337,11 @@ function showArticles($showCreate = 0)
     }
     //---GET view sort --
     $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-    if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+    if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
         $sortname = 'datesub';
     }
     $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-    if (!in_array($sortorder, array('ASC', 'DESC'))) {
+    if (!in_array($sortorder, ['ASC', 'DESC'])) {
         $sortorder = 'DESC';
     }
     //---------------
@@ -418,25 +416,25 @@ function showArticles($showCreate = 0)
                         [<?php echo $tot_all; ?>]
                     </option>
                     <option value='1' <?php if ($entries === 1) {
-                        echo 'selected';
-                    } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
+                            echo 'selected';
+                        } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
                         [<?php echo $tot_published; ?>]
                     </option>
                     <option value='2' <?php if ($entries === 2) {
-                        echo 'selected';
-                    } ?>>
+                            echo 'selected';
+                        } ?>>
                         <?php echo _AM_SOAPBOX_SELOFF; ?>
                         [<?php echo $tot_offline; ?>]
                     </option>
                     <option value='3' <?php if ($entries === 3) {
-                        echo 'selected';
-                    } ?>>
+                            echo 'selected';
+                        } ?>>
                         <?php echo _AM_SOAPBOX_SELSUB; ?>
                         [<?php echo $tot_submitted; ?>]
                     </option>
                     <option value='4' <?php if ($entries === 4) {
-                        echo 'selected';
-                    } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
+                            echo 'selected';
+                        } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
                         [<?php echo $tot_ok; ?>]
                     </option>
                 </select>
@@ -501,7 +499,7 @@ function showArticles($showCreate = 0)
     if ($numrows > 0) { // That is, if there ARE articles in the said condition
         // Retrieve rows for those items
 
-        $colarray = array();
+        $colarray = [];
         $cont     = 0;
 
         foreach ($_entryob_arr as $key => $_entryob) {
@@ -554,11 +552,11 @@ function showArticles($showCreate = 0)
     echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
 
     if ($numrows > 0) {
-        echo "<input type='hidden' name='op' value='reorder' />";
+        echo "<input type='hidden' name='op' value='reorder'>";
         //--------------------
-        echo $xoopsGTicket->getTicketHtml(__LINE__);
+        echo $GLOBALS['xoopsSecurity']->getTokenHTML();
         //--------------------
-        echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERART . '" /></div>';
+        echo '<div style="margin-bottom: 18px;"><input type="submit" name="submit" class="formButton" value="' . _AM_SOAPBOX_REORDERART . '"></div>';
         echo '</form>';
     }
     echo "<br>\n";
@@ -566,7 +564,6 @@ function showArticles($showCreate = 0)
 
 function showSubmissions()
 {
-    global $xoopsGTicket;
     global $xoopsModuleConfig, $xoopsModule;
 
     $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
@@ -581,11 +578,11 @@ function showSubmissions()
 
     //---GET view sort --
     $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-    if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+    if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
         $sortname = 'datesub';
     }
     $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-    if (!in_array($sortorder, array('ASC', 'DESC'))) {
+    if (!in_array($sortorder, ['ASC', 'DESC'])) {
         $sortorder = 'DESC';
     }
     //---------------

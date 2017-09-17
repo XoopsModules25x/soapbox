@@ -15,10 +15,10 @@
  *
  * @category        Module
  * @package         soapbox
- * @author          XOOPS Development Team <mambax7@gmail.com> - <http://xoops.org>
- * @copyright       {@link http://xoops.org/ XOOPS Project}
+ * @author          XOOPS Development Team <mambax7@gmail.com> - <https://xoops.org>
+ * @copyright       {@link https://xoops.org/ XOOPS Project}
  * @license         {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @link            http://xoops.org/
+ * @link            https://xoops.org/
  * @since           1.0.0
  */
 
@@ -43,7 +43,7 @@ $adminObject->displayNavigation(basename(__FILE__));
 
 //$permission = soapbox_CleanVars($_POST, 'permission', 1, 'int');
 $permission                = Request::getInt('permission', 1, 'POST');
-$selected                  = array('', '', '', '');
+$selected                  = ['', '', '', ''];
 $selected[$permission - 1] = ' selected';
 
 echo "
@@ -68,11 +68,11 @@ switch ($permission) {
         $formTitle   = _AM_SOAPBOX_PERMISSIONS_GLOBAL;
         $permName    = 'soapbox_ac';
         $permDesc    = _AM_SOAPBOX_PERMISSIONS_GLOBAL_DESC;
-        $globalPerms = array(
+        $globalPerms = [
             '4'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_4,
             '8'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_8,
             '16' => _AM_SOAPBOX_PERMISSIONS_GLOBAL_16
-        );
+        ];
         break;
     case 2:
         $formTitle = _AM_SOAPBOX_PERMISSIONS_APPROVE;

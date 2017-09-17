@@ -1,6 +1,6 @@
 <?php
 // $Id$
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 // Keep Block option values when update (by nobunobu)
 global $xoopsDB;
 $query  = 'SELECT mid FROM ' . $xoopsDB->prefix('modules') . " WHERE dirname='" . $modversion['dirname'] . "' ";

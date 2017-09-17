@@ -10,14 +10,14 @@
  */
 
 /**
- * @copyright    XOOPS Project http://xoops.org/
+ * @copyright    XOOPS Project https://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(dirname(__DIR__));
 if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
@@ -215,8 +215,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      */
     public function getColumnsItemIDs($sbcolumns)
     {
-        $ret       = array();
-        $columnIDs = array();
+        $ret       = [];
+        $columnIDs = [];
         if (!isset($sbcolumns) || empty($sbcolumns)) {
             return $ret;
         }
@@ -256,8 +256,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      */
     public function getArticlesItemIDs($sbarticles)
     {
-        $ret        = array();
-        $articleIDs = array();
+        $ret        = [];
+        $articleIDs = [];
         if (!isset($sbarticles) || empty($sbarticles)) {
             return $ret;
         }
@@ -314,12 +314,12 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $id_as_key = false
     ) {
         global $xoopsUser;
-        $ret                                = array();
+        $ret                                = [];
         $this->total_getColumnsAllPermcheck = 0;
         $groups                             = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $columnIDs                          = array();
-        $notcolumnIDs                       = array();
-        $can_read_columnIDs                 = array();
+        $columnIDs                          = [];
+        $notcolumnIDs                       = [];
+        $can_read_columnIDs                 = [];
         //if obect -- change --> array
         if (isset($sbcolumns)) {
             $columnIDs = $this->getColumnsItemIDs($sbcolumns);
@@ -409,12 +409,12 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $id_as_key = false
     ) {
         global $xoopsUser;
-        $ret                                 = array();
+        $ret                                 = [];
         $this->total_getArticlesAllPermcheck = 0;
         //getColmuns
-        $can_read_columnIDs      = array();
-        $can_read_column_authors = array();
-        $NOTarticleIDs           = array();
+        $can_read_columnIDs      = [];
+        $can_read_column_authors = [];
+        $NOTarticleIDs           = [];
         if ($checkRight || isset($select_sbcolumns) || $approve_submit) {
             //get category object
             $_sbcolumns_arr =& $this->getColumnsAllPermcheck(0, 0, $checkRight, null, null, $select_sbcolumns, null, true);
@@ -606,7 +606,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $sortname = null,
         $sortorder = null
     ) {
-        $ret                               = array();
+        $ret                               = [];
         $this->total_getArticlesByColumnID = 0;
 
         $criteria = new CriteriaCompo();
@@ -659,7 +659,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $sortname = null,
         $sortorder = null
     ) {
-        $ret                                 = array();
+        $ret                                 = [];
         $this->total_getVotedatasByArticleID = 0;
         $criteria                            = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $articleID));
@@ -710,7 +710,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $sortname = null,
         $sortorder = null
     ) {
-        $ret                            = array();
+        $ret                            = [];
         $this->total_getColumnsByAuthor = 0;
         $criteria                       = new CriteriaCompo();
         $criteria->add(new Criteria('author', $user_id));
@@ -764,8 +764,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $sortname = null,
         $sortorder = null
     ) {
-        $ret       = array();
-        $columnIDs = array();
+        $ret       = [];
+        $columnIDs = [];
         if (is_array($_sbarticle_arr)) {
             foreach ($_sbarticle_arr as $sbarticle) {
                 if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {

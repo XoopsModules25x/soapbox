@@ -27,11 +27,11 @@ $moduleDirName = basename(__DIR__);
 
 //---GET view sort --
 $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
     $sortname = 'datesub';
 }
 $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, array('ASC', 'DESC'))) {
+if (!in_array($sortorder, ['ASC', 'DESC'])) {
     $sortorder = 'DESC';
 }
 //---------------
@@ -39,7 +39,7 @@ require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 $start = Request::getInt('start', 0, 'GET'); //$start = isset($_GET['start']) ? (int)($_GET['start']) : 0;
 //---------------
 
-$columna = array();
+$columna = [];
 // Options
 switch ($op) {
     case 'default':
@@ -78,7 +78,7 @@ switch ($op) {
             $category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
             //-------------------------------------
             if ($category['colimage'] !== '') {
-                $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $category['colimage'] . '" /></span>';
+                $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $category['colimage'] . '"></span>';
             } else {
                 $category['imagespan'] = '';
             }
@@ -90,7 +90,7 @@ switch ($op) {
             foreach ($_entryob_arr as $_entryob) {
                 //-----------
                 unset($articles);
-                $articles = array();
+                $articles = [];
                 //get vars
                 $articles            = $_entryob->toArray();
                 $articles['id']      = $articles['articleID'];
@@ -124,7 +124,7 @@ switch ($op) {
             unset($category);
         }
 }
-//$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css" />');
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
+//$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css">');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 
 include XOOPS_ROOT_PATH . '/footer.php';

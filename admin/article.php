@@ -32,7 +32,7 @@ if ($totalcats === 0) {
  */
 function editarticle($articleID = 0)
 {
-    global $xoopsGTicket, $indexAdmin;
+    global $indexAdmin;
     global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
     $xoopsDB = XoopsDatabaseFactory::getDatabaseConnection();
     $myts    = MyTextSanitizer::getInstance();
@@ -90,7 +90,7 @@ function editarticle($articleID = 0)
     * Last one is not set as we do not have sub menus in WF-FAQ
     */
     $canEditCategoryobArray = $entrydataHandler->getColumns(null, true);
-    $collist                = array();
+    $collist                = [];
     foreach ($canEditCategoryobArray as $key => $_can_edit_categoryob) {
         $collist[$key] = $_can_edit_categoryob->getVar('name');
     }
@@ -173,7 +173,7 @@ function editarticle($articleID = 0)
     $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $xoopsModuleConfig['sbuploaddir'] . '", "", "' . XOOPS_URL . "\")'");
     $artimage_tray = new XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
     $artimage_tray->addElement($artimage_select);
-    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt='' />"));
+    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
     $sform->addElement($artimage_tray);
 
     // Code to call the file browser to select an image to upload
@@ -280,7 +280,7 @@ function editarticle($articleID = 0)
 
     $sform->addElement($button_tray);
     //-----------
-    $xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
+    //    $xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
     //-----------
     $sform->display();
     unset($hidden);
@@ -297,8 +297,8 @@ switch ($op) {
 
     case 'addart':
         //-------------------------
-        if (!$xoopsGTicket->check()) {
-            redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         //-------------------------
 
@@ -434,7 +434,7 @@ switch ($op) {
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $artimage_name)) {
                     redirect_header('index.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
-                $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
+                $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
 
                 SoapboxUtility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
 
@@ -486,8 +486,8 @@ switch ($op) {
         // confirmed, so delete
         if ($confirm === 1) {
             //-------------------------
-            if (!$xoopsGTicket->check()) {
-                redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+            if (!$GLOBALS['xoopsSecurity']->check()) {
+                redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
             }
             //-------------------------
             //articleID check
@@ -518,20 +518,20 @@ switch ($op) {
             $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
             xoops_cp_header();
             $adminObject->displayNavigation(basename(__FILE__));
-            xoops_confirm(array(
+            xoops_confirm([
                               'op'        => 'del',
                               'articleID' => $articleID,
                               'confirm'   => 1,
                               'headline'  => $headline
-                          ) + $xoopsGTicket->getTicketArray(__LINE__), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
+                          ], 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
         exit();
         break;
     case 'reorder':
         //-------------------------
-        if (!$xoopsGTicket->check()) {
-            redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         $entrydataHandler->reorderArticlesUpdate($_POST['articleweight']);
         redirect_header('index.php', 1, _AM_SOAPBOX_ORDERUPDATED);
