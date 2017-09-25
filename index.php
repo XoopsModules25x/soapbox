@@ -66,7 +66,7 @@ switch ($op) {
         $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
 
         //----------------------------
-        if ($totalcols === 0) {
+        if (0 === $totalcols) {
             $xoopsTpl->assign('lang_nothing', _MD_SOAPBOX_NOTHING);
         }
         //----------------------------
@@ -77,7 +77,7 @@ switch ($op) {
             //get author
             $category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
             //-------------------------------------
-            if ($category['colimage'] !== '') {
+            if ('' !== $category['colimage']) {
                 $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $category['colimage'] . '"></span>';
             } else {
                 $category['imagespan'] = '';
@@ -99,7 +99,7 @@ switch ($op) {
                 $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
                 $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
                 //--------------------
-                if ($articles['submit'] !== 0) {
+                if (0 !== $articles['submit']) {
                     $articles['headline'] = '[' . _MD_SOAPBOX_SELSUBMITS . ']' . $articles['headline'];
                     $articles['teaser']   = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
                     $articles['lead']     = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;

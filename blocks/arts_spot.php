@@ -28,7 +28,7 @@ function b_arts_spot_show($options)
     $soapConfig = $hModConfig->getConfigsByCat(0, $module_id);
     //-------------------------------------
     // To handle options in the template
-    if (isset($options[0]) && $options[0] === 1) {
+    if (isset($options[0]) && 1 === $options[0]) {
         $block_outdata['showspotlight'] = 1;
     } else {
         $block_outdata['showspotlight'] = 0;
@@ -43,31 +43,31 @@ function b_arts_spot_show($options)
         $options[1] = 1;
     }
     //-------------------------------------
-    if (isset($options[2]) && $options[2] === 1) {
+    if (isset($options[2]) && 1 === $options[2]) {
         $block_outdata['showdateask'] = 1;
     } else {
         $block_outdata['showdateask'] = 0;
     }
     //-------------------------------------
-    if (isset($options[3]) && $options[3] === 1) {
+    if (isset($options[3]) && 1 === $options[3]) {
         $block_outdata['showbylineask'] = 1;
     } else {
         $block_outdata['showbylineask'] = 0;
     }
     //-------------------------------------
-    if (isset($options[4]) && $options[4] === 1) {
+    if (isset($options[4]) && 1 === $options[4]) {
         $block_outdata['showstatsask'] = 1;
     } else {
         $block_outdata['showstatsask'] = 0;
     }
     //-------------------------------------
-    if (isset($options[5]) && $options[5] === 'ver') {
+    if (isset($options[5]) && 'ver' === $options[5]) {
         $block_outdata['verticaltemplate'] = 1;
     } else {
         $block_outdata['verticaltemplate'] = 0;
     }
     //-------------------------------------
-    if (isset($options[6]) && $options[6] === 1) {
+    if (isset($options[6]) && 1 === $options[6]) {
         $block_outdata['showpicask'] = 1;
     } else {
         $block_outdata['showpicask'] = 0;
@@ -78,7 +78,7 @@ function b_arts_spot_show($options)
         $sortname = 'datesub';
     }
     $sortorder = 'DESC';
-    if ($sortname === 'weight') {
+    if ('weight' === $sortname) {
         $sortorder = 'ASC';
     }
     //-------------------------------------
@@ -110,7 +110,7 @@ function b_arts_spot_show($options)
     $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
     $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
     // If there's no article result (which means there's no article yet...
-    if (empty($_entryob_arr) || count($_entryob_arr) === 0) {
+    if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
         $block_outdata['display'] = 0;
 
         return $block_outdata;
@@ -148,13 +148,13 @@ function b_arts_spot_show($options)
         $_outdata_arr ['subbodytext'] = xoops_substr($articles['bodytext'], 0, 255);
         $_outdata_arr ['bodytext']    = '';
 
-        if ($sortname === 'datesub') {
+        if ('datesub' === $sortname) {
             $_outdata_arr['new'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
-        } elseif ($sortname === 'counter') {
+        } elseif ('counter' === $sortname) {
             $_outdata_arr['new'] = _MB_SOAPBOX_HITS . $articles['counter'];
-        } elseif ($sortname === 'weight') {
+        } elseif ('weight' === $sortname) {
             $_outdata_arr['new'] = _MB_SOAPBOX_WEIGHT . $articles['weight'];
-        } elseif ($sortname === 'rating') {
+        } elseif ('rating' === $sortname) {
             $_outdata_arr['new'] = _MB_SOAPBOX_RATING . number_format($articles['rating'], 2, '.', '') . _MB_SOAPBOX_VOTE . $articles['votes'];
         } else {
             $_outdata_arr['new'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
@@ -186,12 +186,12 @@ function b_arts_spot_edit($options)
     //-----
     $chked = '';
     $form  .= _MB_SOAPBOX_SPOTLIGHT;
-    if ($options[0] === 1) {
+    if (1 === $options[0]) {
         $chked = ' checked';
     }
     $form  .= "<input type='radio' name='options[0]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
-    if ($options[0] === 0) {
+    if (0 === $options[0]) {
         $chked = ' checked';
     }
     $form .= "&nbsp;<input type='radio' name='options[0]' value='0'" . $chked . '>' . _NO . '<br>';
@@ -201,48 +201,48 @@ function b_arts_spot_edit($options)
     //-----
     $chked = '';
     $form  .= _MB_SOAPBOX_SHOWDATE;
-    if ($options[2] === 1) {
+    if (1 === $options[2]) {
         $chked = ' checked';
     }
     $form  .= "<input type='radio' name='options[2]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
-    if ($options[2] === 0) {
+    if (0 === $options[2]) {
         $chked = ' checked';
     }
     $form .= "&nbsp;<input type='radio' name='options[2]' value='0'" . $chked . '>' . _NO . '<br>';
     //-----
     $chked = '';
     $form  .= _MB_SOAPBOX_SHOWBYLINE;
-    if ($options[3] === 1) {
+    if (1 === $options[3]) {
         $chked = ' checked';
     }
     $form  .= "<input type='radio' name='options[3]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
-    if ($options[3] === 0) {
+    if (0 === $options[3]) {
         $chked = ' checked';
     }
     $form .= '&nbsp;<input type="radio" name="options[3]" value="0"' . $chked . '>' . _NO . '<br>';
     //-----
     $chked = '';
     $form  .= _MB_SOAPBOX_SHOWSTATS;
-    if ($options[4] === 1) {
+    if (1 === $options[4]) {
         $chked = ' checked';
     }
     $form  .= "<input type='radio' name='options[4]' value='1'" . $chked . '>&nbsp;' . _YES;
     $chked = '';
-    if ($options[4] === 0) {
+    if (0 === $options[4]) {
         $chked = ' checked';
     }
     $form .= "&nbsp;<input type='radio' name='options[4]' value='0' " . $chked . '>' . _NO . '<br>';
 
     $form .= _MB_SOAPBOX_TEMPLATE . "<select name='options[5]' >";
     $form .= "<option value='ver'";
-    if ($options[5] === 'ver') {
+    if ('ver' === $options[5]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_VERTICAL . "</option>\n";
     $form .= "<option value='hor'";
-    if ($options[5] === 'hor') {
+    if ('hor' === $options[5]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_HORIZONTAL . '</option>';
@@ -250,13 +250,13 @@ function b_arts_spot_edit($options)
 
     $chked = '';
     $form  .= _MB_SOAPBOX_SHOWPIC;
-    if ($options[6] === 1) {
+    if (1 === $options[6]) {
         $chked = ' checked';
     }
     $form .= "<input type='radio' name='options[6]' value='1' " . $chked . '>&nbsp;' . _YES;
 
     $chked = '';
-    if ($options[6] === 0) {
+    if (0 === $options[6]) {
         $chked = ' checked';
     }
     $form .= "&nbsp;<input type='radio' name='options[6]' value='0' " . $chked . '>' . _NO . '<br>';
@@ -264,25 +264,25 @@ function b_arts_spot_edit($options)
     $form .= '' . _MB_SOAPBOX_ORDER . "&nbsp;<select name='options[7]'>";
 
     $form .= "<option value='datesub'";
-    if ($options[7] === 'datesub') {
+    if ('datesub' === $options[7]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_DATE . "</option>\n";
 
     $form .= "<option value='counter'";
-    if ($options[7] === 'counter') {
+    if ('counter' === $options[7]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_HITS . "</option>\n";
 
     $form .= "<option value='weight'";
-    if ($options[7] === 'weight') {
+    if ('weight' === $options[7]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_WEIGHT . "</option>\n";
 
     $form .= "<option value='rating'";
-    if ($options[7] === 'rating') {
+    if ('rating' === $options[7]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_RATING . "</option>\n";

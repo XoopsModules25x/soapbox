@@ -19,12 +19,12 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsUser;
     $ret = [];
-    if (!is_object($xoopsUser) || $xoopsUser->getVar('uid') === 0) {
+    if (!is_object($xoopsUser) || 0 === $xoopsUser->getVar('uid')) {
         return $ret;
     }
     $count = count($queryarray);
-    if ($userid === 0) {
-        if (!is_array($queryarray) || empty($queryarray) || $count === 0) {
+    if (0 === $userid) {
+        if (!is_array($queryarray) || empty($queryarray) || 0 === $count) {
             return $ret;
         }
     }
@@ -41,7 +41,7 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
         $canread_columnIDs[]                                   = $_categoryob->getVar('columnID');
         $canread_columnnames[$_categoryob->getVar('columnID')] = $_categoryob->getVar('name');
         $_column_authors_uid[$_categoryob->getVar('columnID')] = $_categoryob->getVar('author');
-        if ($userid !== 0 && $userid === $_categoryob->getVar('author')) {
+        if (0 !== $userid && $userid === $_categoryob->getVar('author')) {
             $_userinfo_authors_column[] = $_categoryob->getVar('columnID');
         }
     }
@@ -55,7 +55,7 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
     $criteria->add($crit_canread, 'AND');
     unset($crit_canread);
     //for userinfo
-    if ($userid !== 0 && !empty($_userinfo_authors_column) && count($_userinfo_authors_column) > 0) {
+    if (0 !== $userid && !empty($_userinfo_authors_column) && count($_userinfo_authors_column) > 0) {
         $criteria_userinfo = new CriteriaCompo();
         $criteria_userinfo->add(new Criteria('columnID', '(' . implode(',', array_unique($_userinfo_authors_column)) . ')', 'IN'));
         $criteria->add($criteria_userinfo, 'AND');

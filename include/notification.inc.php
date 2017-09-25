@@ -38,7 +38,7 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
     $moduleDirName = $pathparts[array_search('modules', $pathparts) + 1];
     $item_id       = (int)$item_id;
     $item          = [];
-    if ($category === 'global') {
+    if ('global' === $category) {
         $item['name'] = '';
         $item['url']  = '';
 
@@ -47,7 +47,7 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
 
     global $xoopsDB;
 
-    if ($category === 'column') {
+    if ('column' === $category) {
         // Assume we have a valid category id
 
         $sql    = 'SELECT name FROM ' . $xoopsDB->prefix('sbcolumns') . ' WHERE columnID  = ' . $item_id;
@@ -62,7 +62,7 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
         return $item;
     }
 
-    if ($category === 'article') {
+    if ('article' === $category) {
         // Assume we have a valid story id
         $sql    = 'SELECT headline FROM ' . $xoopsDB->prefix('sbarticles') . ' WHERE articleID = ' . $item_id;
         $result = $xoopsDB->query($sql);

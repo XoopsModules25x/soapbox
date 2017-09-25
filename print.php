@@ -13,7 +13,7 @@ use Xmf\Request;
 include __DIR__ . '/header.php';
 global $moduleDirName;
 $moduleDirName = $myts->htmlSpecialChars(basename(__DIR__));
-if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES));
 }
 

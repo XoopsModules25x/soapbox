@@ -28,12 +28,12 @@ function b_arts_rated($options)
         $options[0] = 'datesub';
     }
     $sortorder = 'DESC';
-    if ($options[0] === 'weight') {
+    if ('weight' === $options[0]) {
         $sortorder = 'ASC';
     }
     $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
     $_entryob_arr     = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $options[0], $sortorder, null, null, false, false);
-    if (empty($_entryob_arr) || count($_entryob_arr) === 0) {
+    if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
         return $block_outdata;
     }
     //-------------------------------------
@@ -44,13 +44,13 @@ function b_arts_rated($options)
             $newarts['id']       = $_entryob->getVar('articleID');
             $newarts['dir']      = $module_name;
             $newarts['date']     = $myts->htmlSpecialChars(formatTimestamp($_entryob->getVar('datesub'), $soapConfig['dateformat']));
-            if ($options[0] === 'datesub') {
+            if ('datesub' === $options[0]) {
                 $newarts['new'] = $myts->htmlSpecialChars(formatTimestamp($_entryob->getVar('datesub'), $soapConfig['dateformat']));
-            } elseif ($options[0] === 'counter') {
+            } elseif ('counter' === $options[0]) {
                 $newarts['new'] = $_entryob->getVar('counter');
-            } elseif ($options[0] === 'weight') {
+            } elseif ('weight' === $options[0]) {
                 $newarts['new'] = $_entryob->getVar('weight');
-            } elseif ($options[0] === 'rating') {
+            } elseif ('rating' === $options[0]) {
                 $newarts['new']   = number_format($_entryob->getVar('rating'), 2, '.', '');
                 $newarts['votes'] = $_entryob->getVar('votes');
             } else {
@@ -73,25 +73,25 @@ function b_arts_rated_edit($options)
     $form = '' . _MB_SOAPBOX_ORDER . "&nbsp;<select name='options[]'>";
 
     $form .= "<option value='datesub'";
-    if ($options[0] === 'datesub') {
+    if ('datesub' === $options[0]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_DATE . "</option>\n";
 
     $form .= "<option value='counter'";
-    if ($options[0] === 'counter') {
+    if ('counter' === $options[0]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_HITS . "</option>\n";
 
     $form .= "<option value='weight'";
-    if ($options[0] === 'weight') {
+    if ('weight' === $options[0]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_WEIGHT . "</option>\n";
 
     $form .= "<option value='rating'";
-    if ($options[0] === 'rating') {
+    if ('rating' === $options[0]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_SOAPBOX_RATING . "</option>\n";

@@ -22,7 +22,7 @@ if (isset($_POST['op'])) {
 
 $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
 $totalcats        = $entrydataHandler->getColumnCount();
-if ($totalcats === 0) {
+if (0 === $totalcats) {
     redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
 }
 
@@ -65,7 +65,7 @@ function editarticle($articleID = 0)
          *initial first variables before we start
          */
         $columnID = 1;
-        if (isset($xoopsModuleConfig['form_options']) && $xoopsModuleConfig['form_options'] !== 'dhtml') {
+        if (isset($xoopsModuleConfig['form_options']) && 'dhtml' !== $xoopsModuleConfig['form_options']) {
             $html   = 1;
             $breaks = 0;
         }
@@ -197,7 +197,7 @@ function editarticle($articleID = 0)
 
     // COMMENTS
     if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
-        && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
+        && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
         // COMMENTS
         // Code to allow comments
         $addcommentable_radio = new XoopsFormRadioYN(_AM_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
@@ -419,7 +419,7 @@ switch ($op) {
         }
         if (isset($_FILES['cimage']['name'])) {
             $artimage_name = trim(strip_tags($myts->stripSlashesGPC($_FILES['cimage']['name'])));
-            if ($artimage_name !== '') {
+            if ('' !== $artimage_name) {
                 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $artimage_name)) {
                     redirect_header('index.php', 1, _AM_SOAPBOX_FILEEXISTS);
@@ -431,7 +431,7 @@ switch ($op) {
                 $_entryob->setVar('artimage', $artimage_name);
             }
         }
-        if ($_entryob->getVar('artimage') === '') {
+        if ('' === $_entryob->getVar('artimage')) {
             $_entryob->setVar('artimage', 'blank.png');
         }
         //-----------------
@@ -468,7 +468,7 @@ switch ($op) {
         $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
 
         // confirmed, so delete
-        if ($confirm === 1) {
+        if (1 === $confirm) {
             //-------------------------
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());

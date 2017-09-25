@@ -19,7 +19,7 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(dirname(__DIR__));
-if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($this->mydirname));
 }
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles.php';
@@ -227,7 +227,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
     public function deleteArticlesEntrys(CriteriaElement $criteria = null, $force = false, $re_count = false)
     {
         $_sbarticles_arr =& $this->getArticles($criteria);
-        if (empty($_sbarticles_arr) || count($_sbarticles_arr) === 0) {
+        if (empty($_sbarticles_arr) || 0 === count($_sbarticles_arr)) {
             return false;
         }
         foreach ($_sbarticles_arr as $sbarticle) {
@@ -253,7 +253,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
 
         $sbvotedata_arr =& $this->getVotedatasByArticleID($sbarticle->getVar('articleID'), true, 0, 0);
         $votesDB        = count($sbvotedata_arr);
-        if (empty($sbvotedata_arr) || $votesDB === 0) {
+        if (empty($sbvotedata_arr) || 0 === $votesDB) {
             return false;
         }
         foreach ($sbvotedata_arr as $sbvotedata) {
@@ -261,7 +261,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
                 $totalrating += $sbvotedata->getVar('rating');
             }
         }
-        if ($totalrating !== 0 && $votesDB !== 0) {
+        if (0 !== $totalrating && 0 !== $votesDB) {
             $finalrating = ($totalrating / $votesDB) + 0.00005;
             $finalrating = number_format($finalrating, 4);
         }
@@ -412,7 +412,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         if (strtolower(get_class($sbcolumn)) !== strtolower('SoapboxSbcolumns')) {
             return false;
         }
-        if ($sbcolumn->getVar('notifypub') !== 1) {
+        if (1 !== $sbcolumn->getVar('notifypub')) {
             return false;
         }
         // Notify of new link (anywhere) and new link in category
@@ -452,16 +452,16 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         $tags['WAITINGSTORIES_URL'] = XOOPS_URL . '/modules/' . $this->_module_dirname . '/admin/submissions.php?op=col';
         $notificationHandler        = xoops_getHandler('notification');
         //approve evevt
-        if ($events === 'article_submit') {
+        if ('article_submit' === $events) {
             $notificationHandler->triggerEvent('global', 0, 'article_submit', $tags);
             $notificationHandler->triggerEvent('column', $sbarticle->getVar('columnID'), 'article_submit', $tags);
-        } elseif ($events === 'approve') {
+        } elseif ('approve' === $events) {
             $notificationHandler->triggerEvent('article', $sbarticle->getVar('articleID'), 'approve', $tags);
         }
         //online
-        if ($sbarticle->getVar('offline') === 0 && $sbarticle->getVar('submit') === 0) {
+        if (0 === $sbarticle->getVar('offline') && 0 === $sbarticle->getVar('submit')) {
             //when offline ,update offline changed to visible --> event
-            if ($sbarticle->pre_offline === 1 && $sbarticle->getVar('notifypub') === 1) {
+            if (1 === $sbarticle->pre_offline && 1 === $sbarticle->getVar('notifypub')) {
                 $notificationHandler->triggerEvent('global', 0, 'new_article', $tags);
                 $notificationHandler->triggerEvent('column', $sbarticle->getVar('columnID'), 'new_article', $tags);
             }

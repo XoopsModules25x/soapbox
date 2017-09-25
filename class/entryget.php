@@ -19,7 +19,7 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(dirname(__DIR__));
-if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
 }
 
@@ -78,7 +78,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     {
         parent::__construct($db);
         $moduleDirName = basename(dirname(__DIR__));
-        if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+        if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
             echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
         }
         $this->sbArticleHandler = new SoapboxSbarticlesHandler($db);
@@ -226,7 +226,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             }
         } else {
             if (is_array($sbcolumns)) {
-                if (count($sbcolumns) === 0) {
+                if (0 === count($sbcolumns)) {
                     return $ret;
                 }
                 $sbcolumns = array_unique($sbcolumns);
@@ -267,7 +267,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             }
         } else {
             if (is_array($sbarticles)) {
-                if (count($sbarticles) === 0) {
+                if (0 === count($sbarticles)) {
                     return $ret;
                 }
                 $sbarticles = array_unique($sbarticles);
@@ -357,10 +357,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if (empty($this->total_getColumnsAllPermcheck)) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) !== '') {
+        if (isset($sortname) && '' !== trim($sortname)) {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) !== '') {
+        if (isset($sortorder) && '' !== trim($sortorder)) {
             $criteria->setOrder($sortorder);
         }
         $criteria->setLimit((int)$limit);
@@ -418,7 +418,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if ($checkRight || isset($select_sbcolumns) || $approve_submit) {
             //get category object
             $_sbcolumns_arr =& $this->getColumnsAllPermcheck(0, 0, $checkRight, null, null, $select_sbcolumns, null, true);
-            if (empty($_sbcolumns_arr) || count($_sbcolumns_arr) === 0) {
+            if (empty($_sbcolumns_arr) || 0 === count($_sbcolumns_arr)) {
                 return $ret;
             }
             foreach ($_sbcolumns_arr as $key => $_sbcolumn) {
@@ -503,10 +503,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if (empty($this->total_getArticlesAllPermcheck)) {
             return $ret;
         } else {
-            if (isset($sortname) && trim($sortname) !== '') {
+            if (isset($sortname) && '' !== trim($sortname)) {
                 $criteria->setSort($sortname);
             }
-            if (isset($sortorder) && trim($sortorder) !== '') {
+            if (isset($sortorder) && '' !== trim($sortorder)) {
                 $criteria->setOrder($sortorder);
             }
             $criteria->setLimit((int)$limit);
@@ -550,11 +550,11 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         //get category object
         $_sbcolumns_arr =& $this->getColumnsAllPermcheck(1, 0, $checkRight, null, null, $sbarticle->getVar('columnID'), null, true);
         if ($checkRight) {
-            if (empty($_sbcolumns_arr) || count($_sbcolumns_arr) === 0) {
+            if (empty($_sbcolumns_arr) || 0 === count($_sbcolumns_arr)) {
                 return $ret;
             }
             $sbarticle->_sbcolumns = $_sbcolumns_arr[$sbarticle->getVar('columnID')];
-            if ($sbarticle->getVar('offline') !== 0) {
+            if (0 !== $sbarticle->getVar('offline')) {
                 return $ret;
             }
             if (is_object($xoopsUser)) {
@@ -568,13 +568,13 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                     }
                 }
             }
-            if ($sbarticle->getVar('datesub') === 0) {
+            if (0 === $sbarticle->getVar('datesub')) {
                 return $ret;
             }
             if ($sbarticle->getVar('datesub') > time()) {
                 return $ret;
             }
-            if ($sbarticle->getVar('submit') !== 0) {
+            if (0 !== $sbarticle->getVar('submit')) {
                 return $ret;
             }
         }
@@ -612,20 +612,20 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('columnID', $columnID));
         $this->total_getArticlesByColumnID = $this->getArticleCount($criteria);
-        if (empty($this->total_getArticlesByColumnID) || $this->total_getArticlesByColumnID === 0) {
+        if (empty($this->total_getArticlesByColumnID) || 0 === $this->total_getArticlesByColumnID) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) !== '') {
+        if (isset($sortname) && '' !== trim($sortname)) {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) !== '') {
+        if (isset($sortorder) && '' !== trim($sortorder)) {
             $criteria->setOrder($sortorder);
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
         $sbarticle_arr =& $this->getArticles($criteria, true);
         unset($criteria);
-        if (empty($sbarticle_arr) || count($sbarticle_arr) === 0) {
+        if (empty($sbarticle_arr) || 0 === count($sbarticle_arr)) {
             return $ret;
         }
         if ($asobject) {
@@ -664,20 +664,20 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $criteria                            = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $articleID));
         $this->total_getVotedatasByArticleID = $this->getVotedataCount($criteria);
-        if (empty($this->total_getVotedatasByArticleID) || $this->total_getVotedatasByArticleID === 0) {
+        if (empty($this->total_getVotedatasByArticleID) || 0 === $this->total_getVotedatasByArticleID) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) !== '') {
+        if (isset($sortname) && '' !== trim($sortname)) {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) !== '') {
+        if (isset($sortorder) && '' !== trim($sortorder)) {
             $criteria->setOrder($sortorder);
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
         $sbvotedata_arr =& $this->getVotedatas($criteria, true);
         unset($criteria);
-        if (empty($sbvotedata_arr) || count($sbvotedata_arr) === 0) {
+        if (empty($sbvotedata_arr) || 0 === count($sbvotedata_arr)) {
             return $ret;
         }
         if ($asobject) {
@@ -715,20 +715,20 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $criteria                       = new CriteriaCompo();
         $criteria->add(new Criteria('author', $user_id));
         $this->total_getColumnsByAuthor = $this->getColumnCount($criteria);
-        if (empty($this->total_getColumnsByAuthor) || $this->total_getColumnsByAuthor === 0) {
+        if (empty($this->total_getColumnsByAuthor) || 0 === $this->total_getColumnsByAuthor) {
             return $ret;
         }
-        if (isset($sortname) && trim($sortname) !== '') {
+        if (isset($sortname) && '' !== trim($sortname)) {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) !== '') {
+        if (isset($sortorder) && '' !== trim($sortorder)) {
             $criteria->setOrder($sortorder);
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
         $sbcolumns_arr =& $this->getColumns($criteria, true);
         unset($criteria);
-        if (empty($sbcolumns_arr) || count($sbcolumns_arr) === 0) {
+        if (empty($sbcolumns_arr) || 0 === count($sbcolumns_arr)) {
             return $ret;
         }
         if ($asobject) {
@@ -784,17 +784,17 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
 
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('columnID', '(' . implode(',', array_unique($columnIDs)) . ')', 'IN'));
-        if (isset($sortname) && trim($sortname) !== '') {
+        if (isset($sortname) && '' !== trim($sortname)) {
             $criteria->setSort($sortname);
         }
-        if (isset($sortorder) && trim($sortorder) !== '') {
+        if (isset($sortorder) && '' !== trim($sortorder)) {
             $criteria->setOrder($sortorder);
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
         $sbcolumns_arr =& $this->getColumns($criteria, true);
         unset($criteria);
-        if (empty($sbcolumns_arr) || count($sbcolumns_arr) === 0) {
+        if (empty($sbcolumns_arr) || 0 === count($sbcolumns_arr)) {
             return $ret;
         }
         if ($asobject) {
@@ -854,10 +854,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
         //update count
         $hitcount_update = false;
-        if ($groups === XOOPS_GROUP_ANONYMOUS) {
+        if (XOOPS_GROUP_ANONYMOUS === $groups) {
             $hitcount_update = true;
         } else {
-            if ($xoopsModuleConfig['adminhits'] === 1) {
+            if (1 === $xoopsModuleConfig['adminhits']) {
                 $hitcount_update = true;
             } else {
                 if ($xoopsUser->isAdmin($this->_module_id)) {
@@ -894,7 +894,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $ret = '';
         if (is_object($xoopsUser)) {
             if ($xoopsUser->isAdmin($this->_module_id)) {
-                if ($sbarticle->getVar('submit') !== 0) {
+                if (0 !== $sbarticle->getVar('submit')) {
                     $ret = '<a href="'
                            . XOOPS_URL
                            . '/modules/'
@@ -975,7 +975,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
         $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
         $al             = SoapboxUtility::getAcceptLang();
-        if ($al === 'ja') {
+        if ('ja' === $al) {
             if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
                 && @mb_internal_encoding(_CHARSET)) {
                 $mbmail_subject = mb_convert_encoding($mbmail_subject, 'SJIS', _CHARSET);

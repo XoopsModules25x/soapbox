@@ -12,8 +12,8 @@
 
 //TinyD spaw
 global $xoopsModuleConfig, $xoopsModule;
-if (!empty($xoopsModuleConfig) && is_object($xoopsModule) && $xoopsModule->dirname() === 'soapbox') {
-    if ($xoopsModuleConfig['form_options'] === 'spaw') {
+if (!empty($xoopsModuleConfig) && is_object($xoopsModule) && 'soapbox' === $xoopsModule->dirname()) {
+    if ('spaw' === $xoopsModuleConfig['form_options']) {
         if (is_readable(XOOPS_ROOT_PATH . '/common/spaw/spaw_control.class.php')) {
             require_once XOOPS_ROOT_PATH . '/common/spaw/spaw_control.class.php';
         }
@@ -211,7 +211,7 @@ function getAuthorName($author)
     }
     //-------------------------------------
     $ret = $authorname;
-    if (empty($authorname) || $authorname === '') {
+    if (empty($authorname) || '' === $authorname) {
         $ret = $uname3;
     }
 
@@ -283,7 +283,7 @@ function showColumns($showCreate = 0)
             $author = getLinkedUnameFromId($author, 0);
             $modify = "<a href='column.php?op=mod&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SOAPBOX_EDITCOL . "'></a>";
             $delete = "<a href='column.php?op=del&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETECOL . "'></a>";
-            $style  = (($cont % 2) === 0) ? 'even' : 'odd';
+            $style  = (0 === ($cont % 2)) ? 'even' : 'odd';
             echo '<tr class="' . $style . '">';
             echo '<td class="txtcenter">' . $category['columnID'] . '</td>';
             echo '<td class="txtcenter"><input type="text" name="columnweight[' . $category['columnID'] . ']" value="' . $weight . '" size="3" maxlength="3" style="text-align: center;"></td>';
@@ -383,19 +383,19 @@ function showArticles($showCreate = 0)
     //----------------------------
 
     // Prepare string for table head
-    if ($entries === 0) {
+    if (0 === $entries) {
         $string = _AM_SOAPBOX_SHWALL;
     }
-    if ($entries === 1) {
+    if (1 === $entries) {
         $string = _AM_SOAPBOX_SHWONL;
     }
-    if ($entries === 2) {
+    if (2 === $entries) {
         $string = _AM_SOAPBOX_SHWOFF;
     }
-    if ($entries === 3) {
+    if (3 === $entries) {
         $string = _AM_SOAPBOX_SHWSUB;
     }
-    if ($entries === 4) {
+    if (4 === $entries) {
         $string = _AM_SOAPBOX_SHWAPV;
     }
 
@@ -409,30 +409,30 @@ function showArticles($showCreate = 0)
                 <select name='entries' onchange='submit()'>
                     <option value='0'
                         <?php
-                        if ($entries === 0) {
+                        if (0 === $entries) {
                             echo 'selected';
                         } ?>>
                         <?php echo _AM_SOAPBOX_SELALL; ?>
                         [<?php echo $tot_all; ?>]
                     </option>
-                    <option value='1' <?php if ($entries === 1) {
+                    <option value='1' <?php if (1 === $entries) {
                             echo 'selected';
                         } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
                         [<?php echo $tot_published; ?>]
                     </option>
-                    <option value='2' <?php if ($entries === 2) {
+                    <option value='2' <?php if (2 === $entries) {
                             echo 'selected';
                         } ?>>
                         <?php echo _AM_SOAPBOX_SELOFF; ?>
                         [<?php echo $tot_offline; ?>]
                     </option>
-                    <option value='3' <?php if ($entries === 3) {
+                    <option value='3' <?php if (3 === $entries) {
                             echo 'selected';
                         } ?>>
                         <?php echo _AM_SOAPBOX_SELSUB; ?>
                         [<?php echo $tot_submitted; ?>]
                     </option>
-                    <option value='4' <?php if ($entries === 4) {
+                    <option value='4' <?php if (4 === $entries) {
                             echo 'selected';
                         } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
                         [<?php echo $tot_ok; ?>]
@@ -515,14 +515,14 @@ function showArticles($showCreate = 0)
             $delete  = "<a href='article.php?op=del&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETEART . "'></a>";
 
             //if ($offline == 0) {
-            if ($articles['offline'] === 0) {
+            if (0 === $articles['offline']) {
                 $status = "<img src='" . $pathIcon16 . "/1.png' alt='" . _AM_SOAPBOX_ARTISON . "'>";
             } else {
                 //if ($offline == 1 && $submit == 0) {
-                if ($submit === 0 && $articles['offline'] === 1) {
+                if (0 === $submit && 1 === $articles['offline']) {
                     $status = "<img src='" . $pathIcon16 . "/0.png' alt='" . _AM_SOAPBOX_ARTISOFF . "'>";
                 } else {
-                    if ($submit === 1) {
+                    if (1 === $submit) {
                         $status = '<img src=' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . "/assets/images/icon/sub.gif alt='" . _AM_SOAPBOX_ARTISSUB . "'>";
                     }
                 }
@@ -531,7 +531,7 @@ function showArticles($showCreate = 0)
             //mb ----------------------------
             //echo $cont.' - '.$offline.': '.$status.'</br>';
 
-            $style = (($cont % 2) === 0) ? 'even' : 'odd';
+            $style = (0 === ($cont % 2)) ? 'even' : 'odd';
             echo '<tr class="' . $style . '">';
             echo '<td align="center"><a href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?articleID=' . $articles['articleID'] . '" title="' . $articles['headline'] . '" target="_blank">' . $articles['articleID'] . '</a></td>';
             echo '<td class="txtcenter"><input type="text" name="articleweight[' . $articles['articleID'] . ']" value="' . $articles['weight'] . '" size="3" maxlength="3" style="text-align: center;"></td>';

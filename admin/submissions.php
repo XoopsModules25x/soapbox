@@ -190,7 +190,7 @@ function editarticle($articleID = '')
 
     // COMMENTS
     if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
-        && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
+        && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
         // COMMENTS
         // Code to allow comments
         $addcommentable_radio = new XoopsFormRadioYN(_AM_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
@@ -394,7 +394,7 @@ switch ($op) {
         $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
 
         // confirmed, so delete
-        if ($confirm === 1) {
+        if (1 === $confirm) {
             //-------------------------
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());

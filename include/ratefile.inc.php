@@ -53,7 +53,7 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
         redirect_header(XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/article.php', 1, _MD_SOAPBOX_CANTVOTEOWN);
     }
     // Check if Download POSTER is voting (UNLESS Anonymous users allowed to post)
-    if ($ratinguser !== 0) {
+    if (0 !== $ratinguser) {
         //get category object
         $_categoryob = $_entryob->_sbcolumns;
         if (!is_object($_categoryob)) {
@@ -76,7 +76,7 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     }
 
     // Check if ANONYMOUS user is trying to vote more than once per day.
-    if ($ratinguser === 0) {
+    if (0 === $ratinguser) {
         $yesterday = (time() - (86400 * $anonwaitdays));
         //uid check
         $criteria = new CriteriaCompo();

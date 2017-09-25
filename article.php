@@ -20,7 +20,7 @@ global $xoopsModule;
 $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
 
 $moduleDirName = $myts->htmlSpecialChars(basename(__DIR__));
-if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES));
 }
 //---GET view sort --
@@ -59,7 +59,7 @@ if (empty($articleID)) {
     //get entry object
     $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, null, null, true, false);
     //    $totalarts = $entrydataHandler->total_getArticlesAllPermcheck;
-    if (empty($_entryob_arr) || count($_entryob_arr) === 0) {
+    if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
         redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, _MD_SOAPBOX_NOTHING);
     }
     $_entryob = $_entryob_arr[0];
@@ -85,14 +85,14 @@ $articles['id']     = $articles['articleID'];
 $articles['posted'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
 
 // includes code by toshimitsu
-if (trim($articles['bodytext']) !== '') {
+if ('' !== trim($articles['bodytext'])) {
     $articletext    = explode('[pagebreak]', $_entryob->getVar('bodytext', 'none'));
     $articles_pages = count($articletext);
     if ($articles_pages > 1) {
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $pagenav = new XoopsPageNav($articles_pages, 1, $startpage, 'page', 'articleID=' . $articles['articleID']);
         $xoopsTpl->assign('pagenav', $pagenav->renderNav());
-        if ($startpage === 0) {
+        if (0 === $startpage) {
             $articles['bodytext'] = $articles['lead'] . '<br><br>' . $myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
         } else {
             $articles['bodytext'] =& $myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
@@ -104,13 +104,13 @@ if (trim($articles['bodytext']) !== '') {
 //Cleantags
 $articles['bodytext'] = $GLOBALS['SoapboxCleantags']->cleanTags($articles['bodytext']);
 
-if ($xoopsModuleConfig['includerating'] === 1) {
+if (1 === $xoopsModuleConfig['includerating']) {
     $xoopsTpl->assign('showrating', '1');
     //-------------------------------------
     //for ratefile update by domifara
     $xoopsTpl->assign('rate_gtickets', $GLOBALS['xoopsSecurity']->getTokenHTML());
     //-------------------------------------
-    if ($articles['rating'] != 0.0000) {
+    if (0.0000 != $articles['rating']) {
         $articles['rating'] = '' . _MD_SOAPBOX_RATING . ': ' . $myts->htmlSpecialChars(number_format($articles['rating'], 2));
         $articles['votes']  = '' . _MD_SOAPBOX_VOTES . ': ' . $myts->htmlSpecialChars($articles['votes']);
     } else {
@@ -140,7 +140,7 @@ $xoopsTpl->assign('story', $articles);
 $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
 $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
 $al             = SoapboxUtility::getAcceptLang();
-if ($al === 'ja') {
+if ('ja' === $al) {
     if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
         && @mb_internal_encoding(_CHARSET)) {
         $mbmail_subject = mb_convert_encoding($mbmail_subject, 'SJIS', _CHARSET);
@@ -183,8 +183,8 @@ if (!empty($_other_entryob_arr)) {
 }
 
 if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
-    && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
-    if ($articles['commentable'] === 1) {
+    && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
+    if (1 === $articles['commentable']) {
         include XOOPS_ROOT_PATH . '/include/comment_view.php';
     }
 } else {

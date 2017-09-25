@@ -100,13 +100,13 @@ if (is_object($xoopsUser)) {
 
     // COMMENTS
     if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
-        && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
+        && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
         // COMMENTS
         // Code to allow comments
         $addcommentable_radio = new XoopsFormRadioYN(_MD_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _MD_SOAPBOX_YES . '', ' ' . _MD_SOAPBOX_NO . '');
         $sform->addElement($addcommentable_radio);
     }
-    if (isset($xoopsModuleConfig['autoapprove']) && $xoopsModuleConfig['autoapprove'] === 1) {
+    if (isset($xoopsModuleConfig['autoapprove']) && 1 === $xoopsModuleConfig['autoapprove']) {
         if ($xoopsUser->isAdmin($xoopsModule->mid())) {
             // OFFLINE
             // Code to take article offline, for maintenance purposes

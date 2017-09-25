@@ -88,7 +88,7 @@ function rmdirr($dirname)
     $dir = dir($dirname);
     while (false !== $entry = $dir->read()) {
         // Skip pointers
-        if ($entry === '.' || $entry === '..') {
+        if ('.' === $entry || '..' === $entry) {
             continue;
         }
 

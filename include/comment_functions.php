@@ -22,7 +22,7 @@ function sb_com_update($art_id, $total_num)
     if (isset($soapModuleConfig['globaldisplaycomments'])) {
         $globaldisplaycomments = $soapModuleConfig['globaldisplaycomments'];
     }
-    if ($globaldisplaycomments === 0) {
+    if (0 === $globaldisplaycomments) {
         $db  = XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'UPDATE ' . $db->prefix('sbarticles') . ' SET commentable = ' . (int)$total_num . ' WHERE articleID = ' . (int)$art_id;
         $db->query($sql);

@@ -21,7 +21,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'sb_column.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 $moduleDirName = $myts->htmlSpecialChars(basename(__DIR__));
-if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES));
 }
 
@@ -44,7 +44,7 @@ $entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
 //-------------------------------------
 $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['indexperpage'], $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
 $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
-if (empty($_entryob_arr) || $totalarts === 0) {
+if (empty($_entryob_arr) || 0 === $totalarts) {
     redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, _MD_SOAPBOX_MAINNOTOPICS);
 }
 //get category object
@@ -75,28 +75,28 @@ foreach ($_entryob_arr as $_entryob) {
     $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
     $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
     //--------------------
-    if ($articles['submit'] !== 0) {
+    if (0 !== $articles['submit']) {
         $articles['headline'] = '[' . _MD_SOAPBOX_SELSUBMITS . ']' . $articles['headline'];
         $articles['teaser']   = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
         $articles['lead']     = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
-    } elseif ($_entryob->getVar('datesub') === 0 || $_entryob->getVar('datesub') > time()) {
+    } elseif (0 === $_entryob->getVar('datesub') || $_entryob->getVar('datesub') > time()) {
         $articles['headline'] = '[' . _MD_SOAPBOX_SELWAITEPUBLISH . ']' . $articles['headline'];
         $articles['teaser']   = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
         $articles['lead']     = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
     }
     //--------------------
-    if (!empty($articles['artimage']) && $articles['artimage'] !== 'blank.png'
+    if (!empty($articles['artimage']) && 'blank.png' !== $articles['artimage']
         && file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $articles['artimage'])) {
         $articles['image'] = XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $articles['artimage'];
     } else {
         $articles['image'] = '';
     }
 
-    if ($xoopsModuleConfig['includerating'] === 1) {
+    if (1 === $xoopsModuleConfig['includerating']) {
         $xoopsTpl->assign('showrating', 1);
         $rating = $articles['rating'];
         $votes  = $articles['votes'];
-        if ($rating != 0.00) {
+        if (0.00 != $rating) {
             $articles['rating'] = _MD_SOAPBOX_RATING . ': ' . $myts->htmlSpecialChars(number_format($rating, 2));
             $articles['votes']  = _MD_SOAPBOX_VOTES . ': ' . $myts->htmlSpecialChars($votes);
         } else {

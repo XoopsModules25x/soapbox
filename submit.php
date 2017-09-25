@@ -14,7 +14,7 @@ include __DIR__ . '/../../mainfile.php';
 //global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule;
 //----------------------------------------------
 //allowsubmit
-if (!isset($xoopsModuleConfig['allowsubmit']) || $xoopsModuleConfig['allowsubmit'] !== 1) {
+if (!isset($xoopsModuleConfig['allowsubmit']) || 1 !== $xoopsModuleConfig['allowsubmit']) {
     redirect_header('index.php', 1, _NOPERM);
 }
 //guest
@@ -59,12 +59,12 @@ $name     = $xoopsUser->getVar('uname');
 $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
 //-------------------------------------
 //get can edit category object
-if ($thisgrouptype === XOOPS_GROUP_ADMIN) {
+if (XOOPS_GROUP_ADMIN === $thisgrouptype) {
     $canEditCategoryobArray = $entrydataHandler->getColumns(null, true);
 } else {
     $canEditCategoryobArray = $entrydataHandler->getColumnsByAuthor($edit_uid, true);
 }
-if (empty($canEditCategoryobArray) || count($canEditCategoryobArray) === 0) {
+if (empty($canEditCategoryobArray) || 0 === count($canEditCategoryobArray)) {
     redirect_header('index.php', 1, _MD_SOAPBOX_NOCOLEXISTS);
 }
 //----------------------------------------------
@@ -102,7 +102,7 @@ switch ($op) {
         }
         $_categoryob = $canEditCategoryobArray[$_entryob->getVar('columnID')];
         //checkbox not post when value is false
-        if ($thisgrouptype !== XOOPS_GROUP_ADMIN) {
+        if (XOOPS_GROUP_ADMIN !== $thisgrouptype) {
             $_entryob->setVar('html', 0);
             $_entryob->setVar('smiley', 1);
             $_entryob->setVar('xcodes', 1);
@@ -153,7 +153,7 @@ switch ($op) {
         }
 
         //autoapprove
-        if ($thisgrouptype === XOOPS_GROUP_ANONYMOUS || $xoopsModuleConfig['autoapprove'] !== 1) {
+        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $xoopsModuleConfig['autoapprove']) {
             $_entryob->setVar('submit', 1);
             $_entryob->setVar('offline', 1);
         } else {
@@ -177,7 +177,7 @@ switch ($op) {
 
             break;
         }
-        if ($thisgrouptype === XOOPS_GROUP_ANONYMOUS || $xoopsModuleConfig['autoapprove'] !== 1) {
+        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $xoopsModuleConfig['autoapprove']) {
             // Notify of to admin only for approve
             $entrydataHandler->newArticleTriggerEvent($_entryob, 'article_submit');
         } else {

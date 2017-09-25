@@ -135,7 +135,7 @@ function editcol($columnID = '')
     $notifypub_radio = new XoopsFormRadioYN(_AM_SOAPBOX_NOTIFY, 'notifypub', $e_category['notifypub'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
     $sform->addElement($notifypub_radio);
 
-    if (!isset($e_category['colimage']) || empty($e_category['colimage']) || $e_category['colimage'] === '') {
+    if (!isset($e_category['colimage']) || empty($e_category['colimage']) || '' === $e_category['colimage']) {
         $e_category['colimage'] = 'nopicture.png';
     }
     $graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
@@ -233,7 +233,7 @@ switch ($op) {
         }
 
         if (isset($_POST['author'])) {
-            if ($_POST['author'] === '-1' && isset($_POST['authorinput'])) {
+            if ('-1' === $_POST['author'] && isset($_POST['authorinput'])) {
                 $author = (int)$_POST['authorinput'];
             } else {
                 $author = (int)$_POST['author'];
@@ -250,7 +250,7 @@ switch ($op) {
         }
         if (isset($_FILES['cimage']['name'])) {
             $colimage_name = trim(strip_tags($myts->stripSlashesGPC($_FILES['cimage']['name'])));
-            if ($colimage_name !== '') {
+            if ('' !== $colimage_name) {
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['sbuploaddir'] . '/' . $colimage_name)) {
                     redirect_header('column.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
@@ -259,7 +259,7 @@ switch ($op) {
                 $_categoryob->setVar('colimage', $colimage_name);
             }
         }
-        if ($_categoryob->getVar('colimage') === '') {
+        if ('' === $_categoryob->getVar('colimage')) {
             $_categoryob->setVar('colimage', 'blank.png');
         }
         //-----------------
@@ -294,7 +294,7 @@ switch ($op) {
         $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
 
         // confirmed, so delete
-        if ($confirm === 1) {
+        if (1 === $confirm) {
             //-------------------------
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());

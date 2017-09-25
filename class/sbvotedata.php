@@ -104,14 +104,14 @@ class SoapboxSbvotedata extends XoopsObject
                         $ts     = MyTextSanitizer::getInstance();
                         $html   = !empty($this->vars['dohtml']['value']) ? 1 : 0;
                         $xcode  = (!isset($this->vars['doxcode']['value'])
-                                   || $this->vars['doxcode']['value'] === 1) ? 1 : 0;
+                                   || 1 === $this->vars['doxcode']['value']) ? 1 : 0;
                         $smiley = (!isset($this->vars['dosmiley']['value'])
-                                   || $this->vars['dosmiley']['value'] === 1) ? 1 : 0;
+                                   || 1 === $this->vars['dosmiley']['value']) ? 1 : 0;
                         $image  = (!isset($this->vars['doimage']['value'])
-                                   || $this->vars['doimage']['value'] === 1) ? 1 : 0;
-                        $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
+                                   || 1 === $this->vars['doimage']['value']) ? 1 : 0;
+                        $br     = (!isset($this->vars['dobr']['value']) || 1 === $this->vars['dobr']['value']) ? 1 : 0;
                         //----------------
-                        if ($html === 1 && $br !== 0) {
+                        if (1 === $html && 0 !== $br) {
                             $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
@@ -127,14 +127,14 @@ class SoapboxSbvotedata extends XoopsObject
                         $ts     = MyTextSanitizer::getInstance();
                         $html   = !empty($this->vars['dohtml']['value']) ? 1 : 0;
                         $xcode  = (!isset($this->vars['doxcode']['value'])
-                                   || $this->vars['doxcode']['value'] === 1) ? 1 : 0;
+                                   || 1 === $this->vars['doxcode']['value']) ? 1 : 0;
                         $smiley = (!isset($this->vars['dosmiley']['value'])
-                                   || $this->vars['dosmiley']['value'] === 1) ? 1 : 0;
+                                   || 1 === $this->vars['dosmiley']['value']) ? 1 : 0;
                         $image  = (!isset($this->vars['doimage']['value'])
-                                   || $this->vars['doimage']['value'] === 1) ? 1 : 0;
-                        $br     = (!isset($this->vars['dobr']['value']) || $this->vars['dobr']['value'] === 1) ? 1 : 0;
+                                   || 1 === $this->vars['doimage']['value']) ? 1 : 0;
+                        $br     = (!isset($this->vars['dobr']['value']) || 1 === $this->vars['dobr']['value']) ? 1 : 0;
                         //----------------
-                        if ($html === 1 && $br !== 0) {
+                        if (1 === $html && 0 !== $br) {
                             $text = preg_replace(">((\015\012)|(\015)|(\012))/", '>', $ret);
                             $text = preg_replace("/((\015\012)|(\015)|(\012))</", '<', $ret);
                         }
@@ -184,7 +184,7 @@ class SoapboxSbvotedata extends XoopsObject
                 }
                 break;
             default:
-                if ($ret !== '' && $this->vars[$key]['options'] !== '') {
+                if ('' !== $ret && '' !== $this->vars[$key]['options']) {
                     switch (strtolower($format)) {
                         case 's':
                         case 'show':
@@ -220,14 +220,14 @@ class SoapboxSbvotedata extends XoopsObject
      */
     public function getJ_cleanLostByteTail($text)
     {
-        if (strtoupper(_CHARSET) === 'UTF-8') {
+        if ('UTF-8' === strtoupper(_CHARSET)) {
             $text = preg_replace('/[\xC0-\xFD]$/', '', $text);
             $text = preg_replace('/[\xE0-\xFD][\x80-\xBF]$/', '', $text);
             $text = preg_replace('/[\xF0-\xFD][\x80-\xBF]{2}$/', '', $text);
             $text = preg_replace('/[\xF8-\xFD][\x80-\xBF]{3}$/', '', $text);
             $text = preg_replace('/[\xFC-\xFD][\x80-\xBF]{4}$/', '', $text);
             $text = preg_replace('/^([\x80-\xBF]+)/', '', $text);
-        } elseif (strtoupper(_CHARSET) === 'EUC-JP') {
+        } elseif ('EUC-JP' === strtoupper(_CHARSET)) {
             if (preg_match('/[\x80-\xff]$/', $text)) {
                 $tmp = preg_replace('/\x8F[\x80-\xff]{2}/', '', $text); //EUC-jp EX 3 byte Foreign string
                 $tmp = preg_replace('/[\x80-\xff]{2}/', '', $tmp);
@@ -310,7 +310,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
                 return $ret;
             }
             $numrows = $this->db->getRowsNum($result);
-            if ($numrows === 1) {
+            if (1 === $numrows) {
                 $entry = new SoapboxSbvotedata();
                 $entry->assignVars($this->db->fetchArray($result));
 
@@ -337,7 +337,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbvotedata');
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
             $sql .= ' ' . $criteria->renderWhere();
-            if ($criteria->getSort() !== '') {
+            if ('' !== $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
             }
             $limit = $criteria->getLimit();
