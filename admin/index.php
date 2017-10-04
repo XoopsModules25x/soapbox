@@ -7,6 +7,12 @@ xoops_cp_header();
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
+/** @var InstructionUtility $utilityClass */
+$utilityClass = ucfirst($moduleDirName) . 'Utility';
+if (!class_exists($utilityClass)) {
+    xoops_load('utility', $moduleDirName);
+}
+
 //get category count
 //----------------------------
 $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
@@ -68,5 +74,7 @@ $adminObject->addItemButton(_AM_SOAPBOX_ADD_SAMPLEDATA, '__DIR__ . /../../testda
 $adminObject->displayNavigation(basename(__FILE__));
 $adminObject->displayButton('left', '');
 $adminObject->displayIndex();
+
+echo $utilityClass::getServerStats();
 
 require_once __DIR__ . '/admin_footer.php';

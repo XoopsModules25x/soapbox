@@ -2,8 +2,6 @@
 /**
  *
  * Module: Soapbox
- * Version: v 1.0
- * Release Date: 23 August 2004
  * Author: hsalazar
  * Licence: GNU
  * @param $options

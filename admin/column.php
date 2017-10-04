@@ -2,8 +2,6 @@
 /**
  *
  * Module: Soapbox
- * Version: v 1.5
- * Release Date: 23 August 2004
  * Author: hsalazar
  * Licence: GNU
  */
@@ -75,7 +73,7 @@ function editcol($columnID = '')
         xoops_cp_header();
         $adminObject->displayNavigation(basename(__FILE__));
         //adminMenu(1, _AM_SOAPBOX_COLS._AM_SOAPBOX_CREATINGCOL);
-        //        echo "<h3 style='color: #2F5376; '>"._AM_SOAPBOX_ADMINCOLMNGMT."</h3>";
+        //echo "<h3 style='color: #2F5376; '>"._AM_SOAPBOX_ADMINCOLMNGMT."</h3>";
 
         //editcol(0);
 
@@ -116,11 +114,11 @@ function editcol($columnID = '')
 
     $nav = new XoopsPageNav($usercount, 200, $userstart, 'userstart', $myts->htmlSpecialChars('op=mod&columnID=' . $columnID));
 
-    $user_select = new XoopsFormSelect('', 'author', (int)$authorid);
+    $user_select      = new XoopsFormSelect('', 'author', (int)$authorid);
     $user_select->addOptionArray($user_list_arr);
     $user_select_tray = new XoopsFormElementTray(_AM_SOAPBOX_AUTHOR, '<br>');
     $user_select_tray->addElement($user_select);
-    $user_select_nav = new XoopsFormLabel('', $nav->renderNav(4));
+    $user_select_nav  = new XoopsFormLabel('', $nav->renderNav(4));
     $user_select_tray->addElement($user_select_nav);
     $sform->addElement($user_select_tray);
 
@@ -142,9 +140,10 @@ function editcol($columnID = '')
     $colimage_select = new XoopsFormSelect('', 'colimage', $e_category['colimage']);
     $colimage_select->addOptionArray($graph_array);
     $colimage_select->setExtra("onchange='showImgSelected(\"image3\", \"colimage\", \"" . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '", "", "' . XOOPS_URL . "\")'");
-    $colimage_tray = new XoopsFormElementTray(_AM_SOAPBOX_COLIMAGE, '&nbsp;');
+    $colimage_tray   = new XoopsFormElementTray(_AM_SOAPBOX_COLIMAGE, '&nbsp;');
     $colimage_tray->addElement($colimage_select);
-    $colimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_category['colimage'] . "' name='image3' id='image3' alt=''>"));
+    $colimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/'
+                                                                                        . $e_category['colimage'] . "' name='image3' id='image3' alt=''>"));
     $sform->addElement($colimage_tray);
 
     // Code to call the file browser to select an image to upload
@@ -162,7 +161,7 @@ function editcol($columnID = '')
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addcol\'"');
         $button_tray->addElement($butt_create);
 
-        $butt_clear = new XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
+        $butt_clear  = new XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
         $button_tray->addElement($butt_clear);
 
         $butt_cancel = new XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
@@ -269,9 +268,9 @@ switch ($op) {
             if (!$entrydataHandler->insertColumn($_categoryob)) {
                 xoops_cp_header();
                 $adminObject->displayNavigation(basename(__FILE__));
-                //                print_r($_categoryob->getErrors());
+                // print_r($_categoryob->getErrors());
                 xoops_cp_footer();
-                //                exit();
+                // exit();
                 redirect_header('index.php', 1, _AM_SOAPBOX_NOTUPDATED);
             } else {
                 //event trigger
@@ -307,7 +306,7 @@ switch ($op) {
                 $columnID = (int)$_POST['columnID'];
             }
             //get category object
-            $_categoryob = $entrydataHandler->getColumn($columnID);
+            $_categoryob  = $entrydataHandler->getColumn($columnID);
             if (!is_object($_categoryob)) {
                 redirect_header('index.php', 1, _NOPERM);
             }
@@ -325,7 +324,7 @@ switch ($op) {
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_COLISDELETED, $name));
             }
         } else {
-            $columnID = isset($_POST['columnID']) ? (int)$_POST['columnID'] : (int)$_GET['columnID'];
+            $columnID    = isset($_POST['columnID']) ? (int)$_POST['columnID'] : (int)$_GET['columnID'];
             //get category object
             $_categoryob = $entrydataHandler->getColumn($columnID);
             if (!is_object($_categoryob)) {
