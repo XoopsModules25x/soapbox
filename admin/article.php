@@ -2,8 +2,6 @@
 /**
  *
  * Module: Soapbox
- * Version: v 1.5
- * Release Date: 23 August 2004
  * Author: hsalazar
  * Licence: GNU
  */
@@ -173,7 +171,8 @@ function editarticle($articleID = 0)
     $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $xoopsModuleConfig['sbuploaddir'] . '", "", "' . XOOPS_URL . "\")'");
     $artimage_tray = new XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
     $artimage_tray->addElement($artimage_select);
-    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
+    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/'
+                                                                            . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
     $sform->addElement($artimage_tray);
 
     // Code to call the file browser to select an image to upload
@@ -202,7 +201,7 @@ function editarticle($articleID = 0)
         include_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
         $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
         $catid  = 0;
-        $sform->addElement(new XoopsFormTag('item_tag', 60, 255, $itemid, $catid = 0));
+        $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemid, $catid = 0));
     }
     }
     // COMMENTS
@@ -232,7 +231,7 @@ function editarticle($articleID = 0)
     //----------
     $options_tray = new XoopsFormElementTray(_AM_SOAPBOX_OPTIONS, '<br>');
 
-    $html_checkbox = new XoopsFormCheckBox('', 'html', $e_articles['html']);
+    $html_checkbox   = new XoopsFormCheckBox('', 'html', $e_articles['html']);
     $html_checkbox->addOption(1, _AM_SOAPBOX_DOHTML);
     $options_tray->addElement($html_checkbox);
 
@@ -457,9 +456,9 @@ switch ($op) {
             if (!$entrydataHandler->insertArticle($_entryob)) {
                 xoops_cp_header();
                 $adminObject->displayNavigation(basename(__FILE__));
-                //                print_r($_entryob->getErrors());
+                // print_r($_entryob->getErrors());
                 xoops_cp_footer();
-                //                exit();
+                // exit();
                 redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
             } else {
                 // Notify of to admin only for approve

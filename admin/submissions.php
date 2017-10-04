@@ -2,8 +2,6 @@
 /**
  *
  * Module: Soapbox
- * Version: v 1.5
- * Release Date: 23 August 2004
  * Author: hsalazar
  * Licence: GNU
  */
@@ -166,9 +164,10 @@ function editarticle($articleID = '')
     $artimage_select = new XoopsFormSelect('', 'artimage', $e_articles['artimage']);
     $artimage_select->addOptionArray($graph_array);
     $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '", "", "' . XOOPS_URL . "\")'");
-    $artimage_tray = new XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
+    $artimage_tray   = new XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
     $artimage_tray->addElement($artimage_select);
-    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
+    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/'
+                                                                            . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
     $sform->addElement($artimage_tray);
 
     // Code to call the file browser to select an image to upload
