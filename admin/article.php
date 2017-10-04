@@ -193,16 +193,16 @@ function editarticle($articleID = 0)
     //    $datesub_tray -> addElement( $datesubnochage_checkbox );
     $sform->addElement($datesub_tray);
     //-----------
-   // Тэги
-   if ( xoops_getModuleOption( 'usetag', 'soapbox') ) {
-    $moduleHandler = xoops_getHandler('module');
-    $tagsModule    = $moduleHandler->getByDirname('tag');
-    if (is_object($tagsModule)) {
-        include_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
-        $catid  = 0;
-        $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemid, $catid = 0));
-    }
+    // Тэги
+    if (xoops_getModuleOption('usetag', 'soapbox')) {
+        $moduleHandler = xoops_getHandler('module');
+        $tagsModule    = $moduleHandler->getByDirname('tag');
+        if (is_object($tagsModule)) {
+            include_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
+            $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
+            $catid  = 0;
+            $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemid, $catid = 0));
+        }
     }
     // COMMENTS
     if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
@@ -391,14 +391,14 @@ switch ($op) {
 
         if (isset($_POST['teaser'])) {
             $_entryob->setVar('teaser', $_POST['teaser']);
-        } 
+        }
 
         $autoteaser = isset($_POST['autoteaser']) ? (int)$_POST['autoteaser'] : 0;
         $charlength = isset($_POST['teaseramount']) ? (int)$_POST['teaseramount'] : 0;
         if ($autoteaser && $charlength) {
             $_entryob->setVar('teaser', xoops_substr($_entryob->getVar('bodytext', 'none'), 0, $charlength));
         }
-        //datesub  
+        //datesub
         $datesubnochage  = isset($_POST['datesubnochage']) ? (int)$_POST['datesubnochage'] : 0;
         $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
         $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;

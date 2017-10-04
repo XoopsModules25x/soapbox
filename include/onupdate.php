@@ -112,7 +112,7 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
                     }
                 }
             }
-        } 
+        }
 
         //  ---  DELETE OLD FILES ---------------
         if (count($configurator->oldFiles) > 0) {

@@ -380,7 +380,7 @@ class SoapboxUtility extends XoopsObject
         $criteria         = new CriteriaCompo();
         $criteria->setSort('weight');
         $criteria->setLimit((int)$xoopsModuleConfig['perpage']);
-        $criteria->setStart((int)$startcol);
+        $criteria->setStart($startcol);
         $categoryobArray = $entrydataHandler->getColumns($criteria);
         unset($criteria);
         if ($numrows > 0) {
