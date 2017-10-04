@@ -20,7 +20,7 @@ if (isset($_POST['op'])) {
 
 $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
 $totalcats        = $entrydataHandler->getColumnCount();
-if ($totalcats === 0) {
+if (0 === $totalcats) {
     redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
 }
 
@@ -63,7 +63,7 @@ function editarticle($articleID = 0)
          *initial first variables before we start
          */
         $columnID = 1;
-        if (isset($xoopsModuleConfig['form_options']) && $xoopsModuleConfig['form_options'] !== 'dhtml') {
+        if (isset($xoopsModuleConfig['form_options']) && 'dhtml' !== $xoopsModuleConfig['form_options']) {
             $html   = 1;
             $breaks = 0;
         }
