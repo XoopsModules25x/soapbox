@@ -2,8 +2,6 @@
 /**
  *
  * Module: Soapbox
- * Version: v 1.5
- * Release Date: 23 August 2004
  * Author: hsalazar
  * Licence: GNU
  */
@@ -19,10 +17,15 @@ if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+
 
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 
-$articleID = Request::getInt('$articleID', Request::getInt('$articleID', 0, 'POST'), 'GET');
-
-if (0 === $articleID) {
-    redirect_header('index.php');
+//$articleID = Request::getInt('$articleID', Request::getInt('$articleID', 0, 'POST'), 'GET');
+if ( isset( $_GET['articleID'] ) ){
+    $articleID = (int)($_GET['articleID']);
+}
+if ( isset( $_POST['articleID'] ) ){
+    $articleID = (int)($_POST['articleID']);
+}
+if (0 === $articleID)	{
+	redirect_header("index.php");
 }
 
 /**
@@ -41,11 +44,11 @@ function PrintPage($articleID)
         redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, 'Not Found');
     }
     //-------------------------------------
-    $articles = $_entryob->toArray();
+    $articles    = $_entryob->toArray();
     //get category object
     $_categoryob = $_entryob->_sbcolumns;
     //get vars
-    $category = $_categoryob->toArray();
+    $category    = $_categoryob->toArray();
     //-------------------------------------
     //get author
     $authorname = SoapboxUtility::getAuthorName($category['author']);
@@ -66,7 +69,7 @@ function PrintPage($articleID)
     echo '<title>' . $sitename . "</title>\n";
     echo "<meta http-equiv='Content-Type' content='text/html; charset=" . _CHARSET . "'>\n";
     echo "<meta name='AUTHOR' content='" . $sitename . "'>\n";
-    echo "<meta name='COPYRIGHT' content='Copyright (c) 2004 by " . $sitename . "'>\n";
+    echo "<meta name='COPYRIGHT' content='Copyright (с) " . $sitename . "'>\n";
     echo "<meta name='DESCRIPTION' content='" . $slogan . "'>\n";
     echo "<meta name='GENERATOR' content='" . XOOPS_VERSION . "'>\n\n\n";
 
@@ -74,11 +77,9 @@ function PrintPage($articleID)
     //Column: --> _MD_SOAPBOX_COLUMNPRN , Author: --> _MD_SOAPBOX_AUTHORPRN
     echo "<body bgcolor='#ffffff' text='#000000'>
             <div style='width: 600px; border: 1px solid #000; padding: 20px;'>
-                <div style='text-align: center; display: block; padding-bottom: 12px; margin: 0 0 6px 0; border-bottom: 2px solid #ccc;'><img src='"
-         . XOOPS_URL
-         . '/modules/'
-         . $xoopsModule->dirname()
-         . "/assets/images/sb_slogo.png' border='0' alt=''><h2 style='margin: 0;'>"
+                <div style='text-align: center; display: block; padding-bottom: 12px; margin: 0 0 6px 0; border-bottom: 2px solid #ccc;'><h2 style='margin: 0;'>"
+         . $sitename
+         . '<br>'
          . $articles['headline']
          . '</h2></div>
                 <div></div>
@@ -98,7 +99,7 @@ function PrintPage($articleID)
                 <p>'
          . $articles['bodytext']
          . "</p>
-                <div style='padding-top: 12px; border-top: 2px solid #ccc;'><small><b>Published: </b>&nbsp;"
+                <div style='padding-top: 12px; border-top: 2px solid #ccc;'><small><b>Published:</b>&nbsp;"
          . $datetime
          . '<br></div>
             </div>
