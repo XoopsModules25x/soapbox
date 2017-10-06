@@ -24,8 +24,8 @@ if (!defined('SOAPBOX_MODULE_PATH')) {
     define('SOAPBOX_ROOT_PATH', XOOPS_ROOT_PATH . '/modules/' . SOAPBOX_DIRNAME);
     define('SOAPBOX_IMAGE_PATH', SOAPBOX_ROOT_PATH . '/assets/images');
     define('SOAPBOX_ADMIN_URL', SOAPBOX_URL . '/admin/');
-    define('SOAPBOX_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' . SOAPBOX_DIRNAME);
-    define('SOAPBOX_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . SOAPBOX_DIRNAME);
+   // define('SOAPBOX_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' . SOAPBOX_DIRNAME);
+   // define('SOAPBOX_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . SOAPBOX_DIRNAME);
 }
 xoops_loadLanguage('common', SOAPBOX_DIRNAME);
 
