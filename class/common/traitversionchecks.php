@@ -1,4 +1,4 @@
-<?php
+<?php namespace Xoopsmodules\soapbox\common;
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -20,12 +20,12 @@ trait VersionChecks
      *
      * Verifies XOOPS version meets minimum requirements for this module
      * @static
-     * @param XoopsModule $module
+     * @param \XoopsModule|null $module
      *
      * @param null|string $requiredVer
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerXoops(XoopsModule $module = null, $requiredVer = null)
+    public static function checkVerXoops(\XoopsModule $module = null, $requiredVer = null)
     {
         $moduleDirName = basename(dirname(__DIR__));
         if (null === $module) {
@@ -69,11 +69,11 @@ trait VersionChecks
      *
      * Verifies PHP version meets minimum requirements for this module
      * @static
-     * @param XoopsModule $module
+     * @param \XoopsModule $module
      *
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerPhp(XoopsModule $module)
+    public static function checkVerPhp(\XoopsModule $module)
     {
         xoops_loadLanguage('admin', $module->dirname());
         // check for minimum PHP version
