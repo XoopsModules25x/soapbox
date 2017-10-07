@@ -54,8 +54,8 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         if (!is_object($_mymodule)) {
             exit('not found dirname');
         }
-        $this->_module_dirname = $moduleDirName;
-        $this->_module_id      = $_mymodule->getVar('mid');
+        $this->moduleDirName = $moduleDirName;
+        $this->moduleId      = $_mymodule->getVar('mid');
     }
 
     /**
@@ -77,7 +77,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * @param  bool $isNew
      * @return object SoapboxSbcolumns reference to the new Column
      */
-    public function &createColumn($isNew = true)
+    public function createColumn($isNew = true)
     {
         $ret = $this->sbColumnHandler->create($isNew);
 
@@ -90,7 +90,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * @param  bool $isNew
      * @return object SoapboxSbvotedata reference to the new Votedata
      */
-    public function &createVotedata($isNew = true)
+    public function createVotedata($isNew = true)
     {
         $ret = $this->sbVoteHandler->create($isNew);
 
@@ -168,7 +168,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         $this->sbVoteHandler->deleteEntrys($criteria, $force);
         unset($criteria);
         // delete comments
-        xoops_comment_delete($this->_module_id, $sbarticle->getVar('articleID'));
+        xoops_comment_delete($this->moduleId, $sbarticle->getVar('articleID'));
         // re count ----------------------------------
         if ($re_count) {
             $this->updateTotalByColumnID($sbarticle->getVar('columnID'));
@@ -418,7 +418,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         // Notify of new link (anywhere) and new link in category
         $tags                = [];
         $tags['COLUMN_NAME'] = $sbcolumn->getVar('name');
-        $tags['COLUMN_URL']  = XOOPS_URL . '/modules/' . $this->_module_dirname . '/column.php?columnID=' . $sbcolumn->getVar('columnID');
+        $tags['COLUMN_URL']  = XOOPS_URL . '/modules/' . $this->moduleDirName . '/column.php?columnID=' . $sbcolumn->getVar('columnID');
         $notificationHandler = xoops_getHandler('notification');
         $notificationHandler->triggerEvent('global', 0, 'new_column', $tags);
 
@@ -445,11 +445,11 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         // Notify of new link (anywhere) and new link in category
         $tags                 = [];
         $tags['ARTICLE_NAME'] = $sbarticle->getVar('headline');
-        $tags['ARTICLE_URL']  = XOOPS_URL . '/modules/' . $this->_module_dirname . '/article.php?articleID=' . $sbarticle->getVar('articleID');
+        $tags['ARTICLE_URL']  = XOOPS_URL . '/modules/' . $this->moduleDirName . '/article.php?articleID=' . $sbarticle->getVar('articleID');
         $tags['COLUMN_NAME']  = $sbcolumns->getVar('name');
-        $tags['COLUMN_URL']   = XOOPS_URL . '/modules/' . $this->_module_dirname . '/column.php?columnID=' . $sbarticle->getVar('columnID');
+        $tags['COLUMN_URL']   = XOOPS_URL . '/modules/' . $this->moduleDirName . '/column.php?columnID=' . $sbarticle->getVar('columnID');
         // Notify of to admin only for approve article_submit
-        $tags['WAITINGSTORIES_URL'] = XOOPS_URL . '/modules/' . $this->_module_dirname . '/admin/submissions.php?op=col';
+        $tags['WAITINGSTORIES_URL'] = XOOPS_URL . '/modules/' . $this->moduleDirName . '/admin/submissions.php?op=col';
         $notificationHandler        = xoops_getHandler('notification');
         //approve evevt
         if ('article_submit' === $events) {

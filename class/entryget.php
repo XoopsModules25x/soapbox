@@ -44,23 +44,23 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * holds reference to entry  handler(DAO) class
      * @access private
      */
-    private $sbArticleHandler;
+    protected $sbArticleHandler;
 
     /**
      * holds reference to user handler(DAO) class
      */
-    private $sbColumnHandler;
+    protected $sbColumnHandler;
 
     /**
      * holds reference to membership handler(DAO) class
      */
-    private $sbVoteHandler;
+    protected $sbVoteHandler;
 
     /**
      * holds temporary module_id
      */
-    private $_module_id;
-    private $_module_dirname;
+    protected $moduleId;
+    protected $moduleDirName;
     /**#@-*/
 
     public $total_getArticlesAllPermcheck;
@@ -89,8 +89,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if (!is_object($_mymodule)) {
             exit('not found dirname');
         }
-        $this->_module_dirname = $moduleDirName;
-        $this->_module_id      = $_mymodule->getVar('mid');
+        $this->moduleDirName = $moduleDirName;
+        $this->moduleId      = $_mymodule->getVar('mid');
     }
 
     /**
@@ -331,7 +331,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if ($checkRight) {
             $gperm_name         = 'Column Permissions';
             $gpermHandler       = xoops_getHandler('groupperm');
-            $can_read_columnIDs = $gpermHandler->getItemIds($gperm_name, $groups, $this->_module_id);
+            $can_read_columnIDs = $gpermHandler->getItemIds($gperm_name, $groups, $this->moduleId);
         }
         //--------------------------
         $criteria      = new CriteriaCompo();
@@ -424,7 +424,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             foreach ($_sbcolumns_arr as $key => $_sbcolumn) {
                 $can_read_columnIDs[] = $_sbcolumn->getVar('columnID');
                 if (is_object($xoopsUser)) {
-                    if ($xoopsUser->isAdmin($this->_module_id)
+                    if ($xoopsUser->isAdmin($this->moduleId)
                         || $xoopsUser->getVar('uid') === $_sbcolumn->getVar('author')) {
                         $can_read_column_authors[] = $_sbcolumn->getVar('columnID');
                     }
@@ -544,7 +544,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         //        $gperm_name = 'Column Permissions';
         //        $groups = ( is_object($xoopsUser) ) ? $xoopsUser -> getGroups() : XOOPS_GROUP_ANONYMOUS;
         //        $gpermHandler = xoops_getHandler( 'groupperm' );
-        //        if ( !$gpermHandler -> checkRight( $gperm_name,$sbarticle->getVar('columnID'), $groups, $this->_module_id ) ) {
+        //        if ( !$gpermHandler -> checkRight( $gperm_name,$sbarticle->getVar('columnID'), $groups, $this->moduleId ) ) {
         //            return $ret;
         //        }
         //get category object
@@ -559,7 +559,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             }
             if (is_object($xoopsUser)) {
                 if ($approve_submit) {
-                    if ($xoopsUser->isAdmin($this->_module_id)
+                    if ($xoopsUser->isAdmin($this->moduleId)
                         || $xoopsUser->getVar('uid') === $sbarticle->_sbcolumns->getVar('author')) {
                         //true
                         $ret = $sbarticle;
@@ -860,7 +860,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             if (1 === $xoopsModuleConfig['adminhits']) {
                 $hitcount_update = true;
             } else {
-                if ($xoopsUser->isAdmin($this->_module_id)) {
+                if ($xoopsUser->isAdmin($this->moduleId)) {
                     $hitcount_update = false;
                 } else {
                     $hitcount_update = false;
@@ -894,12 +894,12 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         // Functional links
         $ret = '';
         if (is_object($xoopsUser)) {
-            if ($xoopsUser->isAdmin($this->_module_id)) {
+            if ($xoopsUser->isAdmin($this->moduleId)) {
                 if (0 !== $sbarticle->getVar('submit')) {
                     $ret = '<a href="'
                            . XOOPS_URL
                            . '/modules/'
-                           . $this->_module_dirname
+                           . $this->moduleDirName
                            . '/admin/submissions.php?op=mod&articleID='
                            . $sbarticle->getVar('articleID')
                            . '" target="_blank">'
@@ -913,7 +913,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                     $ret = '<a href="'
                            . XOOPS_URL
                            . '/modules/'
-                           . $this->_module_dirname
+                           . $this->moduleDirName
                            . '/admin/article.php?op=mod&articleID='
                            . $sbarticle->getVar('articleID')
                            . '" target="_blank">'
@@ -927,7 +927,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                 $ret .= '<a href="'
                         . XOOPS_URL
                         . '/modules/'
-                        . $this->_module_dirname
+                        . $this->moduleDirName
                         . '/admin/article.php?op=del&articleID='
                         . $sbarticle->getVar('articleID')
                         . '" target="_blank">'
@@ -941,7 +941,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                 $ret = '<a href="'
                        . XOOPS_URL
                        . '/modules/'
-                       . $this->_module_dirname
+                       . $this->moduleDirName
                        . '/submit.php?op=edit&articleID='
                        . $sbarticle->getVar('articleID')
                        . '" target="_blank">'
@@ -988,7 +988,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $ret            = '<a href="'
                           . XOOPS_URL
                           . '/modules/'
-                          . $this->_module_dirname
+                          . $this->moduleDirName
                           . '/print.php?articleID='
                           . $sbarticle->getVar('articleID')
                           . '" target="_blank">'
@@ -1005,7 +1005,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                           . ':  '
                           . XOOPS_URL
                           . '/modules/'
-                          . $this->_module_dirname
+                          . $this->moduleDirName
                           . '/article.php?articleID='
                           . $sbarticle->getVar('articleID')
                           . ' " target="_blank">'
