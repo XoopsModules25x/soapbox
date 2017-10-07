@@ -88,7 +88,7 @@ function editarticle($articleID = 0)
     * Last one is not set as we do not have sub menus in WF-FAQ
     */
     $canEditCategoryobArray = $entrydataHandler->getColumns(null, true);
-    $collist                = array();
+    $collist                = [];
     foreach ($canEditCategoryobArray as $key => $_can_edit_categoryob) {
         $collist[$key] = $_can_edit_categoryob->getVar('name');
     }
@@ -422,7 +422,7 @@ switch ($op) {
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $artimage_name)) {
                     redirect_header('index.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
-                $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
+                $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
 
                 SoapboxUtility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
 
@@ -500,12 +500,12 @@ switch ($op) {
             $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
             xoops_cp_header();
             $adminObject->displayNavigation(basename(__FILE__));
-            xoops_confirm(array(
+            xoops_confirm([
                               'op'        => 'del',
                               'articleID' => $articleID,
                               'confirm'   => 1,
                               'headline'  => $headline
-                          ) + $xoopsGTicket->getTicketArray(__LINE__), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
+                          ] + $xoopsGTicket->getTicketArray(__LINE__), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
         exit();
