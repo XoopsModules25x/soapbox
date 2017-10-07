@@ -20,7 +20,7 @@ if (isset($_POST['op'])) {
 
 $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
 $totalcats        = $entrydataHandler->getColumnCount();
-if ($totalcats === 0) {
+if (0 === $totalcats) {
     redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
 }
 
@@ -63,7 +63,7 @@ function editarticle($articleID = 0)
          *initial first variables before we start
          */
         $columnID = 1;
-        if (isset($xoopsModuleConfig['form_options']) && $xoopsModuleConfig['form_options'] !== 'dhtml') {
+        if (isset($xoopsModuleConfig['form_options']) && 'dhtml' !== $xoopsModuleConfig['form_options']) {
             $html   = 1;
             $breaks = 0;
         }
@@ -88,7 +88,7 @@ function editarticle($articleID = 0)
     * Last one is not set as we do not have sub menus in WF-FAQ
     */
     $canEditCategoryobArray = $entrydataHandler->getColumns(null, true);
-    $collist                = array();
+    $collist                = [];
     foreach ($canEditCategoryobArray as $key => $_can_edit_categoryob) {
         $collist[$key] = $_can_edit_categoryob->getVar('name');
     }
@@ -128,9 +128,9 @@ function editarticle($articleID = 0)
     //    $editor_teaser=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
     //    $sform->addElement($editor_teaser,true);
     //
-   // $autoteaser_radio = new XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
-   // $sform->addElement($autoteaser_radio);
-   // $sform->addElement(new XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
+    // $autoteaser_radio = new XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+    // $sform->addElement($autoteaser_radio);
+    // $sform->addElement(new XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
 
     // BODY
     //HACK by domifara for Wysiwyg
@@ -187,15 +187,15 @@ function editarticle($articleID = 0)
     $datesub_tray = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br>', 'datesub', 15, $e_articles['datesub']);
 
     // you don't want to change datesub
-    $datesubnochage_checkbox = new XoopsFormCheckBox( _AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 1 );
+    $datesubnochage_checkbox = new XoopsFormCheckBox(_AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 1);
     $datesubnochage_checkbox->addOption(1, _AM_SOAPBOX_YES);
-    $datesub_tray -> addElement( $datesubnochage_checkbox );
+    $datesub_tray -> addElement($datesubnochage_checkbox);
     $sform->addElement($datesub_tray);
     //-----------
 
     // COMMENTS
     if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
-        && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
+        && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
         // COMMENTS
         // Code to allow comments
         $addcommentable_radio = new XoopsFormRadioYN(_AM_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
@@ -417,19 +417,19 @@ switch ($op) {
         }
         if (isset($_FILES['cimage']['name'])) {
             $artimage_name = trim(strip_tags($myts->stripSlashesGPC($_FILES['cimage']['name'])));
-            if ($artimage_name !== '') {
+            if ('' !== $artimage_name) {
                 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $artimage_name)) {
                     redirect_header('index.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
-                $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
+                $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
 
                 SoapboxUtility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
 
                 $_entryob->setVar('artimage', $artimage_name);
             }
         }
-        if ($_entryob->getVar('artimage') === '') {
+        if ('' === $_entryob->getVar('artimage')) {
             $_entryob->setVar('artimage', 'blank.png');
         }
         //-----------------
@@ -466,7 +466,7 @@ switch ($op) {
         $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
 
         // confirmed, so delete
-        if ($confirm === 1) {
+        if (1 === $confirm) {
             //-------------------------
             if (!$xoopsGTicket->check()) {
                 redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
@@ -500,12 +500,12 @@ switch ($op) {
             $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
             xoops_cp_header();
             $adminObject->displayNavigation(basename(__FILE__));
-            xoops_confirm(array(
+            xoops_confirm([
                               'op'        => 'del',
                               'articleID' => $articleID,
                               'confirm'   => 1,
                               'headline'  => $headline
-                          ) + $xoopsGTicket->getTicketArray(__LINE__), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
+                          ] + $xoopsGTicket->getTicketArray(__LINE__), 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
         exit();

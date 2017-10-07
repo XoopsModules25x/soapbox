@@ -1,6 +1,7 @@
 <?php
 
 use Xmf\Request;
+use Xoopsmodules\soapbox\common;
 
 require_once __DIR__ . '/common/traitversionchecks.php';
 require_once __DIR__ . '/common/traitserverstats.php';
@@ -13,7 +14,12 @@ require_once __DIR__ . '/../include/common.php';
  */
 class SoapboxUtility extends XoopsObject
 {
-    use ServerStats; // getServerStats Trait
+
+    use common\VersionChecks; //checkVerXoops, checkVerPhp Traits
+
+    use common\ServerStats; // getServerStats Trait
+
+    use common\FilesManagement; // Files Management Trait
     /**
      * Function responsible for checking if a directory exists, we can also write in and create an index.html file
      *
@@ -380,7 +386,7 @@ class SoapboxUtility extends XoopsObject
         $criteria         = new CriteriaCompo();
         $criteria->setSort('weight');
         $criteria->setLimit((int)$xoopsModuleConfig['perpage']);
-        $criteria->setStart((int)$startcol);
+        $criteria->setStart($startcol);
         $categoryobArray = $entrydataHandler->getColumns($criteria);
         unset($criteria);
         if ($numrows > 0) {

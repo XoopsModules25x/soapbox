@@ -105,7 +105,7 @@ function b_arts_spot_show($options)
     $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
     //-------------------------------------
     // Retrieve the latest article in the selected column
-    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
+    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck($options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
     $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
     // If there's no article result (which means there's no article yet...
     if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
@@ -140,7 +140,7 @@ function b_arts_spot_show($options)
         $_outdata_arr['date']       = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
         $_outdata_arr['rating']     = number_format($articles['rating'], 2, '.', '');
         // -- Then the teaser text and as sorted data
-        $_outdata_arr['subhead']      = xoops_substr($articles['headline'], 0, (int)$options[8]);
+        $_outdata_arr['subhead']      = xoops_substr($articles['headline'], 0, $options[8]);
         $_outdata_arr['sublead']      = xoops_substr($articles['lead'], 0, 255);
         $_outdata_arr['subteaser']    = xoops_substr($articles['teaser'], 0, 255);
         $_outdata_arr ['subbodytext'] = xoops_substr($articles['bodytext'], 0, 255);

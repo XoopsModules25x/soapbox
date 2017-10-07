@@ -18,14 +18,14 @@ if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 
 //$articleID = Request::getInt('$articleID', Request::getInt('$articleID', 0, 'POST'), 'GET');
-if ( isset( $_GET['articleID'] ) ){
-    $articleID = (int)($_GET['articleID']);
+if (isset($_GET['articleID'])) {
+    $articleID = (int)$_GET['articleID'];
 }
-if ( isset( $_POST['articleID'] ) ){
-    $articleID = (int)($_POST['articleID']);
+if (isset($_POST['articleID'])) {
+    $articleID = (int)$_POST['articleID'];
 }
-if (0 === $articleID)	{
-	redirect_header("index.php");
+if (0 === $articleID) {
+    redirect_header('index.php');
 }
 
 /**
