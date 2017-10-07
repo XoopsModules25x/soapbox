@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @param $items
+ */
 function soapbox_tag_iteminfo(&$items)
 {
     $itemsId = [];
@@ -28,6 +31,9 @@ function soapbox_tag_iteminfo(&$items)
     unset($itemsObj);
 }
 
+/**
+ * @param $mid
+ */
 function soapbox_tag_synchronization($mid)
 {
     // Optional

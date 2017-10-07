@@ -883,6 +883,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * get edit icon display html layout for admin or author
      *
      * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param                    $sbcolumns
      * @return string (html tags)
      */
     public function getadminlinks(SoapboxSbarticles $sbarticle, &$sbcolumns)

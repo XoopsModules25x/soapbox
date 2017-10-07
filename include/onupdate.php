@@ -69,7 +69,7 @@ function xoops_module_pre_update_soapbox(XoopsModule $module)
  * @param XoopsModule $module {@link XoopsModule}
  * @param null        $previousVersion
  *
- * @return bool true if update successful, false if not
+ * @return void true if update successful, false if not
  */
 
 function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = null)
