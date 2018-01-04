@@ -13,5 +13,5 @@ use Xmf\Request;
 global $xoopsModule;
 include __DIR__ . '/../../mainfile.php';
 
-require_once __DIR__ . '/class/utility.php';
+require_once __DIR__ . '/class/Utility.php';
 $myts = MyTextSanitizer:: getInstance();

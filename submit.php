@@ -90,7 +90,7 @@ switch ($op) {
         }
         //-------------------------
         //set
-        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/class/utility.php';
+        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/class/Utility.php';
         //set
         $_entryob->setVar('uid', $edit_uid);
         if (isset($_POST['columnID'])) {

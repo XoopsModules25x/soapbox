@@ -75,6 +75,6 @@ $adminObject->displayNavigation(basename(__FILE__));
 $adminObject->displayButton('left', '');
 $adminObject->displayIndex();
 
-echo $utilityClass::getServerStats();
+echo $utility::getServerStats();
 
 require_once __DIR__ . '/admin_footer.php';

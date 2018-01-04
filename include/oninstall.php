@@ -64,15 +64,11 @@ function xoops_module_install_soapbox(XoopsModule $module)
     require_once __DIR__ . '/../include/config.php';
 
     $moduleDirName = basename(dirname(__DIR__));
-
-    if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-    } else {
-        $moduleHelper = Xmf\Module\Helper::getHelper('system');
-    }
+    $helper = \Xmf\Module\Helper::getHelper($moduleDirName);
 
     // Load language files
-    $moduleHelper->loadLanguage('admin');
-    $moduleHelper->loadLanguage('modinfo');
+    $helper->loadLanguage('admin');
+    $helper->loadLanguage('modinfo');
 
     $configurator = new SoapboxConfigurator();
     $utilityClass = ucfirst($moduleDirName) . 'Utility';

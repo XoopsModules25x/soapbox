@@ -32,7 +32,7 @@ function getLinkedUnameFromId($userid = 0, $name = 0)
     if (!is_numeric($userid)) {
         return $userid;
     }
-    $myts   = MyTextSanitizer::getInstance();
+    $myts   = \MyTextSanitizer::getInstance();
     $userid = (int)$userid;
     if ($userid > 0) {
         $memberHandler = xoops_getHandler('member');
@@ -63,7 +63,7 @@ function getLinkedUnameFromId($userid = 0, $name = 0)
 function displayimage($image = 'blank.gif', $path = '', $imgsource = '', $alttext = '')
 {
     global $xoopsConfig, $xoopsUser, $xoopsModule;
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $showimage = '';
 
     if ($path) {
@@ -100,7 +100,7 @@ function uploading(
     $redirect = 0
 ) {
     require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     global $xoopsConfig, $xoopsModuleConfig, $_POST;
 
@@ -172,7 +172,7 @@ function filesarray($filearray)
 function getuserForm($user)
 {
     global $xoopsDB, $xoopsConfig;
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     echo "<select name='author'>";
     echo "<option value='-1'>------</option>";
@@ -226,7 +226,7 @@ function showColumns($showCreate = 0)
 {
     global $xoopsModuleConfig, $xoopsModule;
     $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
-    $myts       = MyTextSanitizer::getInstance();
+    $myts       = \MyTextSanitizer::getInstance();
     require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
     require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
     require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
@@ -320,7 +320,7 @@ function showColumns($showCreate = 0)
 function showArticles($showCreate = 0)
 {
     global $xoopsModuleConfig, $xoopsModule;
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
     require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
@@ -567,7 +567,7 @@ function showSubmissions()
     global $xoopsModuleConfig, $xoopsModule;
 
     $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
-    $myts       = MyTextSanitizer::getInstance();
+    $myts       = \MyTextSanitizer::getInstance();
     require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
     require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
     require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';

@@ -210,3 +210,6 @@ define('_MI_SOAPBOX_SUPPORT', 'Support');
 //Tag
 define('_MI_SOAPBOX_USETAG', 'Use tags?');
 define('_MI_SOAPBOX_USETAGDSC', 'Tags module required \"TAG\"');
+
+define('_MI_SOAPBOX_HOME', 'Home');
+define('_MI_SOAPBOX_ABOUT', 'About');

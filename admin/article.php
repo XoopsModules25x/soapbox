@@ -33,7 +33,7 @@ function editarticle($articleID = 0)
     global $indexAdmin;
     global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
     $xoopsDB = XoopsDatabaseFactory::getDatabaseConnection();
-    $myts    = MyTextSanitizer::getInstance();
+    $myts    = \MyTextSanitizer::getInstance();
 
     if (file_exists(XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php')) {
         require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';

@@ -27,7 +27,7 @@ require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbcolumns.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbvotedata.php';
 
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/utility.php';
+require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/Utility.php';
 
 /**
  * Soapbox entrydata handler class.

@@ -31,7 +31,7 @@ function editcol($columnID = '')
     global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
     $adminObject = Xmf\Module\Admin::getInstance();
     $xoopsDB     = XoopsDatabaseFactory::getDatabaseConnection();
-    $myts        = MyTextSanitizer::getInstance();
+    $myts        = \MyTextSanitizer::getInstance();
 
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     $columnID         = (int)$columnID;

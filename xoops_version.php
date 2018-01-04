@@ -6,6 +6,9 @@
  * Licence: GNU
  */
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+
+require_once __DIR__ . '/preloads/autoloader.php';
+
 $modversion['version']             = 1.70;
 $modversion['module_status']       = 'Beta 1';
 $modversion['release_date']        = '2017/05/23';

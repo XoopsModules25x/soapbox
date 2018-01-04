@@ -76,19 +76,19 @@ class SoapboxSbvotedata extends XoopsObject
                 switch (strtolower($format)) {
                     case 's':
                     case 'show':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->htmlSpecialChars($ret);
                         break 1;
                     case 'e':
                     case 'edit':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->htmlSpecialChars($ret);
                         break 1;
                     case 'p':
                     case 'preview':
                     case 'f':
                     case 'formpreview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->htmlSpecialChars($ts->stripSlashesGPC($ret));
                         break 1;
                     case 'n':
@@ -101,7 +101,7 @@ class SoapboxSbvotedata extends XoopsObject
                 switch (strtolower($format)) {
                     case 's':
                     case 'show':
-                        $ts     = MyTextSanitizer::getInstance();
+                        $ts     = \MyTextSanitizer::getInstance();
                         $html   = !empty($this->vars['dohtml']['value']) ? 1 : 0;
                         $xcode  = (!isset($this->vars['doxcode']['value'])
                                    || 1 === $this->vars['doxcode']['value']) ? 1 : 0;
@@ -124,7 +124,7 @@ class SoapboxSbvotedata extends XoopsObject
                         break 1;
                     case 'p':
                     case 'preview':
-                        $ts     = MyTextSanitizer::getInstance();
+                        $ts     = \MyTextSanitizer::getInstance();
                         $html   = !empty($this->vars['dohtml']['value']) ? 1 : 0;
                         $xcode  = (!isset($this->vars['doxcode']['value'])
                                    || 1 === $this->vars['doxcode']['value']) ? 1 : 0;
@@ -143,7 +143,7 @@ class SoapboxSbvotedata extends XoopsObject
                         break 1;
                     case 'f':
                     case 'formpreview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = htmlspecialchars($ts->stripSlashesGPC($ret), ENT_QUOTES);
                         break 1;
                     case 'n':
@@ -169,12 +169,12 @@ class SoapboxSbvotedata extends XoopsObject
                         break 1;
                     case 'p':
                     case 'preview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->stripSlashesGPC($ret);
                         break 1;
                     case 'f':
                     case 'formpreview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = htmlspecialchars($ts->stripSlashesGPC($ret), ENT_QUOTES);
                         break 1;
                     case 'n':
@@ -335,7 +335,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
         $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbvotedata');
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' !== $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -441,7 +441,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
     public function deleteEntrys($criteria = null, $force = false)
     {
         $sql = sprintf('DELETE FROM %s ', $this->db->prefix('sbvotedata'));
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         if (false !== $force) {
@@ -466,7 +466,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('sbvotedata');
 
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         $result = $this->db->query($sql);

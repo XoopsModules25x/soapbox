@@ -45,22 +45,15 @@ function tableExists($tablename)
  */
 function xoops_module_pre_update_soapbox(XoopsModule $module)
 {
+    /** @var Soapbox\Helper $helper */
+    /** @var Soapbox\Utility $utility */
     $moduleDirName = basename(dirname(__DIR__));
-    $className     = ucfirst($moduleDirName) . 'Utility';
-    if (!class_exists($className)) {
-        xoops_load('utility', $moduleDirName);
-    }
-    //check for minimum XOOPS version
-    if (!$className::checkVerXoops($module)) {
-        return false;
-    }
+    $helper       = Soapbox\Helper::getInstance();
+    $utility      = new Soapbox\Utility();
 
-    // check for minimum PHP version
-    if (!$className::checkVerPhp($module)) {
-        return false;
-    }
-
-    return true;
+    $xoopsSuccess = $utility::checkVerXoops($module);
+    $phpSuccess   = $utility::checkVerPhp($module);
+    return $xoopsSuccess && $phpSuccess;
 }
 
 /**
@@ -76,25 +69,17 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
 {
     global $xoopsDB;
     require_once __DIR__ . '/../../../mainfile.php';
-    require_once __DIR__ . '/../include/config.php';
-
     $moduleDirName = basename(dirname(__DIR__));
+    $capsDirName   = strtoupper($moduleDirName);
 
-    if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-    } else {
-        $moduleHelper = Xmf\Module\Helper::getHelper('system');
-    }
-
-    // Load language files
-    $moduleHelper->loadLanguage('admin');
-    $moduleHelper->loadLanguage('modinfo');
+    /** @var Soapbox\Helper $helper */
+    /** @var Soapbox\Utility $utility */
+    /** @var Soapbox\Configurator $configurator */
+    $helper  = Soapbox\Helper::getInstance();
+    $utility = new Soapbox\Utility();
+    $configurator = new Soapbox\Configurator();
 
     if ($previousVersion < 240) {
-        $configurator = new SoapboxConfigurator();
-        $utilityClass = ucfirst($moduleDirName) . 'Utility';
-        if (!class_exists($utilityClass)) {
-            xoops_load('utility', $moduleDirName);
-        }
 
         //delete old HTML templates
         if (count($configurator->{'templateFolders'}) > 0) {

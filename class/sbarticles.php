@@ -95,19 +95,19 @@ class SoapboxSbarticles extends XoopsObject
                 switch (strtolower($format)) {
                     case 's':
                     case 'show':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->htmlSpecialChars($ret);
                         break 1;
                     case 'e':
                     case 'edit':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->htmlSpecialChars($ret);
                         break 1;
                     case 'p':
                     case 'preview':
                     case 'f':
                     case 'formpreview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->htmlSpecialChars($ts->stripSlashesGPC($ret));
                         break 1;
                     case 'n':
@@ -120,7 +120,7 @@ class SoapboxSbarticles extends XoopsObject
                 switch (strtolower($format)) {
                     case 's':
                     case 'show':
-                        $ts     = MyTextSanitizer::getInstance();
+                        $ts     = \MyTextSanitizer::getInstance();
                         $html   = !empty($this->vars['html']['value']) ? 1 : 0;
                         $xcode  = (!isset($this->vars['xcodes']['value'])
                                    || 1 === $this->vars['xcodes']['value']) ? 1 : 0;
@@ -144,7 +144,7 @@ class SoapboxSbarticles extends XoopsObject
                         break 1;
                     case 'p':
                     case 'preview':
-                        $ts     = MyTextSanitizer::getInstance();
+                        $ts     = \MyTextSanitizer::getInstance();
                         $html   = !empty($this->vars['html']['value']) ? 1 : 0;
                         $xcode  = (!isset($this->vars['xcodes']['value'])
                                    || 1 === $this->vars['xcodes']['value']) ? 1 : 0;
@@ -164,7 +164,7 @@ class SoapboxSbarticles extends XoopsObject
                         break 1;
                     case 'f':
                     case 'formpreview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = htmlspecialchars($ts->stripSlashesGPC($ret), ENT_QUOTES);
                         break 1;
                     case 'n':
@@ -197,12 +197,12 @@ class SoapboxSbarticles extends XoopsObject
                         break 1;
                     case 'p':
                     case 'preview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = $ts->stripSlashesGPC($ret);
                         break 1;
                     case 'f':
                     case 'formpreview':
-                        $ts  = MyTextSanitizer::getInstance();
+                        $ts  = \MyTextSanitizer::getInstance();
                         $ret = htmlspecialchars($ts->stripSlashesGPC($ret), ENT_QUOTES);
                         break 1;
                     case 'n':
@@ -251,7 +251,7 @@ class SoapboxSbarticles extends XoopsObject
      */
     public function cleanVars()
     {
-        $ts = MyTextSanitizer::getInstance();
+        $ts = \MyTextSanitizer::getInstance();
         foreach ($this->vars as $k => $v) {
             $cleanv = $v['value'];
             if (!$v['changed']) {
@@ -477,7 +477,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler
         $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbarticles');
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' !== $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -634,7 +634,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('sbarticles');
 
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         $result = $this->db->query($sql);
