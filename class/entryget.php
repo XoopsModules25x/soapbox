@@ -17,10 +17,14 @@
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\Soapbox;
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
+
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(dirname(__DIR__));
 if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
-    echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
+    echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES | ENT_HTML5));
 }
 
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles.php';
@@ -74,12 +78,12 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * constructor
      * @param XoopsDatabase $db
      */
-    public function __construct(XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db)
     {
         parent::__construct($db);
         $moduleDirName = basename(dirname(__DIR__));
         if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
-            echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
+            echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES | ENT_HTML5));
         }
         $this->sbArticleHandler = new SoapboxSbarticlesHandler($db);
         $this->sbColumnHandler  = new SoapboxSbcolumnsHandler($db);
@@ -334,18 +338,18 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             $can_read_columnIDs = $gpermHandler->getItemIds($gperm_name, $groups, $this->moduleId);
         }
         //--------------------------
-        $criteria      = new CriteriaCompo();
+        $criteria      = new \CriteriaCompo();
         $criteria_used = false;
         if (!empty($columnIDs) && count($columnIDs) > 0) {
-            $criteria->add(new Criteria('columnID', '(' . implode(',', array_unique($columnIDs)) . ')', 'IN'));
+            $criteria->add(new \Criteria('columnID', '(' . implode(',', array_unique($columnIDs)) . ')', 'IN'));
             $criteria_used = true;
         }
         if (!empty($notcolumnIDs) && count($notcolumnIDs) > 0) {
-            $criteria->add(new Criteria('columnID', '(' . implode(',', array_unique($notcolumnIDs)) . ')', 'NOT IN'));
+            $criteria->add(new \Criteria('columnID', '(' . implode(',', array_unique($notcolumnIDs)) . ')', 'NOT IN'));
             $criteria_used = true;
         }
         if (!empty($can_read_columnIDs) && count($can_read_columnIDs) > 0) {
-            $criteria->add(new Criteria('columnID', '(' . implode(',', array_unique($can_read_columnIDs)) . ')', 'IN'));
+            $criteria->add(new \Criteria('columnID', '(' . implode(',', array_unique($can_read_columnIDs)) . ')', 'IN'));
             $criteria_used = true;
         }
         //------ hold all count
@@ -438,58 +442,58 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             $_sbcolumns_arr =& $this->getColumns(null, true);
         }
         //getArticles
-        $criteria             = new CriteriaCompo();
+        $criteria             = new \CriteriaCompo();
         $criteria_used        = false;
-        $criteria_public      = new CriteriaCompo();
+        $criteria_public      = new \CriteriaCompo();
         $criteria_public_used = false;
         if (count($can_read_columnIDs) > 0) {
-            $criteria_public->add(new Criteria('columnID', '(' . implode(',', array_unique($can_read_columnIDs)) . ')', 'IN'));
+            $criteria_public->add(new \Criteria('columnID', '(' . implode(',', array_unique($can_read_columnIDs)) . ')', 'IN'));
             $criteria_public_used = true;
         }
         if ($checkRight) {
             if ($published) {
-                $criteria_public->add(new Criteria('datesub', time(), '<'));
-                $criteria_public->add(new Criteria('datesub', 0, '>'));
+                $criteria_public->add(new \Criteria('datesub', time(), '<'));
+                $criteria_public->add(new \Criteria('datesub', 0, '>'));
                 $criteria_public_used = true;
             }
         }
         //------
         if (isset($submit)) {
-            $criteria_public->add(new Criteria('submit', (int)$submit));
+            $criteria_public->add(new \Criteria('submit', (int)$submit));
             $criteria_public_used = true;
         }
         if (isset($offline)) {
-            $criteria_public->add(new Criteria('offline', (int)$offline));
+            $criteria_public->add(new \Criteria('offline', (int)$offline));
             $criteria_public_used = true;
         }
         if (isset($block)) {
-            $criteria_public->add(new Criteria('block', (int)$block));
+            $criteria_public->add(new \Criteria('block', (int)$block));
             $criteria_public_used = true;
         }
         if (isset($NOTsbarticles)) {
             $notarticleIDs = $this->getColumnsItemIDs($NOTsbarticles);
-            $criteria_public->add(new Criteria('articleID', '(' . implode(',', array_unique($notarticleIDs)) . ')', 'NOT IN'));
+            $criteria_public->add(new \Criteria('articleID', '(' . implode(',', array_unique($notarticleIDs)) . ')', 'NOT IN'));
             $criteria_public_used = true;
         }
 
         if ($criteria_public_used) {
-            $criteria      = new CriteriaCompo($criteria_public);
+            $criteria      = new \CriteriaCompo($criteria_public);
             $criteria_used = true;
         }
         unset($criteria_public);
 
         // approve submit for column_authors
         if ($approve_submit && count($can_read_column_authors) > 0) {
-            $crit_approve_submit = new CriteriaCompo();
-            $crit_approve_submit->add(new Criteria('columnID', '(' . implode(',', array_unique($can_read_column_authors)) . ')', 'IN'));
+            $crit_approve_submit = new \CriteriaCompo();
+            $crit_approve_submit->add(new \Criteria('columnID', '(' . implode(',', array_unique($can_read_column_authors)) . ')', 'IN'));
             if (isset($NOTsbarticles)) {
                 $notarticleIDs = $this->getColumnsItemIDs($NOTsbarticles);
                 if (count($notarticleIDs) > 0) {
-                    $crit_approve_submit->add(new Criteria('articleID', '(' . implode(',', array_unique($notarticleIDs)) . ')', 'NOT IN'));
+                    $crit_approve_submit->add(new \Criteria('articleID', '(' . implode(',', array_unique($notarticleIDs)) . ')', 'NOT IN'));
                 }
             }
-            //            $crit_approve_submit->add(new Criteria( 'submit', 1 ));
-            $crit_approve_submit->add(new Criteria('offline', 0));
+            //            $crit_approve_submit->add(new \Criteria( 'submit', 1 ));
+            $crit_approve_submit->add(new \Criteria('offline', 0));
             $criteria->add($crit_approve_submit, 'OR');
             $criteria_used = true;
             unset($crit_approve_submit);
@@ -609,8 +613,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $ret                               = [];
         $this->total_getArticlesByColumnID = 0;
 
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('columnID', $columnID));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('columnID', $columnID));
         $this->total_getArticlesByColumnID = $this->getArticleCount($criteria);
         if (empty($this->total_getArticlesByColumnID) || 0 === $this->total_getArticlesByColumnID) {
             return $ret;
@@ -661,8 +665,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     ) {
         $ret                                 = [];
         $this->total_getVotedatasByArticleID = 0;
-        $criteria                            = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $articleID));
+        $criteria                            = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $articleID));
         $this->total_getVotedatasByArticleID = $this->getVotedataCount($criteria);
         if (empty($this->total_getVotedatasByArticleID) || 0 === $this->total_getVotedatasByArticleID) {
             return $ret;
@@ -712,8 +716,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     ) {
         $ret                            = [];
         $this->total_getColumnsByAuthor = 0;
-        $criteria                       = new CriteriaCompo();
-        $criteria->add(new Criteria('author', $user_id));
+        $criteria                       = new \CriteriaCompo();
+        $criteria->add(new \Criteria('author', $user_id));
         $this->total_getColumnsByAuthor = $this->getColumnCount($criteria);
         if (empty($this->total_getColumnsByAuthor) || 0 === $this->total_getColumnsByAuthor) {
             return $ret;
@@ -782,8 +786,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         $columnIDs = array_unique($columnIDs);
 
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('columnID', '(' . implode(',', array_unique($columnIDs)) . ')', 'IN'));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('columnID', '(' . implode(',', array_unique($columnIDs)) . ')', 'IN'));
         if (isset($sortname) && '' !== trim($sortname)) {
             $criteria->setSort($sortname);
         }
@@ -816,8 +820,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      */
     public function getVotedataCountByArticleID($articleID)
     {
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $articleID));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $articleID));
 
         return $this->getVotedataCount($criteria);
     }
@@ -831,8 +835,8 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      */
     public function getArticleCountByColumnID($columnID)
     {
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('columnID', $columnID));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('columnID', $columnID));
 
         return $this->getArticleCount($criteria);
     }
@@ -846,7 +850,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      */
     public function getUpArticlecount(SoapboxSbarticles $sbarticle, $force = false)
     {
-        global $xoopsUser, $xoopsModuleConfig;
+        global $xoopsUser;
+        /** @var Soapbox\Helper $helper */
+        $helper = Soapbox\Helper::getInstance();
 
         if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
             return false;
@@ -857,7 +863,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if (XOOPS_GROUP_ANONYMOUS === $groups) {
             $hitcount_update = true;
         } else {
-            if (1 === $xoopsModuleConfig['adminhits']) {
+            if (1 === $helper->getConfig('adminhits')) {
                 $hitcount_update = true;
             } else {
                 if ($xoopsUser->isAdmin($this->moduleId)) {

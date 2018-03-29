@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
 
 /**
@@ -357,7 +357,7 @@ class SoapboxSbcolumnsHandler extends XoopsPersistableObjectHandler
         if (!$result) {
             return $ret;
         }
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $sbcolumn = new SoapboxSbcolumns();
             $sbcolumn->assignVars($myrow);
             if (!$id_as_key) {
@@ -379,7 +379,7 @@ class SoapboxSbcolumnsHandler extends XoopsPersistableObjectHandler
      * @param  bool        $force
      * @return bool        FALSE if failed, TRUE if already present and unchanged or successful
      */
-    public function insert(XoopsObject $sbcolumn, $force = false)//insert($sbcolumn, $force = false)
+    public function insert(\XoopsObject $sbcolumn, $force = false)//insert($sbcolumn, $force = false)
     {
         if (strtolower(get_class($sbcolumn)) !== strtolower('SoapboxSbcolumns')) {
             return false;
@@ -445,7 +445,7 @@ class SoapboxSbcolumnsHandler extends XoopsPersistableObjectHandler
      * @param  bool        $force
      * @return bool        FALSE if failed.
      */
-    public function delete(XoopsObject $sbcolumn, $force = false)//delete($sbcolumn, $force = false)
+    public function delete(\XoopsObject $sbcolumn, $force = false)//delete($sbcolumn, $force = false)
     {
         if (strtolower(get_class($sbcolumn)) !== strtolower('SoapboxSbcolumns')) {
             return false;

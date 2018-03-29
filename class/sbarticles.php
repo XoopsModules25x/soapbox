@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
 if (!defined('XOBJ_SOAPBOX_DTYPE_FLOAT')) {
     define('XOBJ_SOAPBOX_DTYPE_FLOAT', 21);
@@ -489,7 +489,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler
         if (!$result) {
             return $ret;
         }
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $sbarticle = new SoapboxSbarticles();
             $sbarticle->assignVars($myrow);
             if (!$id_as_key) {
@@ -511,7 +511,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler
      * @param  bool        $force
      * @return bool        FALSE if failed, TRUE if already present and unchanged or successful
      */
-    public function insert(XoopsObject $sbarticle, $force = false)
+    public function insert(\XoopsObject $sbarticle, $force = false)
     {
         if ('soapboxsbarticles' !== strtolower(get_class($sbarticle))) {
             return false;
@@ -605,7 +605,7 @@ class SoapboxSbarticlesHandler extends XoopsPersistableObjectHandler
      * @param  bool        $force
      * @return bool        FALSE if failed.
      */
-    public function delete(XoopsObject $sbarticle, $force = false)
+    public function delete(\XoopsObject $sbarticle, $force = false)
     {
         global $xoopsModule;
         if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {

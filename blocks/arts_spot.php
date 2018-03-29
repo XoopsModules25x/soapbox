@@ -8,7 +8,7 @@
  * @return array
  */
 /* This function spotlights a column, with a spotlight article and links to others */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 function b_arts_spot_show($options)
 {
     $block_outdata = [];

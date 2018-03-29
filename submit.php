@@ -9,12 +9,15 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 include __DIR__ . '/../../mainfile.php';
 //global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule;
 //----------------------------------------------
 //allowsubmit
-if (!isset($xoopsModuleConfig['allowsubmit']) || 1 !== $xoopsModuleConfig['allowsubmit']) {
+if (!isset($helper->getConfig('allowsubmit')) || 1 !== $helper->getConfig('allowsubmit')) {
     redirect_header('index.php', 1, _NOPERM);
 }
 //guest
@@ -153,7 +156,7 @@ switch ($op) {
         }
 
         //autoapprove
-        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $xoopsModuleConfig['autoapprove']) {
+        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $helper->getConfig('autoapprove')) {
             $_entryob->setVar('submit', 1);
             $_entryob->setVar('offline', 1);
         } else {
@@ -177,7 +180,7 @@ switch ($op) {
 
             break;
         }
-        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $xoopsModuleConfig['autoapprove']) {
+        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $helper->getConfig('autoapprove')) {
             // Notify of to admin only for approve
             $entrydataHandler->newArticleTriggerEvent($_entryob, 'article_submit');
         } else {

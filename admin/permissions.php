@@ -91,9 +91,9 @@ switch ($permission) {
         break;
 }
 
-//$Form2 = new XoopsGroupPermForm ( "", $xoopsModule -> getVar ( 'mid'), "Column_permissions", _AM_SB_SELECT_COLS);
+//$Form2 = new \XoopsGroupPermForm ( "", $xoopsModule -> getVar ( 'mid'), "Column_permissions", _AM_SB_SELECT_COLS);
 
-$permform = new XoopsGroupPermForm($formTitle, $module_id, $permName, $permDesc, 'admin/permissions.php');
+$permform = new \XoopsGroupPermForm($formTitle, $module_id, $permName, $permDesc, 'admin/permissions.php');
 if (1 == $permission) {
     foreach ($globalPerms as $perm_id => $perm_name) {
         $permform->addItem($perm_id, $perm_name);
@@ -101,7 +101,7 @@ if (1 == $permission) {
     echo $permform->render();
     echo '<br><br>';
 } else {
-    $criteria = new CriteriaCompo();
+    $criteria = new \CriteriaCompo();
     $criteria->setSort('name');
     $criteria->setOrder('ASC');
     $cat_count = $sbColumnHandler->getCount($criteria);

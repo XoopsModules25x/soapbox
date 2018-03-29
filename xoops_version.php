@@ -5,7 +5,7 @@
  * Author: hsalazar
  * Licence: GNU
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 require_once __DIR__ . '/preloads/autoloader.php';
 
@@ -106,7 +106,7 @@ if ($soapModule = $hModule->getByDirname('soapbox')) {
     if (is_object($xoopsUser) && isset($soapConfig['colsinmenu']) && 1 === $soapConfig['colsinmenu']) {
         $sql = $xoopsDB->query('SELECT columnID, name FROM ' . $xoopsDB->prefix('sbcolumns') . '  ORDER BY weight');
         if ($sql) {
-            while (list($columnID, $name) = $xoopsDB->fetchRow($sql)) {
+            while (false !== (list($columnID, $name) = $xoopsDB->fetchRow($sql))) {
                 if ($gpermHandler->checkRight('Column Permissions', $columnID, $groups, $module_id)) {
                     ++$i;
                     $modversion['sub'][$i]['name'] = $name;

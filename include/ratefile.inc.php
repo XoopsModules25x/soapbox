@@ -10,7 +10,7 @@
 
 use Xmf\Request;
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 //if (!isset($_POST['submit'])) {
 //    exit;
 //}
@@ -65,9 +65,9 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
 
         //uid check
         //uid check
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $lid));
-        $criteria->add(new Criteria('ratinguser', $ratinguser));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $lid));
+        $criteria->add(new \Criteria('ratinguser', $ratinguser));
         $ratinguservotecount = $entrydataHandler->getVotedataCount($criteria);
         unset($criteria);
         if ($ratinguservotecount > 0) {
@@ -79,11 +79,11 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     if (0 === $ratinguser) {
         $yesterday = (time() - (86400 * $anonwaitdays));
         //uid check
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $lid));
-        $criteria->add(new Criteria('ratinguser', 0));
-        $criteria->add(new Criteria('ratinghostname', $ip));
-        $criteria->add(new Criteria('ratingtimestamp', $yesterday, '>'));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $lid));
+        $criteria->add(new \Criteria('ratinguser', 0));
+        $criteria->add(new \Criteria('ratinghostname', $ip));
+        $criteria->add(new \Criteria('ratingtimestamp', $yesterday, '>'));
         $anonvotecount = $entrydataHandler->getVotedataCount($criteria);
         unset($criteria);
         if ($anonvotecount > 0) {

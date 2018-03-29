@@ -18,25 +18,25 @@ if (!class_exists($utilityClass)) {
 $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
 $totcol           = $entrydataHandler->getColumnCount();
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 0));
-$criteria->add(new Criteria('offline', 0));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 0));
+$criteria->add(new \Criteria('offline', 0));
 $totpub = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 0));
-$criteria->add(new Criteria('offline', 1));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 0));
+$criteria->add(new \Criteria('offline', 1));
 $totoff = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 1));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 1));
 $totsub = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 0));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 0));
 $totall = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 

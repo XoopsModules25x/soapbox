@@ -17,10 +17,10 @@
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(dirname(__DIR__));
 if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
-    echo('invalid dirname: ' . htmlspecialchars($this->mydirname));
+    echo('invalid dirname: ' . htmlspecialchars($this->mydirname, ENT_QUOTES | ENT_HTML5));
 }
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbcolumns.php';
@@ -42,7 +42,7 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
      * constructor
      * @param XoopsDatabase $db
      */
-    public function __construct(XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db)
     {
         parent::__construct($db);
         global $moduleDirName;
@@ -163,8 +163,8 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
             return false;
         }
         // delete Votedata
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $sbarticle->getVar('articleID')));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $sbarticle->getVar('articleID')));
         $this->sbVoteHandler->deleteEntrys($criteria, $force);
         unset($criteria);
         // delete comments
@@ -191,8 +191,8 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         if (!$this->sbColumnHandler->delete($sbcolumn, $force)) {
             return false;
         }
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('columnID', $sbcolumn->getVar('columnID')));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('columnID', $sbcolumn->getVar('columnID')));
         $this->deleteArticlesEntrys($criteria, $force, false);
         unset($criteria);
 
@@ -285,11 +285,11 @@ class SoapboxEntrydataHandler extends SoapboxEntrygetHandler
         // re count ----------------------------------
         $sbcolumns =& $this->getColumn($columnID);
         if (is_object($sbcolumns)) {
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('datesub', time(), '<'));
-            $criteria->add(new Criteria('datesub', 0, '>'));
-            $criteria->add(new Criteria('submit', 0));
-            $criteria->add(new Criteria('offline', 0));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('datesub', time(), '<'));
+            $criteria->add(new \Criteria('datesub', 0, '>'));
+            $criteria->add(new \Criteria('submit', 0));
+            $criteria->add(new \Criteria('offline', 0));
             $sbcolumns->setVar('total', $this->getArticleCount($criteria));
             unset($criteria);
             $this->insertColumn($sbcolumns, $force);

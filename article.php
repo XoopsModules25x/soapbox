@@ -9,6 +9,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
 
@@ -82,7 +85,7 @@ $entrydataHandler->getUpArticlecount($_entryob, true);
 
 //assign
 $articles['id']     = $articles['articleID'];
-$articles['posted'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
+$articles['posted'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
 
 // includes code by toshimitsu
 if ('' !== trim($articles['bodytext'])) {
@@ -90,7 +93,7 @@ if ('' !== trim($articles['bodytext'])) {
     $articles_pages = count($articletext);
     if ($articles_pages > 1) {
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-        $pagenav = new XoopsPageNav($articles_pages, 1, $startpage, 'page', 'articleID=' . $articles['articleID']);
+        $pagenav = new \XoopsPageNav($articles_pages, 1, $startpage, 'page', 'articleID=' . $articles['articleID']);
         $xoopsTpl->assign('pagenav', $pagenav->renderNav());
         if (0 === $startpage) {
             $articles['bodytext'] = $articles['lead'] . '<br><br>' . $myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
@@ -104,7 +107,7 @@ if ('' !== trim($articles['bodytext'])) {
 //Cleantags
 $articles['bodytext'] = $GLOBALS['SoapboxCleantags']->cleanTags($articles['bodytext']);
 
-if (1 === $xoopsModuleConfig['includerating']) {
+if (1 === $helper->getConfig('includerating')) {
     $xoopsTpl->assign('showrating', '1');
     //-------------------------------------
     //for ratefile update by domifara
@@ -128,7 +131,7 @@ if (xoops_getModuleOption('usetag', 'soapbox')) {
     $moduleHandler = xoops_getHandler('module');
     $tagsModule    = $moduleHandler->getByDirname('tag');
     if (is_object($tagsModule)) {
-        include_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
 
         $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
         $catid  = 0;
@@ -183,14 +186,14 @@ $xoopsTpl->assign('articleID', $articles['articleID']);
 $xoopsTpl->assign('lang_ratethis', _MD_SOAPBOX_RATETHIS);
 $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
 $xoopsTpl->assign('lang_moduledirname', $moduleDirName);
-$xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($xoopsModuleConfig['sbimgdir']));
-$xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+$xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($helper->getConfig('sbimgdir')));
+$xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
 
 //-------------------------------------
 //box view
 $listarts = [];
 //-------------------------------------
-$_other_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['morearts'], 0, true, true, 0, 0, null, $sortname, $sortorder, $_categoryob, $articles['articleID'], true, false);
+$_other_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('morearts'), 0, true, true, 0, 0, null, $sortname, $sortorder, $_categoryob, $articles['articleID'], true, false);
 $totalartsbyauthor  = (int)$entrydataHandler->total_getArticlesAllPermcheck + 1;
 
 if (!empty($_other_entryob_arr)) {
@@ -200,7 +203,7 @@ if (!empty($_other_entryob_arr)) {
         //--------------------
         $link['id']        = $link['articleID'];
         $link['arttitle']  = $_other_entryob->getVar('headline');
-        $link['published'] = $myts->htmlSpecialChars(formatTimestamp($_other_entryob->getVar('datesub'), $xoopsModuleConfig['dateformat']));
+        $link['published'] = $myts->htmlSpecialChars(formatTimestamp($_other_entryob->getVar('datesub'), $helper->getConfig('dateformat')));
         //        $link['poster'] = XoopsUserUtility::getUnameFromId( $link['uid'] );
         $link['poster']      = SoapboxUtility::getLinkedUnameFromId($category['author']);
         $link['bodytext']    = xoops_substr($link['bodytext'], 0, 255);

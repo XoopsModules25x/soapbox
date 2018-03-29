@@ -61,20 +61,20 @@ if (Request::hasVar('previewblock', 'POST')) {
 
     xoops_cp_header();
     require_once XOOPS_ROOT_PATH . '/class/template.php';
-    $xoopsTpl = new XoopsTpl();
+    $xoopsTpl = new \XoopsTpl();
     $xoopsTpl->caching=(0);
     $block['bid'] = $bid;
 
     if ('clone_ok' === $op) {
         $block['form_title']    = _AM_CLONEBLOCK;
         $block['submit_button'] = _CLONE;
-        $myblock                = new XoopsBlock();
+        $myblock                = new \XoopsBlock();
         $myblock->setVar('block_type', 'C');
     } else {
         $op                     = 'update';
         $block['form_title']    = _AM_EDITBLOCK;
         $block['submit_button'] = _SUBMIT;
-        $myblock                = new XoopsBlock($bid);
+        $myblock                = new \XoopsBlock($bid);
         $block['name']          = $myblock->getVar('name');
     }
 
@@ -291,7 +291,7 @@ if ('delete_ok' === $op) {
         redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
     }
     // delete_block_ok($bid); GIJ imported from blocksadmin.php
-    $myblock = new XoopsBlock($bid);
+    $myblock = new \XoopsBlock($bid);
     if ('D' !== $myblock->getVar('block_type') && 'C' !== $myblock->getVar('block_type')) {
         redirect_header('myblocksadmin.php', 4, 'Invalid block');
     }
@@ -311,7 +311,7 @@ if ('delete_ok' === $op) {
 if ('delete' === $op) {
     xoops_cp_header();
     // delete_block($bid); GIJ imported from blocksadmin.php
-    $myblock = new XoopsBlock($bid);
+    $myblock = new \XoopsBlock($bid);
     if ('S' === $myblock->getVar('block_type')) {
         $message = _AM_SYSTEMCANT;
         redirect_header('admin.php?fct=blocksadmin', 4, $message);
@@ -333,13 +333,13 @@ if ('delete' === $op) {
 if ('edit' === $op) {
     xoops_cp_header();
     // edit_block($bid); GIJ imported from blocksadmin.php
-    $myblock = new XoopsBlock($bid);
+    $myblock = new \XoopsBlock($bid);
 
-    $db      = XoopsDatabaseFactory::getDatabaseConnection();
+    $db      = \XoopsDatabaseFactory::getDatabaseConnection();
     $sql     = 'SELECT module_id FROM ' . $db->prefix('block_module_link') . ' WHERE block_id=' . (int)$bid;
     $result  = $db->query($sql);
     $modules = [];
-    while ($row = $db->fetchArray($result)) {
+    while (false !== ($row = $db->fetchArray($result))) {
         $modules[] = (int)$row['module_id'];
     }
     $is_custom = ('C' === $myblock->getVar('block_type') || 'E' === $myblock->getVar('block_type'));
@@ -374,13 +374,13 @@ if ('edit' === $op) {
 
 if ('clone' === $op) {
     xoops_cp_header();
-    $myblock = new XoopsBlock($bid);
+    $myblock = new \XoopsBlock($bid);
 
-    $db      = XoopsDatabaseFactory::getDatabaseConnection();
+    $db      = \XoopsDatabaseFactory::getDatabaseConnection();
     $sql     = 'SELECT module_id FROM ' . $db->prefix('block_module_link') . ' WHERE block_id=' . (int)$bid;
     $result  = $db->query($sql);
     $modules = [];
-    while ($row = $db->fetchArray($result)) {
+    while (false !== ($row = $db->fetchArray($result))) {
         $modules[] = (int)$row['module_id'];
     }
     $is_custom = ('C' === $myblock->getVar('block_type') || 'E' === $myblock->getVar('block_type'));
@@ -417,7 +417,7 @@ if ('clone_ok' === $op) {
         redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
     }
 
-    $block = new XoopsBlock($bid);
+    $block = new \XoopsBlock($bid);
 
     // block type check
     $block_type = $block->getVar('block_type');
@@ -440,7 +440,7 @@ if ('clone_ok' === $op) {
 
     // for backward compatibility
     // $cblock =& $block->clone(); or $cblock =& $block->xoopsClone();
-    $cblock = new XoopsBlock();
+    $cblock = new \XoopsBlock();
     foreach ($block->vars as $k => $v) {
         $cblock->assignVar($k, $v['value']);
     }
@@ -478,7 +478,7 @@ if ('clone_ok' === $op) {
                 $tplman->insert($tplclone);
             }
         } */
-    $db = XoopsDatabaseFactory::getDatabaseConnection();
+    $db = \XoopsDatabaseFactory::getDatabaseConnection();
     //    $bmodule = (isset($_POST['bmodule']) && is_array($_POST['bmodule'])) ? $_POST['bmodule'] : array(-1); // GIJ +
     $bmodule = Request::getArray('bmodule', [-1], 'POST');
     foreach ($bmodule as $bmid) {
@@ -497,7 +497,7 @@ if ('clone_ok' === $op) {
 
     $sql    = 'SELECT gperm_groupid FROM ' . $db->prefix('group_permission') . " WHERE gperm_name='block_read' AND gperm_modid='1' AND gperm_itemid='$bid'";
     $result = $db->query($sql);
-    while (list($gid) = $db->fetchRow($result)) {
+    while (false !== (list($gid) = $db->fetchRow($result))) {
         $sql = 'INSERT INTO ' . $db->prefix('group_permission') . " (gperm_groupid, gperm_itemid, gperm_modid, gperm_name) VALUES ($gid, $newid, 1, 'block_read')";
         $db->query($sql);
     }
@@ -538,7 +538,7 @@ function myblocksadmin_update_block(
         xoops_cp_footer();
         exit();
     } */
-    $myblock = new XoopsBlock($bid);
+    $myblock = new \XoopsBlock($bid);
     // $myblock->setVar('side', $bside); GIJ -
     if ($bside >= 0) {
         $myblock->setVar('side', $bside);
@@ -576,7 +576,7 @@ function myblocksadmin_update_block(
     }
     $msg = _AM_DBUPDATED;
     if (false !== $myblock->store()) {
-        $db  = XoopsDatabaseFactory::getDatabaseConnection();
+        $db  = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = sprintf('DELETE FROM %s WHERE block_id = %u', $db->prefix('block_module_link'), $bid);
         $db->query($sql);
         foreach ($bmodule as $bmid) {
@@ -584,7 +584,7 @@ function myblocksadmin_update_block(
             $db->query($sql);
         }
         require_once XOOPS_ROOT_PATH . '/class/template.php';
-        $xoopsTpl = new XoopsTpl();
+        $xoopsTpl = new \XoopsTpl();
         $xoopsTpl->caching=(2);
         if ('' !== $myblock->getVar('template')) {
             if ($xoopsTpl->is_cached('db:' . $myblock->getVar('template'))) {
@@ -701,7 +701,7 @@ function myblocksadmin_update_blockinstance(
     */
     /*            // CLEAR TEMPLATE CACHE
                 require_once XOOPS_ROOT_PATH.'/class/template.php';
-                $xoopsTpl = new XoopsTpl();
+                $xoopsTpl = new \XoopsTpl();
                 $xoopsTpl->caching=(2);
                 if ($instance->getVar('template') != '') {
                     if ($xoopsTpl->is_cached('db:'.$instance->getVar('template'))) {

@@ -2,7 +2,7 @@
 
 use Xmf\Request;
 use XoopsModules\Soapbox\Common;
-
+use XoopsModules\Soapbox;
 
 require_once __DIR__ . '/../include/common.php';
 
@@ -11,11 +11,11 @@ require_once __DIR__ . '/../include/common.php';
  */
 class Utility extends \XoopsObject
 {
-    use common\VersionChecks; //checkVerXoops, checkVerPhp Traits
+    use Common\VersionChecks; //checkVerXoops, checkVerPhp Traits
 
-    use common\ServerStats; // getServerStats Trait
+    use Common\ServerStats; // getServerStats Trait
 
-    use common\FilesManagement; // Files Management Trait
+    use Common\FilesManagement; // Files Management Trait
 
 
     /**
@@ -100,14 +100,16 @@ class Utility extends \XoopsObject
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         $myts = \MyTextSanitizer::getInstance();
 
-        global $xoopsConfig, $xoopsModuleConfig, $_POST;
+        global $xoopsConfig,  $_POST;
+        /** @var Soapbox\Helper $helper */
+        $helper = Soapbox\Helper::getInstance();
 
-        $maxfilesize   = (int)$xoopsModuleConfig['maxfilesize'];
-        $maxfilewidth  = (int)$xoopsModuleConfig['maximgwidth'];
-        $maxfileheight = (int)$xoopsModuleConfig['maximgheight'];
+        $maxfilesize   = (int)$helper->getConfig('maxfilesize');
+        $maxfilewidth  = (int)$helper->getConfig('maximgwidth');
+        $maxfileheight = (int)$helper->getConfig('maximgheight');
         $uploaddir     = XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars(strip_tags($dir)) . '/';
 
-        $uploader = new XoopsMediaUploader($uploaddir, $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
+        $uploader = new \XoopsMediaUploader($uploaddir, $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
 
         if ($uploader->fetchMedia($myts->htmlSpecialChars(strip_tags($_POST['xoops_upload_file'][$num])))) {
             if (!$uploader->upload()) {
@@ -176,7 +178,7 @@ class Utility extends \XoopsObject
         echo "<option value='-1'>------</option>";
         $result = $xoopsDB->query("SELECT uid, uname FROM ".$xoopsDB->prefix("users")." ORDER BY uname");
 
-        while (list($uid, $uname) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($uid, $uname) = $xoopsDB->fetchRow($result))) {
             if ($uid == $user) {
                 $opt_selected = "selected";
             } else {
@@ -222,7 +224,10 @@ class Utility extends \XoopsObject
      */
     public static function showColumns($showCreate = 0)
     {
-        global $xoopsModuleConfig, $xoopsModule;
+        global  $xoopsModule;
+        /** @var Soapbox\Helper $helper */
+        $helper = Soapbox\Helper::getInstance();
+
         $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
         $myts       = \MyTextSanitizer::getInstance();
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
@@ -245,9 +250,9 @@ class Utility extends \XoopsObject
         //get category object
         $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
         $numrows          = $entrydataHandler->getColumnCount();
-        $criteria         = new CriteriaCompo();
+        $criteria         = new \CriteriaCompo();
         $criteria->setSort('weight');
-        $criteria->setLimit((int)$xoopsModuleConfig['perpage']);
+        $criteria->setLimit((int)$helper->getConfig('perpage'));
         $criteria->setStart($startcol);
         $categoryobArray = $entrydataHandler->getColumns($criteria);
         unset($criteria);
@@ -298,7 +303,7 @@ class Utility extends \XoopsObject
             $category['columnID'] = '0';
         }
         echo "</table>\n";
-        $pagenav = new XoopsPageNav($numrows, (int)$xoopsModuleConfig['perpage'], $startcol, 'startcol', 'columnID=' . $category['columnID']);
+        $pagenav = new \XoopsPageNav($numrows, (int)$helper->getConfig('perpage'), $startcol, 'startcol', 'columnID=' . $category['columnID']);
         echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
         echo "<br>\n";
 
@@ -317,8 +322,10 @@ class Utility extends \XoopsObject
      */
     public static function showArticles($showCreate = 0)
     {
-        global $xoopsModuleConfig, $xoopsModule;
+        global $xoopsModule;
         $myts = \MyTextSanitizer::getInstance();
+        /** @var Soapbox\Helper $helper */
+        $helper = Soapbox\Helper::getInstance();
 
         $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
         require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
@@ -355,27 +362,27 @@ class Utility extends \XoopsObject
         // Articles count
         $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
         //----------------------------
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('submit', 0));
-        $criteria->add(new Criteria('offline', 0));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('submit', 0));
+        $criteria->add(new \Criteria('offline', 0));
         $tot_published = $entrydataHandler->getArticleCount($criteria);
         unset($criteria);
         //----------------------------
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('submit', 0));
-        $criteria->add(new Criteria('offline', 1));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('submit', 0));
+        $criteria->add(new \Criteria('offline', 1));
         $tot_offline = $entrydataHandler->getArticleCount($criteria);
         unset($criteria);
         //----------------------------
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('submit', 1));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('submit', 1));
         $tot_submitted = $entrydataHandler->getArticleCount($criteria);
         unset($criteria);
         //----------------------------
         $tot_all = $entrydataHandler->getArticleCount();
         //----------------------------
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('submit', 0));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('submit', 0));
         $tot_ok = $entrydataHandler->getArticleCount($criteria);
         unset($criteria);
         //----------------------------
@@ -477,7 +484,7 @@ class Utility extends \XoopsObject
         //         $approve_submit = false ,
         //         $id_as_key = false )
         //-------------------------------------
-        $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['perpage'], $startart, false, false, $submit, $offline, null, $sortname, $sortorder, null, null, false, true);
+        $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startart, false, false, $submit, $offline, null, $sortname, $sortorder, null, null, false, true);
         // Get number of articles in the selected condition ($cond)
         $numrows = $entrydataHandler->total_getArticlesAllPermcheck;
         if ($numrows > 0) {
@@ -508,7 +515,7 @@ class Utility extends \XoopsObject
                 //--------------------
                 $colname = !empty($_entryob->_sbcolumns) ? $_entryob->_sbcolumns->getVar('name') : '';
                 //--------------------
-                $created = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
+                $created = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
                 $modify  = "<a href='article.php?op=mod&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SOAPBOX_EDITART . "'></a>";
                 $delete  = "<a href='article.php?op=del&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETEART . "'></a>";
 
@@ -546,7 +553,7 @@ class Utility extends \XoopsObject
             echo '</tr>';
         }
         echo "</table>\n";
-        $pagenav = new XoopsPageNav($numrows, (int)$xoopsModuleConfig['perpage'], $startart, 'startart', 'entries=' . $entries . '&sortname=' . $sortname . '&sortorder=' . $sortorder);
+        $pagenav = new \XoopsPageNav($numrows, (int)$helper->getConfig('perpage'), $startart, 'startart', 'entries=' . $entries . '&sortname=' . $sortname . '&sortorder=' . $sortorder);
         echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
 
         if ($numrows > 0) {
@@ -562,7 +569,9 @@ class Utility extends \XoopsObject
 
     public static function showSubmissions()
     {
-        global $xoopsModuleConfig, $xoopsModule;
+        global $xoopsModule;
+        /** @var Soapbox\Helper $helper */
+        $helper = Soapbox\Helper::getInstance();
 
         $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
         $myts       = \MyTextSanitizer::getInstance();
@@ -609,7 +618,7 @@ class Utility extends \XoopsObject
         // Articles count
         $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
         //-------------------------------------
-        $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['perpage'], $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false);
+        $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false);
         // Get number of articles in the selected condition ($cond)
         $numrows = $entrydataHandler->total_getArticlesAllPermcheck;
 
@@ -620,7 +629,7 @@ class Utility extends \XoopsObject
                 $articles = $_entryob->toArray();
                 //--------------------
                 $colname = !empty($_entryob->_sbcolumns) ? $_entryob->_sbcolumns->getVar('name') : '';
-                $created = $myts->htmlSpecialChars(formatTimestamp($datesub, $xoopsModuleConfig['dateformat']));
+                $created = $myts->htmlSpecialChars(formatTimestamp($datesub, $helper->getConfig('dateformat')));
                 $modify  = "<a href='submissions.php?op=mod&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SOAPBOX_EDITSUBM . "'></a>";
                 $delete  = "<a href='submissions.php?op=del&articleID=" . $articles['articleID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETESUBM . "'></a>";
 
@@ -638,7 +647,7 @@ class Utility extends \XoopsObject
             echo '</tr>';
         }
         echo "</table>\n";
-        $pagenav = new XoopsPageNav($numrows, $xoopsModuleConfig['perpage'], $startsub, 'startsub', '&sortname=' . $sortname . '&sortorder=' . $sortorder);
+        $pagenav = new \XoopsPageNav($numrows, $helper->getConfig('perpage'), $startsub, 'startsub', '&sortname=' . $sortname . '&sortorder=' . $sortorder);
         echo '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
         echo "<br>\n";
     }

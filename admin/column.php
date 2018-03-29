@@ -7,6 +7,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 /* General Stuff */
 require_once __DIR__ . '/admin_header.php';
@@ -28,9 +31,12 @@ $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname())
 function editcol($columnID = '')
 {
     global $indexAdmin;
-    global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
+    global $xoopsUser, $xoopsConfig,  $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
+    /** @var Soapbox\Helper $helper */
+    $helper = Soapbox\Helper::getInstance();
+
     $adminObject = Xmf\Module\Admin::getInstance();
-    $xoopsDB     = XoopsDatabaseFactory::getDatabaseConnection();
+    $xoopsDB     = \XoopsDatabaseFactory::getDatabaseConnection();
     $myts        = \MyTextSanitizer::getInstance();
 
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
@@ -56,7 +62,7 @@ function editcol($columnID = '')
 
         //editcol(0);
 
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODCOL . ': ' . $_categoryob->getVar('name'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
+        $sform = new \XoopsThemeForm(_AM_SOAPBOX_MODCOL . ': ' . $_categoryob->getVar('name'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     } else {
         $_categoryob = $entrydataHandler->createColumn(true);
         $_categoryob->cleanVars();
@@ -77,16 +83,16 @@ function editcol($columnID = '')
 
         //editcol(0);
 
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWCOL, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
+        $sform = new \XoopsThemeForm(_AM_SOAPBOX_NEWCOL, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     }
 
     $sform->setExtra('enctype="multipart/form-data"');
-    $sform->addElement(new XoopsFormText(_AM_SOAPBOX_COLNAME, 'name', 50, 80, $e_category['name']), true);
+    $sform->addElement(new \XoopsFormText(_AM_SOAPBOX_COLNAME, 'name', 50, 80, $e_category['name']), true);
 
     /*
         ob_start();
         getuserForm((int)($e_category['author']));
-        $sform->addElement(new XoopsFormLabel(_AM_SOAPBOX_AUTHOR, ob_get_contents()));
+        $sform->addElement(new \XoopsFormLabel(_AM_SOAPBOX_AUTHOR, ob_get_contents()));
         ob_end_clean();
     */
     require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
@@ -104,75 +110,75 @@ function editcol($columnID = '')
         $authorid    = $author_ob->uid();
         $authoruname = $author_ob->uname();
     }
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('uid', $authorid, '!='));
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('uid', $authorid, '!='));
     $criteria->setSort('uname');
     $criteria->setOrder('ASC');
     $criteria->setLimit(199);
     $criteria->setStart($userstart);
     $user_list_arr = [$authorid => $authoruname] + $memberHandler->getUserList($criteria);
 
-    $nav = new XoopsPageNav($usercount, 200, $userstart, 'userstart', $myts->htmlSpecialChars('op=mod&columnID=' . $columnID));
+    $nav = new \XoopsPageNav($usercount, 200, $userstart, 'userstart', $myts->htmlSpecialChars('op=mod&columnID=' . $columnID));
 
-    $user_select      = new XoopsFormSelect('', 'author', (int)$authorid);
+    $user_select      = new \XoopsFormSelect('', 'author', $authorid);
     $user_select->addOptionArray($user_list_arr);
-    $user_select_tray = new XoopsFormElementTray(_AM_SOAPBOX_AUTHOR, '<br>');
+    $user_select_tray = new \XoopsFormElementTray(_AM_SOAPBOX_AUTHOR, '<br>');
     $user_select_tray->addElement($user_select);
-    $user_select_nav  = new XoopsFormLabel('', $nav->renderNav(4));
+    $user_select_nav  = new \XoopsFormLabel('', $nav->renderNav(4));
     $user_select_tray->addElement($user_select_nav);
     $sform->addElement($user_select_tray);
 
     //HACK by domifara for Wysiwyg
-    $sform->addElement(new XoopsFormTextArea(_AM_SOAPBOX_COLDESCRIPT, 'description', $e_category['description'], 7, 60));
-    //    $editor=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_COLDESCRIPT, 'description',  $e_category['description'], '100%', '300px');
+    $sform->addElement(new \XoopsFormTextArea(_AM_SOAPBOX_COLDESCRIPT, 'description', $e_category['description'], 7, 60));
+    //    $editor=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_COLDESCRIPT, 'description',  $e_category['description'], '100%', '300px');
     //    $sform->addElement($editor,true);
 
-    $sform->addElement(new XoopsFormText(_AM_SOAPBOX_COLPOSIT, 'weight', 4, 4, $e_category['weight']));
+    $sform->addElement(new \XoopsFormText(_AM_SOAPBOX_COLPOSIT, 'weight', 4, 4, $e_category['weight']));
 
     // notification public
-    $notifypub_radio = new XoopsFormRadioYN(_AM_SOAPBOX_NOTIFY, 'notifypub', $e_category['notifypub'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+    $notifypub_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_NOTIFY, 'notifypub', $e_category['notifypub'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
     $sform->addElement($notifypub_radio);
 
     if (!isset($e_category['colimage']) || empty($e_category['colimage']) || '' === $e_category['colimage']) {
         $e_category['colimage'] = 'nopicture.png';
     }
-    $graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
-    $colimage_select = new XoopsFormSelect('', 'colimage', $e_category['colimage']);
+    $graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
+    $colimage_select = new \XoopsFormSelect('', 'colimage', $e_category['colimage']);
     $colimage_select->addOptionArray($graph_array);
-    $colimage_select->setExtra("onchange='showImgSelected(\"image3\", \"colimage\", \"" . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '", "", "' . XOOPS_URL . "\")'");
-    $colimage_tray   = new XoopsFormElementTray(_AM_SOAPBOX_COLIMAGE, '&nbsp;');
+    $colimage_select->setExtra("onchange='showImgSelected(\"image3\", \"colimage\", \"" . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '", "", "' . XOOPS_URL . "\")'");
+    $colimage_tray   = new \XoopsFormElementTray(_AM_SOAPBOX_COLIMAGE, '&nbsp;');
     $colimage_tray->addElement($colimage_select);
-    $colimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/'
+    $colimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/'
                                                                                         . $e_category['colimage'] . "' name='image3' id='image3' alt=''>"));
     $sform->addElement($colimage_tray);
 
     // Code to call the file browser to select an image to upload
-    $sform->addElement(new XoopsFormFile(_AM_SOAPBOX_COLIMAGEUPLOAD, 'cimage', (int)$xoopsModuleConfig['maxfilesize']), false);
+    $sform->addElement(new \XoopsFormFile(_AM_SOAPBOX_COLIMAGEUPLOAD, 'cimage', (int)$helper->getConfig('maxfilesize')), false);
 
-    $sform->addElement(new XoopsFormHidden('columnID', $e_category['columnID']));
+    $sform->addElement(new \XoopsFormHidden('columnID', $e_category['columnID']));
 
-    $button_tray = new XoopsFormElementTray('', '');
-    $hidden      = new XoopsFormHidden('op', 'addcol');
+    $button_tray = new \XoopsFormElementTray('', '');
+    $hidden      = new \XoopsFormHidden('op', 'addcol');
     $button_tray->addElement($hidden);
 
     // No ID for column -- then it's new column, button says 'Create'
     if (empty($e_category['columnID'])) {
-        $butt_create = new XoopsFormButton('', '', _AM_SOAPBOX_CREATE, 'submit');
+        $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_CREATE, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addcol\'"');
         $button_tray->addElement($butt_create);
 
-        $butt_clear  = new XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
+        $butt_clear  = new \XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
         $button_tray->addElement($butt_clear);
 
-        $butt_cancel = new XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
+        $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
         $button_tray->addElement($butt_cancel);
     } else {        // button says 'Update'
-        $butt_create = new XoopsFormButton('', '', _AM_SOAPBOX_MODIFY, 'submit');
+        $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_MODIFY, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addcol\'"');
         $button_tray->addElement($butt_create);
 
-        $butt_cancel = new XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
+        $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
         $button_tray->addElement($butt_cancel);
     }
@@ -250,11 +256,11 @@ switch ($op) {
         if (isset($_FILES['cimage']['name'])) {
             $colimage_name = trim(strip_tags($myts->stripSlashesGPC($_FILES['cimage']['name'])));
             if ('' !== $colimage_name) {
-                if (file_exists(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['sbuploaddir'] . '/' . $colimage_name)) {
+                if (file_exists(XOOPS_ROOT_PATH . '/' . $helper->getConfig('sbuploaddir') . '/' . $colimage_name)) {
                     redirect_header('column.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
                 $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
-                SoapboxUtility::uploadFile($allowed_mimetypes, $colimage_name, 'index.php', 0, $xoopsModuleConfig['sbuploaddir']);
+                SoapboxUtility::uploadFile($allowed_mimetypes, $colimage_name, 'index.php', 0, $helper->getConfig('sbuploaddir'));
                 $_categoryob->setVar('colimage', $colimage_name);
             }
         }

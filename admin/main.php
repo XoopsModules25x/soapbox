@@ -7,6 +7,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 require_once __DIR__ . '/admin_header.php';
 $adminObject = \Xmf\Module\Admin::getInstance();
@@ -44,8 +47,8 @@ switch ($op) {
         require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
         $module_id = $xoopsModule->getVar('mid');
 
-        SoapboxUtility::showArticles($xoopsModuleConfig['buttonsadmin']);
-        SoapboxUtility::showColumns($xoopsModuleConfig['buttonsadmin']);
+        SoapboxUtility::showArticles($helper->getConfig('buttonsadmin'));
+        SoapboxUtility::showColumns($helper->getConfig('buttonsadmin'));
 }
 
 require_once __DIR__ . '/admin_footer.php';

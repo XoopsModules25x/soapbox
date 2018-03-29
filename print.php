@@ -7,6 +7,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 global $moduleDirName;
@@ -34,8 +37,11 @@ if (0 === $articleID) {
 function PrintPage($articleID)
 {
     global $moduleDirName;
-    global $xoopsConfig, $xoopsModule, $xoopsModuleConfig;
-    $myts      = MyTextSanitizer:: getInstance();
+    global $xoopsConfig, $xoopsModule;
+    /** @var Soapbox\Helper $helper */
+    $helper = Soapbox\Helper::getInstance();
+
+    $myts      = \MyTextSanitizer:: getInstance();
     $articleID = (int)$articleID;
     //get entry object
     $entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
@@ -54,7 +60,7 @@ function PrintPage($articleID)
     $authorname = SoapboxUtility::getAuthorName($category['author']);
     //-------------------------------------
 
-    $datetime = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
+    $datetime = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
     //    $lead = $myts->htmlSpecialChars($lead);
     //    $bodytext = str_replace("[pagebreak]","<br style=\"page-break-after:always;\">",$bodytext);
     //    $bodytext = $myts->displayTarea($bodytext, $html, $smiley, $xcodes, '', $breaks);

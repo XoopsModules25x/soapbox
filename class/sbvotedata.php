@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team, Jan Pedersen (Mithrandir)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
 
 /**
@@ -347,7 +347,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
         if (!$result) {
             return $ret;
         }
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $entry = new SoapboxSbvotedata();
             $entry->assignVars($myrow);
             if (!$id_as_key) {
@@ -369,7 +369,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
      * @param  bool               $force
      * @return bool               FALSE if failed, TRUE if already present and unchanged or successful
      */
-    public function insert(XoopsObject $entry, $force = false)
+    public function insert(\XoopsObject $entry, $force = false)
     {
         if (strtolower(get_class($entry)) !== strtolower('SoapboxSbvotedata')) {
             return false;
@@ -413,7 +413,7 @@ class SoapboxSbvotedataHandler extends XoopsPersistableObjectHandler
      * @param  bool        $force
      * @return bool        FALSE if failed.
      */
-    public function delete(XoopsObject $entry, $force = false)
+    public function delete(\XoopsObject $entry, $force = false)
     {
         if (strtolower(get_class($entry)) !== strtolower('SoapboxSbvotedata')) {
             return false;

@@ -18,6 +18,7 @@
  */
 
 use Xmf\Language;
+use XoopsModules\Soapbox;
 
 /**
  *
@@ -26,7 +27,7 @@ use Xmf\Language;
  *
  * @return bool true if ready to install, false if not
  */
-function xoops_module_pre_install_soapbox(XoopsModule $module)
+function xoops_module_pre_install_soapbox(\XoopsModule $module)
 {
     $moduleDirName = basename(dirname(__DIR__));
     $utilityClass  = ucfirst($moduleDirName) . 'Utility';
@@ -58,13 +59,13 @@ function xoops_module_pre_install_soapbox(XoopsModule $module)
  *
  * @return bool true if installation successful, false if not
  */
-function xoops_module_install_soapbox(XoopsModule $module)
+function xoops_module_install_soapbox(\XoopsModule $module)
 {
     require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
     require_once __DIR__ . '/../include/config.php';
 
     $moduleDirName = basename(dirname(__DIR__));
-    $helper = \Xmf\Module\Helper::getHelper($moduleDirName);
+    $helper = Soapbox\Helper::getInstance();
 
     // Load language files
     $helper->loadLanguage('admin');
@@ -85,10 +86,10 @@ function xoops_module_install_soapbox(XoopsModule $module)
     }
 
     //  ---  COPY blank.png FILES ---------------
-    if (count($configurator->blankFiles) > 0) {
+    if (count($configurator->copyBlankFiles) > 0) {
         $file = __DIR__ . '/../assets/images/blank.png';
-        foreach (array_keys($configurator->blankFiles) as $i) {
-            $dest = $configurator->blankFiles[$i] . '/blank.png';
+        foreach (array_keys($configurator->copyBlankFiles) as $i) {
+            $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $utilityClass::copyFile($file, $dest);
         }
     }

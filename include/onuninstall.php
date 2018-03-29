@@ -15,7 +15,7 @@
  * @return bool true if ready to uninstall, false if not
  */
 
-function xoops_module_pre_uninstall_soapbox(XoopsModule $module)
+function xoops_module_pre_uninstall_soapbox(\XoopsModule $module)
 {
     // Do some synchronization
     return true;
@@ -28,21 +28,21 @@ function xoops_module_pre_uninstall_soapbox(XoopsModule $module)
  *
  * @return bool true if uninstallation successful, false if not
  */
-function xoops_module_uninstall_soapbox(XoopsModule $module)
+function xoops_module_uninstall_soapbox(\XoopsModule $module)
 {
     return true;
 }
 
 //=======================================================
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * @param XoopsModule $module
  *
  * @return bool
  */
-function xoops_module_uninstall_XXXX(XoopsModule $module)
+function xoops_module_uninstall_XXXX(\XoopsModule $module)
 {
     // global $xoopsDB,$xoopsConfig;
     //

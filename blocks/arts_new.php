@@ -7,7 +7,7 @@
  * @param $options
  * @return array
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 function b_arts_new_show($options)
 {
     $myts          = MyTextSanitizer:: getInstance();

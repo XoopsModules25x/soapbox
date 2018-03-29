@@ -173,5 +173,5 @@ define('_AM_SOAPBOX_ERROR_BAD_XOOPS', 'This module requires XOOPS %s+ (%s instal
 define('_AM_SOAPBOX_ERROR_BAD_PHP', 'This module requires PHP version %s+ (%s installed)');
 define('_AM_SOAPBOX_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module');
 
-define('_AM_SOAPBOX_ADD_SAMPLEDATA', 'Add Sample Data (will delete ALL current data)');
+define('_AM_SOAPBOX_ADD_SAMPLEDATA', 'Import Sample Data (will delete ALL current data)');
 define('_AM_SOAPBOX_SAMPLEDATA_SUCCESS', 'Sample Date uploaded successfully');

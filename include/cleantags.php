@@ -2,7 +2,7 @@
 //
 /* This file comes from a post by tREXX [www.trexx.ch] in http://www.php.net/manual/en/function.strip-tags.php */
 //  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 if (!class_exists('SoapboxCleantags')) {
     /**

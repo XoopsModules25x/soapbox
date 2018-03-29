@@ -12,7 +12,7 @@
  * @param  null  $event
  * @return array
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 function sb_notify_iteminfo($category, $item_id, $event = null)
 {
     /*
