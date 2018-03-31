@@ -22,25 +22,20 @@ use XoopsModules\Soapbox;
 require_once __DIR__ . '/../../../include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
-// require_once __DIR__ . '/../class/Utility.php';
-//require_once __DIR__ . '/../include/common.php';
+require_once __DIR__ . '/../include/common.php';
 
 $moduleDirName = basename(dirname(__DIR__));
-
-//require_once __DIR__ . '/../include/gtickets.php';
 
 require_once $GLOBALS['xoops']->path('www/kernel/module.php');
 require_once $GLOBALS['xoops']->path('www/class/xoopstree.php');
 require_once $GLOBALS['xoops']->path('www/class/xoopslists.php');
 
-// require_once __DIR__ . '/../class/Utility.php';
-// require_once __DIR__ . '/../class/sbcolumns.php';
-
+/** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
-$adminObject = Xmf\Module\Admin::getInstance();
+$adminObject = \Xmf\Module\Admin::getInstance();
 
-$pathIcon16    = Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32    = Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon32    = \Xmf\Module\Admin::iconUrl('', 32);
 $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
 // Load language files
@@ -54,4 +49,4 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl))
     require_once $GLOBALS['xoops']->path('class/template.php');
     $xoopsTpl = new \XoopsTpl();
 }
-$sbColumnHandler = new SoapboxSbcolumnsHandler();
+$sbColumnHandler = new Soapbox\ColumnsHandler();

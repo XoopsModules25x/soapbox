@@ -8,17 +8,19 @@
 
 use Xmf\Request;
 use XoopsModules\Soapbox;
+
+include __DIR__ . '/header.php';
+
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
 
-include __DIR__ . '/header.php';
 global $moduleDirName;
 $moduleDirName = $myts->htmlSpecialChars(basename(__DIR__));
 if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES));
 }
 
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 
 //$articleID = Request::getInt('$articleID', Request::getInt('$articleID', 0, 'POST'), 'GET');
 if (isset($_GET['articleID'])) {
@@ -41,10 +43,12 @@ function PrintPage($articleID)
     /** @var Soapbox\Helper $helper */
     $helper = Soapbox\Helper::getInstance();
 
+    $cleantags = new Soapbox\Cleantags();
+
     $myts      = \MyTextSanitizer:: getInstance();
     $articleID = (int)$articleID;
     //get entry object
-    $entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
+    $entrydataHandler = $helper->getHandler('Entryget');
     $_entryob         = $entrydataHandler->getArticleOnePermcheck($articleID, true, true);
     if (!is_object($_entryob)) {
         redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, 'Not Found');
@@ -57,7 +61,7 @@ function PrintPage($articleID)
     $category    = $_categoryob->toArray();
     //-------------------------------------
     //get author
-    $authorname = SoapboxUtility::getAuthorName($category['author']);
+    $authorname = Soapbox\Utility::getAuthorName($category['author']);
     //-------------------------------------
 
     $datetime = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
@@ -65,7 +69,7 @@ function PrintPage($articleID)
     //    $bodytext = str_replace("[pagebreak]","<br style=\"page-break-after:always;\">",$bodytext);
     //    $bodytext = $myts->displayTarea($bodytext, $html, $smiley, $xcodes, '', $breaks);
     $bodytext = str_replace('[pagebreak]', '<br style="page-break-after:always;">', $_entryob->getVar('bodytext', 'none'));
-    $bodytext = $GLOBALS['SoapboxCleantags']->cleanTags($myts->displayTarea($bodytext, $articles['html'], $articles['smiley'], $articles['xcodes'], '', $articles['breaks']));
+    $bodytext = $cleantags->cleanTags($myts->displayTarea($bodytext, $articles['html'], $articles['smiley'], $articles['xcodes'], '', $articles['breaks']));
 
     $sitename = $myts->htmlSpecialChars($xoopsConfig['sitename']);
     $slogan   = $myts->htmlSpecialChars($xoopsConfig['slogan']);

@@ -10,10 +10,12 @@
 
 use Xmf\Request;
 use XoopsModules\Soapbox;
+
+require_once __DIR__ . '/header.php';
+
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
 
-require_once __DIR__ . '/header.php';
 $op = '';
 if (is_object($xoopsUser)) {
     $xoopsConfig['module_cache'] = 0; //disable caching since the URL will be the same, but content different from one user to another
@@ -48,10 +50,10 @@ switch ($op) {
     case 'default':
     default:
         //-------------------------------------
-        $entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
+        $entrydataHandler = $helper->getHandler('Entryget');
         //-------------------------------------
 
-        $author = isset($_GET['author']) ? (int)$_GET['author'] : 0;
+        $author = \Xmf\Request::getInt('author', 0, 'GET');
         //get category object
         if (!empty($author)) {
             $categoryobArray = $entrydataHandler->getColumnsByAuthor($author, true, (int)$helper->getConfig('colsperindex'), $start, 'weight', 'ASC');
@@ -78,7 +80,7 @@ switch ($op) {
             $category = $_categoryob->toArray(); //all assign
             //-------------------------------------
             //get author
-            $category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
+            $category['authorname'] = Soapbox\Utility::getAuthorName($category['author']);
             //-------------------------------------
             if ('' !== $category['colimage']) {
                 $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $category['colimage'] . '"></span>';
@@ -99,7 +101,7 @@ switch ($op) {
                 $articles['id']      = $articles['articleID'];
                 $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
                 //        $articles['poster'] = XoopsUserUtility::getUnameFromId( $articles['uid'] );
-                $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
+                $articles['poster']   = Soapbox\Utility::getLinkedUnameFromId($category['author']);
                 $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
                 //--------------------
                 if (0 !== $articles['submit']) {

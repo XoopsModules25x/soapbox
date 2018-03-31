@@ -7,13 +7,21 @@
  * @param $options
  * @return array
  */
+
+use XoopsModules\Soapbox;
+
 /* This function spotlights a column, with a spotlight article and links to others */
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
+/**
+ * @param $options
+ * @return array
+ */
 function b_columns_spot_show($options)
 {
     $block_outdata = [];
     //-------------------------------------
-    $myts        = MyTextSanitizer:: getInstance();
+    $myts        = \MyTextSanitizer:: getInstance();
     $module_name = 'soapbox';
     $hModule     = xoops_getHandler('module');
     $soapModule  = $hModule->getByDirname($module_name);
@@ -104,7 +112,7 @@ function b_columns_spot_show($options)
     //    $resultB = $xoopsDB -> query( "SELECT name, colimage FROM ". $xoopsDB -> prefix( "sbcolumns" ) . " WHERE columnID = " . $options[0] . " " );
     //    list ( $name, $colimage ) = $xoopsDB -> fetchRow( $resultB );
     //-------------------------------------
-    $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
+    $entrydataHandler = $helper->getHandler('Entryget');
     //-------------------------------------
     //get category object
     $categoryobArray = $entrydataHandler->getColumnsAllPermcheck(0, 0, true, 'weight', 'ASC', $columnIDs, null, true, false);
@@ -187,7 +195,7 @@ function b_columns_spot_show($options)
  */
 function b_columns_spot_edit($options)
 {
-    $myts        = MyTextSanitizer:: getInstance();
+    $myts        = \MyTextSanitizer:: getInstance();
     $module_name = 'soapbox';
     $hModule     = xoops_getHandler('module');
     $soapModule  = $hModule->getByDirname($module_name);
@@ -314,7 +322,7 @@ function b_columns_spot_edit($options)
             $columnIDs[] = (int)$v;
         }
     }
-    $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
+    $entrydataHandler = $helper->getHandler('Entryget');
     $categoryobArray  = $entrydataHandler->getColumns();
     $form             .= '<br>' . _MB_SOAPBOX_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
     $form             .= "<option value='0'>(ALL)</option>";

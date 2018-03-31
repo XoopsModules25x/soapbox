@@ -1,5 +1,7 @@
 <?php
 
+use XoopsModules\Soapbox;
+
 require_once __DIR__ . '/../../../include/cp_header.php';
 require_once __DIR__ . '/admin_header.php';
 
@@ -7,15 +9,13 @@ xoops_cp_header();
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
-/** @var InstructionUtility $utilityClass */
-$utilityClass = ucfirst($moduleDirName) . 'Utility';
-if (!class_exists($utilityClass)) {
-    xoops_load('utility', $moduleDirName);
-}
+/** @var Soapbox\Utility $utility */
+$utility =  new Soapbox\Utility();
+
 
 //get category count
 //----------------------------
-$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$entrydataHandler = $helper->getHandler('Entrydata');
 $totcol           = $entrydataHandler->getColumnCount();
 //----------------------------
 $criteria = new \CriteriaCompo();
@@ -67,13 +67,27 @@ if ($totsub > 0) {
 } else {
     $adminObject->addInfoBoxLine(sprintf('<infolabel>' . _AM_SOAPBOX_NEED_APPROVAL . '</infolabel>', '<span class="green">' . $totsub . '</span>'), '', 'green');
 }
-
-require_once __DIR__ . '/../testdata/index.php';
-$adminObject->addItemButton(_AM_SOAPBOX_ADD_SAMPLEDATA, '__DIR__ . /../../testdata/index.php?op=load', 'add');
-
 $adminObject->displayNavigation(basename(__FILE__));
-$adminObject->displayButton('left', '');
+
+//------------- Test Data ----------------------------
+
+if ($helper->getConfig('displaySampleButton')) {
+    xoops_loadLanguage('admin/modulesadmin', 'system');
+    require_once __DIR__ . '/../testdata/index.php';
+
+    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'ADD_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=load', 'add');
+
+    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=save', 'add');
+
+    //    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA'), '__DIR__ . /../../testdata/index.php?op=exportschema', 'add');
+
+    $adminObject->displayButton('left', '');
+}
+
+//------------- End Test Data ----------------------------
+
 $adminObject->displayIndex();
+
 
 echo $utility::getServerStats();
 

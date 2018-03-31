@@ -35,7 +35,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
 
     if ('showmod' === $op) {
         $configHandler = xoops_getHandler('config');
-        $mod           = isset($_GET['mod']) ? (int)$_GET['mod'] : 0;
+        $mod           = \Xmf\Request::getInt('mod', 0, 'GET');
         if (empty($mod)) {
             header('Location: admin.php?fct=preferences');
             exit();
@@ -219,14 +219,14 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                             // need to do this to pass to xoops_template_touch function
                             $GLOBALS['xoopsConfig']['template_set'] = $newtplset;
 
-                            for ($i = 0; $i < $dcount; ++$i) {
-                                $found = $tplfileHandler->find($newtplset, 'block', $dtemplates[$i]->getVar('tpl_refid'), null);
+                            foreach ($dtemplates as $iValue) {
+                                $found = $tplfileHandler->find($newtplset, 'block', $iValue->getVar('tpl_refid'), null);
                                 if (count($found) > 0) {
                                     // template for the new theme found, compile it
                                     xoops_template_touch($found[0]->getVar('tpl_id'));
                                 } else {
                                     // not found, so compile 'default' template file
-                                    xoops_template_touch($dtemplates[$i]->getVar('tpl_id'));
+                                    xoops_template_touch($iValue->getVar('tpl_id'));
                                 }
                             }
 

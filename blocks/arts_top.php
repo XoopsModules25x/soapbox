@@ -7,10 +7,17 @@
  * @param $options
  * @return array
  */
+
+use XoopsModules\Soapbox;
+
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
+/**
+ * @param $options
+ * @return array|null
+ */
 function b_arts_top_show($options)
 {
-    $myts          = MyTextSanitizer:: getInstance();
+    $myts          = \MyTextSanitizer:: getInstance();
     $block_outdata = [];
     $module_name   = 'soapbox';
     $hModule       = xoops_getHandler('module');
@@ -29,7 +36,7 @@ function b_arts_top_show($options)
     if ('weight' === $options[0]) {
         $sortorder = 'ASC';
     }
-    $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
+    $entrydataHandler = $helper->getHandler('Entryget');
     $_entryob_arr     = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $options[0], $sortorder, null, null, false, false);
     if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
         return $block_outdata;
@@ -67,7 +74,7 @@ function b_arts_top_show($options)
  */
 function b_arts_top_edit($options)
 {
-    $myts = MyTextSanitizer:: getInstance();
+    $myts = \MyTextSanitizer:: getInstance();
     $form = '' . _MB_SOAPBOX_ORDER . "&nbsp;<select name='options[]'>";
 
     $form .= "<option value='datesub'";

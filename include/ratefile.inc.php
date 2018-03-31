@@ -46,7 +46,7 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     }
 
     //module entry data handler
-    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+    $entrydataHandler = $helper->getHandler('Entrydata');
     //get entry object
     $_entryob = $entrydataHandler->getArticleOnePermcheck($lid, true);
     if (!is_object($_entryob)) {

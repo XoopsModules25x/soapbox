@@ -4,10 +4,8 @@ use Xmf\Request;
 use XoopsModules\Soapbox\Common;
 use XoopsModules\Soapbox;
 
-require_once __DIR__ . '/../include/common.php';
-
 /**
- * Class Utilityity
+ * Class Utility
  */
 class Utility extends \XoopsObject
 {
@@ -16,7 +14,6 @@ class Utility extends \XoopsObject
     use Common\ServerStats; // getServerStats Trait
 
     use Common\FilesManagement; // Files Management Trait
-
 
     /**
      * getLinkedUnameFromId()
@@ -95,12 +92,12 @@ class Utility extends \XoopsObject
         $redirecturl = 'index.php',
         $num = 0,
         $dir = 'uploads',
-        $redirect = 0
-    ) {
+        $redirect = 0)
+    {
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         $myts = \MyTextSanitizer::getInstance();
 
-        global $xoopsConfig,  $_POST;
+        global $xoopsConfig, $_POST;
         /** @var Soapbox\Helper $helper */
         $helper = Soapbox\Helper::getInstance();
 
@@ -224,17 +221,17 @@ class Utility extends \XoopsObject
      */
     public static function showColumns($showCreate = 0)
     {
-        global  $xoopsModule;
+        global $xoopsModule;
         /** @var Soapbox\Helper $helper */
         $helper = Soapbox\Helper::getInstance();
 
-        $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
         $myts       = \MyTextSanitizer::getInstance();
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
+        //        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
         $module_id = $xoopsModule->getVar('mid');
-        $startcol  = isset($_GET['startcol']) ? (int)$_GET['startcol'] : 0;
+        $startcol  = \Xmf\Request::getInt('startcol', 0, 'GET');
 
         /* Code to show existing columns */
         echo "<h3 style='color: #2F5376; margin: 0 0 4px 0;'>" . _AM_SOAPBOX_SHOWCOLS . '</h3>';
@@ -248,7 +245,7 @@ class Utility extends \XoopsObject
         // To create existing columns table
         //----------------------------
         //get category object
-        $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+        $entrydataHandler = $helper->getHandler('Entrydata');
         $numrows          = $entrydataHandler->getColumnCount();
         $criteria         = new \CriteriaCompo();
         $criteria->setSort('weight');
@@ -283,7 +280,7 @@ class Utility extends \XoopsObject
                 }
                 //----------------------------
 
-                $author = SoapboxUtility::getLinkedUnameFromId($author, 0);
+                $author = self::getLinkedUnameFromId($author, 0);
                 $modify = "<a href='column.php?op=mod&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/edit.png' ALT='" . _AM_SOAPBOX_EDITCOL . "'></a>";
                 $delete = "<a href='column.php?op=del&columnID=" . $category['columnID'] . "'><img src='" . $pathIcon16 . "/delete.png' ALT='" . _AM_SOAPBOX_DELETECOL . "'></a>";
                 $style  = (0 === ($cont % 2)) ? 'even' : 'odd';
@@ -327,18 +324,18 @@ class Utility extends \XoopsObject
         /** @var Soapbox\Helper $helper */
         $helper = Soapbox\Helper::getInstance();
 
-        $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
         require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
+        //        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
 
         $module_id = $xoopsModule->getVar('mid');
-        $startart  = isset($_GET['startart']) ? (int)$_GET['startart'] : 0;
+        $startart  = \Xmf\Request::getInt('startart', 0, 'GET');
         if (isset($_POST['entries'])) {
             $entries = (int)$_POST['entries'];
         } else {
-            $entries = isset($_GET['entries']) ? (int)$_GET['entries'] : 0;
+            $entries = \Xmf\Request::getInt('entries', 0, 'GET');
         }
         //---GET view sort --
         $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
@@ -360,7 +357,7 @@ class Utility extends \XoopsObject
         //            . _AM_SOAPBOX_CREATEART . "</a><br><br>";
         //    }
         // Articles count
-        $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+        $entrydataHandler = $helper->getHandler('Entrydata');
         //----------------------------
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('submit', 0));
@@ -421,25 +418,25 @@ class Utility extends \XoopsObject
                             [<?php echo $tot_all; ?>]
                         </option>
                         <option value='1' <?php if (1 === $entries) {
-                                echo 'selected';
-                            } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
+                            echo 'selected';
+                        } ?>><?php echo _AM_SOAPBOX_SELONL; ?>
                             [<?php echo $tot_published; ?>]
                         </option>
                         <option value='2' <?php if (2 === $entries) {
-                                echo 'selected';
-                            } ?>>
+                            echo 'selected';
+                        } ?>>
                             <?php echo _AM_SOAPBOX_SELOFF; ?>
                             [<?php echo $tot_offline; ?>]
                         </option>
                         <option value='3' <?php if (3 === $entries) {
-                                echo 'selected';
-                            } ?>>
+                            echo 'selected';
+                        } ?>>
                             <?php echo _AM_SOAPBOX_SELSUB; ?>
                             [<?php echo $tot_submitted; ?>]
                         </option>
                         <option value='4' <?php if (4 === $entries) {
-                                echo 'selected';
-                            } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
+                            echo 'selected';
+                        } ?>><?php echo _AM_SOAPBOX_SELAPV; ?>
                             [<?php echo $tot_ok; ?>]
                         </option>
                     </select>
@@ -476,7 +473,7 @@ class Utility extends \XoopsObject
                 $offline = null;
                 break;
         }
-        //    function &getArticlesAllPermcheck(
+        //    function getArticlesAllPermcheck(
         //         $limit=0, $start=0,
         //         $checkRight = true, $published = true, $submit = 0, $offline = 0, $block = null ,
         //         $sortname = 'datesub', $sortorder = 'DESC',
@@ -573,15 +570,15 @@ class Utility extends \XoopsObject
         /** @var Soapbox\Helper $helper */
         $helper = Soapbox\Helper::getInstance();
 
-        $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
         $myts       = \MyTextSanitizer::getInstance();
         require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
+        //        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
         $module_id = $xoopsModule->getVar('mid');
-        $startsub  = isset($_GET['startsub']) ? (int)$_GET['startsub'] : 0;
-        $datesub   = isset($_GET['datesub']) ? (int)$_GET['datesub'] : 0;
+        $startsub  = \Xmf\Request::getInt('startsub', 0, 'GET');
+        $datesub   = \Xmf\Request::getInt('datesub', 0, 'GET');
 
         //---GET view sort --
         $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
@@ -608,7 +605,7 @@ class Utility extends \XoopsObject
         // Put column names in an array, to avoid a query in the while loop farther ahead
         /* Code to show submitted articles */
         // Articles count
-        //    function &getArticlesAllPermcheck(
+        //    function getArticlesAllPermcheck(
         //         $limit=0, $start=0,
         //         $checkRight = true, $published = true, $submit = 0, $offline = 0, $block = null ,
         //         $sortname = 'datesub', $sortorder = 'DESC',
@@ -616,7 +613,7 @@ class Utility extends \XoopsObject
         //         $approve_submit = false ,
         //         $id_as_key = false )
         // Articles count
-        $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+        $entrydataHandler = $helper->getHandler('Entrydata');
         //-------------------------------------
         $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false);
         // Get number of articles in the selected condition ($cond)

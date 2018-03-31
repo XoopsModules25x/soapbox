@@ -30,17 +30,19 @@ use XoopsModules\Soapbox;
 function xoops_module_pre_install_soapbox(\XoopsModule $module)
 {
     $moduleDirName = basename(dirname(__DIR__));
-    $utilityClass  = ucfirst($moduleDirName) . 'Utility';
-    if (!class_exists($utilityClass)) {
+    /** @var Soapbox\Utility $utility */
+    $utility =  new Soapbox\Utility();
+
+    if (!class_exists($utility)) {
         xoops_load('utility', $moduleDirName);
     }
     //check for minimum XOOPS version
-    if (!$utilityClass::checkVerXoops($module)) {
+    if (!$utility::checkVerXoops($module)) {
         return false;
     }
 
     // check for minimum PHP version
-    if (!$utilityClass::checkVerPhp($module)) {
+    if (!$utility::checkVerPhp($module)) {
         return false;
     }
 
@@ -71,17 +73,15 @@ function xoops_module_install_soapbox(\XoopsModule $module)
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');
 
-    $configurator = new SoapboxConfigurator();
-    $utilityClass = ucfirst($moduleDirName) . 'Utility';
-    if (!class_exists($utilityClass)) {
-        xoops_load('utility', $moduleDirName);
-    }
+    $configurator = new Soapbox\Common\Configurator();
+    $utility = Soapbox\Utility();
+
 
     //  ---  CREATE FOLDERS ---------------
     if (count($configurator->uploadFolders) > 0) {
         //    foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
         foreach (array_keys($configurator->uploadFolders) as $i) {
-            $utilityClass::createFolder($configurator->uploadFolders[$i]);
+            $utility::createFolder($configurator->uploadFolders[$i]);
         }
     }
 
@@ -90,7 +90,7 @@ function xoops_module_install_soapbox(\XoopsModule $module)
         $file = __DIR__ . '/../assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
-            $utilityClass::copyFile($file, $dest);
+            $utility::copyFile($file, $dest);
         }
     }
 

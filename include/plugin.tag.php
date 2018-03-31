@@ -11,7 +11,7 @@ function soapbox_tag_iteminfo(&$items)
             $itemsId[] = (int)$itemId;
         }
     }
-    $itemHandler = xoops_getModuleHandler('sbarticles', 'soapbox');
+    $itemHandler = $helper->getHandler('Articles');
     $criteria    = new \Criteria('articleID', '(' . implode(', ', $itemsId) . ')', 'IN');
     $itemsObj    = $itemHandler->getObjects($criteria, 'articleID');
 

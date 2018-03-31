@@ -8,8 +8,6 @@
 
 use Xmf\Request;
 use XoopsModules\Soapbox;
-/** @var Soapbox\Helper $helper */
-$helper = Soapbox\Helper::getInstance();
 
 // ---------- General Stuff ---------- //
 require_once __DIR__ . '/admin_header.php';
@@ -24,7 +22,7 @@ if (isset($_POST['op'])) {
 }
 
 //-------------------------------------
-$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$entrydataHandler = $helper->getHandler('Entrydata');
 
 // -- Edit function -- //
 /**
@@ -33,7 +31,7 @@ $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname())
 function editarticle($articleID = '')
 {
     global $indexAdmin;
-    global $xoopsUser, $xoopsConfig,  $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
+    global $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
     /** @var Soapbox\Helper $helper */
     $helper = Soapbox\Helper::getInstance();
 
@@ -48,7 +46,7 @@ function editarticle($articleID = '')
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
     //-------------------------------------
-    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+    $entrydataHandler = $helper->getHandler('Entrydata');
 
     if (!$articleID) {
         redirect_header('index.php', 1, _AM_SOAPBOX_NOARTS);
@@ -103,7 +101,7 @@ function editarticle($articleID = '')
 
     // LEAD
     //    $sform -> addElement( new \XoopsFormTextArea( _AM_SOAPBOX_ARTLEAD, 'lead', $lead, 5, 60 ) );
-    //    $editor_lead=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
+    //    $editor_lead=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
     //    $sform->addElement($editor_lead,true);
 
     $editor_lead = new \XoopsFormElementTray(_AM_SOAPBOX_ARTLEAD, '<br>');
@@ -114,7 +112,7 @@ function editarticle($articleID = '')
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '200px';
-        $formmnote         = new \XoopsFormEditor('', $helper->getConfig('form_options'), $options, $nohtml = false, $onfailure = 'textarea');
+        $formmnote         = new \XoopsFormEditor('', $helper->getConfig('soapboxEditorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $editor_lead->addElement($formmnote);
     } else {
         $formmnote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
@@ -124,7 +122,7 @@ function editarticle($articleID = '')
 
     // TEASER
     $sform->addElement(new \XoopsFormTextArea(_AM_SOAPBOX_ARTTEASER, 'teaser', $e_articles['teaser'], 10, 120));
-    //    $editor_teaser=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
+    //    $editor_teaser=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
     //    $sform->addElement($editor_teaser,true);
     //
     $autoteaser_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
@@ -133,8 +131,8 @@ function editarticle($articleID = '')
 
     // BODY
     //HACK by domifara for Wysiwyg
-    //    if  (null !== ($helper->getConfig('form_options')) ) {
-    //        $editor=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
+    //    if  (null !== ($helper->getConfig('soapboxEditorUser')) ) {
+    //        $editor=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
     //        $sform->addElement($editor,true);
     //    } else {
     //        $sform -> addElement( new \XoopsFormDhtmlTextArea( _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120 ) );
@@ -148,7 +146,7 @@ function editarticle($articleID = '')
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '400px';
-        $bodynote          = new \XoopsFormEditor('', $helper->getConfig('form_options'), $options, $nohtml = false, $onfailure = 'textarea');
+        $bodynote          = new \XoopsFormEditor('', $helper->getConfig('soapboxEditorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $optionsTrayNote->addElement($bodynote);
     } else {
         $bodynote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
@@ -170,10 +168,9 @@ function editarticle($articleID = '')
     $artimage_select = new \XoopsFormSelect('', 'artimage', $e_articles['artimage']);
     $artimage_select->addOptionArray($graph_array);
     $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '", "", "' . XOOPS_URL . "\")'");
-    $artimage_tray   = new \XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
+    $artimage_tray = new \XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
     $artimage_tray->addElement($artimage_select);
-    $artimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/'
-                                                                            . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
+    $artimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
     $sform->addElement($artimage_tray);
 
     // Code to call the file browser to select an image to upload
@@ -270,7 +267,7 @@ switch ($op) {
         $adminObject->displayNavigation(basename(__FILE__));
         $articleID = Request::getInt('articleID', Request::getInt('articleID', 0, 'GET'), 'POST');// (isset($_POST['articleID'])) ? (int)($_POST['articleID']) : (int)($_GET['articleID']);
         editarticle($articleID);
-        SoapboxUtility::showSubmissions();
+        Soapbox\Utility::showSubmissions();
         break;
 
     case 'authart':
@@ -280,18 +277,18 @@ switch ($op) {
         }
         //-------------------------
         //articleID check
-        if (!isset($_POST['articleID'])) {
+        if (Request::hasVar('articleID', 'POST')) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         } else {
-            $articleID = (int)$_POST['articleID'];
+            $articleID = Request::getInt('articleID', 0, 'POST');
         }
         //articleID check
-        if (!isset($_POST['columnID'])) {
+        if (Request::hasVar('columnID', 'POST')) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         } else {
-            $columnID = (int)$_POST['columnID'];
+            $columnID = Request::getInt('columnID', 0, 'POST');
         }
-
+        
         //get category object
         $_categoryob = $entrydataHandler->getColumn($columnID);
         if (!is_object($_categoryob)) {
@@ -304,34 +301,44 @@ switch ($op) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTAUTHORIZED);
         }
 
-        if (isset($_POST['articleID'])) {
+        if (Request::hasVar('articleID', 'POST')) {
             $_entryob->setVar('articleID', $articleID);
         }
-        if (isset($_POST['columnID'])) {
+
+        if (Request::hasVar('columnID', 'POST')) {
             $_entryob->setVar('columnID', $columnID);
         }
 
-        if (isset($_POST['weight'])) {
-            $_entryob->setVar('weight', (int)$_POST['weight']);
+        if (Request::hasVar('weight', 'POST')) {
+            $_entryob->setVar('weight', Request::getInt('weight', 0, 'POST'));
         }
 
-        if (isset($_POST['commentable'])) {
-            $_entryob->setVar('commentable', (int)$_POST['commentable']);
+        if (Request::hasVar('commentable', 'POST')) {
+            $_entryob->setVar('commentable', Request::getInt('commentable', 0, 'POST'));
         }
-        if (isset($_POST['block'])) {
-            $_entryob->setVar('block', (int)$_POST['block']);
+
+        if (Request::hasVar('block', 'POST')) {
+            $_entryob->setVar('block', Request::getInt('block', 0, 'POST'));
         }
-        if (isset($_POST['offline'])) {
-            $_entryob->setVar('offline', (int)$_POST['offline']);
+
+        if (Request::hasVar('offline', 'POST')) {
+            $_entryob->setVar('offline', Request::getInt('offline', 0, 'POST'));
         }
-        if (isset($_POST['notifypub'])) {
-            $_entryob->setVar('notifypub', (int)$_POST['notifypub']);
+
+        if (Request::hasVar('notifypub', 'POST')) {
+            $_entryob->setVar('notifypub', Request::getInt('notifypub', 0, 'POST'));
         }
+
         //datesub
-        $datesubnochage  = isset($_POST['datesubnochage']) ? (int)$_POST['datesubnochage'] : 0;
-        $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
-        $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;
-        $datesub         = isset($_POST['datesub']) ? $datesub_date_sl + $datesub_time_sl : 0;
+
+        $datesubnochage = Request::getInt('datesubnochage', 0, 'POST');
+
+        //        $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
+        //        $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;
+        //        $datesub         = isset($_POST['datesub']) ? $datesub_date_sl + $datesub_time_sl : 0;
+        $temp    = Request::getArray('datesub', null, 'POST'); // get a clean array
+        $datesub = null !== $temp ? strtotime($temp['date']) + $temp['time'] : 0; // put the pieces back together
+
         if (!$datesub || $_entryob->_isNew) {
             $_entryob->setVar('datesub', time());
         } else {
@@ -340,45 +347,47 @@ switch ($op) {
             }
         }
 
-        if (isset($_POST['html'])) {
-            $_entryob->setVar('html', (int)$_POST['html']);
-        }
-        if (isset($_POST['smiley'])) {
-            $_entryob->setVar('smiley', (int)$_POST['smiley']);
-        }
-        if (isset($_POST['xcodes'])) {
-            $_entryob->setVar('xcodes', (int)$_POST['xcodes']);
-        }
-        if (isset($_POST['breaks'])) {
-            $_entryob->setVar('breaks', (int)$_POST['breaks']);
+        if (Request::hasVar('html', 'POST')) {
+            $_entryob->setVar('html', Request::getInt('html', 0, 'POST'));
         }
 
-        if (isset($_POST['artimage'])) {
-            $_entryob->setVar('artimage', (int)$_POST['artimage']);
+        if (Request::hasVar('smiley', 'POST')) {
+            $_entryob->setVar('smiley',  Request::getInt('smiley', 0, 'POST'));
         }
 
-        if (isset($_POST['headline'])) {
-            $_entryob->setVar('headline', $_POST['headline']);
+        if (Request::hasVar('xcodes', 'POST')) {
+            $_entryob->setVar('xcodes',  Request::getInt('xcodes', 0, 'POST'));
         }
-        if (isset($_POST['lead'])) {
-            $_entryob->setVar('lead', $_POST['lead']);
+        if (Request::hasVar('breaks', 'POST')) {
+            $_entryob->setVar('breaks',  Request::getInt('breaks', 0, 'POST'));
         }
-        if (isset($_POST['bodytext'])) {
-            $_entryob->setVar('bodytext', $_POST['bodytext']);
-        }
-        if (isset($_POST['votes'])) {
-            $_entryob->setVar('votes', (int)$_POST['votes']);
-        }
-        if (isset($_POST['rating'])) {
-            $_entryob->setVar('rating', (int)$_POST['rating']);
+        if (Request::hasVar('artimage', 'POST')) {
+            $_entryob->setVar('artimage',  Request::getInt('artimage', 0, 'POST'));
         }
 
-        if (isset($_POST['teaser'])) {
-            $_entryob->setVar('teaser', $_POST['teaser']);
+        if (Request::hasVar('headline', 'POST')) {
+            $_entryob->setVar('headline',  Request::getString('headline', '', 'POST'));
+        }
+        if (Request::hasVar('lead', 'POST')) {
+            $_entryob->setVar('lead',  Request::getText('lead', '', 'POST'));
+        }
+        if (Request::hasVar('bodytext', 'POST')) {
+            $_entryob->setVar('bodytext',  Request::getText('bodytext', '', 'POST'));
+        }
+        if (Request::hasVar('votes', 'POST')) {
+            $_entryob->setVar('votes',  Request::getInt('votes', 0, 'POST'));
+        }
+        
+        if (Request::hasVar('rating', 'POST')) {
+            $_entryob->setVar('rating',  Request::getInt('rating', 0, 'POST'));
+        }
+        if (Request::hasVar('teaser', 'POST')) {
+            $_entryob->setVar('teaser',  Request::getInt('teaser', 0, 'POST'));
         }
 
-        $autoteaser = isset($_POST['autoteaser']) ? (int)$_POST['autoteaser'] : 0;
-        $charlength = isset($_POST['teaseramount']) ? (int)$_POST['teaseramount'] : 0;
+
+        $autoteaser = Request::getInt('autoteaser', 0, 'POST');
+        $charlength = Request::getInt('teaseramount', 0, 'POST');
         if ($autoteaser && $charlength) {
             $_entryob->setVar('teaser', xoops_substr($_entryob->getVar('bodytext', 'none'), 0, $charlength));
         }
@@ -396,7 +405,7 @@ switch ($op) {
 
     case 'del':
 
-        $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
+        $confirm = Request::getInt('confirm', 0, 'POST');
 
         // confirmed, so delete
         if (1 === $confirm) {
@@ -406,12 +415,12 @@ switch ($op) {
             }
             //-------------------------
             //articleID check
-            if (!isset($_POST['articleID'])) {
+            if (!Request::hasVar('articleID', 'POST')) {
                 redirect_header('index.php', 1, _NOPERM);
             } else {
-                $articleID = (int)$_POST['articleID'];
-            }
-
+                $articleID = Request::getInt('articleID', 0, 'POST');
+            } 
+            
             $_entryob = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);
@@ -425,7 +434,7 @@ switch ($op) {
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
             }
         } else {
-            $articleID = isset($_POST['articleID']) ? (int)$_POST['articleID'] : (int)$_GET['articleID'];
+            $articleID = Request::getInt('articleID', Request::getInt('articleID', 0, 'GET'), 'POST');
             $_entryob  = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);
@@ -451,7 +460,7 @@ switch ($op) {
         //adminMenu(3, _AM_SOAPBOX_SUBMITS);
         $adminObject->displayNavigation(basename(__FILE__));
         echo '<br>';
-        SoapboxUtility::showSubmissions();
+        Soapbox\Utility::showSubmissions();
         require_once __DIR__ . '/admin_footer.php';
         exit();
         break;

@@ -10,10 +10,12 @@
 
 use Xmf\Request;
 use XoopsModules\Soapbox;
+
+include __DIR__ . '/header.php';
+
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
 
-include __DIR__ . '/header.php';
 $op = '';
 //HACK for cache by domifara
 if (is_object($xoopsUser)) {
@@ -43,7 +45,7 @@ require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 $start = Request::getInt('start', 0, 'GET');
 
 //-------------------------------------
-$entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
+$entrydataHandler = $helper->getHandler('Entryget');
 //-------------------------------------
 $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('indexperpage'), $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
 $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
@@ -58,8 +60,8 @@ $category = [];
 $category = $_categoryob->toArray(); //all assign
 
 $category['colid']      = $columnID;
-$category['author']     = SoapboxUtility::getLinkedUnameFromId($category['author'], 0);
-$category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
+$category['author']     = Soapbox\Utility::getLinkedUnameFromId($category['author'], 0);
+$category['authorname'] = Soapbox\Utility::getAuthorName($category['author']);
 $category['image']      = $category['colimage'];
 $category['total']      = $totalarts;
 $xoopsTpl->assign('category', $category);
@@ -75,7 +77,7 @@ foreach ($_entryob_arr as $_entryob) {
     $articles['id']      = $articles['articleID'];
     $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
     //        $articles['poster'] = XoopsUserUtility::getUnameFromId( $articles['uid'] );
-    $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
+    $articles['poster']   = Soapbox\Utility::getLinkedUnameFromId($category['author']);
     $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
     //--------------------
     if (0 !== $articles['submit']) {

@@ -23,6 +23,7 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
 
 require_once __DIR__ . '/admin_header.php';
 //require_once __DIR__ . '/../include/config.inc.php';

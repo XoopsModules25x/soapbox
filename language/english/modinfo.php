@@ -178,16 +178,17 @@ define('_MI_SOAPBOX_ARTICLE_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-
 define('_MI_SOAPBOX_ALLOWEDSUBMITGROUPS', 'Which groups can submit?');
 define('_MI_SOAPBOX_ALLOWEDSUBMITGROUPSDSC', 'User groups that can submit articles.');
 
-//HACK by domifara
-define('_MI_SOAPBOX_FORM_OPTIONS', 'Form Options');
-define('_MI_SOAPBOX_FORM_OPTIONS_DESC', 'Select the editor to use. If you have a \'simple\' install (e.g you use only xoops core editor class, provided in the standard xoops core package), then you can just select DHTML');
-define('_MI_SOAPBOX_FORM_COMPACT', 'Compact');
-define('_MI_SOAPBOX_FORM_DHTML', 'DHTML');
-define('_MI_SOAPBOX_FORM_SPAW', 'Spaw Editor');
-define('_MI_SOAPBOX_FORM_HTMLAREA', 'HtmlArea Editor');
-define('_MI_SOAPBOX_FORM_FCK', 'FCK Editor');
-define('_MI_SOAPBOX_FORM_KOIVI', 'Koivi Editor');
-define('_MI_SOAPBOX_FORM_TINYMCE', 'TinyMCE Editor');
+//Editors
+define('MI_SOAPBOX_EDITOR_ADMIN', 'Editor: Admin');
+define('MI_SOAPBOX_EDITOR_ADMIN_DESC', 'Select the Editor to use by the Admin');
+define('MI_SOAPBOX_EDITOR_USER', 'Editor: User');
+define('MI_SOAPBOX_EDITOR_USER_DESC', 'Select the Editor to use by the User');//define('_MI_SOAPBOX_FORM_COMPACT', 'Compact');
+//define('_MI_SOAPBOX_FORM_DHTML', 'DHTML');
+//define('_MI_SOAPBOX_FORM_SPAW', 'Spaw Editor');
+//define('_MI_SOAPBOX_FORM_HTMLAREA', 'HtmlArea Editor');
+//define('_MI_SOAPBOX_FORM_FCK', 'FCK Editor');
+//define('_MI_SOAPBOX_FORM_KOIVI', 'Koivi Editor');
+//define('_MI_SOAPBOX_FORM_TINYMCE', 'TinyMCE Editor');
 
 // 1.06
 define('_MI_SOAPBOX_SUBMITS', 'Submissions');

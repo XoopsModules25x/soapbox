@@ -7,12 +7,13 @@
  */
 
 use XoopsModules\Soapbox;
-/** @var Soapbox\Helper $helper */
-$helper = Soapbox\Helper::getInstance();
 
 // -- General Stuff -- //
 require_once __DIR__ . '/admin_header.php';
 $adminObject = \Xmf\Module\Admin::getInstance();
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 $op = '';
 if (isset($_GET['op'])) {
@@ -22,7 +23,7 @@ if (isset($_POST['op'])) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
-$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$entrydataHandler = $helper->getHandler('Entrydata');
 $totalcats        = $entrydataHandler->getColumnCount();
 if (0 === $totalcats) {
     redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
@@ -50,7 +51,7 @@ function editarticle($articleID = 0)
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
     $articleID        = (int)$articleID;
-    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+    $entrydataHandler = $helper->getHandler('Entrydata');
     if (0 !== $articleID) {
         //articleID check
         $_entryob = $entrydataHandler->getArticleOnePermcheck($articleID, false, false);
@@ -70,7 +71,7 @@ function editarticle($articleID = 0)
          *initial first variables before we start
          */
         $columnID = 1;
-        if  (null !== ($helper->getConfig('form_options')) && 'dhtml' !== $helper->getConfig('form_options')) {
+        if  (null !== $helper->getConfig('soapboxEditorUser') && 'dhtml' !== $helper->getConfig('soapboxEditorUser')) {
             $html   = 1;
             $breaks = 0;
         }
@@ -111,7 +112,7 @@ function editarticle($articleID = 0)
 
     // LEAD
     //    $sform -> addElement( new \XoopsFormTextArea( _AM_SOAPBOX_ARTLEAD, 'lead', $lead, 5, 60 ) );
-    //    $editor_lead=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
+    //    $editor_lead=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
     //    $sform->addElement($editor_lead,TRUE);
 
     $editor_lead = new \XoopsFormElementTray(_AM_SOAPBOX_ARTLEAD, '<br>');
@@ -122,7 +123,7 @@ function editarticle($articleID = 0)
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '200px';
-        $formmnote         = new \XoopsFormEditor('', $helper->getConfig('form_options'), $options, $nohtml = false, $onfailure = 'textarea');
+        $formmnote         = new \XoopsFormEditor('', $helper->getConfig('soapboxEditorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $editor_lead->addElement($formmnote);
     } else {
         $formmnote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
@@ -132,7 +133,7 @@ function editarticle($articleID = 0)
 
     // TEASER
     $sform->addElement(new \XoopsFormTextArea(_AM_SOAPBOX_ARTTEASER, 'teaser', $e_articles['teaser'], 10, 120));
-    //    $editor_teaser=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
+    //    $editor_teaser=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
     //    $sform->addElement($editor_teaser,true);
     //
     $autoteaser_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
@@ -141,8 +142,8 @@ function editarticle($articleID = 0)
 
     // BODY
     //HACK by domifara for Wysiwyg
-    //    if  (null !== ($helper->getConfig('form_options')) ) {
-    //        $editor=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
+    //    if  (null !== ($helper->getConfig('soapboxEditorUser')) ) {
+    //        $editor=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
     //        $sform->addElement($editor,true);
     //    } else {
     //        $sform -> addElement( new \XoopsFormDhtmlTextArea( _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120 ) );
@@ -156,7 +157,7 @@ function editarticle($articleID = 0)
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '400px';
-        $bodynote          = new \XoopsFormEditor('', $helper->getConfig('form_options'), $options, $nohtml = false, $onfailure = 'textarea');
+        $bodynote          = new \XoopsFormEditor('', $helper->getConfig('soapboxEditorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $optionsTrayNote->addElement($bodynote);
     } else {
         $bodynote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
@@ -206,7 +207,7 @@ function editarticle($articleID = 0)
         $tagsModule    = $moduleHandler->getByDirname('tag');
         if (is_object($tagsModule)) {
             require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-            $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
+            $itemid = \Xmf\Request::getInt('articleID', 0, 'GET');
             $catid  = 0;
             $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemid, $catid = 0));
         }
@@ -297,7 +298,7 @@ switch ($op) {
     case 'mod':
         xoops_cp_header();
         $adminObject->displayNavigation(basename(__FILE__));
-        $articleID = isset($_POST['articleID']) ? (int)$_POST['articleID'] : (int)$_GET['articleID'];
+        $articleID = \Xmf\Request::getInt('articleID', (int)$_GET['articleID'], 'POST');
         editarticle($articleID);
         break;
 
@@ -400,15 +401,15 @@ switch ($op) {
             $_entryob->setVar('teaser', $_POST['teaser']);
         }
 
-        $autoteaser = isset($_POST['autoteaser']) ? (int)$_POST['autoteaser'] : 0;
-        $charlength = isset($_POST['teaseramount']) ? (int)$_POST['teaseramount'] : 0;
+        $autoteaser = \Xmf\Request::getInt('autoteaser', 0, 'POST');
+        $charlength = \Xmf\Request::getInt('teaseramount', 0, 'POST');
         if ($autoteaser && $charlength) {
             $_entryob->setVar('teaser', xoops_substr($_entryob->getVar('bodytext', 'none'), 0, $charlength));
         }
         //datesub
-        $datesubnochage  = isset($_POST['datesubnochage']) ? (int)$_POST['datesubnochage'] : 0;
+        $datesubnochage  = \Xmf\Request::getInt('datesubnochage', 0, 'POST');
         $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
-        $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;
+        $datesub_time_sl = \Xmf\Request::getInt('datesub', 0, 'POST');
         $datesub         = isset($_POST['datesub']) ? $datesub_date_sl + $datesub_time_sl : 0;
         //if (!$datesub || $_entryob->_isNew) {
         if (!$datesub) {
@@ -442,7 +443,7 @@ switch ($op) {
                 }
                 $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
 
-                SoapboxUtility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
+                Soapbox\Utility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
 
                 $_entryob->setVar('artimage', $artimage_name);
             }
@@ -487,7 +488,7 @@ switch ($op) {
 
     case 'del':
 
-        $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
+        $confirm = \Xmf\Request::getInt('confirm', 0, 'POST');
 
         // confirmed, so delete
         if (1 === $confirm) {
@@ -516,7 +517,7 @@ switch ($op) {
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
             }
         } else {
-            $articleID = isset($_POST['articleID']) ? (int)$_POST['articleID'] : (int)$_GET['articleID'];
+            $articleID = \Xmf\Request::getInt('articleID', (int)$_GET['articleID'], 'POST');
             $_entryob  = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);

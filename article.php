@@ -10,17 +10,20 @@
 
 use Xmf\Request;
 use XoopsModules\Soapbox;
+
+require_once __DIR__ . '/header.php';
+
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
 
-require_once __DIR__ . '/header.php';
+$cleantags = new Soapbox\Cleantags();
 
 $xoopsConfig['module_cache']             = 0; //disable caching since the URL will be the same, but content different from one user to another
 $GLOBALS['xoopsOption']['template_main'] = 'sb_article.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 global $xoopsModule;
 //$pathIcon16 = $xoopsModule->getInfo('sysicons16');
-$pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
 
 $moduleDirName = $myts->htmlSpecialChars(basename(__DIR__));
 if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
@@ -36,7 +39,7 @@ if (!in_array($sortorder, ['ASC', 'DESC'])) {
     $sortorder = 'DESC';
 }
 //---------------
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 //for ratefile update by domifara
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 //require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
@@ -57,7 +60,7 @@ if (isset($_POST['submit']) && !empty($_POST['lid'])) {
 $articles = [];
 $category = [];
 //module entry data handler
-$entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
+$entrydataHandler = $helper->getHandler('Entryget');
 if (empty($articleID)) {
     //get entry object
     $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, null, null, true, false);
@@ -105,7 +108,7 @@ if ('' !== trim($articles['bodytext'])) {
     }
 }
 //Cleantags
-$articles['bodytext'] = $GLOBALS['SoapboxCleantags']->cleanTags($articles['bodytext']);
+$articles['bodytext'] = $cleantags->cleanTags($articles['bodytext']);
 
 if (1 === $helper->getConfig('includerating')) {
     $xoopsTpl->assign('showrating', '1');
@@ -133,7 +136,7 @@ if (xoops_getModuleOption('usetag', 'soapbox')) {
     if (is_object($tagsModule)) {
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
 
-        $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
+        $itemid = \Xmf\Request::getInt('articleID', 0, 'GET');
         $catid  = 0;
         $tagbar = tagBar($itemid, $catid);
         if ($tagbar) {
@@ -159,8 +162,8 @@ if (xoops_getModuleOption('usetag', 'soapbox')) {
 $articles['adminlinks'] = $entrydataHandler->getadminlinks($_entryob, $_categoryob);
 $articles['userlinks']  = $entrydataHandler->getuserlinks($_entryob);
 
-$articles['author']     = SoapboxUtility::getLinkedUnameFromId($category['author'], 0);
-$articles['authorname'] = SoapboxUtility::getAuthorName($category['author']);
+$articles['author']     = Soapbox\Utility::getLinkedUnameFromId($category['author'], 0);
+$articles['authorname'] = Soapbox\Utility::getAuthorName($category['author']);
 $articles['colname']    = $category['name'];
 $articles['coldesc']    = $category['description'];
 $articles['colimage']   = $category['colimage'];
@@ -170,7 +173,7 @@ $xoopsTpl->assign('story', $articles);
 //-----------------------------
 $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
 $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
-$al             = SoapboxUtility::getAcceptLang();
+$al             = Soapbox\Utility::getAcceptLang();
 if ('ja' === $al) {
     if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
         && @mb_internal_encoding(_CHARSET)) {
@@ -205,7 +208,7 @@ if (!empty($_other_entryob_arr)) {
         $link['arttitle']  = $_other_entryob->getVar('headline');
         $link['published'] = $myts->htmlSpecialChars(formatTimestamp($_other_entryob->getVar('datesub'), $helper->getConfig('dateformat')));
         //        $link['poster'] = XoopsUserUtility::getUnameFromId( $link['uid'] );
-        $link['poster']      = SoapboxUtility::getLinkedUnameFromId($category['author']);
+        $link['poster']      = Soapbox\Utility::getLinkedUnameFromId($category['author']);
         $link['bodytext']    = xoops_substr($link['bodytext'], 0, 255);
         $listarts['links'][] = $link;
     }

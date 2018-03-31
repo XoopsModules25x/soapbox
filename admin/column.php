@@ -8,12 +8,13 @@
 
 use Xmf\Request;
 use XoopsModules\Soapbox;
-/** @var Soapbox\Helper $helper */
-$helper = Soapbox\Helper::getInstance();
 
 /* General Stuff */
 require_once __DIR__ . '/admin_header.php';
 $adminObject = \Xmf\Module\Admin::getInstance();
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 $op = '';
 if (isset($_GET['op'])) {
@@ -23,7 +24,7 @@ if (isset($_POST['op'])) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
-$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$entrydataHandler = $helper->getHandler('Entrydata');
 
 /**
  * @param int|string $columnID
@@ -35,13 +36,13 @@ function editcol($columnID = '')
     /** @var Soapbox\Helper $helper */
     $helper = Soapbox\Helper::getInstance();
 
-    $adminObject = Xmf\Module\Admin::getInstance();
+    $adminObject = \Xmf\Module\Admin::getInstance();
     $xoopsDB     = \XoopsDatabaseFactory::getDatabaseConnection();
     $myts        = \MyTextSanitizer::getInstance();
 
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     $columnID         = (int)$columnID;
-    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+    $entrydataHandler = $helper->getHandler('Entrydata');
     // If there is a parameter, and the id exists, retrieve data: we're editing a column
     if (0 !== $columnID) {
         //get category object
@@ -97,7 +98,7 @@ function editcol($columnID = '')
     */
     require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 
-    $userstart = isset($_GET['userstart']) ? (int)$_GET['userstart'] : 0;
+    $userstart = \Xmf\Request::getInt('userstart', 0, 'GET');
 
     $memberHandler = xoops_getHandler('member');
     $usercount     = $memberHandler->getUserCount();
@@ -130,7 +131,7 @@ function editcol($columnID = '')
 
     //HACK by domifara for Wysiwyg
     $sform->addElement(new \XoopsFormTextArea(_AM_SOAPBOX_COLDESCRIPT, 'description', $e_category['description'], 7, 60));
-    //    $editor=soapbox_getWysiwygForm($helper->getConfig('form_options') , _AM_SOAPBOX_COLDESCRIPT, 'description',  $e_category['description'], '100%', '300px');
+    //    $editor=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_COLDESCRIPT, 'description',  $e_category['description'], '100%', '300px');
     //    $sform->addElement($editor,true);
 
     $sform->addElement(new \XoopsFormText(_AM_SOAPBOX_COLPOSIT, 'weight', 4, 4, $e_category['weight']));
@@ -260,7 +261,7 @@ switch ($op) {
                     redirect_header('column.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
                 $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
-                SoapboxUtility::uploadFile($allowed_mimetypes, $colimage_name, 'index.php', 0, $helper->getConfig('sbuploaddir'));
+                Soapbox\Utility::uploadFile($allowed_mimetypes, $colimage_name, 'index.php', 0, $helper->getConfig('sbuploaddir'));
                 $_categoryob->setVar('colimage', $colimage_name);
             }
         }
@@ -296,7 +297,7 @@ switch ($op) {
 
     case 'del':
 
-        $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
+        $confirm = \Xmf\Request::getInt('confirm', 0, 'POST');
 
         // confirmed, so delete
         if (1 === $confirm) {
@@ -330,7 +331,7 @@ switch ($op) {
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_COLISDELETED, $name));
             }
         } else {
-            $columnID    = isset($_POST['columnID']) ? (int)$_POST['columnID'] : (int)$_GET['columnID'];
+            $columnID    = \Xmf\Request::getInt('columnID', (int)$_GET['columnID'], 'POST');
             //get category object
             $_categoryob = $entrydataHandler->getColumn($columnID);
             if (!is_object($_categoryob)) {

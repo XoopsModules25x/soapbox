@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\Soapbox;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -18,8 +19,7 @@
  */
 
 use XoopsModules\Soapbox;
-/** @var Soapbox\Helper $helper */
-$helper = Soapbox\Helper::getInstance();
+
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(dirname(__DIR__));
@@ -27,11 +27,6 @@ if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES | ENT_HTML5));
 }
 
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbarticles.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbcolumns.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/sbvotedata.php';
-
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/Utility.php';
 
 /**
  * Soapbox entrydata handler class.
@@ -42,7 +37,7 @@ require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/Utility.ph
  * @author  domifara
  * @package modules
  */
-class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
+class EntrygetHandler extends \XoopsPersistableObjectHandler
 {
     /**#@+
      * holds reference to entry  handler(DAO) class
@@ -76,7 +71,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
 
     /**
      * constructor
-     * @param XoopsDatabase $db
+     * @param \XoopsDatabase $db
      */
     public function __construct(\XoopsDatabase $db)
     {
@@ -85,9 +80,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
             echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES | ENT_HTML5));
         }
-        $this->sbArticleHandler = new SoapboxSbarticlesHandler($db);
-        $this->sbColumnHandler  = new SoapboxSbcolumnsHandler($db);
-        $this->sbVoteHandler    = new SoapboxSbvotedataHandler($db);
+        $this->sbArticleHandler = new Soapbox\ArticlesHandler($db);
+        $this->sbColumnHandler  = new Soapbox\ColumnsHandler($db);
+        $this->sbVoteHandler    = new Soapbox\VotedataHandler($db);
         $_mymoduleHandler       = xoops_getHandler('module');
         $_mymodule              = $_mymoduleHandler->getByDirname($moduleDirName);
         if (!is_object($_mymodule)) {
@@ -101,9 +96,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * retrieve a Article
      *
      * @param  int $id ID for the Article
-     * @return SoapboxSbarticles SoapboxSbarticles reference to the Article
+     * @return Articles Articles reference to the Article
      */
-    public function &getArticle($id)
+    public function getArticle($id)
     {
         $ret = $this->sbArticleHandler->get($id);
 
@@ -114,9 +109,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * retrieve a Column
      *
      * @param  int $id ID for the Article
-     * @return SoapboxSbarticles SoapboxSbarticles reference to the Column
+     * @return Articles Articles reference to the Column
      */
-    public function &getColumn($id)
+    public function getColumn($id)
     {
         $ret = $this->sbColumnHandler->get($id);
 
@@ -127,9 +122,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * retrieve a Votedata
      *
      * @param  int $id ID for the Article
-     * @return SoapboxSbvotedata SoapboxSbvotedata reference to the Votedata
+     * @return Votedata Votedata reference to the Votedata
      */
-    public function &getVotedata($id)
+    public function getVotedata($id)
     {
         $ret = $this->sbVoteHandler->get($id);
 
@@ -139,11 +134,11 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * retrieve Articles from the database
      *
-     * @param  CriteriaElement $criteria  {@link CriteriaElement}
+     * @param  \CriteriaElement $criteria  {@link CriteriaElement}
      * @param  bool            $id_as_key use the Article's ID as key for the array?
-     * @return array  array of {@link SoapboxSbarticles} objects
+     * @return array  array of {@link Articles} objects
      */
-    public function &getArticles(CriteriaElement $criteria = null, $id_as_key = false)
+    public function getArticles(\CriteriaElement $criteria = null, $id_as_key = false)
     {
         $ret = $this->sbArticleHandler->getObjects($criteria, $id_as_key);
 
@@ -153,11 +148,11 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * retrieve Columns from the database
      *
-     * @param  CriteriaElement $criteria  {@link CriteriaElement}
+     * @param  \CriteriaElement $criteria  {@link \CriteriaElement}
      * @param  bool            $id_as_key use the Column's ID as key for the array?
-     * @return array  array of {@link SoapboxSbcolumns} objects
+     * @return array  array of {@link Columns} objects
      */
-    public function &getColumns(CriteriaElement $criteria = null, $id_as_key = false)
+    public function getColumns(\CriteriaElement $criteria = null, $id_as_key = false)
     {
         $ret = $this->sbColumnHandler->getObjects($criteria, $id_as_key);
 
@@ -167,11 +162,11 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * retrieve Votedatas from the database
      *
-     * @param  CriteriaElement $criteria  {@link CriteriaElement}
+     * @param  \CriteriaElement $criteria  {@link \CriteriaElement}
      * @param  bool            $id_as_key use the Votedata's ID as key for the array?
-     * @return array  array of {@link SoapboxSbvotedata} objects
+     * @return array  array of {@link Votedata} objects
      */
-    public function &getVotedatas(CriteriaElement $criteria = null, $id_as_key = false)
+    public function getVotedatas(\CriteriaElement $criteria = null, $id_as_key = false)
     {
         $ret = $this->sbVoteHandler->getObjects($criteria, $id_as_key);
 
@@ -181,10 +176,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * count Article matching certain conditions
      *
-     * @param  CriteriaElement $criteria {@link CriteriaElement} object
+     * @param  \CriteriaElement $criteria {@link \CriteriaElement} object
      * @return int
      */
-    public function getArticleCount(CriteriaElement $criteria = null)
+    public function getArticleCount(\CriteriaElement $criteria = null)
     {
         return $this->sbArticleHandler->getCount($criteria);
     }
@@ -192,10 +187,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * count Column matching certain conditions
      *
-     * @param  CriteriaElement $criteria {@link CriteriaElement} object
+     * @param  \CriteriaElement $criteria {@link \CriteriaElement} object
      * @return int
      */
-    public function getColumnCount(CriteriaElement $criteria = null)
+    public function getColumnCount(\CriteriaElement $criteria = null)
     {
         return $this->sbColumnHandler->getCount($criteria);
     }
@@ -203,10 +198,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * count Votedata matching certain conditions
      *
-     * @param  CriteriaElement $criteria {@link CriteriaElement} object
+     * @param  \CriteriaElement $criteria {@link CriteriaElement} object
      * @return int
      */
-    public function getVotedataCount(CriteriaElement $criteria = null)
+    public function getVotedataCount(\CriteriaElement $criteria = null)
     {
         return $this->sbVoteHandler->getCount($criteria);
     }
@@ -214,7 +209,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * array return . from int or objects
      *
-     * @param $sbcolumns is int , array or {@link SoapboxSbcolumns} objec
+     * @param int|array|Columns $sbcolumns
      * @return array ( int columnID's)
      */
     public function getColumnsItemIDs($sbcolumns)
@@ -225,7 +220,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbcolumns)) {
-            if (strtolower(get_class($sbcolumns)) === strtolower('SoapboxSbcolumns')) {
+            if (strtolower(get_class($sbcolumns)) === strtolower('Columns')) {
                 $columnIDs[] = $sbcolumns->getVar('columnID');
             }
         } else {
@@ -236,7 +231,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                 $sbcolumns = array_unique($sbcolumns);
                 foreach ($sbcolumns as $k => $v) {
                     if (is_object($v)) {
-                        if (strtolower(get_class($v)) === strtolower('SoapboxSbcolumns')) {
+                        if (strtolower(get_class($v)) === strtolower('Columns')) {
                             $columnIDs[] = $v->getVar('columnID');
                         }
                     } else {
@@ -255,7 +250,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * array return . from int or objects
      *
-     * @param $sbarticles is int , array or {@link SoapboxSbarticles} objec
+     * @param int|array|Articles $sbarticles
      * @return array ( int articleID's)
      */
     public function getArticlesItemIDs($sbarticles)
@@ -266,7 +261,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbarticles)) {
-            if (strtolower(get_class($sbarticles)) === strtolower('SoapboxSbarticles')) {
+            if (strtolower(get_class($sbarticles)) === strtolower('Articles')) {
                 $articleIDs[] = $sbarticles->getVar('articleID');
             }
         } else {
@@ -277,7 +272,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
                 $sbarticles = array_unique($sbarticles);
                 foreach ($sbarticles as $k => $v) {
                     if (is_object($v)) {
-                        if (strtolower(get_class($v)) === strtolower('SoapboxSbarticles')) {
+                        if (strtolower(get_class($v)) === strtolower('Articles')) {
                             $articleIDs[] = $v->getVar('articleID');
                         }
                     } else {
@@ -305,9 +300,9 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param int|array $NOTsbcolumns is no select columnID or array columnIDs ,object or objects
      * @param bool      $id_as_key    use the Column's ID as key for the array?
      * @set int total count of entrys to total_getColumnsAllPermcheck
-     * @return array array of {@link SoapboxSbcolumns} objects
+     * @return array array of {@link Columns} objects
      */
-    public function &getColumnsAllPermcheck(
+    public function getColumnsAllPermcheck(
         $limit = 0,
         $start = 0,
         $checkRight = true,
@@ -369,7 +364,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
-        $ret =& $this->getColumns($criteria, $id_as_key);
+        $ret = $this->getColumns($criteria, $id_as_key);
 
         unset($criteria);
 
@@ -380,24 +375,24 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get sbcolumns objects with pemission check , sort
      *
-     * @param int    $limit            number of records to return
-     * @param int    $start            offset of first record to return
-     * @param bool   $checkRight       true is with pemission check
-     * @param bool   $published        true is with datesub check
-     * @param int    $submit           for submit check where submit = $submit
-     * @param int    $offline          for offline check where offline = $offline
-     * @param int    $block            for block check where block = $block
-     * @param string $sortname         sort oder by filed name
-     * @param string $sortorder        sort oder by option (one filed name)
-     * @param var    $select_sbcolumns is select int columnID or array columnIDs ,object or objects
-     * @param var    $NOTsbarticles    is no select articleID or array articleIDs ,object or objects
-     * @param bool   $approve_submit   with author articles of column non check else offline
-     * @param bool   $id_as_key        use the articleID's ID as key for the array?
+     * @param int                $limit          number of records to return
+     * @param int                $start          offset of first record to return
+     * @param bool               $checkRight     true is with pemission check
+     * @param bool               $published      true is with datesub check
+     * @param int                $submit         for submit check where submit = $submit
+     * @param int                $offline        for offline check where offline = $offline
+     * @param int                $block          for block check where block = $block
+     * @param string             $sortname       sort oder by filed name
+     * @param string             $sortorder      sort oder by option (one filed name)
+     * @param int|array|Columns  $select_sbcolumns
+     * @param int|array|Articles $NOTsbarticles  is no select articleID or array articleIDs ,object or objects
+     * @param bool               $approve_submit with author articles of column non check else offline
+     * @param bool               $id_as_key      use the articleID's ID as key for the array?
      *
      * @set int total count of entrys to total_getArticlesAllPermcheck
-     * @return array array of {@link SoapboxSbarticles} objects
+     * @return array array of {@link Articles} objects
      */
-    public function &getArticlesAllPermcheck(
+    public function getArticlesAllPermcheck(
         $limit = 0,
         $start = 0,
         $checkRight = true,
@@ -421,7 +416,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $NOTarticleIDs           = [];
         if ($checkRight || isset($select_sbcolumns) || $approve_submit) {
             //get category object
-            $_sbcolumns_arr =& $this->getColumnsAllPermcheck(0, 0, $checkRight, null, null, $select_sbcolumns, null, true);
+            $_sbcolumns_arr = $this->getColumnsAllPermcheck(0, 0, $checkRight, null, null, $select_sbcolumns, null, true);
             if (empty($_sbcolumns_arr) || 0 === count($_sbcolumns_arr)) {
                 return $ret;
             }
@@ -439,7 +434,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             }
         } else {
             //get category object all
-            $_sbcolumns_arr =& $this->getColumns(null, true);
+            $_sbcolumns_arr = $this->getColumns(null, true);
         }
         //getArticles
         $criteria             = new \CriteriaCompo();
@@ -515,7 +510,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
             }
             $criteria->setLimit((int)$limit);
             $criteria->setStart((int)$start);
-            $sbarticle_arr =& $this->getArticles($criteria, $id_as_key);
+            $sbarticle_arr = $this->getArticles($criteria, $id_as_key);
             foreach ($sbarticle_arr as $k => $sbarticle) {
                 $sbarticle_arr[$k]->_sbcolumns = $_sbcolumns_arr[$sbarticle->getVar('columnID')];
             }
@@ -532,16 +527,16 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param        $id
      * @param  bool  $checkRight
      * @param  bool  $approve_submit
-     * @return mixed reference to the {@link SoapboxSbarticles} object, FALSE if failed
+     * @return mixed reference to the {@link Articles} object, FALSE if failed
      *                              object, FALSE if failed
      * @internal param int $articleID articleID of the entry
      * @internal param bool $force
      */
-    public function &getArticleOnePermcheck($id, $checkRight = true, $approve_submit = false)
+    public function getArticleOnePermcheck($id, $checkRight = true, $approve_submit = false)
     {
         global $xoopsUser;
         $ret       = false;
-        $sbarticle =& $this->getArticle($id);
+        $sbarticle = $this->getArticle($id);
         if (!is_object($sbarticle)) {
             return $ret;
         }
@@ -552,7 +547,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         //            return $ret;
         //        }
         //get category object
-        $_sbcolumns_arr =& $this->getColumnsAllPermcheck(1, 0, $checkRight, null, null, $sbarticle->getVar('columnID'), null, true);
+        $_sbcolumns_arr = $this->getColumnsAllPermcheck(1, 0, $checkRight, null, null, $sbarticle->getVar('columnID'), null, true);
         if ($checkRight) {
             if (empty($_sbcolumns_arr) || 0 === count($_sbcolumns_arr)) {
                 return $ret;
@@ -599,10 +594,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param  int  $start     index of the first user to return
      * @param  null $sortname
      * @param  null $sortorder
-     * @return array Array of {@link SoapboxSbarticles} objects (if $asobject is TRUE)
+     * @return array Array of {@link Articles} objects (if $asobject is TRUE)
      *                         objects (if $asobject is TRUE)
      */
-    public function &getArticlesByColumnID(
+    public function getArticlesByColumnID(
         $columnID,
         $asobject = false,
         $limit = 0,
@@ -627,7 +622,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
-        $sbarticle_arr =& $this->getArticles($criteria, true);
+        $sbarticle_arr = $this->getArticles($criteria, true);
         unset($criteria);
         if (empty($sbarticle_arr) || 0 === count($sbarticle_arr)) {
             return $ret;
@@ -652,10 +647,10 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param  int  $start     index of the first user to return
      * @param  null $sortname
      * @param  null $sortorder
-     * @return array Array of {@link SoapboxSbvotedata} objects (if $asobject is TRUE)
+     * @return array Array of {@link Votedata} objects (if $asobject is TRUE)
      *                         objects (if $asobject is TRUE)
      */
-    public function &getVotedatasByArticleID(
+    public function getVotedatasByArticleID(
         $articleID,
         $asobject = false,
         $limit = 0,
@@ -679,7 +674,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
-        $sbvotedata_arr =& $this->getVotedatas($criteria, true);
+        $sbvotedata_arr = $this->getVotedatas($criteria, true);
         unset($criteria);
         if (empty($sbvotedata_arr) || 0 === count($sbvotedata_arr)) {
             return $ret;
@@ -699,14 +694,14 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * get a list of columns that a user is author of
      *
      * @param  int  $user_id  ID of the user
-     * @param  bool $asobject return groups as {@link SoapboxSbcolumns} objects or arrays?
+     * @param  bool $asobject return groups as {@link Columns} objects or arrays?
      * @param  int  $limit
      * @param  int  $start
      * @param  null $sortname
      * @param  null $sortorder
      * @return array array of objects or arrays
      */
-    public function &getColumnsByAuthor(
+    public function getColumnsByAuthor(
         $user_id,
         $asobject = false,
         $limit = 0,
@@ -730,7 +725,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
-        $sbcolumns_arr =& $this->getColumns($criteria, true);
+        $sbcolumns_arr = $this->getColumns($criteria, true);
         unset($criteria);
         if (empty($sbcolumns_arr) || 0 === count($sbcolumns_arr)) {
             return $ret;
@@ -755,12 +750,12 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
      * @param  int   $start
      * @param  null  $sortname
      * @param  null  $sortorder
-     * @return array array of {@link SoapboxSbcolumns} objects
+     * @return array array of {@link Columns} objects
      *                              objects
-     * @internal param object $sbarticle reference to the {@link SoapboxSbarticles} object object
+     * @internal param object $sbarticle reference to the {@link Articles} object object
      * @internal param bool $id_as_key use the columnID as key for the array?
      */
-    public function &getColumnsByArticles(
+    public function getColumnsByArticles(
         $_sbarticle_arr,
         $asobject = false,
         $limit = 0,
@@ -772,12 +767,12 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         $columnIDs = [];
         if (is_array($_sbarticle_arr)) {
             foreach ($_sbarticle_arr as $sbarticle) {
-                if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
+                if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
                     $columnIDs[] = $sbarticle->getVar('columnID');
                 }
             }
         } else {
-            if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
+            if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
                 $columnIDs[] = $_sbarticle_arr->getVar('columnID');
             }
         }
@@ -796,7 +791,7 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
         }
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$start);
-        $sbcolumns_arr =& $this->getColumns($criteria, true);
+        $sbcolumns_arr = $this->getColumns($criteria, true);
         unset($criteria);
         if (empty($sbcolumns_arr) || 0 === count($sbcolumns_arr)) {
             return $ret;
@@ -844,17 +839,17 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * update count up hit's counter of sbarticles obects ,with author user check
      *
-     * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param  Articles $sbarticle reference to the {@link Articles} object
      * @param  bool              $force
      * @return bool   FALSE if failed, TRUE
      */
-    public function getUpArticlecount(SoapboxSbarticles $sbarticle, $force = false)
+    public function getUpArticlecount(Articles $sbarticle, $force = false)
     {
         global $xoopsUser;
         /** @var Soapbox\Helper $helper */
         $helper = Soapbox\Helper::getInstance();
 
-        if (strtolower(get_class($sbarticle)) !== strtolower('SoapboxSbarticles')) {
+        if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
             return false;
         }
         $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -888,15 +883,15 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get edit icon display html layout for admin or author
      *
-     * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param  Articles $sbarticle reference to the {@link Articles} object
      * @param                    $sbcolumns
      * @return string (html tags)
      */
-    public function getadminlinks(SoapboxSbarticles $sbarticle, &$sbcolumns)
+    public function getadminlinks(Articles $sbarticle, &$sbcolumns)
     {
         global $xoopsUser, $xoopsModule;
-        $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
-        $myts       = MyTextSanitizer:: getInstance();
+        $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
+        $myts       = \MyTextSanitizer:: getInstance();
         // Functional links
         $ret = '';
         if (is_object($xoopsUser)) {
@@ -968,20 +963,20 @@ class SoapboxEntrygetHandler extends XoopsPersistableObjectHandler
     /**
      * get print ,mail icon html layout for guest or nomal user
      *
-     * @param  SoapboxSbarticles $sbarticle reference to the {@link SoapboxSbarticles} object
+     * @param  Articles $sbarticle reference to the {@link Articles} object
      * @return string (html tags)
      */
-    public function getuserlinks(SoapboxSbarticles $sbarticle)
+    public function getuserlinks(Articles $sbarticle)
     {
         global $xoopsConfig, $xoopsModule;
-        $pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
 
-        $myts = MyTextSanitizer:: getInstance();
+        $myts = \MyTextSanitizer:: getInstance();
         // Functional links
         $ret            = '';
         $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
         $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
-        $al             = SoapboxUtility::getAcceptLang();
+        $al             = Soapbox\Utility::getAcceptLang();
         if ('ja' === $al) {
             if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
                 && @mb_internal_encoding(_CHARSET)) {

@@ -62,7 +62,7 @@ if (Request::hasVar('previewblock', 'POST')) {
     xoops_cp_header();
     require_once XOOPS_ROOT_PATH . '/class/template.php';
     $xoopsTpl = new \XoopsTpl();
-    $xoopsTpl->caching=(0);
+    $xoopsTpl->caching= 0;
     $block['bid'] = $bid;
 
     if ('clone_ok' === $op) {
@@ -434,7 +434,7 @@ if ('clone_ok' === $op) {
     //    }
 
     $options = Request::getArray('options', [], 'POST');
-    if ((!empty($options)) && (!is_array($options))) {
+    if (!empty($options) && (!is_array($options))) {
         $options = explode('|', Request::getString('options', '', 'POST'));
     }
 
@@ -577,7 +577,7 @@ function myblocksadmin_update_block(
     $msg = _AM_DBUPDATED;
     if (false !== $myblock->store()) {
         $db  = \XoopsDatabaseFactory::getDatabaseConnection();
-        $sql = sprintf('DELETE FROM %s WHERE block_id = %u', $db->prefix('block_module_link'), $bid);
+        $sql = sprintf('DELETE FROM `%s` WHERE block_id = %u', $db->prefix('block_module_link'), $bid);
         $db->query($sql);
         foreach ($bmodule as $bmid) {
             $sql = sprintf('INSERT INTO %s (block_id, module_id) VALUES (%u, %d)', $db->prefix('block_module_link'), $bid, (int)$bmid);
@@ -585,7 +585,7 @@ function myblocksadmin_update_block(
         }
         require_once XOOPS_ROOT_PATH . '/class/template.php';
         $xoopsTpl = new \XoopsTpl();
-        $xoopsTpl->caching=(2);
+        $xoopsTpl->caching= 2;
         if ('' !== $myblock->getVar('template')) {
             if ($xoopsTpl->is_cached('db:' . $myblock->getVar('template'))) {
                 if (!$xoopsTpl->clear_cache('db:' . $myblock->getVar('template'))) {

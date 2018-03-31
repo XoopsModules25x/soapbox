@@ -29,7 +29,7 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
         }
     }
     //-------------------------------------
-    $entrydataHandler = xoops_getModuleHandler('entryget', 'soapbox');
+    $entrydataHandler = $helper->getHandler('Entryget');
     //-------------------------------------
     $canread_columnIDs        = [];
     $canread_columnnames      = [];
