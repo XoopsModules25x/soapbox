@@ -431,28 +431,12 @@ $modversion['config'][] = [
     'default'     => 0,
 ];
 
-//$modversion['config'][] = array(
-//    'name' => 'soapboxEditorUser',
-//    'title' => 'MI_SOAPBOX_EDITOR_USER',
-//    'description' => 'MI_SOAPBOX_EDITOR_USER_DESC',
-//    'formtype' => 'select',
-//    'valuetype' => 'text',
-//    'options' => array(
-//                    _MI_SOAPBOX_FORM_DHTML=>'dhtml',
-//                    _MI_SOAPBOX_FORM_COMPACT=>'textarea',
-//                    _MI_SOAPBOX_FORM_SPAW=>'spaw',
-//                    _MI_SOAPBOX_FORM_HTMLAREA=>'htmlarea',
-//                    _MI_SOAPBOX_FORM_KOIVI=>'koivi',
-//                    _MI_SOAPBOX_FORM_TINYMCE=>'tinymce',
-//                    _MI_SOAPBOX_FORM_FCK=>'fck'),
-//    'default' =>'dhtml');
-
 xoops_load('xoopseditorhandler');
 $editorHandler  = XoopsEditorHandler::getInstance();
 
 
 $modversion['config'][] = [
-    'name'        => 'soapboxEditorAdmin',
+    'name'        => 'editorAdmin',
     'title'       => 'MI_SOAPBOX_EDITOR_ADMIN',
     'description' => 'MI_SOAPBOX_EDITOR_DESC_ADMIN',
     'formtype'    => 'select',
@@ -462,7 +446,7 @@ $modversion['config'][] = [
 ];
 
 $modversion['config'][] = [
-    'name'        => 'soapboxEditorUser',
+    'name'        => 'editorUser',
     'title'       => 'MI_SOAPBOX_EDITOR_USER',
     'description' => 'MI_SOAPBOX_EDITOR_DESC_USER',
     'formtype'    => 'select',
@@ -470,11 +454,6 @@ $modversion['config'][] = [
     'options'     => array_flip($editorHandler->getList()),
     'default'     => 'dhtmltextarea'
 ];
-
-
-
-
-
 
 
 // Теги
@@ -499,7 +478,8 @@ $modversion['config'][] = [
     'default'     => 0,
 ];
 
-// Comments
+// -------------------- Comments -----------------------------
+
 $modversion['hasComments']          = 1;
 $modversion['comments']['itemName'] = 'articleID';
 $modversion['comments']['pageName'] = 'article.php';

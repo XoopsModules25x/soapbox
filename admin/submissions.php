@@ -101,7 +101,7 @@ function editarticle($articleID = '')
 
     // LEAD
     //    $sform -> addElement( new \XoopsFormTextArea( _AM_SOAPBOX_ARTLEAD, 'lead', $lead, 5, 60 ) );
-    //    $editor_lead=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
+    //    $editor_lead=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
     //    $sform->addElement($editor_lead,true);
 
     $editor_lead = new \XoopsFormElementTray(_AM_SOAPBOX_ARTLEAD, '<br>');
@@ -112,7 +112,7 @@ function editarticle($articleID = '')
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '200px';
-        $formmnote         = new \XoopsFormEditor('', $helper->getConfig('soapboxEditorUser'), $options, $nohtml = false, $onfailure = 'textarea');
+        $formmnote         = new \XoopsFormEditor('', $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $editor_lead->addElement($formmnote);
     } else {
         $formmnote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
@@ -122,7 +122,7 @@ function editarticle($articleID = '')
 
     // TEASER
     $sform->addElement(new \XoopsFormTextArea(_AM_SOAPBOX_ARTTEASER, 'teaser', $e_articles['teaser'], 10, 120));
-    //    $editor_teaser=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
+    //    $editor_teaser=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
     //    $sform->addElement($editor_teaser,true);
     //
     $autoteaser_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
@@ -131,8 +131,8 @@ function editarticle($articleID = '')
 
     // BODY
     //HACK by domifara for Wysiwyg
-    //    if  (null !== ($helper->getConfig('soapboxEditorUser')) ) {
-    //        $editor=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
+    //    if  (null !== ($helper->getConfig('editorUser')) ) {
+    //        $editor=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
     //        $sform->addElement($editor,true);
     //    } else {
     //        $sform -> addElement( new \XoopsFormDhtmlTextArea( _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120 ) );
@@ -146,7 +146,7 @@ function editarticle($articleID = '')
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '400px';
-        $bodynote          = new \XoopsFormEditor('', $helper->getConfig('soapboxEditorUser'), $options, $nohtml = false, $onfailure = 'textarea');
+        $bodynote          = new \XoopsFormEditor('', $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $optionsTrayNote->addElement($bodynote);
     } else {
         $bodynote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');

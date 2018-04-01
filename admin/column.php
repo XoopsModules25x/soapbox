@@ -131,7 +131,7 @@ function editcol($columnID = '')
 
     //HACK by domifara for Wysiwyg
     $sform->addElement(new \XoopsFormTextArea(_AM_SOAPBOX_COLDESCRIPT, 'description', $e_category['description'], 7, 60));
-    //    $editor=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _AM_SOAPBOX_COLDESCRIPT, 'description',  $e_category['description'], '100%', '300px');
+    //    $editor=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _AM_SOAPBOX_COLDESCRIPT, 'description',  $e_category['description'], '100%', '300px');
     //    $sform->addElement($editor,true);
 
     $sform->addElement(new \XoopsFormText(_AM_SOAPBOX_COLPOSIT, 'weight', 4, 4, $e_category['weight']));

@@ -49,12 +49,12 @@ $sform->addElement(new \XoopsFormText(_MD_SOAPBOX_ARTHEADLINE, 'headline', 50, 5
 
 // LEAD
 $sform->addElement(new \XoopsFormTextArea(_MD_SOAPBOX_ARTLEAD, 'lead', $e_articles['lead'], 10, 120));
-//$editor_lead=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _MD_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
+//$editor_lead=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _MD_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
 //$sform->addElement($editor_lead,true);
 
 // TEASER
 $sform->addElement(new \XoopsFormTextArea(_MD_SOAPBOX_ARTTEASER, 'teaser', $e_articles['teaser'], 10, 120));
-//$editor_teaser=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _MD_SOAPBOX_ARTTEASER ,'teaser', $e_articles['teaser'] , '100%', '120px');
+//$editor_teaser=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _MD_SOAPBOX_ARTTEASER ,'teaser', $e_articles['teaser'] , '100%', '120px');
 //$sform->addElement($editor_teaser,true);
 
 $autoteaser_radio = new \XoopsFormRadioYN(_MD_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _MD_SOAPBOX_YES . '', ' ' . _MD_SOAPBOX_NO . '');
@@ -63,8 +63,8 @@ $sform->addElement(new \XoopsFormText(_MD_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramoun
 
 $sform->addElement(new \XoopsFormDhtmlTextArea(_MD_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120));
 /*
-    if  (null !== ($helper->getConfig('soapboxEditorUser')) ) {
-        $editor=soapbox_getWysiwygForm($helper->getConfig('soapboxEditorUser') , _MD_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'] , '100%', '400px');
+    if  (null !== ($helper->getConfig('editorUser')) ) {
+        $editor=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _MD_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'] , '100%', '400px');
         $sform->addElement($editor,true);
     } else {
         $sform -> addElement( new \XoopsFormDhtmlTextArea( _MD_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120 ) );
