@@ -132,7 +132,7 @@ global $xoopsDB, $xoopsUser;
 $hModule = xoops_getHandler('module');
 $i       = 0;
 if ($soapModule = $hModule->getByDirname('soapbox')) {
-    $gpermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
     $hModConfig   = xoops_getHandler('config');
 
     $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -156,7 +156,7 @@ if ($soapModule = $hModule->getByDirname('soapbox')) {
         $sql = $xoopsDB->query('SELECT columnID, name FROM ' . $xoopsDB->prefix('sbcolumns') . '  ORDER BY weight');
         if ($sql) {
             while (false !== (list($columnID, $name) = $xoopsDB->fetchRow($sql))) {
-                if ($gpermHandler->checkRight('Column Permissions', $columnID, $groups, $module_id)) {
+                if ($grouppermHandler->checkRight('Column Permissions', $columnID, $groups, $module_id)) {
                     ++$i;
                     $modversion['sub'][$i]['name'] = $name;
                     $modversion['sub'][$i]['url']  = 'column.php?columnID=' . $columnID . '';

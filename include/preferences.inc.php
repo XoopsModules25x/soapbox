@@ -250,14 +250,14 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                         && 'startpage' === $config->getVar('conf_name')) {
                         $memberHandler = xoops_getHandler('member');
                         $groups        = $memberHandler->getGroupList();
-                        /** @var \XoopsGroupPermHandler $gpermHandler */
-                        $gpermHandler  = xoops_getHandler('groupperm');
+                        /** @var \XoopsGroupPermHandler $grouppermHandler */
+                        $grouppermHandler  = xoops_getHandler('groupperm');
                         /** @var \XoopsModuleHandler $moduleHandler */
                         $moduleHandler = xoops_getHandler('module');
                         $module        = $moduleHandler->getByDirname($new_value);
                         foreach ($groups as $groupid => $groupname) {
-                            if (!$gpermHandler->checkRight('module_read', $module->getVar('mid'), $groupid)) {
-                                $gpermHandler->addRight('module_read', $module->getVar('mid'), $groupid);
+                            if (!$grouppermHandler->checkRight('module_read', $module->getVar('mid'), $groupid)) {
+                                $grouppermHandler->addRight('module_read', $module->getVar('mid'), $groupid);
                             }
                         }
                         $startmod_updated = true;

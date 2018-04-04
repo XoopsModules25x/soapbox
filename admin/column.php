@@ -324,7 +324,7 @@ switch ($op) {
             } else {
                 $groups       = $xoopsUser ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
                 $module_id    = $xoopsModule->getVar('mid');
-                $gpermHandler = xoops_getHandler('groupperm');
+                $grouppermHandler = xoops_getHandler('groupperm');
 
                 $name = $myts->htmlSpecialChars($_categoryob->getVar('name'));
                 xoops_groupperm_deletebymoditem($module_id, _AM_SOAPBOX_COLPERMS, $columnID);

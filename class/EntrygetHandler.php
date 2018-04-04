@@ -329,8 +329,8 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         }
         if ($checkRight) {
             $gperm_name         = 'Column Permissions';
-            $gpermHandler       = xoops_getHandler('groupperm');
-            $can_read_columnIDs = $gpermHandler->getItemIds($gperm_name, $groups, $this->moduleId);
+            $grouppermHandler       = xoops_getHandler('groupperm');
+            $can_read_columnIDs = $grouppermHandler->getItemIds($gperm_name, $groups, $this->moduleId);
         }
         //--------------------------
         $criteria      = new \CriteriaCompo();
@@ -542,8 +542,8 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         }
         //        $gperm_name = 'Column Permissions';
         //        $groups = ( is_object($xoopsUser) ) ? $xoopsUser -> getGroups() : XOOPS_GROUP_ANONYMOUS;
-        //        $gpermHandler = xoops_getHandler( 'groupperm' );
-        //        if ( !$gpermHandler -> checkRight( $gperm_name,$sbarticle->getVar('columnID'), $groups, $this->moduleId ) ) {
+        //        $grouppermHandler = xoops_getHandler( 'groupperm' );
+        //        if ( !$grouppermHandler -> checkRight( $gperm_name,$sbarticle->getVar('columnID'), $groups, $this->moduleId ) ) {
         //            return $ret;
         //        }
         //get category object
