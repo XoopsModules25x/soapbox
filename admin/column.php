@@ -208,7 +208,7 @@ switch ($op) {
         if (!isset($_POST['columnID'])) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         } else {
-            $columnID = (int)$_POST['columnID'];
+            $columnID = \Xmf\Request::getInt('columnID', 0, 'POST');
         }
 
         //get category object
@@ -232,17 +232,17 @@ switch ($op) {
         }
 
         if (isset($_POST['weight'])) {
-            $_categoryob->setVar('weight', (int)$_POST['weight']);
+            $_categoryob->setVar('weight', \Xmf\Request::getInt('weight', 0, 'POST'));
         }
         if (isset($_POST['notifypub'])) {
-            $_categoryob->setVar('notifypub', (int)$_POST['notifypub']);
+            $_categoryob->setVar('notifypub', \Xmf\Request::getInt('notifypub', 0, 'POST'));
         }
 
         if (isset($_POST['author'])) {
             if ('-1' === $_POST['author'] && isset($_POST['authorinput'])) {
-                $author = (int)$_POST['authorinput'];
+                $author = \Xmf\Request::getInt('authorinput', 0, 'POST');
             } else {
-                $author = (int)$_POST['author'];
+                $author = \Xmf\Request::getInt('author', 0, 'POST');
             }
         } else {
             $author = $xoopsUser->uid();
@@ -310,7 +310,7 @@ switch ($op) {
             if (!isset($_POST['columnID'])) {
                 redirect_header('index.php', 1, _NOPERM);
             } else {
-                $columnID = (int)$_POST['columnID'];
+                $columnID = \Xmf\Request::getInt('columnID', 0, 'POST');
             }
             //get category object
             $_categoryob  = $entrydataHandler->getColumn($columnID);
@@ -331,7 +331,7 @@ switch ($op) {
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_COLISDELETED, $name));
             }
         } else {
-            $columnID    = \Xmf\Request::getInt('columnID', (int)$_GET['columnID'], 'POST');
+            $columnID    = \Xmf\Request::getInt('columnID', \Xmf\Request::getInt('columnID', 0, 'GET'), 'POST');
             //get category object
             $_categoryob = $entrydataHandler->getColumn($columnID);
             if (!is_object($_categoryob)) {

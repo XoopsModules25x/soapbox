@@ -298,7 +298,7 @@ switch ($op) {
     case 'mod':
         xoops_cp_header();
         $adminObject->displayNavigation(basename(__FILE__));
-        $articleID = \Xmf\Request::getInt('articleID', (int)$_GET['articleID'], 'POST');
+        $articleID = \Xmf\Request::getInt('articleID', \Xmf\Request::getInt('articleID', 0, 'GET'), 'POST');
         editarticle($articleID);
         break;
 
@@ -313,13 +313,13 @@ switch ($op) {
         if (!isset($_POST['articleID'])) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         } else {
-            $articleID = (int)$_POST['articleID'];
+            $articleID = \Xmf\Request::getInt('articleID', 0, 'POST');
         }
         //articleID check
         if (!isset($_POST['columnID'])) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         } else {
-            $columnID = (int)$_POST['columnID'];
+            $columnID = \Xmf\Request::getInt('columnID', 0, 'POST');
         }
 
         //get category object
@@ -352,33 +352,33 @@ switch ($op) {
         }
 
         if (isset($_POST['weight'])) {
-            $_entryob->setVar('weight', (int)$_POST['weight']);
+            $_entryob->setVar('weight', \Xmf\Request::getInt('weight', 0, 'POST'));
         }
 
         if (isset($_POST['commentable'])) {
-            $_entryob->setVar('commentable', (int)$_POST['commentable']);
+            $_entryob->setVar('commentable', \Xmf\Request::getInt('commentable', 0, 'POST'));
         }
         if (isset($_POST['block'])) {
-            $_entryob->setVar('block', (int)$_POST['block']);
+            $_entryob->setVar('block', \Xmf\Request::getInt('block', 0, 'POST'));
         }
         if (isset($_POST['offline'])) {
-            $_entryob->setVar('offline', (int)$_POST['offline']);
+            $_entryob->setVar('offline', \Xmf\Request::getInt('offline', 0, 'POST'));
         }
         if (isset($_POST['notifypub'])) {
-            $_entryob->setVar('notifypub', (int)$_POST['notifypub']);
+            $_entryob->setVar('notifypub', \Xmf\Request::getInt('notifypub', 0, 'POST'));
         }
 
         if (isset($_POST['breaks'])) {
-            $_entryob->setVar('breaks', (int)$_POST['breaks']);
+            $_entryob->setVar('breaks', \Xmf\Request::getInt('breaks', 0, 'POST'));
         }
         if (isset($_POST['html'])) {
-            $_entryob->setVar('html', (int)$_POST['html']);
+            $_entryob->setVar('html', \Xmf\Request::getInt('html', 0, 'POST'));
         }
         if (isset($_POST['smiley'])) {
-            $_entryob->setVar('smiley', (int)$_POST['smiley']);
+            $_entryob->setVar('smiley', \Xmf\Request::getInt('smiley', 0, 'POST'));
         }
         if (isset($_POST['xcodes'])) {
-            $_entryob->setVar('xcodes', (int)$_POST['xcodes']);
+            $_entryob->setVar('xcodes', \Xmf\Request::getInt('xcodes', 0, 'POST'));
         }
 
         if (isset($_POST['headline'])) {
@@ -391,10 +391,10 @@ switch ($op) {
             $_entryob->setVar('bodytext', $_POST['bodytext']);
         }
         if (isset($_POST['votes'])) {
-            $_entryob->setVar('votes', (int)$_POST['votes']);
+            $_entryob->setVar('votes', \Xmf\Request::getInt('votes', 0, 'POST'));
         }
         if (isset($_POST['rating'])) {
-            $_entryob->setVar('rating', (int)$_POST['rating']);
+            $_entryob->setVar('rating', \Xmf\Request::getInt('rating', 0, 'POST'));
         }
 
         if (isset($_POST['teaser'])) {
@@ -501,7 +501,7 @@ switch ($op) {
             if (!isset($_POST['articleID'])) {
                 redirect_header('index.php', 1, _NOPERM);
             } else {
-                $articleID = (int)$_POST['articleID'];
+                $articleID = \Xmf\Request::getInt('articleID', 0, 'POST');
             }
 
             $_entryob = $entrydataHandler->getArticle($articleID);
@@ -517,7 +517,7 @@ switch ($op) {
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
             }
         } else {
-            $articleID = \Xmf\Request::getInt('articleID', (int)$_GET['articleID'], 'POST');
+            $articleID = \Xmf\Request::getInt('articleID', \Xmf\Request::getInt('articleID', 0, 'GET'), 'POST');
             $_entryob  = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);

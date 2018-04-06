@@ -46,11 +46,11 @@ $op = Request::getCmd('op', 'check', 'POST');
 //----------------------------------------------
 //post or get articleID check
 $articleID = 0;
-if (isset($_GET['articleID'])) {
-    $articleID = (int)$_GET['articleID'];
+if (\Xmf\Request::hasVar('articleID', 'GET')) {
+ $articleID = \Xmf\Request::getInt('articleID', 0, 'GET');
 }
-if (isset($_POST['articleID'])) {
-    $articleID = (int)$_POST['articleID'];
+if (\Xmf\Request::hasVar('articleID', 'POST')) {
+ $articleID = \Xmf\Request::getInt('articleID', 0, 'POST');
 }
 //----------------------------------------------
 //user group , edit_uid
@@ -97,7 +97,7 @@ switch ($op) {
         //set
         $_entryob->setVar('uid', $edit_uid);
         if (isset($_POST['columnID'])) {
-            $_entryob->setVar('columnID', (int)$_POST['columnID']);
+            $_entryob->setVar('columnID', \Xmf\Request::getInt('columnID', 0, 'POST'));
         }
         //get category object
         if (!isset($canEditCategoryobArray[$_entryob->getVar('columnID')])) {
@@ -113,20 +113,20 @@ switch ($op) {
         }
 
         if (isset($_POST['weight'])) {
-            $_entryob->setVar('weight', (int)$_POST['weight']);
+            $_entryob->setVar('weight', \Xmf\Request::getInt('weight', 0, 'POST'));
         }
 
         if (isset($_POST['commentable'])) {
-            $_entryob->setVar('commentable', (int)$_POST['commentable']);
+            $_entryob->setVar('commentable', \Xmf\Request::getInt('commentable', 0, 'POST'));
         }
         if (isset($_POST['offline'])) {
-            $_entryob->setVar('offline', (int)$_POST['offline']);
+            $_entryob->setVar('offline', \Xmf\Request::getInt('offline', 0, 'POST'));
         }
         if (isset($_POST['block'])) {
-            $_entryob->setVar('block', (int)$_POST['block']);
+            $_entryob->setVar('block', \Xmf\Request::getInt('block', 0, 'POST'));
         }
         if (isset($_POST['notifypub'])) {
-            $_entryob->setVar('notifypub', (int)$_POST['notifypub']);
+            $_entryob->setVar('notifypub', \Xmf\Request::getInt('notifypub', 0, 'POST'));
         }
 
         //datesub
@@ -162,7 +162,7 @@ switch ($op) {
         } else {
             $_entryob->setVar('submit', 0);
             if (isset($_POST['submit'])) {
-                $_entryob->setVar('submit', (int)$_POST['submit']);
+                $_entryob->setVar('submit', \Xmf\Request::getInt('submit', 0, 'POST'));
             }
             $_entryob->setVar('offline', 0);
         }

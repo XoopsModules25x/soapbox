@@ -33,9 +33,9 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     if (function_exists('floatval')) {
         $rating = $_POST['rating'] ? (float)$_POST['rating'] : 0;
     } else {
-        $rating = $_POST['rating'] ? (int)$_POST['rating'] : 0;
+        $rating = $_POST['rating'] ? \Xmf\Request::getInt('rating', 0, 'POST') : 0;
     }
-    $lid = $_POST['lid'] ? (int)$_POST['lid'] : 0;
+    $lid = $_POST['lid'] ? \Xmf\Request::getInt('lid', 0, 'POST') : 0;
 
     // Make sure only 1 anonymous from an IP in a single day.
     $anonwaitdays = 1;

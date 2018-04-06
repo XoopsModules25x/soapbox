@@ -331,9 +331,9 @@ class Utility extends \XoopsObject
         //        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
 
         $module_id = $xoopsModule->getVar('mid');
-        $startart  = \Xmf\Request::getInt('startart', 0, 'GET');
-        if (isset($_POST['entries'])) {
-            $entries = (int)$_POST['entries'];
+        $startart = \Xmf\Request::getInt('startart', 0, 'GET');
+        if (\Xmf\Request::hasVar('entries', 'POST')) {
+            $entries = \Xmf\Request::getInt('entries', 0, 'POST');
         } else {
             $entries = \Xmf\Request::getInt('entries', 0, 'GET');
         }
