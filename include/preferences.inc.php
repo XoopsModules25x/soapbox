@@ -23,7 +23,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
     exit('Access Denied');
 } else {
     $op = 'list';
-    if (!empty($_POST['op'])) {
+   if (\Xmf\Request::hasVar('op', 'POST')) {
         $op = $_POST['op'];
     }
     if (isset($_GET['op'])) {
@@ -168,7 +168,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
         $xoopsTpl->clear_all_cache();
         // regenerate admin menu file
         //        xoops_module_write_admin_menu(xoops_module_get_admin_menu());
-        if (!empty($_POST['conf_ids'])) {
+       if (\Xmf\Request::hasVar('conf_ids', 'POST')) {
             $conf_ids = $_POST['conf_ids'];
         }
         $count            = count($conf_ids);
@@ -272,7 +272,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
         if (!empty($use_mysession) && 0 == $xoopsConfig['use_mysession'] && '' != $session_name) {
             setcookie($session_name, session_id(), time() + (60 * (int)$session_expire), '/', '', 0);
         }
-        if (!empty($_POST['redirect'])) {
+       if (\Xmf\Request::hasVar('redirect', 'POST')) {
             redirect_header($_POST['redirect'], 2, _MD_AM_DBUPDATED);
         } else {
             redirect_header('admin.php?fct=preferences', 2, _MD_AM_DBUPDATED);

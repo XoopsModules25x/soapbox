@@ -144,7 +144,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
         if ($sbcolumn->isNew()) {
             $columnID = $this->db->genId($this->db->prefix('sbcolumns') . '_columnID_seq');
             $sql      = sprintf(
-                'INSERT INTO %s (columnID, author, NAME, description, total, weight, colimage, created) VALUES (%u, %u, %s, %s, %u, %u, %s, %u)',
+                'INSERT INTO `%s` (columnID, author, NAME, description, total, weight, colimage, created) VALUES (%u, %u, %s, %s, %u, %u, %s, %u)',
                 $this->db->prefix('sbcolumns'),
                 $columnID,
                 $author,
@@ -157,7 +157,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
             );
         } else {
             $sql = sprintf(
-                'UPDATE %s SET author = %s, NAME = %s, description = %s, total = %u, weight = %u, colimage = %s, created = %u WHERE columnID = %u',
+                'UPDATE `%s` SET author = %s, NAME = %s, description = %s, total = %u, weight = %u, colimage = %s, created = %u WHERE columnID = %u',
                 $this->db->prefix('sbcolumns'),
                 $author,
                 $this->db->quoteString($name),

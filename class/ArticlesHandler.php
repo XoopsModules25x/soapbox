@@ -151,7 +151,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
         if ($sbarticle->isNew()) {
             $articleID = $this->db->genId($this->db->prefix('sbarticles') . '_articleID_seq');
             $sql       = sprintf(
-                'INSERT INTO %s (articleID, columnID, headline, lead, bodytext, teaser, uid, submit, datesub, counter, weight, html, smiley, xcodes, breaks, BLOCK, artimage, votes, rating, commentable, offline, notifypub) VALUES (%u, %u, %s, %s, %s, %s, %u, %u, %u, %u, %u, %u, %u, %u, %u, %u, %s, %u, %f, %u, %u, %u )',
+                'INSERT INTO `%s` (articleID, columnID, headline, lead, bodytext, teaser, uid, submit, datesub, counter, weight, html, smiley, xcodes, breaks, BLOCK, artimage, votes, rating, commentable, offline, notifypub) VALUES (%u, %u, %s, %s, %s, %s, %u, %u, %u, %u, %u, %u, %u, %u, %u, %u, %s, %u, %f, %u, %u, %u )',
                                  $this->db->prefix('sbarticles'),
                 $articleID,
                 $columnID,
@@ -178,7 +178,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
             );
         } else {
             $sql = sprintf(
-                'UPDATE %s SET columnID = %u , headline = %s , lead = %s , bodytext = %s , teaser = %s , uid = %u , submit = %u , datesub = %u , counter = %u , weight = %u , html = %u , smiley = %u , xcodes = %u , breaks = %u , BLOCK = %u , artimage = %s , votes = %u , rating = %f , commentable = %u , offline = %u , notifypub = %u WHERE articleID = %u',
+                'UPDATE `%s` SET columnID = %u , headline = %s , lead = %s , bodytext = %s , teaser = %s , uid = %u , submit = %u , datesub = %u , counter = %u , weight = %u , html = %u , smiley = %u , xcodes = %u , breaks = %u , BLOCK = %u , artimage = %s , votes = %u , rating = %f , commentable = %u , offline = %u , notifypub = %u WHERE articleID = %u',
                            $this->db->prefix('sbarticles'),
                 $columnID,
                 $this->db->quoteString($headline),
