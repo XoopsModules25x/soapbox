@@ -37,7 +37,7 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsform/form.php';
  * @package      kernel
  * @subpackage   form
  */
-class MyXoopsGroupPermForm extends XoopsForm
+class MyXoopsGroupPermForm extends \XoopsForm
 {
     /**
      * Module ID
@@ -219,7 +219,7 @@ class MyXoopsGroupPermForm extends XoopsForm
  * @package      kernel
  * @subpackage   form
  */
-class MyXoopsGroupFormCheckBox extends XoopsFormElement
+class MyXoopsGroupFormCheckBox extends \XoopsFormElement
 {
     /**
      * Pre-selected value(s)

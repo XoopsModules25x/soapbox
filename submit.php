@@ -11,7 +11,7 @@
 use Xmf\Request;
 use XoopsModules\Soapbox;
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();

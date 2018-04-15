@@ -142,8 +142,8 @@ function b_arts_spot_show($options)
         $_outdata_arr           = $articles;
         $_outdata_arr['column'] = $category;
 
-        $_outdata_arr['authorname'] = XoopsUserUtility::getUnameFromId((int)$category['author']);
-        $_outdata_arr['poster']     = XoopsUserUtility::getUnameFromId($articles['uid']);
+        $_outdata_arr['authorname'] = \XoopsUserUtility::getUnameFromId((int)$category['author']);
+        $_outdata_arr['poster']     = \XoopsUserUtility::getUnameFromId($articles['uid']);
         $_outdata_arr['date']       = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
         $_outdata_arr['rating']     = number_format($articles['rating'], 2, '.', '');
         // -- Then the teaser text and as sorted data

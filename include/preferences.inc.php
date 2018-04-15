@@ -160,7 +160,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
         //if ( !admin_refcheck("/modules/$admin_mydirname/admin/") ) {
         //  exit('Invalid referer');
         //}
-        if (!$GLOBALS['xoopsSecurity']->check('mymenu')) {
+        if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         require_once XOOPS_ROOT_PATH . '/class/template.php';

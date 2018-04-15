@@ -29,13 +29,9 @@ use XoopsModules\Soapbox;
  */
 function xoops_module_pre_install_soapbox(\XoopsModule $module)
 {
-    $moduleDirName = basename(dirname(__DIR__));
     /** @var Soapbox\Utility $utility */
-    $utility =  new Soapbox\Utility();
+    $utility =  new \XoopsModules\Soapbox\Utility();
 
-    if (!class_exists($utility)) {
-        xoops_load('utility', $moduleDirName);
-    }
     //check for minimum XOOPS version
     if (!$utility::checkVerXoops($module)) {
         return false;
@@ -64,17 +60,17 @@ function xoops_module_pre_install_soapbox(\XoopsModule $module)
 function xoops_module_install_soapbox(\XoopsModule $module)
 {
     require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    require_once __DIR__ . '/../include/config.php';
+    require_once  dirname(__DIR__) . '/include/config.php';
 
     $moduleDirName = basename(dirname(__DIR__));
-    $helper = Soapbox\Helper::getInstance();
+    $helper = \XoopsModules\Soapbox\Helper::getInstance();
 
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');
 
-    $configurator = new Soapbox\Common\Configurator();
-    $utility = Soapbox\Utility();
+    $configurator = new \XoopsModules\Soapbox\Common\Configurator();
+    $utility = \XoopsModules\Soapbox\Utility();
 
 
     //  ---  CREATE FOLDERS ---------------
@@ -87,7 +83,7 @@ function xoops_module_install_soapbox(\XoopsModule $module)
 
     //  ---  COPY blank.png FILES ---------------
     if (count($configurator->copyBlankFiles) > 0) {
-        $file = __DIR__ . '/../assets/images/blank.png';
+        $file =  dirname(__DIR__) . '/assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $utility::copyFile($file, $dest);

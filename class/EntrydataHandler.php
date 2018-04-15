@@ -419,6 +419,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
         $tags                = [];
         $tags['COLUMN_NAME'] = $sbcolumn->getVar('name');
         $tags['COLUMN_URL']  = XOOPS_URL . '/modules/' . $this->moduleDirName . '/column.php?columnID=' . $sbcolumn->getVar('columnID');
+        /** @var \XoopsNotificationHandler $notificationHandler */
         $notificationHandler = xoops_getHandler('notification');
         $notificationHandler->triggerEvent('global', 0, 'new_column', $tags);
 

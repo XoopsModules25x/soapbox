@@ -143,7 +143,7 @@ function editcol($columnID = '')
     if (!isset($e_category['colimage']) || empty($e_category['colimage']) || '' === $e_category['colimage']) {
         $e_category['colimage'] = 'nopicture.png';
     }
-    $graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
+    $graph_array     = \XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
     $colimage_select = new \XoopsFormSelect('', 'colimage', $e_category['colimage']);
     $colimage_select->addOptionArray($graph_array);
     $colimage_select->setExtra("onchange='showImgSelected(\"image3\", \"colimage\", \"" . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '", "", "' . XOOPS_URL . "\")'");

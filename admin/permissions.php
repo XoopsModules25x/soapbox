@@ -26,7 +26,7 @@ use Xmf\Request;
 use XoopsModules\Soapbox;
 
 require_once __DIR__ . '/admin_header.php';
-//require_once __DIR__ . '/../include/config.inc.php';
+//require_once  dirname(__DIR__) . '/include/config.inc.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 if ('' != Request::getString('submit', '')) {
     redirect_header(XOOPS_URL . '/modules/' . $GLOBALS['xoopsModule']->dirname() . '/admin/permissions.php', 1, _MP_GPERMUPDATED);

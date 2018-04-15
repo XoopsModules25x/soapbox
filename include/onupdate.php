@@ -69,7 +69,7 @@ function xoops_module_pre_update_soapbox(\XoopsModule $module)
 function xoops_module_update_soapbox(\XoopsModule $module, $previousVersion = null)
 {
     global $xoopsDB;
-    require_once __DIR__ . '/../../../mainfile.php';
+    require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
     $moduleDirName = basename(dirname(__DIR__));
     $capsDirName   = strtoupper($moduleDirName);
 
@@ -133,7 +133,7 @@ function xoops_module_update_soapbox(\XoopsModule $module, $previousVersion = nu
 
         //  ---  COPY blank.png FILES ---------------
         if (count($configurator->copyBlankFiles) > 0) {
-            $file = __DIR__ . '/../assets/images/blank.png';
+            $file =  dirname(__DIR__) . '/assets/images/blank.png';
             foreach (array_keys($configurator->copyBlankFiles) as $i) {
                 $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
                 $utility::copyFile($file, $dest);

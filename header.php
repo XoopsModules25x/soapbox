@@ -12,6 +12,6 @@ use Xmf\Request;
 use XoopsModules\Soapbox;
 
 global $xoopsModule;
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 
 $myts = \MyTextSanitizer:: getInstance();

@@ -135,7 +135,7 @@ function b_columns_spot_show($options)
         $category                   = $_categoryob->toArray(); //all assign
         $_outdata_arr               = [];
         $_outdata_arr               = $category;
-        $_outdata_arr['authorname'] = XoopsUserUtility::getUnameFromId((int)$category['author']);
+        $_outdata_arr['authorname'] = \XoopsUserUtility::getUnameFromId((int)$category['author']);
         //-------------------------------------
         if (0 === $options[1]) {
             $_outdata_arr['artdatas'] = [];
@@ -153,7 +153,7 @@ function b_columns_spot_show($options)
                 $articles   = $_entryob->toArray();
                 $articles[] = $articles;
                 //spot
-                $articles['poster'] = XoopsUserUtility::getUnameFromId($articles['uid']);
+                $articles['poster'] = \XoopsUserUtility::getUnameFromId($articles['uid']);
                 $articles['date']   = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $soapConfig['dateformat']));
                 $articles['rating'] = number_format($articles['rating'], 2, '.', '');
                 // -- Then the teaser text and as sorted data

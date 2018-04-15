@@ -35,7 +35,7 @@ function myDeleteByModule(\XoopsDatabase $db, $gperm_modid, $gperm_name = null, 
     return true;
 }
 
-// require_once __DIR__ . '/../../../include/cp_header.php'; GIJ
+// require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php'; GIJ
 $modid = \Xmf\Request::getInt('modid', 1, 'POST');
 // we dont want system module permissions to be changed here ( 1 -> 0 GIJ)
 if ($modid <= 0 || !is_object($xoopsUser) || !$xoopsUser->isAdmin($modid)) {
@@ -50,6 +50,7 @@ if (!is_object($module) || !$module->getVar('isactive')) {
 $memberHandler = xoops_getHandler('member');
 $group_list    = $memberHandler->getGroupList();
 if (is_array($_POST['perms']) && !empty($_POST['perms'])) {
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
     $grouppermHandler = xoops_getHandler('groupperm');
     foreach ($_POST['perms'] as $perm_name => $perm_data) {
         foreach ($perm_data['itemname'] as $item_id => $item_name) {

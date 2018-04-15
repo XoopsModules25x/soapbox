@@ -78,7 +78,7 @@ if (empty($e_articles['artimage'])
     $artimage = 'blank.png';
 }
 // Code to create the image selector
-$graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
+$graph_array     = \XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
 $artimage_select = new \XoopsFormSelect('', 'artimage', $e_articles['artimage']);
 $artimage_select->addOptionArray($graph_array);
 $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '", "", "' . XOOPS_URL . "\")'");
