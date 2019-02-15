@@ -18,8 +18,9 @@
  */
 
 use Xmf\Language;
+use XoopsModules\Soapbox;
 
-if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof XoopsUser)
+if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof \XoopsUser)
     || !$GLOBALS['xoopsUser']->IsAdmin()) {
     exit('Restricted access' . PHP_EOL);
 }
@@ -43,24 +44,17 @@ function tableExists($tablename)
  *
  * @return bool true if ready to install, false if not
  */
-function xoops_module_pre_update_soapbox(XoopsModule $module)
+function xoops_module_pre_update_soapbox(\XoopsModule $module)
 {
+    /** @var Soapbox\Helper $helper */
+    /** @var Soapbox\Utility $utility */
     $moduleDirName = basename(dirname(__DIR__));
-    $className     = ucfirst($moduleDirName) . 'Utility';
-    if (!class_exists($className)) {
-        xoops_load('utility', $moduleDirName);
-    }
-    //check for minimum XOOPS version
-    if (!$className::checkVerXoops($module)) {
-        return false;
-    }
+    $helper       = Soapbox\Helper::getInstance();
+    $utility      = new Soapbox\Utility();
 
-    // check for minimum PHP version
-    if (!$className::checkVerPhp($module)) {
-        return false;
-    }
-
-    return true;
+    $xoopsSuccess = $utility::checkVerXoops($module);
+    $phpSuccess   = $utility::checkVerPhp($module);
+    return $xoopsSuccess && $phpSuccess;
 }
 
 /**
@@ -72,29 +66,21 @@ function xoops_module_pre_update_soapbox(XoopsModule $module)
  * @return void true if update successful, false if not
  */
 
-function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = null)
+function xoops_module_update_soapbox(\XoopsModule $module, $previousVersion = null)
 {
     global $xoopsDB;
     require_once __DIR__ . '/../../../mainfile.php';
-    require_once __DIR__ . '/../include/config.php';
-
     $moduleDirName = basename(dirname(__DIR__));
+    $capsDirName   = strtoupper($moduleDirName);
 
-    if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-    } else {
-        $moduleHelper = Xmf\Module\Helper::getHelper('system');
-    }
-
-    // Load language files
-    $moduleHelper->loadLanguage('admin');
-    $moduleHelper->loadLanguage('modinfo');
+    /** @var Soapbox\Helper $helper */
+    /** @var Soapbox\Utility $utility */
+    /** @var Soapbox\Common\Configurator $configurator */
+    $helper  = Soapbox\Helper::getInstance();
+    $utility = new Soapbox\Utility();
+    $configurator = new Soapbox\Common\Configurator();
 
     if ($previousVersion < 240) {
-        $configurator = new SoapboxConfigurator();
-        $utilityClass = ucfirst($moduleDirName) . 'Utility';
-        if (!class_exists($utilityClass)) {
-            xoops_load('utility', $moduleDirName);
-        }
 
         //delete old HTML templates
         if (count($configurator->{'templateFolders'}) > 0) {
@@ -103,7 +89,7 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
                 if (is_dir($templateFolder)) {
                     $templateList = array_diff(scandir($templateFolder, SCANDIR_SORT_NONE), ['..', '.']);
                     foreach ($templateList as $k => $v) {
-                        $fileInfo = new SplFileInfo($templateFolder . $v);
+                        $fileInfo = new \SplFileInfo($templateFolder . $v);
                         if ('html' === $fileInfo->getExtension() && 'index.html' !== $fileInfo->getFilename()) {
                             if (file_exists($templateFolder . $v)) {
                                 unlink($templateFolder . $v);
@@ -131,7 +117,7 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
             //    foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
             foreach (array_keys($configurator->oldFolders) as $i) {
                 $tempFolder = $GLOBALS['xoops']->path('modules/' . $moduleDirName . $configurator->oldFolders[$i]);
-                /** @var XoopsObjectHandler $folderHandler */
+                /** @var \XoopsObjectHandler $folderHandler */
                 $folderHandler = XoopsFile::getHandler('folder', $tempFolder);
                 $folderHandler->delete($tempFolder);
             }
@@ -141,16 +127,16 @@ function xoops_module_update_soapbox(XoopsModule $module, $previousVersion = nul
         if (count($configurator->uploadFolders) > 0) {
             //    foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
             foreach (array_keys($configurator->uploadFolders) as $i) {
-                $utilityClass::createFolder($configurator->uploadFolders[$i]);
+                $utility::createFolder($configurator->uploadFolders[$i]);
             }
         }
 
         //  ---  COPY blank.png FILES ---------------
-        if (count($configurator->blankFiles) > 0) {
+        if (count($configurator->copyBlankFiles) > 0) {
             $file = __DIR__ . '/../assets/images/blank.png';
-            foreach (array_keys($configurator->blankFiles) as $i) {
-                $dest = $configurator->blankFiles[$i] . '/blank.png';
-                $utilityClass::copyFile($file, $dest);
+            foreach (array_keys($configurator->copyBlankFiles) as $i) {
+                $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
+                $utility::copyFile($file, $dest);
             }
         }
 

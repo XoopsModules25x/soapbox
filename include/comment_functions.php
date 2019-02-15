@@ -10,7 +10,7 @@
  * @param $art_id
  * @param $total_num
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 function sb_com_update($art_id, $total_num)
 {
     //HACK
@@ -23,7 +23,7 @@ function sb_com_update($art_id, $total_num)
         $globaldisplaycomments = $soapModuleConfig['globaldisplaycomments'];
     }
     if (0 === $globaldisplaycomments) {
-        $db  = XoopsDatabaseFactory::getDatabaseConnection();
+        $db  = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'UPDATE ' . $db->prefix('sbarticles') . ' SET commentable = ' . (int)$total_num . ' WHERE articleID = ' . (int)$art_id;
         $db->query($sql);
     }

@@ -9,12 +9,17 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
 
 include __DIR__ . '/../../mainfile.php';
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
+
 //global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule;
 //----------------------------------------------
 //allowsubmit
-if (!isset($xoopsModuleConfig['allowsubmit']) || 1 !== $xoopsModuleConfig['allowsubmit']) {
+if (null !== $helper->getConfig('allowsubmit') || 1 !== $helper->getConfig('allowsubmit')) {
     redirect_header('index.php', 1, _NOPERM);
 }
 //guest
@@ -26,7 +31,7 @@ if (!is_object($xoopsUser)) {
 
 $xoopsConfig['module_cache'] = 0; //disable caching since the URL will be the same, but content different from one user to another
 include XOOPS_ROOT_PATH . '/header.php';
-$myts = MyTextSanitizer:: getInstance();
+$myts = \MyTextSanitizer:: getInstance();
 //----------------------------------------------
 //post op check
 $op = 'form';
@@ -56,7 +61,7 @@ if ($xoopsUser->isAdmin($xoopsModule->mid())) {
 $edit_uid = $xoopsUser->getVar('uid');
 $name     = $xoopsUser->getVar('uname');
 //-------------------------------------
-$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$entrydataHandler = $helper->getHandler('Entrydata');
 //-------------------------------------
 //get can edit category object
 if (XOOPS_GROUP_ADMIN === $thisgrouptype) {
@@ -88,9 +93,7 @@ switch ($op) {
             $_entryob = $entrydataHandler->createArticle(true);
             $_entryob->cleanVars();
         }
-        //-------------------------
-        //set
-        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/class/utility.php';
+
         //set
         $_entryob->setVar('uid', $edit_uid);
         if (isset($_POST['columnID'])) {
@@ -127,9 +130,9 @@ switch ($op) {
         }
 
         //datesub
-        $datesubnochage  = isset($_POST['datesubnochage']) ? (int)$_POST['datesubnochage'] : 0;
+        $datesubnochage  = \Xmf\Request::getInt('datesubnochage', 0, 'POST');
         $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
-        $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;
+        $datesub_time_sl = \Xmf\Request::getInt('datesub', 0, 'POST');
         $datesub         = isset($_POST['datesub']) ? $datesub_date_sl + $datesub_time_sl : 0;
         if (!$datesub || $_entryob->_isNew) {
             $_entryob->setVar('datesub', time());
@@ -153,7 +156,7 @@ switch ($op) {
         }
 
         //autoapprove
-        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $xoopsModuleConfig['autoapprove']) {
+        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $helper->getConfig('autoapprove')) {
             $_entryob->setVar('submit', 1);
             $_entryob->setVar('offline', 1);
         } else {
@@ -166,8 +169,8 @@ switch ($op) {
         if (isset($_POST['teaser'])) {
             $_entryob->setVar('teaser', $_POST['teaser']);
         }
-        $autoteaser = isset($_POST['autoteaser']) ? (int)$_POST['autoteaser'] : 0;
-        $charlength = isset($_POST['teaseramount']) ? (int)$_POST['teaseramount'] : 0;
+        $autoteaser = \Xmf\Request::getInt('autoteaser', 0, 'POST');
+        $charlength = \Xmf\Request::getInt('teaseramount', 0, 'POST');
         if ($autoteaser && $charlength) {
             $_entryob->setVar('teaser', xoops_substr($_entryob->getVar('bodytext', 'none'), 0, $charlength));
         }
@@ -177,7 +180,7 @@ switch ($op) {
 
             break;
         }
-        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $xoopsModuleConfig['autoapprove']) {
+        if (XOOPS_GROUP_ANONYMOUS === $thisgrouptype || 1 !== $helper->getConfig('autoapprove')) {
             // Notify of to admin only for approve
             $entrydataHandler->newArticleTriggerEvent($_entryob, 'article_submit');
         } else {

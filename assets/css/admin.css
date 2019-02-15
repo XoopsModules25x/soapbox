@@ -159,8 +159,7 @@ fieldset p {
 }
 
 .ui-corner-all {
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 /* Buttons style */
@@ -220,9 +219,6 @@ div.rmmenuicon a {
     color: #666666;
 
     background-color: #f0f0f0;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -khtml-border-radius: 6px;
     border-radius: 6px;
 
 }

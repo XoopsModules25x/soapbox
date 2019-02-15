@@ -78,7 +78,7 @@ h4 { font-size: 120%; }
     {
     background-color: #eef6f6;
     margin-bottom: 12px;
-    border: 1px solid silver;
+    border: 1px solid #c0c0c0;
     padding: 18px;
     margin-top: 12px;
     font-size: 12px;
@@ -101,7 +101,7 @@ h4 { font-size: 120%; }
     }
 .pic
     {
-    border: 1px solid black;
+    border: 1px solid #000000;
     width: 80px;
     }
 .left
@@ -309,12 +309,12 @@ h2, h3, h4 {
 
 .pic
     {
-    border: 1px solid black;
+    border: 1px solid #000000;
     width: 80px;
     }
 .subdate
     {
-    color: red;
+    color: #ff0000;
     margin-bottom: 8px;
     clear: right;
     }
@@ -380,7 +380,7 @@ h2, h3, h4 {
     }
 .colteaser
     {
-    border-top: 1px solid silver;
+    border-top: 1px solid #c0c0c0;
     padding: 12px 0;
     color: #789;
     clear: right;

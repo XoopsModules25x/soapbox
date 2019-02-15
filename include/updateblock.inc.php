@@ -1,6 +1,6 @@
 <?php
 // $Id$
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 // Keep Block option values when update (by nobunobu)
 global $xoopsDB;
 $query  = 'SELECT mid FROM ' . $xoopsDB->prefix('modules') . " WHERE dirname='" . $modversion['dirname'] . "' ";
@@ -12,7 +12,7 @@ if ($record) {
 
     $sql     = 'SELECT * FROM ' . $xoopsDB->prefix('newblocks') . ' WHERE mid=' . $mid . " AND block_type <>'D' AND func_num > $count";
     $fresult = $xoopsDB->query($sql);
-    while ($fblock = $xoopsDB->fetchArray($fresult)) {
+    while (false !== ($fblock = $xoopsDB->fetchArray($fresult))) {
         $local_msgs[] = 'Non Defined Block <b>' . $fblock['name'] . '</b> will be deleted';
         $sql          = 'DELETE FROM ' . $xoopsDB->prefix('newblocks') . " WHERE bid='" . $fblock['bid'] . "'";
         $iret         = $xoopsDB->query($sql);

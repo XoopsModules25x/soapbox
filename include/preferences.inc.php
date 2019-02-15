@@ -17,6 +17,8 @@
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
+use XoopsModules\Soapbox;
+
 if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($xoopsModule->mid())) {
     exit('Access Denied');
 } else {
@@ -33,24 +35,25 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
 
     if ('showmod' === $op) {
         $configHandler = xoops_getHandler('config');
-        $mod           = isset($_GET['mod']) ? (int)$_GET['mod'] : 0;
+        $mod           = \Xmf\Request::getInt('mod', 0, 'GET');
         if (empty($mod)) {
             header('Location: admin.php?fct=preferences');
             exit();
         }
-        $config = $configHandler->getConfigs(new Criteria('conf_modid', $mod));
+        $config = $configHandler->getConfigs(new \Criteria('conf_modid', $mod));
         $count  = count($config);
         if ($count < 1) {
             redirect_header('admin.php?fct=preferences', 1);
         }
         require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-        $form = new XoopsThemeForm(_MD_AM_MODCONFIG, 'pref_form', 'admin.php?fct=preferences');
+        $form = new \XoopsThemeForm(_MD_AM_MODCONFIG, 'pref_form', 'admin.php?fct=preferences');
         /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->get($mod);
-        if (file_exists(XOOPS_ROOT_PATH . '/modules/' . $module->getVar('dirname') . '/language/' . $xoopsConfig['language'] . '/modinfo.php')) {
-            require_once XOOPS_ROOT_PATH . '/modules/' . $module->getVar('dirname') . '/language/' . $xoopsConfig['language'] . '/modinfo.php';
-        }
+
+        /** @var Soapbox\Helper $helper */
+        $helper = Soapbox\Helper::getInstance();
+        $helper->loadLanguage('modinfo');
 
         // if has comments feature, need comment lang file
         if (1 == $module->getVar('hascomments')) {
@@ -63,10 +66,10 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
         }
 
         $modname     = $module->getVar('name');
-        $button_tray = new XoopsFormElementTray('');
+        $button_tray = new \XoopsFormElementTray('');
         if ($module->getInfo('adminindex')) {
-            //      $form->addElement(new XoopsFormHidden('redirect', XOOPS_URL.'/modules/'.$module->getVar('dirname').'/'.$module->getInfo('adminindex')));
-            $button_tray->addElement(new XoopsFormHidden('redirect', XOOPS_URL . '/modules/' . $module->getVar('dirname') . '/admin/admin.php?fct=preferences&op=showmod&mod=' . $module->getVar('mid'))); // GIJ Patch
+            //      $form->addElement(new \XoopsFormHidden('redirect', XOOPS_URL.'/modules/'.$module->getVar('dirname').'/'.$module->getInfo('adminindex')));
+            $button_tray->addElement(new \XoopsFormHidden('redirect', XOOPS_URL . '/modules/' . $module->getVar('dirname') . '/admin/admin.php?fct=preferences&op=showmod&mod=' . $module->getVar('mid'))); // GIJ Patch
         }
         for ($i = 0; $i < $count; ++$i) {
             $title4tray = (!defined($config[$i]->getVar('conf_desc'))
@@ -74,17 +77,17 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
             $title      = ''; // GIJ
             switch ($config[$i]->getVar('conf_formtype')) {
                 case 'textarea':
-                    $myts = MyTextSanitizer::getInstance();
+                    $myts = \MyTextSanitizer::getInstance();
                     if ('array' === $config[$i]->getVar('conf_valuetype')) {
                         // this is exceptional.. only when value type is arrayneed a smarter way for this
-                        $ele = ('' != $config[$i]->getVar('conf_value')) ? new XoopsFormTextArea($title, $config[$i]->getVar('conf_name'), $myts->htmlspecialchars(implode('|', $config[$i]->getConfValueForOutput())), 5, 50) : new XoopsFormTextArea($title, $config[$i]->getVar('conf_name'), '', 5, 50);
+                        $ele = ('' != $config[$i]->getVar('conf_value')) ? new \XoopsFormTextArea($title, $config[$i]->getVar('conf_name'), $myts->htmlspecialchars(implode('|', $config[$i]->getConfValueForOutput())), 5, 50) : new \XoopsFormTextArea($title, $config[$i]->getVar('conf_name'), '', 5, 50);
                     } else {
-                        $ele = new XoopsFormTextArea($title, $config[$i]->getVar('conf_name'), $myts->htmlspecialchars($config[$i]->getConfValueForOutput()), 5, 50);
+                        $ele = new \XoopsFormTextArea($title, $config[$i]->getVar('conf_name'), $myts->htmlspecialchars($config[$i]->getConfValueForOutput()), 5, 50);
                     }
                     break;
                 case 'select':
-                    $ele     = new XoopsFormSelect($title, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput());
-                    $options = $configHandler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
+                    $ele     = new \XoopsFormSelect($title, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput());
+                    $options = $configHandler->getConfigOptions(new \Criteria('conf_id', $config[$i]->getVar('conf_id')));
                     $opcount = count($options);
                     for ($j = 0; $j < $opcount; ++$j) {
                         $optval = defined($options[$j]->getVar('confop_value')) ? constant($options[$j]->getVar('confop_value')) : $options[$j]->getVar('confop_value');
@@ -93,8 +96,8 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                     }
                     break;
                 case 'select_multi':
-                    $ele     = new XoopsFormSelect($title, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), 5, true);
-                    $options = $configHandler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
+                    $ele     = new \XoopsFormSelect($title, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), 5, true);
+                    $options = $configHandler->getConfigOptions(new \Criteria('conf_id', $config[$i]->getVar('conf_id')));
                     $opcount = count($options);
                     for ($j = 0; $j < $opcount; ++$j) {
                         $optval = defined($options[$j]->getVar('confop_value')) ? constant($options[$j]->getVar('confop_value')) : $options[$j]->getVar('confop_value');
@@ -103,45 +106,45 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                     }
                     break;
                 case 'yesno':
-                    $ele = new XoopsFormRadioYN($title, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), _YES, _NO);
+                    $ele = new \XoopsFormRadioYN($title, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), _YES, _NO);
                     break;
                 case 'group':
                     require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-                    $ele = new XoopsFormSelectGroup($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
+                    $ele = new \XoopsFormSelectGroup($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
                     break;
                 case 'group_multi':
                     require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-                    $ele = new XoopsFormSelectGroup($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
+                    $ele = new \XoopsFormSelectGroup($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
                     break;
                 // RMV-NOTIFY: added 'user' and 'user_multi'
                 case 'user':
                     require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-                    $ele = new XoopsFormSelectUser($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
+                    $ele = new \XoopsFormSelectUser($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
                     break;
                 case 'user_multi':
                     require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-                    $ele = new XoopsFormSelectUser($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
+                    $ele = new \XoopsFormSelectUser($title, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
                     break;
                 case 'password':
-                    $myts = MyTextSanitizer::getInstance();
-                    $ele  = new XoopsFormPassword($title, $config[$i]->getVar('conf_name'), 50, 255, $myts->htmlspecialchars($config[$i]->getConfValueForOutput()));
+                    $myts = \MyTextSanitizer::getInstance();
+                    $ele  = new \XoopsFormPassword($title, $config[$i]->getVar('conf_name'), 50, 255, $myts->htmlspecialchars($config[$i]->getConfValueForOutput()));
                     break;
                 case 'textbox':
                 default:
-                    $myts = MyTextSanitizer::getInstance();
-                    $ele  = new XoopsFormText($title, $config[$i]->getVar('conf_name'), 50, 255, $myts->htmlspecialchars($config[$i]->getConfValueForOutput()));
+                    $myts = \MyTextSanitizer::getInstance();
+                    $ele  = new \XoopsFormText($title, $config[$i]->getVar('conf_name'), 50, 255, $myts->htmlspecialchars($config[$i]->getConfValueForOutput()));
                     break;
             }
-            $hidden   = new XoopsFormHidden('conf_ids[]', $config[$i]->getVar('conf_id'));
-            $ele_tray = new XoopsFormElementTray($title4tray, '');
+            $hidden   = new \XoopsFormHidden('conf_ids[]', $config[$i]->getVar('conf_id'));
+            $ele_tray = new \XoopsFormElementTray($title4tray, '');
             $ele_tray->addElement($ele);
             $ele_tray->addElement($hidden);
             $form->addElement($ele_tray);
             unset($ele_tray, $ele, $hidden);
         }
-        $button_tray->addElement(new XoopsFormHidden('op', 'save'));
+        $button_tray->addElement(new \XoopsFormHidden('op', 'save'));
         //        $xoopsGTicket->addTicketXoopsFormElement($button_tray, __LINE__, 1800, 'mymenu');
-        $button_tray->addElement(new XoopsFormButton('', 'button', _GO, 'submit'));
+        $button_tray->addElement(new \XoopsFormButton('', 'button', _GO, 'submit'));
         $form->addElement($button_tray);
         xoops_cp_header();
         // GIJ patch start
@@ -161,7 +164,7 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
             redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
         }
         require_once XOOPS_ROOT_PATH . '/class/template.php';
-        $xoopsTpl = new XoopsTpl();
+        $xoopsTpl = new \XoopsTpl();
         $xoopsTpl->clear_all_cache();
         // regenerate admin menu file
         //        xoops_module_write_admin_menu(xoops_module_get_admin_menu());
@@ -216,21 +219,21 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
                             // need to do this to pass to xoops_template_touch function
                             $GLOBALS['xoopsConfig']['template_set'] = $newtplset;
 
-                            for ($i = 0; $i < $dcount; ++$i) {
-                                $found = $tplfileHandler->find($newtplset, 'block', $dtemplates[$i]->getVar('tpl_refid'), null);
+                            foreach ($dtemplates as $iValue) {
+                                $found = $tplfileHandler->find($newtplset, 'block', $iValue->getVar('tpl_refid'), null);
                                 if (count($found) > 0) {
                                     // template for the new theme found, compile it
                                     xoops_template_touch($found[0]->getVar('tpl_id'));
                                 } else {
                                     // not found, so compile 'default' template file
-                                    xoops_template_touch($dtemplates[$i]->getVar('tpl_id'));
+                                    xoops_template_touch($iValue->getVar('tpl_id'));
                                 }
                             }
 
                             // generate image cache files from image binary data, save them under cache/
                             /** @var \XoopsImagesetimgHandler $imageHandler */
                             $imageHandler = xoops_getHandler('imagesetimg');
-                            $imageFiles   = $imageHandler->getObjects(new Criteria('tplset_name', $newtplset), true);
+                            $imageFiles   = $imageHandler->getObjects(new \Criteria('tplset_name', $newtplset), true);
                             foreach (array_keys($imageFiles) as $i) {
                                 if (!$fp = fopen(XOOPS_CACHE_PATH . '/' . $newtplset . '_' . $imageFiles[$i]->getVar('imgsetimg_file'), 'wb')) {
                                 } else {

@@ -6,9 +6,14 @@
  * Licence: GNU
  */
 
+use XoopsModules\Soapbox;
+
 // -- General Stuff -- //
 require_once __DIR__ . '/admin_header.php';
 $adminObject = \Xmf\Module\Admin::getInstance();
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 $op = '';
 if (isset($_GET['op'])) {
@@ -18,7 +23,7 @@ if (isset($_POST['op'])) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
-$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$entrydataHandler = $helper->getHandler('Entrydata');
 $totalcats        = $entrydataHandler->getColumnCount();
 if (0 === $totalcats) {
     redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
@@ -31,9 +36,12 @@ if (0 === $totalcats) {
 function editarticle($articleID = 0)
 {
     global $indexAdmin;
-    global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
-    $xoopsDB = XoopsDatabaseFactory::getDatabaseConnection();
-    $myts    = MyTextSanitizer::getInstance();
+    global $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
+    /** @var Soapbox\Helper $helper */
+    $helper = Soapbox\Helper::getInstance();
+
+    $xoopsDB = \XoopsDatabaseFactory::getDatabaseConnection();
+    $myts    = \MyTextSanitizer::getInstance();
 
     if (file_exists(XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php')) {
         require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
@@ -43,7 +51,7 @@ function editarticle($articleID = 0)
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
     $articleID        = (int)$articleID;
-    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+    $entrydataHandler = $helper->getHandler('Entrydata');
     if (0 !== $articleID) {
         //articleID check
         $_entryob = $entrydataHandler->getArticleOnePermcheck($articleID, false, false);
@@ -53,7 +61,7 @@ function editarticle($articleID = 0)
 
         //adminMenu(2, _AM_SOAPBOX_ARTS._AM_SOAPBOX_EDITING. $_entryob->getVar('headline') ."'");
         //echo "<h3 style='color: #2F5376; '>" . _AM_SOAPBOX_ADMINARTMNGMT . "</h3>";
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_MODART . ': ' . $_entryob->getVar('headline'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
+        $sform = new \XoopsThemeForm(_AM_SOAPBOX_MODART . ': ' . $_entryob->getVar('headline'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     } else {
         //create new entry object
         $_entryob = $entrydataHandler->createArticle(true);
@@ -63,13 +71,13 @@ function editarticle($articleID = 0)
          *initial first variables before we start
          */
         $columnID = 1;
-        if (isset($xoopsModuleConfig['form_options']) && 'dhtml' !== $xoopsModuleConfig['form_options']) {
+        if  (null !== $helper->getConfig('editorUser') && 'dhtml' !== $helper->getConfig('editorUser')) {
             $html   = 1;
             $breaks = 0;
         }
         //adminMenu(2, _AM_SOAPBOX_ARTS._AM_SOAPBOX_CREATINGART);
         //echo "<h3 style='color: #2F5376; '>" . _AM_SOAPBOX_ADMINARTMNGMT . "</h3>";
-        $sform = new XoopsThemeForm(_AM_SOAPBOX_NEWART, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
+        $sform = new \XoopsThemeForm(_AM_SOAPBOX_NEWART, 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     }
 
     //get vars mode E
@@ -92,22 +100,22 @@ function editarticle($articleID = 0)
     foreach ($canEditCategoryobArray as $key => $_can_edit_categoryob) {
         $collist[$key] = $_can_edit_categoryob->getVar('name');
     }
-    $col_select = new XoopsFormSelect('', 'columnID', (int)$e_articles['columnID']);
+    $col_select = new \XoopsFormSelect('', 'columnID', (int)$e_articles['columnID']);
     $col_select->addOptionArray($collist);
-    $col_select_tray = new XoopsFormElementTray(_AM_SOAPBOX_COLNAME, '<br>');
+    $col_select_tray = new \XoopsFormElementTray(_AM_SOAPBOX_COLNAME, '<br>');
     $col_select_tray->addElement($col_select);
     $sform->addElement($col_select_tray);
 
     // HEADLINE, LEAD, BODYTEXT
     // This part is common to edit/add
-    $sform->addElement(new XoopsFormText(_AM_SOAPBOX_ARTHEADLINE, 'headline', 50, 50, $e_articles['headline']), true);
+    $sform->addElement(new \XoopsFormText(_AM_SOAPBOX_ARTHEADLINE, 'headline', 50, 50, $e_articles['headline']), true);
 
     // LEAD
-    //    $sform -> addElement( new XoopsFormTextArea( _AM_SOAPBOX_ARTLEAD, 'lead', $lead, 5, 60 ) );
-    //    $editor_lead=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
+    //    $sform -> addElement( new \XoopsFormTextArea( _AM_SOAPBOX_ARTLEAD, 'lead', $lead, 5, 60 ) );
+    //    $editor_lead=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _AM_SOAPBOX_ARTLEAD , 'lead' , $e_articles['lead'] , '100%', '200px');
     //    $sform->addElement($editor_lead,TRUE);
 
-    $editor_lead = new XoopsFormElementTray(_AM_SOAPBOX_ARTLEAD, '<br>');
+    $editor_lead = new \XoopsFormElementTray(_AM_SOAPBOX_ARTLEAD, '<br>');
     if (class_exists('XoopsFormEditor')) {
         $options['name']   = 'lead';
         $options['value']  = $e_articles['lead'];
@@ -115,33 +123,33 @@ function editarticle($articleID = 0)
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '200px';
-        $formmnote         = new XoopsFormEditor('', $xoopsModuleConfig['form_options'], $options, $nohtml = false, $onfailure = 'textarea');
+        $formmnote         = new \XoopsFormEditor('', $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $editor_lead->addElement($formmnote);
     } else {
-        $formmnote = new XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
+        $formmnote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
         $editor_lead->addElement($formmnote);
     }
     $sform->addElement($editor_lead, false);
 
     // TEASER
-    $sform->addElement(new XoopsFormTextArea(_AM_SOAPBOX_ARTTEASER, 'teaser', $e_articles['teaser'], 10, 120));
-    //    $editor_teaser=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
+    $sform->addElement(new \XoopsFormTextArea(_AM_SOAPBOX_ARTTEASER, 'teaser', $e_articles['teaser'], 10, 120));
+    //    $editor_teaser=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _AM_SOAPBOX_ARTTEASER ,'teaser', $teaser , '100%', '120px');
     //    $sform->addElement($editor_teaser,true);
     //
-    $autoteaser_radio = new XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+    $autoteaser_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_AUTOTEASER, 'autoteaser', 0, ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
     $sform->addElement($autoteaser_radio);
-    $sform->addElement(new XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
+    $sform->addElement(new \XoopsFormText(_AM_SOAPBOX_AUTOTEASERAMOUNT, 'teaseramount', 4, 4, 100));
 
     // BODY
     //HACK by domifara for Wysiwyg
-    //    if (isset($xoopsModuleConfig['form_options']) ) {
-    //        $editor=soapbox_getWysiwygForm($xoopsModuleConfig['form_options'] , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
+    //    if  (null !== ($helper->getConfig('editorUser')) ) {
+    //        $editor=soapbox_getWysiwygForm($helper->getConfig('editorUser') , _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], '100%', '400px');
     //        $sform->addElement($editor,true);
     //    } else {
-    //        $sform -> addElement( new XoopsFormDhtmlTextArea( _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120 ) );
+    //        $sform -> addElement( new \XoopsFormDhtmlTextArea( _AM_SOAPBOX_ARTBODY, 'bodytext', $e_articles['bodytext'], 20, 120 ) );
     //    }
 
-    $optionsTrayNote = new XoopsFormElementTray(_AM_SOAPBOX_ARTBODY, '<br>');
+    $optionsTrayNote = new \XoopsFormElementTray(_AM_SOAPBOX_ARTBODY, '<br>');
     if (class_exists('XoopsFormEditor')) {
         $options['name']   = 'bodytext';
         $options['value']  = $e_articles['bodytext'];
@@ -149,10 +157,10 @@ function editarticle($articleID = 0)
         $options['cols']   = '100%';
         $options['width']  = '100%';
         $options['height'] = '400px';
-        $bodynote          = new XoopsFormEditor('', $xoopsModuleConfig['form_options'], $options, $nohtml = false, $onfailure = 'textarea');
+        $bodynote          = new \XoopsFormEditor('', $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
         $optionsTrayNote->addElement($bodynote);
     } else {
-        $bodynote = new XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
+        $bodynote = new \XoopsFormDhtmlTextArea('', 'formmnote', $item->getVar('formmnote', 'e'), '100%', '100%');
         $optionsTrayNote->addElement($bodynote);
     }
     $sform->addElement($optionsTrayNote, false);
@@ -161,34 +169,34 @@ function editarticle($articleID = 0)
     // The article CAN have its own image :)
     // First, if the article's image doesn't exist, set its value to the blank file
     if (empty($e_articles['artimage'])
-        || !file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $e_articles['artimage'])) {
+        || !file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $e_articles['artimage'])) {
         $artimage = 'blank.png';
     }
     // Code to create the image selector
-    $graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
-    $artimage_select = new XoopsFormSelect('', 'artimage', $e_articles['artimage']);
+    $graph_array     = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
+    $artimage_select = new \XoopsFormSelect('', 'artimage', $e_articles['artimage']);
     $artimage_select->addOptionArray($graph_array);
-    $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $xoopsModuleConfig['sbuploaddir'] . '", "", "' . XOOPS_URL . "\")'");
-    $artimage_tray = new XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
+    $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $helper->getConfig('sbuploaddir') . '", "", "' . XOOPS_URL . "\")'");
+    $artimage_tray = new \XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
     $artimage_tray->addElement($artimage_select);
-    $artimage_tray->addElement(new XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/'
+    $artimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/'
                                                                             . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
     $sform->addElement($artimage_tray);
 
     // Code to call the file browser to select an image to upload
-    $sform->addElement(new XoopsFormFile(_AM_SOAPBOX_UPLOADIMAGE, 'cimage', (int)$xoopsModuleConfig['maxfilesize']), false);
+    $sform->addElement(new \XoopsFormFile(_AM_SOAPBOX_UPLOADIMAGE, 'cimage', (int)$helper->getConfig('maxfilesize')), false);
 
     // WEIGHT
-    $sform->addElement(new XoopsFormText(_AM_SOAPBOX_WEIGHT, 'weight', 4, 4, $e_articles['weight']));
+    $sform->addElement(new \XoopsFormText(_AM_SOAPBOX_WEIGHT, 'weight', 4, 4, $e_articles['weight']));
     //----------
     // datesub
     //----------
-    //$datesub_caption = $myts->htmlSpecialChars( formatTimestamp( $e_articles['datesub'] , $xoopsModuleConfig['dateformat']) . "=>");
-    //$datesub_tray = new XoopsFormDateTime( _AM_SOAPBOX_POSTED.'<br>' . $datesub_caption ,'datesub' , 15, time()) ;
-    $datesub_tray = new XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br>', 'datesub', 15, $e_articles['datesub']);
+    //$datesub_caption = $myts->htmlSpecialChars( formatTimestamp( $e_articles['datesub'] , $helper->getConfig('dateformat')) . "=>");
+    //$datesub_tray = new \XoopsFormDateTime( _AM_SOAPBOX_POSTED.'<br>' . $datesub_caption ,'datesub' , 15, time()) ;
+    $datesub_tray = new \XoopsFormDateTime(_AM_SOAPBOX_POSTED . '<br>', 'datesub', 15, $e_articles['datesub']);
 
     // you don't want to change datesub
-    //    $datesubnochage_checkbox = new XoopsFormCheckBox( _AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 0 );
+    //    $datesubnochage_checkbox = new \XoopsFormCheckBox( _AM_SOAPBOX_DATESUBNOCHANGE, 'datesubnochage', 0 );
     //    $datesubnochage_checkbox->addOption(1, _AM_SOAPBOX_YES);
     //    $datesub_tray -> addElement( $datesubnochage_checkbox );
     $sform->addElement($datesub_tray);
@@ -198,8 +206,8 @@ function editarticle($articleID = 0)
         $moduleHandler = xoops_getHandler('module');
         $tagsModule    = $moduleHandler->getByDirname('tag');
         if (is_object($tagsModule)) {
-            include_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-            $itemid = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0;
+            require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
+            $itemid = \Xmf\Request::getInt('articleID', 0, 'GET');
             $catid  = 0;
             $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemid, $catid = 0));
         }
@@ -209,70 +217,70 @@ function editarticle($articleID = 0)
         && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
         // COMMENTS
         // Code to allow comments
-        $addcommentable_radio = new XoopsFormRadioYN(_AM_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+        $addcommentable_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
         $sform->addElement($addcommentable_radio);
     }
 
     // OFFLINE
     // Code to take article offline, for maintenance purposes
-    $offline_radio = new XoopsFormRadioYN(_AM_SOAPBOX_SWITCHOFFLINE, 'offline', $e_articles['offline'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+    $offline_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_SWITCHOFFLINE, 'offline', $e_articles['offline'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
     $sform->addElement($offline_radio);
 
     // ARTICLE IN BLOCK
     // Code to put article in block
-    $block_radio = new XoopsFormRadioYN(_AM_SOAPBOX_BLOCK, 'block', $e_articles['block'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+    $block_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_BLOCK, 'block', $e_articles['block'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
     $sform->addElement($block_radio);
 
     // notification public
-    $notifypub_radio = new XoopsFormRadioYN(_AM_SOAPBOX_NOTIFY, 'notifypub', $e_articles['notifypub'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
+    $notifypub_radio = new \XoopsFormRadioYN(_AM_SOAPBOX_NOTIFY, 'notifypub', $e_articles['notifypub'], ' ' . _AM_SOAPBOX_YES . '', ' ' . _AM_SOAPBOX_NO . '');
     $sform->addElement($notifypub_radio);
 
     // VARIOUS OPTIONS
     //----------
-    $options_tray = new XoopsFormElementTray(_AM_SOAPBOX_OPTIONS, '<br>');
+    $options_tray = new \XoopsFormElementTray(_AM_SOAPBOX_OPTIONS, '<br>');
 
-    $html_checkbox   = new XoopsFormCheckBox('', 'html', $e_articles['html']);
+    $html_checkbox   = new \XoopsFormCheckBox('', 'html', $e_articles['html']);
     $html_checkbox->addOption(1, _AM_SOAPBOX_DOHTML);
     $options_tray->addElement($html_checkbox);
 
-    $smiley_checkbox = new XoopsFormCheckBox('', 'smiley', $e_articles['smiley']);
+    $smiley_checkbox = new \XoopsFormCheckBox('', 'smiley', $e_articles['smiley']);
     $smiley_checkbox->addOption(1, _AM_SOAPBOX_DOSMILEY);
     $options_tray->addElement($smiley_checkbox);
 
-    $xcodes_checkbox = new XoopsFormCheckBox('', 'xcodes', $e_articles['xcodes']);
+    $xcodes_checkbox = new \XoopsFormCheckBox('', 'xcodes', $e_articles['xcodes']);
     $xcodes_checkbox->addOption(1, _AM_SOAPBOX_DOXCODE);
     $options_tray->addElement($xcodes_checkbox);
 
-    $breaks_checkbox = new XoopsFormCheckBox('', 'breaks', $e_articles['breaks']);
+    $breaks_checkbox = new \XoopsFormCheckBox('', 'breaks', $e_articles['breaks']);
     $breaks_checkbox->addOption(1, _AM_SOAPBOX_BREAKS);
     $options_tray->addElement($breaks_checkbox);
 
     $sform->addElement($options_tray);
     //----------
 
-    $sform->addElement(new XoopsFormHidden('articleID', $e_articles['articleID']));
+    $sform->addElement(new \XoopsFormHidden('articleID', $e_articles['articleID']));
 
-    $button_tray = new XoopsFormElementTray('', '');
-    $hidden      = new XoopsFormHidden('op', 'addart');
+    $button_tray = new \XoopsFormElementTray('', '');
+    $hidden      = new \XoopsFormHidden('op', 'addart');
     $button_tray->addElement($hidden);
 
     if (!$e_articles['articleID']) { // there's no articleID? Then it's a new article
-        $butt_create = new XoopsFormButton('', '', _AM_SOAPBOX_CREATE, 'submit');
+        $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_CREATE, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addart\'"');
         $button_tray->addElement($butt_create);
 
-        $butt_clear = new XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
+        $butt_clear = new \XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
         $button_tray->addElement($butt_clear);
 
-        $butt_cancel = new XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
+        $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
         $button_tray->addElement($butt_cancel);
     } else { // else, we're editing an existing article
-        $butt_create = new XoopsFormButton('', '', _AM_SOAPBOX_MODIFY, 'submit');
+        $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_MODIFY, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addart\'"');
         $button_tray->addElement($butt_create);
 
-        $butt_cancel = new XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
+        $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
         $button_tray->addElement($butt_cancel);
     }
@@ -290,7 +298,7 @@ switch ($op) {
     case 'mod':
         xoops_cp_header();
         $adminObject->displayNavigation(basename(__FILE__));
-        $articleID = isset($_POST['articleID']) ? (int)$_POST['articleID'] : (int)$_GET['articleID'];
+        $articleID = \Xmf\Request::getInt('articleID', (int)$_GET['articleID'], 'POST');
         editarticle($articleID);
         break;
 
@@ -393,15 +401,15 @@ switch ($op) {
             $_entryob->setVar('teaser', $_POST['teaser']);
         }
 
-        $autoteaser = isset($_POST['autoteaser']) ? (int)$_POST['autoteaser'] : 0;
-        $charlength = isset($_POST['teaseramount']) ? (int)$_POST['teaseramount'] : 0;
+        $autoteaser = \Xmf\Request::getInt('autoteaser', 0, 'POST');
+        $charlength = \Xmf\Request::getInt('teaseramount', 0, 'POST');
         if ($autoteaser && $charlength) {
             $_entryob->setVar('teaser', xoops_substr($_entryob->getVar('bodytext', 'none'), 0, $charlength));
         }
         //datesub
-        $datesubnochage  = isset($_POST['datesubnochage']) ? (int)$_POST['datesubnochage'] : 0;
+        $datesubnochage  = \Xmf\Request::getInt('datesubnochage', 0, 'POST');
         $datesub_date_sl = isset($_POST['datesub']) ? (int)strtotime($_POST['datesub']['date']) : 0;
-        $datesub_time_sl = isset($_POST['datesub']) ? (int)$_POST['datesub']['time'] : 0;
+        $datesub_time_sl = \Xmf\Request::getInt('datesub', 0, 'POST');
         $datesub         = isset($_POST['datesub']) ? $datesub_date_sl + $datesub_time_sl : 0;
         //if (!$datesub || $_entryob->_isNew) {
         if (!$datesub) {
@@ -430,12 +438,12 @@ switch ($op) {
             $artimage_name = trim(strip_tags($myts->stripSlashesGPC($_FILES['cimage']['name'])));
             if ('' !== $artimage_name) {
                 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-                if (file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $artimage_name)) {
+                if (file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $artimage_name)) {
                     redirect_header('index.php', 1, _AM_SOAPBOX_FILEEXISTS);
                 }
                 $allowed_mimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'];
 
-                SoapboxUtility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+                Soapbox\Utility::uploadFile($allowed_mimetypes, $artimage_name, 'index.php', 0, $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
 
                 $_entryob->setVar('artimage', $artimage_name);
             }
@@ -448,7 +456,7 @@ switch ($op) {
     $moduleHandler = xoops_getHandler('module');
     $tagsModule    = $moduleHandler->getByDirname('tag');
     if (is_object($tagsModule)) {
-        $tagHandler = xoops_getModuleHandler('tag', 'tag');
+        $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag'); // xoops_getModuleHandler('tag', 'tag');
         $tagHandler->updateByItem($_POST['item_tag'], $articleID, $xoopsModule->getVar('dirname'), $catid = 0);
     }
         // Save to database
@@ -480,7 +488,7 @@ switch ($op) {
 
     case 'del':
 
-        $confirm = isset($_POST['confirm']) ? (int)$_POST['confirm'] : 0;
+        $confirm = \Xmf\Request::getInt('confirm', 0, 'POST');
 
         // confirmed, so delete
         if (1 === $confirm) {
@@ -509,7 +517,7 @@ switch ($op) {
                 redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
             }
         } else {
-            $articleID = isset($_POST['articleID']) ? (int)$_POST['articleID'] : (int)$_GET['articleID'];
+            $articleID = \Xmf\Request::getInt('articleID', (int)$_GET['articleID'], 'POST');
             $_entryob  = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);

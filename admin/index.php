@@ -1,5 +1,7 @@
 <?php
 
+use XoopsModules\Soapbox;
+
 require_once __DIR__ . '/../../../include/cp_header.php';
 require_once __DIR__ . '/admin_header.php';
 
@@ -7,36 +9,34 @@ xoops_cp_header();
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
-/** @var InstructionUtility $utilityClass */
-$utilityClass = ucfirst($moduleDirName) . 'Utility';
-if (!class_exists($utilityClass)) {
-    xoops_load('utility', $moduleDirName);
-}
+/** @var Soapbox\Utility $utility */
+$utility =  new Soapbox\Utility();
+
 
 //get category count
 //----------------------------
-$entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+$entrydataHandler = $helper->getHandler('Entrydata');
 $totcol           = $entrydataHandler->getColumnCount();
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 0));
-$criteria->add(new Criteria('offline', 0));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 0));
+$criteria->add(new \Criteria('offline', 0));
 $totpub = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 0));
-$criteria->add(new Criteria('offline', 1));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 0));
+$criteria->add(new \Criteria('offline', 1));
 $totoff = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 1));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 1));
 $totsub = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 //----------------------------
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('submit', 0));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('submit', 0));
 $totall = $entrydataHandler->getArticleCount($criteria);
 unset($criteria);
 
@@ -67,14 +67,28 @@ if ($totsub > 0) {
 } else {
     $adminObject->addInfoBoxLine(sprintf('<infolabel>' . _AM_SOAPBOX_NEED_APPROVAL . '</infolabel>', '<span class="green">' . $totsub . '</span>'), '', 'green');
 }
-
-require_once __DIR__ . '/../testdata/index.php';
-$adminObject->addItemButton(_AM_SOAPBOX_ADD_SAMPLEDATA, '__DIR__ . /../../testdata/index.php?op=load', 'add');
-
 $adminObject->displayNavigation(basename(__FILE__));
-$adminObject->displayButton('left', '');
+
+//------------- Test Data ----------------------------
+
+if ($helper->getConfig('displaySampleButton')) {
+    xoops_loadLanguage('admin/modulesadmin', 'system');
+    require_once __DIR__ . '/../testdata/index.php';
+
+    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'ADD_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=load', 'add');
+
+    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=save', 'add');
+
+    //    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA'), '__DIR__ . /../../testdata/index.php?op=exportschema', 'add');
+
+    $adminObject->displayButton('left', '');
+}
+
+//------------- End Test Data ----------------------------
+
 $adminObject->displayIndex();
 
-echo $utilityClass::getServerStats();
+
+echo $utility::getServerStats();
 
 require_once __DIR__ . '/admin_footer.php';

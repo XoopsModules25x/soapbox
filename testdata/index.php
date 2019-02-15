@@ -17,14 +17,22 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
+use XoopsModules\Soapbox\Common;
 
 require_once __DIR__ . '/../../../mainfile.php';
-
+include __DIR__ . '/../preloads/autoloader.php';
 $op = Request::getCmd('op', '');
 
 switch ($op) {
     case 'load':
         loadSampleData();
+        break;
+    case 'save':
+        saveSampleData();
+        break;
+    case 'export':
+        exportSchema();
         break;
 }
 
@@ -32,17 +40,84 @@ switch ($op) {
 
 function loadSampleData()
 {
-    $moduleDirName = basename(dirname(__DIR__));
-    xoops_loadLanguage('admin', $moduleDirName);
-    $items = \Xmf\Yaml::readWrapped('item-data.yml');
-    $cat   = \Xmf\Yaml::readWrapped('cat-data.yml');
 
-    \Xmf\Database\TableLoad::truncateTable('sbarticles');
-    \Xmf\Database\TableLoad::truncateTable('sbcolumns');
-    \Xmf\Database\TableLoad::truncateTable('sbvotedata');
+    //    $tables = [
+    //        'meta',
+    //        'broken',
+    //        'cat',
+    //        'downloads',
+    //        'indexpage',
+    //        'ip_log',
+    //        'mimetypes',
+    //        'mirrors',
+    //        'mod',
+    //        'reviews',
+    //        'votedata',
+    //    ];
 
-    \Xmf\Database\TableLoad::loadTableFromArray('sbarticles', $items);
-    \Xmf\Database\TableLoad::loadTableFromArray('sbcolumns', $cat);
+    $moduleDirName      = basename(dirname(__DIR__));
+    $moduleDirNameUpper = strtoupper($moduleDirName);
 
-    redirect_header('../admin/main.php', 1, _AM_SOAPBOX_SAMPLEDATA_SUCCESS);
+    $helper        = Soapbox\Helper::getInstance();
+    $utility       = new Soapbox\Utility();
+    $configurator  = new Common\Configurator();
+    // Load language files
+    $helper->loadLanguage('admin');
+    $helper->loadLanguage('modinfo');
+    $helper->loadLanguage('common');
+
+
+    $tables = \Xmf\Module\Helper::getHelper($moduleDirName)->getModule()->getInfo('tables');
+
+    foreach ($tables as $table) {
+        try {
+        $tabledata = \Xmf\Yaml::readWrapped($table . '.yml');
+        \Xmf\Database\TableLoad::truncateTable($table);
+        \Xmf\Database\TableLoad::loadTableFromArray($table, $tabledata);
+        } catch (\Exception $e) {
+            exit(constant('CO_' . $moduleDirNameUpper . '_' . 'IMPORT_ERROR'));
+        }
+    }
+
+
+    //  ---  COPY test folder files ---------------
+    if (is_array ($configurator->copyTestFolders) && count($configurator->copyTestFolders) > 0) {
+        //        $file = __DIR__ . '/../testdata/images/';
+        foreach (array_keys($configurator->copyTestFolders) as $i) {
+            $src  = $configurator->copyTestFolders[$i][0];
+            $dest = $configurator->copyTestFolders[$i][1];
+            $utility::xcopy($src, $dest);
+        }
+    }
+
+    redirect_header('../admin/index.php', 1, constant('CO_' . $moduleDirNameUpper . '_' . 'SAMPLEDATA_SUCCESS'));
+}
+
+function saveSampleData()
+{
+    $moduleDirName      = basename(dirname(__DIR__));
+    $moduleDirNameUpper = strtoupper($moduleDirName);
+
+    $tables = \Xmf\Module\Helper::getHelper($moduleDirName)->getModule()->getInfo('tables');
+
+    foreach ($tables as $table) {
+        \Xmf\Database\TableLoad::saveTableToYamlFile($table, $table . '_' . date("Y-m-d H-i-s") . '.yml');
+    }
+
+    redirect_header('../admin/index.php', 1, constant('CO_' . $moduleDirNameUpper . '_' . 'SAMPLEDATA_SUCCESS'));
+}
+
+function exportSchema()
+{
+    try {
+        $moduleDirName      = basename(dirname(__DIR__));
+        $moduleDirNameUpper = strtoupper($moduleDirName);
+
+        $migrate = new  \Xmf\Database\Migrate($moduleDirName);
+        $migrate->saveCurrentSchema();
+
+        redirect_header('../admin/index.php', 1, constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_SUCCESS'));
+    } catch (\Exception $e) {
+        exit(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_ERROR'));
+    }
 }

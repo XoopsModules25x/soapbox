@@ -9,9 +9,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
 
 global $xoopsModule;
 include __DIR__ . '/../../mainfile.php';
 
-require_once __DIR__ . '/class/utility.php';
-$myts = MyTextSanitizer:: getInstance();
+$myts = \MyTextSanitizer:: getInstance();

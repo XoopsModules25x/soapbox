@@ -14,7 +14,7 @@
  * @param $userid
  * @return array
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 function sb_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsUser;
@@ -29,7 +29,7 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
         }
     }
     //-------------------------------------
-    $entrydataHandler = xoops_getModuleHandler('entryget', 'soapbox');
+    $entrydataHandler = $helper->getHandler('Entryget');
     //-------------------------------------
     $canread_columnIDs        = [];
     $canread_columnnames      = [];
@@ -49,30 +49,30 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
     if (empty($canread_columnIDs)) {
         return $ret;
     }
-    $criteria     = new CriteriaCompo();
-    $crit_canread = new CriteriaCompo();
-    $crit_canread->add(new Criteria('columnID', '(' . implode(',', array_unique($canread_columnIDs)) . ')', 'IN'));
+    $criteria     = new \CriteriaCompo();
+    $crit_canread = new \CriteriaCompo();
+    $crit_canread->add(new \Criteria('columnID', '(' . implode(',', array_unique($canread_columnIDs)) . ')', 'IN'));
     $criteria->add($crit_canread, 'AND');
     unset($crit_canread);
     //for userinfo
     if (0 !== $userid && !empty($_userinfo_authors_column) && count($_userinfo_authors_column) > 0) {
-        $criteria_userinfo = new CriteriaCompo();
-        $criteria_userinfo->add(new Criteria('columnID', '(' . implode(',', array_unique($_userinfo_authors_column)) . ')', 'IN'));
+        $criteria_userinfo = new \CriteriaCompo();
+        $criteria_userinfo->add(new \Criteria('columnID', '(' . implode(',', array_unique($_userinfo_authors_column)) . ')', 'IN'));
         $criteria->add($criteria_userinfo, 'AND');
         unset($criteria_userinfo);
     }
     //for serch form
     if (is_array($queryarray) && $count > 0) {
-        $crit_query = new CriteriaCompo();
+        $crit_query = new \CriteriaCompo();
         foreach ($queryarray as $query_v) {
-            $crit_query_one = new CriteriaCompo();
-            $crit_query_one->add(new Criteria('columnID', '(' . implode(',', array_unique($_userinfo_authors_column)) . ')', 'IN'));
-            $crit_query_one->add(new Criteria('headline', '%' . $query_v . '%', 'like'));
-            $crit_query_one->add(new Criteria('headline', '.*(' . preg_quote($query_v) . ').*', 'regexp'), 'OR');
-            $crit_query_one->add(new Criteria('lead', '%' . $query_v . '%', 'like'), 'OR');
-            $crit_query_one->add(new Criteria('lead', '.*(' . preg_quote($query_v) . ').*', 'regexp'), 'OR');
-            $crit_query_one->add(new Criteria('bodytext', '%' . $query_v . '%', 'like'), 'OR');
-            $crit_query_one->add(new Criteria('bodytext', '.*(' . preg_quote($query_v) . ').*', 'regexp'), 'OR');
+            $crit_query_one = new \CriteriaCompo();
+            $crit_query_one->add(new \Criteria('columnID', '(' . implode(',', array_unique($_userinfo_authors_column)) . ')', 'IN'));
+            $crit_query_one->add(new \Criteria('headline', '%' . $query_v . '%', 'like'));
+            $crit_query_one->add(new \Criteria('headline', '.*(' . preg_quote($query_v) . ').*', 'regexp'), 'OR');
+            $crit_query_one->add(new \Criteria('lead', '%' . $query_v . '%', 'like'), 'OR');
+            $crit_query_one->add(new \Criteria('lead', '.*(' . preg_quote($query_v) . ').*', 'regexp'), 'OR');
+            $crit_query_one->add(new \Criteria('bodytext', '%' . $query_v . '%', 'like'), 'OR');
+            $crit_query_one->add(new \Criteria('bodytext', '.*(' . preg_quote($query_v) . ').*', 'regexp'), 'OR');
             $crit_query->add($crit_query_one, $andor);
             unset($crit_query_one);
         }

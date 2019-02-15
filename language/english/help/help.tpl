@@ -1,11 +1,6 @@
 <div id="help-template" class="outer">
     <{include file=$smarty.const._MI_SOAPBOX_HELP_HEADER}>
 
-    <h4 class="odd">DESCRIPTION</h4> <br>
-
-    <p class="even">This module is ....<br> <br>
-    </p>
-
     <h4 class="odd">DESCRIPTION</h4><br>
 
     This little module has a single purpose: to help you build in your site an editorial column section, where you can

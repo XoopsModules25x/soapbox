@@ -19,7 +19,7 @@
 
 include __DIR__ . '/../../mainfile.php';
 // HACK for  Get file title 2004/4/19 by domifara
-$com_itemid = isset($HTTP_GET_VARS['com_itemid']) ? (int)$HTTP_GET_VARS['com_itemid'] : 0;
+$com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
 if ($com_itemid > 0) {
     // Get file title
     $sql            = 'SELECT headline FROM ' . $xoopsDB->prefix('sbarticles') . ' WHERE articleID=' . $com_itemid . '';

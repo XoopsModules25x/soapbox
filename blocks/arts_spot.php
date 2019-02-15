@@ -7,13 +7,20 @@
  * @param $options
  * @return array
  */
+
+use XoopsModules\Soapbox;
+
 /* This function spotlights a column, with a spotlight article and links to others */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+/**
+ * @param $options
+ * @return array
+ */
 function b_arts_spot_show($options)
 {
     $block_outdata = [];
     //-------------------------------------
-    $myts        = MyTextSanitizer:: getInstance();
+    $myts        = \MyTextSanitizer:: getInstance();
     $module_name = 'soapbox';
     $hModule     = xoops_getHandler('module');
     $soapModule  = $hModule->getByDirname($module_name);
@@ -102,7 +109,7 @@ function b_arts_spot_show($options)
     //    $resultB = $xoopsDB -> query( "SELECT name, colimage FROM ". $xoopsDB -> prefix( "sbcolumns" ) . " WHERE columnID = " . $options[0] . " " );
     //    list ( $name, $colimage ) = $xoopsDB -> fetchRow( $resultB );
     //-------------------------------------
-    $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
+    $entrydataHandler = $helper->getHandler('Entryget');
     //-------------------------------------
     // Retrieve the latest article in the selected column
     $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck($options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
@@ -173,7 +180,7 @@ function b_arts_spot_show($options)
 function b_arts_spot_edit($options)
 {
     global $xoopsDB;
-    $myts        = MyTextSanitizer:: getInstance();
+    $myts        = \MyTextSanitizer:: getInstance();
     $module_name = 'soapbox';
     $hModule     = xoops_getHandler('module');
     $soapModule  = $hModule->getByDirname($module_name);
@@ -290,7 +297,7 @@ function b_arts_spot_edit($options)
     $form .= '&nbsp;<br>' . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "'>&nbsp;" . _MB_SOAPBOX_LENGTH . '';
 
     //-------------------------------------
-    $entrydataHandler = xoops_getModuleHandler('entryget', $module_name);
+    $entrydataHandler = $helper->getHandler('Entryget');
     $categoryobArray  = $entrydataHandler->getColumns();
     $form             .= '<br>' . _MB_SOAPBOX_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
     $form             .= "<option value='0'>(ALL)</option>";

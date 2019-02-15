@@ -9,8 +9,13 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
 
 include __DIR__ . '/header.php';
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
+
 $op = '';
 //HACK for cache by domifara
 if (is_object($xoopsUser)) {
@@ -40,9 +45,9 @@ require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 $start = Request::getInt('start', 0, 'GET');
 
 //-------------------------------------
-$entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
+$entrydataHandler = $helper->getHandler('Entryget');
 //-------------------------------------
-$_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['indexperpage'], $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
+$_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('indexperpage'), $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
 $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
 if (empty($_entryob_arr) || 0 === $totalarts) {
     redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, _MD_SOAPBOX_MAINNOTOPICS);
@@ -55,8 +60,8 @@ $category = [];
 $category = $_categoryob->toArray(); //all assign
 
 $category['colid']      = $columnID;
-$category['author']     = SoapboxUtility::getLinkedUnameFromId($category['author'], 0);
-$category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
+$category['author']     = Soapbox\Utility::getLinkedUnameFromId($category['author'], 0);
+$category['authorname'] = Soapbox\Utility::getAuthorName($category['author']);
 $category['image']      = $category['colimage'];
 $category['total']      = $totalarts;
 $xoopsTpl->assign('category', $category);
@@ -70,9 +75,9 @@ foreach ($_entryob_arr as $_entryob) {
     $articles = $_entryob->toArray();
     //--------------------
     $articles['id']      = $articles['articleID'];
-    $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
+    $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
     //        $articles['poster'] = XoopsUserUtility::getUnameFromId( $articles['uid'] );
-    $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
+    $articles['poster']   = Soapbox\Utility::getLinkedUnameFromId($category['author']);
     $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
     //--------------------
     if (0 !== $articles['submit']) {
@@ -86,13 +91,13 @@ foreach ($_entryob_arr as $_entryob) {
     }
     //--------------------
     if (!empty($articles['artimage']) && 'blank.png' !== $articles['artimage']
-        && file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $articles['artimage'])) {
-        $articles['image'] = XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $articles['artimage'];
+        && file_exists(XOOPS_ROOT_PATH . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $articles['artimage'])) {
+        $articles['image'] = XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $articles['artimage'];
     } else {
         $articles['image'] = '';
     }
 
-    if (1 === $xoopsModuleConfig['includerating']) {
+    if (1 === $helper->getConfig('includerating')) {
         $xoopsTpl->assign('showrating', 1);
         $rating = $articles['rating'];
         $votes  = $articles['votes'];
@@ -112,7 +117,7 @@ foreach ($_entryob_arr as $_entryob) {
     $xoopsTpl->append('articles', $articles);
 }
 
-$pagenav            = new XoopsPageNav($totalarts, (int)$xoopsModuleConfig['indexperpage'], $start, 'start', 'columnID=' . $articles['columnID'] . '&sortname=' . $sortname . '&sortorder=' . $sortorder);
+$pagenav            = new \XoopsPageNav($totalarts, (int)$helper->getConfig('indexperpage'), $start, 'start', 'columnID=' . $articles['columnID'] . '&sortname=' . $sortname . '&sortorder=' . $sortorder);
 $category['navbar'] = '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
 
 $xoopsTpl->assign('xoops_pagetitle', $category['name']);
@@ -120,8 +125,8 @@ $xoopsTpl->assign('category', $category);
 
 $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
 $xoopsTpl->assign('lang_moduledirname', $moduleDirName);
-$xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($xoopsModuleConfig['sbimgdir']));
-$xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+$xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($helper->getConfig('sbimgdir')));
+$xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
 
 $xoopsTpl->assign('sortname', $sortname);
 $xoopsTpl->assign('sortorder', $sortorder);

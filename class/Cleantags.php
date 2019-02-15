@@ -1,14 +1,17 @@
-<?php
+<?php namespace XoopsModules\Soapbox;
+
 //
 /* This file comes from a post by tREXX [www.trexx.ch] in http://www.php.net/manual/en/function.strip-tags.php */
 //  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-if (!class_exists('SoapboxCleantags')) {
+use XoopsModules\Soapbox;
+
+if (!class_exists(Cleantags::class)) {
     /**
-     * Class SoapboxCleantags
+     * Class Cleantags
      */
-    class SoapboxCleantags
+    class Cleantags
     {
         /*
          * Allow these tags
@@ -28,12 +31,12 @@ if (!class_exists('SoapboxCleantags')) {
         // render form as plain html
 
         /**
-         * SoapboxCleantags constructor.
+         * Cleantags constructor.
          */
         public function __construct()
         {
             //        $this->allowedTags = '<h1><b><i><a><ul><li><pre><hr><blockquote>';
-            $this->allowedTags = '<a><acronym><address><b><br><blockquote><cite><code><div><dd><del><dl><dt><em><h1><h2><h3><h4><h5><h6><hr><i><img><li><ol><p><pre><s><span><strong><sub><table><tr><td><th><u><ul>';
+            $this->allowedTags = '<a><abbr><address><b><br><blockquote><cite><code><div><dd><del><dl><dt><em><h1><h2><h3><h4><h5><h6><hr><i><img><li><ol><p><pre><s><span><strong><sub><table><tr><td><th><u><ul>';
             /*
              * Disallow these attributes/prefix within a tag
              */
@@ -82,5 +85,5 @@ if (!class_exists('SoapboxCleantags')) {
     }
 
     // create a instance in global scope
-    $GLOBALS['SoapboxCleantags'] = new SoapboxCleantags();
+    $cleantags = new Soapbox\Cleantags();
 }

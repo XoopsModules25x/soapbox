@@ -7,9 +7,13 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
 
 require_once __DIR__ . '/admin_header.php';
 $adminObject = \Xmf\Module\Admin::getInstance();
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
 
 $op = '';
 //if (isset($_GET['op'])) {
@@ -41,11 +45,11 @@ switch ($op) {
         $adminObject->displayButton('left', '');
 
         require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
+//        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
         $module_id = $xoopsModule->getVar('mid');
 
-        SoapboxUtility::showArticles($xoopsModuleConfig['buttonsadmin']);
-        SoapboxUtility::showColumns($xoopsModuleConfig['buttonsadmin']);
+        Soapbox\Utility::showArticles($helper->getConfig('buttonsadmin'));
+        Soapbox\Utility::showColumns($helper->getConfig('buttonsadmin'));
 }
 
 require_once __DIR__ . '/admin_footer.php';

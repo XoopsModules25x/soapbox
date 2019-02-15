@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\Soapbox;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -16,28 +17,31 @@
  * @since
  * @author     XOOPS Development Team
  */
-defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
+//defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class SoapboxHelper
+ * Class Helper
  */
-class SoapboxHelper extends \Xmf\Module\Helper
+class Helper extends \Xmf\Module\Helper
 {
-    public $debugArray = [];
+    public $debug;
 
     /**
      * @internal param $debug
+     * @param bool $debug
      */
-    protected function __construct()
+    public function __construct($debug = false)
     {
-        //        $this->debug   = $debug;
-        $this->dirname = basename(dirname(__DIR__));
+        $this->debug   = $debug;
+        $moduleDirName = basename(dirname(__DIR__));
+        parent::__construct($moduleDirName);
     }
 
     /**
      * @param bool $debug
      *
-     * @return \SoapboxHelper
+     * @return \XoopsModules\Soapbox\Helper
      */
     public static function getInstance($debug = false)
     {
@@ -47,5 +51,29 @@ class SoapboxHelper extends \Xmf\Module\Helper
         }
 
         return $instance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirname()
+    {
+        return $this->dirname;
+    }
+
+    /**
+     * Get an Object Handler
+     *
+     * @param string $name name of handler to load
+     *
+     * @return bool|\XoopsObjectHandler|\XoopsPersistableObjectHandler
+     */
+    public function getHandler($name)
+    {
+        $ret   = false;
+        $db    = \XoopsDatabaseFactory::getDatabaseConnection();
+        $class = '\\XoopsModules\\' . ucfirst(strtolower(basename(dirname(__DIR__)))) . '\\' . $name . 'Handler';
+        $ret   = new $class($db);
+        return $ret;
     }
 }

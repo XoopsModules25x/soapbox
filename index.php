@@ -9,8 +9,13 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
 
 require_once __DIR__ . '/header.php';
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
+
 $op = '';
 if (is_object($xoopsUser)) {
     $xoopsConfig['module_cache'] = 0; //disable caching since the URL will be the same, but content different from one user to another
@@ -45,25 +50,25 @@ switch ($op) {
     case 'default':
     default:
         //-------------------------------------
-        $entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
+        $entrydataHandler = $helper->getHandler('Entryget');
         //-------------------------------------
 
-        $author = isset($_GET['author']) ? (int)$_GET['author'] : 0;
+        $author = \Xmf\Request::getInt('author', 0, 'GET');
         //get category object
         if (!empty($author)) {
-            $categoryobArray = $entrydataHandler->getColumnsByAuthor($author, true, (int)$xoopsModuleConfig['colsperindex'], $start, 'weight', 'ASC');
+            $categoryobArray = $entrydataHandler->getColumnsByAuthor($author, true, (int)$helper->getConfig('colsperindex'), $start, 'weight', 'ASC');
             $totalcols       = $entrydataHandler->total_getColumnsByAuthor;
         } else {
             //get category object
-            $categoryobArray = $entrydataHandler->getColumnsAllPermcheck((int)$xoopsModuleConfig['colsperindex'], $start, true, 'weight', 'ASC', null, null, true, false);
+            $categoryobArray = $entrydataHandler->getColumnsAllPermcheck((int)$helper->getConfig('colsperindex'), $start, true, 'weight', 'ASC', null, null, true, false);
             $totalcols       = $entrydataHandler->total_getColumnsAllPermcheck;
         }
-        $xoopsTpl->assign('lang_mainhead', $myts->htmlSpecialChars($xoopsModuleConfig['introtitle']));
-        $xoopsTpl->assign('lang_maintext', $myts->htmlSpecialChars($xoopsModuleConfig['introtext']));
+        $xoopsTpl->assign('lang_mainhead', $myts->htmlSpecialChars($helper->getConfig('introtitle')));
+        $xoopsTpl->assign('lang_maintext', $myts->htmlSpecialChars($helper->getConfig('introtext')));
         $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
         $xoopsTpl->assign('lang_moduledirname', $moduleDirName);
-        $xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($xoopsModuleConfig['sbimgdir']));
-        $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+        $xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($helper->getConfig('sbimgdir')));
+        $xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
 
         //----------------------------
         if (0 === $totalcols) {
@@ -75,10 +80,10 @@ switch ($op) {
             $category = $_categoryob->toArray(); //all assign
             //-------------------------------------
             //get author
-            $category['authorname'] = SoapboxUtility::getAuthorName($category['author']);
+            $category['authorname'] = Soapbox\Utility::getAuthorName($category['author']);
             //-------------------------------------
             if ('' !== $category['colimage']) {
-                $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']) . '/' . $category['colimage'] . '"></span>';
+                $category['imagespan'] = '<span class="picleft"><img class="pic" src="' . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $category['colimage'] . '"></span>';
             } else {
                 $category['imagespan'] = '';
             }
@@ -94,9 +99,9 @@ switch ($op) {
                 //get vars
                 $articles            = $_entryob->toArray();
                 $articles['id']      = $articles['articleID'];
-                $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
+                $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
                 //        $articles['poster'] = XoopsUserUtility::getUnameFromId( $articles['uid'] );
-                $articles['poster']   = SoapboxUtility::getLinkedUnameFromId($category['author']);
+                $articles['poster']   = Soapbox\Utility::getLinkedUnameFromId($category['author']);
                 $articles['bodytext'] = xoops_substr($articles['bodytext'], 0, 255);
                 //--------------------
                 if (0 !== $articles['submit']) {
@@ -117,7 +122,7 @@ switch ($op) {
             }
 
             $category['total']  = $totalcols;
-            $pagenav            = new XoopsPageNav($category['total'], (int)$xoopsModuleConfig['colsperindex'], $start, 'start', '');
+            $pagenav            = new \XoopsPageNav($category['total'], (int)$helper->getConfig('colsperindex'), $start, 'start', '');
             $category['navbar'] = '<div style="text-align:right;">' . $pagenav->renderNav() . '</div>';
 
             $xoopsTpl->append_by_ref('cols', $category);
