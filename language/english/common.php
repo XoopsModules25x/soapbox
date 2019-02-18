@@ -9,12 +9,12 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 /**
- * Wfdownloads module
+ * SoapBox module
  *
  * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
- * @package         wfdownload
- * @since           3.23
+ * @package         SoapBox
+ * @since           1.7**
  * @author          Xoops Development Team
  */
 

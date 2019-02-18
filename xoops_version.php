@@ -7,16 +7,20 @@
  */
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 require_once __DIR__ . '/preloads/autoloader.php';
 
-
 $moduleDirName = basename(__DIR__);
+xoops_load('xoopseditorhandler');
+$editorHandler = \XoopsEditorHandler::getInstance();
+$xoopsUrl = parse_url(XOOPS_URL);
 
 // ------------------- Informations ------------------- //
 $modversion = [
     'version'             =>  1.70,
-    'module_status'       => 'Beta 1',
-    'release_date'        => '2018/03/30',
+    'module_status'       => 'Beta 2',
+    'release_date'        => '2019/02/18',
     'name'                => _MI_SOAPBOX_NAME,
     'description'         => _MI_SOAPBOX_DESC,
     'official'            => 0,
@@ -471,8 +475,8 @@ $modversion['config'][] = [
  */
 $modversion['config'][] = [
     'name'        => 'displaySampleButton',
-    'title'       => '_MI_XOOPSTUBE_SHOW_SAMPLE_BUTTON',
-    'description' => '_MI_XOOPSTUBE_SHOW_SAMPLE_BUTTON_DESC',
+    'title'       => '_MI_SOAPBOX_SHOW_SAMPLE_BUTTON',
+    'description' => '_MI_SOAPBOX_SHOW_SAMPLE_BUTTON_DESC',
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => 0,
