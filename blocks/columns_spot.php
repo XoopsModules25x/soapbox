@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -21,10 +20,10 @@ function b_columns_spot_show($options)
 {
     $block_outdata = [];
     //-------------------------------------
-    $myts        = \MyTextSanitizer:: getInstance();
-    $module_name = 'soapbox';
-    $hModule     = xoops_getHandler('module');
-    $soapModule  = $hModule->getByDirname($module_name);
+    $myts          = \MyTextSanitizer:: getInstance();
+    $module_name   = 'soapbox';
+    $moduleHandler = xoops_getHandler('module');
+    $soapModule    = $moduleHandler->getByDirname($module_name);
     if (!is_object($soapModule)) {
         return null;
     }
@@ -82,7 +81,7 @@ function b_columns_spot_show($options)
     }
     //-------------------------------------
     $sortname = $options[7];
-    if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
+    if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
         $sortname = 'datesub';
     }
     $sortorder = 'DESC';
@@ -195,10 +194,10 @@ function b_columns_spot_show($options)
  */
 function b_columns_spot_edit($options)
 {
-    $myts        = \MyTextSanitizer:: getInstance();
-    $module_name = 'soapbox';
-    $hModule     = xoops_getHandler('module');
-    $soapModule  = $hModule->getByDirname($module_name);
+    $myts          = \MyTextSanitizer:: getInstance();
+    $module_name   = 'soapbox';
+    $moduleHandler = xoops_getHandler('module');
+    $soapModule    = $moduleHandler->getByDirname($module_name);
     if (!is_object($soapModule)) {
         return null;
     }
@@ -331,7 +330,7 @@ function b_columns_spot_edit($options)
             $categoryID = $_categoryob->getVar('columnID');
             $name       = $_categoryob->getVar('name');
             $sel        = '';
-            if (in_array($categoryID, $columnIDs)) {
+            if (in_array($categoryID, $columnIDs, true)) {
                 $sel = ' selected="selected"';
             }
             $form .= "<option value='" . $categoryID . "' " . $sel . '>' . $categoryID . ' : ' . $name . '</option>';

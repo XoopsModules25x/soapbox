@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -11,7 +10,7 @@
 use Xmf\Request;
 use XoopsModules\Soapbox;
 
-include __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
@@ -32,12 +31,12 @@ if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+
 
 $columnID = Request::getInt('columnID', 0, 'GET');
 //---GET view sort --
-$sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
+$sortname = isset($_GET['sortname']) ? mb_strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
     $sortname = 'datesub';
 }
-$sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, ['ASC', 'DESC'])) {
+$sortorder = isset($_GET['sortorder']) ? mb_strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
+if (!in_array($sortorder, ['ASC', 'DESC'], true)) {
     $sortorder = 'DESC';
 }
 //---------------
@@ -133,4 +132,4 @@ $xoopsTpl->assign('sortorder', $sortorder);
 
 $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

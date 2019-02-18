@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -23,19 +22,19 @@ $GLOBALS['xoopsOption']['template_main'] = 'sb_article.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 global $xoopsModule;
 //$pathIcon16 = $xoopsModule->getInfo('sysicons16');
-$pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
 
 $moduleDirName = $myts->htmlSpecialChars(basename(__DIR__));
 if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES));
 }
 //---GET view sort --
-$sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
+$sortname = isset($_GET['sortname']) ? mb_strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
     $sortname = 'datesub';
 }
-$sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, ['ASC', 'DESC'])) {
+$sortorder = isset($_GET['sortorder']) ? mb_strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
+if (!in_array($sortorder, ['ASC', 'DESC'], true)) {
     $sortorder = 'DESC';
 }
 //---------------
@@ -48,7 +47,7 @@ $articleID = Request::getInt('articleID', 0, 'GET'); //isset($_GET['articleID'])
 $startpage = Request::getInt('page', 0, 'GET'); //isset($_GET['page']) ? (int)($_GET['page']) : 0;
 //-------------------------------------
 //move here  form ratefile.php
-if (isset($_POST['submit']) && !empty($_POST['lid'])) {
+if (\Xmf\Request::hasVar('submit', 'POST') && !empty($_POST['lid'])) {
     if (file_exists(XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/ratefile.inc.php')) {
         require XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/ratefile.inc.php';
     }
@@ -101,7 +100,7 @@ if ('' !== trim($articles['bodytext'])) {
         if (0 === $startpage) {
             $articles['bodytext'] = $articles['lead'] . '<br><br>' . $myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
         } else {
-            $articles['bodytext'] =& $myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
+            $articles['bodytext'] = &$myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
         }
     } else {
         $articles['bodytext'] = $articles['lead'] . '<br><br>' . $myts->displayTarea($_entryob->getVar('bodytext', 'none'), $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
@@ -151,11 +150,11 @@ if (xoops_getModuleOption('usetag', 'soapbox')) {
     }
 }
 //if ( xoops_getModuleOption( 'usetag', 'soapbox') ){
-//	require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
-//	$xoopsTpl->assign( 'tags', true );
-//	$xoopsTpl->assign( 'tagbar', tagBar( $_REQUEST['articleID'], 0 ) );
+//  require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+//  $xoopsTpl->assign( 'tags', true );
+//  $xoopsTpl->assign( 'tagbar', tagBar( $_REQUEST['articleID'], 0 ) );
 //} else {
-//	$xoopsTpl->assign( 'tags', false );
+//  $xoopsTpl->assign( 'tags', false );
 //}
 
 // Functional links
@@ -219,10 +218,10 @@ if (!empty($_other_entryob_arr)) {
 if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
     && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
     if (1 === $articles['commentable']) {
-        include XOOPS_ROOT_PATH . '/include/comment_view.php';
+        require XOOPS_ROOT_PATH . '/include/comment_view.php';
     }
 } else {
-    include XOOPS_ROOT_PATH . '/include/comment_view.php';
+    require XOOPS_ROOT_PATH . '/include/comment_view.php';
 }
 $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 

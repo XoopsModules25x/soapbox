@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Soapbox;
+<?php
+
+namespace XoopsModules\Soapbox;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -22,7 +24,6 @@ use XoopsModules\Soapbox;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 //require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
-
 
 /**
  * Class VotedataHandler
@@ -79,12 +80,11 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
      * retrieve entrys from the database
      *
      * @param  \CriteriaElement $criteria  {@link CriteriaElement} conditions to be match
-     * @param  bool            $id_as_key use the ratingid as key for the array?
-     * @param  bool            $as_object
+     * @param  bool             $id_as_key use the ratingid as key for the array?
+     * @param  bool             $as_object
      * @return array           array of <a href='psi_element://Votedata'>Votedata</a> objects
-     *                                    objects
+     *                                     objects
      */
-
     public function &getObjects(\CriteriaElement $criteria = null, $id_as_key = false, $as_object = true)
     {
         $ret   = [];
@@ -126,7 +126,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
      */
     public function insert(\XoopsObject $entry, $force = false)
     {
-        if (strtolower(get_class($entry)) !== strtolower('Votedata')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Votedata')) {
             return false;
         }
         if (!$entry->isDirty()) {
@@ -143,7 +143,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
             $ratingid = $this->db->genId($this->db->prefix('sbvotedata') . '_ratingid_seq');
             $sql      = sprintf('INSERT INTO `%s` (ratingid, lid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, %s, %u)', $this->db->prefix('sbvotedata'), $ratingid, $lid, $ratinguser, $rating, $this->db->quoteString($ratinghostname), $ratingtimestamp);
         } else {
-               $sql = sprintf('UPDATE `%s` SET lid = %u, ratinguser = %u, rating = %u, ratinghostname = %s, ratingtimestamp = %uratingtimestamp WHERE ratingid = %u', $this->db->prefix('sbvotedata'), $ratinguser, $rating, $this->db->quoteString($ratinghostname), $ratingtimestamp, $ratingid);
+            $sql = sprintf('UPDATE `%s` SET lid = %u, ratinguser = %u, rating = %u, ratinghostname = %s, ratingtimestamp = %uratingtimestamp WHERE ratingid = %u', $this->db->prefix('sbvotedata'), $ratinguser, $rating, $this->db->quoteString($ratinghostname), $ratingtimestamp, $ratingid);
         }
         if (false !== $force) {
             $result = $this->db->queryF($sql);
@@ -170,7 +170,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
      */
     public function delete(\XoopsObject $entry, $force = false)
     {
-        if (strtolower(get_class($entry)) !== strtolower('Votedata')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Votedata')) {
             return false;
         }
         $sql = sprintf('DELETE FROM `%s` WHERE ratingid = %u', $this->db->prefix('sbvotedata'), $entry->getVar('ratingid'));
@@ -244,7 +244,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
      */
     public function updateByField($entry, $fieldName, $fieldValue, $force = false)
     {
-        if (strtolower(get_class($entry)) !== strtolower('Votedata')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Votedata')) {
             return false;
         }
         $entry->setVar($fieldName, $fieldValue);

@@ -136,7 +136,7 @@
 <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
 <fb:comments href="<{$xoops_url}>/modules/soapbox/article.php?articleID=<{$story.id}>" num_posts="5"
              width="650"></fb:comments>
-             
+
 <{if $tagbar}>
    <div>
       <{include file="db:lx_tag_bar.tpl"}>

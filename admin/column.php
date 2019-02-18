@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -17,10 +16,10 @@ $adminObject = \Xmf\Module\Admin::getInstance();
 $helper = Soapbox\Helper::getInstance();
 
 $op = '';
-if (isset($_GET['op'])) {
+if (\Xmf\Request::hasVar('op', 'GET')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_GET['op'])));
 }
-if (isset($_POST['op'])) {
+if (\Xmf\Request::hasVar('op', 'POST')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
@@ -32,7 +31,7 @@ $entrydataHandler = $helper->getHandler('Entrydata');
 function editcol($columnID = '')
 {
     global $indexAdmin;
-    global $xoopsUser, $xoopsConfig,  $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
+    global $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsLogger, $xoopsOption, $xoopsUserIsAdmin;
     /** @var Soapbox\Helper $helper */
     $helper = Soapbox\Helper::getInstance();
 
@@ -121,11 +120,11 @@ function editcol($columnID = '')
 
     $nav = new \XoopsPageNav($usercount, 200, $userstart, 'userstart', $myts->htmlSpecialChars('op=mod&columnID=' . $columnID));
 
-    $user_select      = new \XoopsFormSelect('', 'author', $authorid);
+    $user_select = new \XoopsFormSelect('', 'author', $authorid);
     $user_select->addOptionArray($user_list_arr);
     $user_select_tray = new \XoopsFormElementTray(_AM_SOAPBOX_AUTHOR, '<br>');
     $user_select_tray->addElement($user_select);
-    $user_select_nav  = new \XoopsFormLabel('', $nav->renderNav(4));
+    $user_select_nav = new \XoopsFormLabel('', $nav->renderNav(4));
     $user_select_tray->addElement($user_select_nav);
     $sform->addElement($user_select_tray);
 
@@ -147,10 +146,9 @@ function editcol($columnID = '')
     $colimage_select = new \XoopsFormSelect('', 'colimage', $e_category['colimage']);
     $colimage_select->addOptionArray($graph_array);
     $colimage_select->setExtra("onchange='showImgSelected(\"image3\", \"colimage\", \"" . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '", "", "' . XOOPS_URL . "\")'");
-    $colimage_tray   = new \XoopsFormElementTray(_AM_SOAPBOX_COLIMAGE, '&nbsp;');
+    $colimage_tray = new \XoopsFormElementTray(_AM_SOAPBOX_COLIMAGE, '&nbsp;');
     $colimage_tray->addElement($colimage_select);
-    $colimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/'
-                                                                                        . $e_category['colimage'] . "' name='image3' id='image3' alt=''>"));
+    $colimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $e_category['colimage'] . "' name='image3' id='image3' alt=''>"));
     $sform->addElement($colimage_tray);
 
     // Code to call the file browser to select an image to upload
@@ -158,33 +156,33 @@ function editcol($columnID = '')
 
     $sform->addElement(new \XoopsFormHidden('columnID', $e_category['columnID']));
 
-    $button_tray = new \XoopsFormElementTray('', '');
-    $hidden      = new \XoopsFormHidden('op', 'addcol');
-    $button_tray->addElement($hidden);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $hidden     = new \XoopsFormHidden('op', 'addcol');
+    $buttonTray->addElement($hidden);
 
     // No ID for column -- then it's new column, button says 'Create'
     if (empty($e_category['columnID'])) {
         $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_CREATE, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addcol\'"');
-        $button_tray->addElement($butt_create);
+        $buttonTray->addElement($butt_create);
 
-        $butt_clear  = new \XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
-        $button_tray->addElement($butt_clear);
+        $butt_clear = new \XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
+        $buttonTray->addElement($butt_clear);
 
         $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
-        $button_tray->addElement($butt_cancel);
+        $buttonTray->addElement($butt_cancel);
     } else {        // button says 'Update'
         $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_MODIFY, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addcol\'"');
-        $button_tray->addElement($butt_create);
+        $buttonTray->addElement($butt_create);
 
         $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
-        $button_tray->addElement($butt_cancel);
+        $buttonTray->addElement($butt_cancel);
     }
 
-    $sform->addElement($button_tray);
+    $sform->addElement($buttonTray);
     //-----------
     //    $xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
     //-----------
@@ -194,10 +192,9 @@ function editcol($columnID = '')
 
 switch ($op) {
     case 'mod':
-        $columnID = Request::getInt('columnID', Request::getInt('columnID', 0, 'GET'), 'POST');//isset($_POST['columnID']) ? (int)($_POST['columnID']) : (int)($_GET['columnID']);
+        $columnID = Request::getInt('columnID', Request::getInt('columnID', 0, 'GET'), 'POST'); //isset($_POST['columnID']) ? (int)($_POST['columnID']) : (int)($_GET['columnID']);
         editcol($columnID);
         break;
-
     case 'addcol':
         //-------------------------
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -221,24 +218,24 @@ switch ($op) {
             $_categoryob->setVar('created', time());
         }
 
-        if (isset($_POST['columnID'])) {
+        if (\Xmf\Request::hasVar('columnID', 'POST')) {
             $_categoryob->setVar('columnID', $columnID);
         }
-        if (isset($_POST['name'])) {
+        if (\Xmf\Request::hasVar('name', 'POST')) {
             $_categoryob->setVar('name', $_POST['name']);
         }
-        if (isset($_POST['description'])) {
+        if (\Xmf\Request::hasVar('description', 'POST')) {
             $_categoryob->setVar('description', $_POST['description']);
         }
 
-        if (isset($_POST['weight'])) {
+        if (\Xmf\Request::hasVar('weight', 'POST')) {
             $_categoryob->setVar('weight', \Xmf\Request::getInt('weight', 0, 'POST'));
         }
-        if (isset($_POST['notifypub'])) {
+        if (\Xmf\Request::hasVar('notifypub', 'POST')) {
             $_categoryob->setVar('notifypub', \Xmf\Request::getInt('notifypub', 0, 'POST'));
         }
 
-        if (isset($_POST['author'])) {
+        if (\Xmf\Request::hasVar('author', 'POST')) {
             if ('-1' === $_POST['author'] && isset($_POST['authorinput'])) {
                 $author = \Xmf\Request::getInt('authorinput', 0, 'POST');
             } else {
@@ -251,7 +248,7 @@ switch ($op) {
 
         //-----------------
         //colimage
-        if (isset($_POST['colimage'])) {
+        if (\Xmf\Request::hasVar('colimage', 'POST')) {
             $_categoryob->setVar('colimage', $_POST['colimage']);
         }
         if (isset($_FILES['cimage']['name'])) {
@@ -289,12 +286,10 @@ switch ($op) {
                 redirect_header('index.php', 1, _AM_SOAPBOX_NOTUPDATED);
             } else {
                 redirect_header('index.php', 1, _AM_SOAPBOX_COLMODIFIED);
-                //
             }
         }
         exit();
         break;
-
     case 'del':
 
         $confirm = \Xmf\Request::getInt('confirm', 0, 'POST');
@@ -313,25 +308,24 @@ switch ($op) {
                 $columnID = \Xmf\Request::getInt('columnID', 0, 'POST');
             }
             //get category object
-            $_categoryob  = $entrydataHandler->getColumn($columnID);
+            $_categoryob = $entrydataHandler->getColumn($columnID);
             if (!is_object($_categoryob)) {
                 redirect_header('index.php', 1, _NOPERM);
             }
-            //
+
             if (!$entrydataHandler->deleteColumn($_categoryob)) {
                 trigger_error('ERROR:not deleted from database');
                 exit();
-            } else {
-                $groups       = $xoopsUser ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-                $module_id    = $xoopsModule->getVar('mid');
-                $grouppermHandler = xoops_getHandler('groupperm');
-
-                $name = $myts->htmlSpecialChars($_categoryob->getVar('name'));
-                xoops_groupperm_deletebymoditem($module_id, _AM_SOAPBOX_COLPERMS, $columnID);
-                redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_COLISDELETED, $name));
             }
+            $groups           = $xoopsUser ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+            $module_id        = $xoopsModule->getVar('mid');
+            $grouppermHandler = xoops_getHandler('groupperm');
+
+            $name = $myts->htmlSpecialChars($_categoryob->getVar('name'));
+            xoops_groupperm_deletebymoditem($module_id, _AM_SOAPBOX_COLPERMS, $columnID);
+            redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_COLISDELETED, $name));
         } else {
-            $columnID    = \Xmf\Request::getInt('columnID', \Xmf\Request::getInt('columnID', 0, 'GET'), 'POST');
+            $columnID = \Xmf\Request::getInt('columnID', \Xmf\Request::getInt('columnID', 0, 'GET'), 'POST');
             //get category object
             $_categoryob = $entrydataHandler->getColumn($columnID);
             if (!is_object($_categoryob)) {
@@ -344,17 +338,15 @@ switch ($op) {
                               'op'       => 'del',
                               'columnID' => $columnID,
                               'confirm'  => 1,
-                              'name'     => $name
+                              'name'     => $name,
                           ], 'column.php', _AM_SOAPBOX_DELETETHISCOL . '<br><br>' . $name, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
         exit();
         break;
-
     case 'cancel':
         redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_BACK2IDX, ''));
         break;
-
     case 'reorder':
         //-------------------------
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -364,7 +356,6 @@ switch ($op) {
         redirect_header('./column.php', 1, _AM_SOAPBOX_ORDERUPDATED);
 
         break;
-
     case 'default':
     default:
         //$adminObject->displayNavigation(basename(__FILE__));

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Soapbox;
+<?php
+
+namespace XoopsModules\Soapbox;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -22,7 +24,6 @@ use XoopsModules\Soapbox;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 //require_once XOOPS_ROOT_PATH . '/modules/soapbox/include/cleantags.php';
-
 
 /**
  * Class ColumnsHandler
@@ -81,10 +82,10 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
      * retrieve categorys from the database
      *
      * @param  \CriteriaElement $criteria  {@link CriteriaElement} conditions to be match
-     * @param  bool            $id_as_key use the columnID as key for the array?
-     * @param  bool            $as_object
+     * @param  bool             $id_as_key use the columnID as key for the array?
+     * @param  bool             $as_object
      * @return array           array of <a href='psi_element://Columns'>Columns</a> objects
-     *                                    objects
+     *                                     objects
      */
     public function &getObjects(\CriteriaElement $criteria = null, $id_as_key = false, $as_object = true) //&getObjects($criteria = null, $id_as_key = false)
     {
@@ -128,7 +129,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
      */
     public function insert(\XoopsObject $sbcolumn, $force = false)//insert($sbcolumn, $force = false)
     {
-        if (strtolower(get_class($sbcolumn)) !== strtolower('Columns')) {
+        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower('Columns')) {
             return false;
         }
         if (!$sbcolumn->isDirty()) {
@@ -143,31 +144,11 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
         // RMV-NOTIFY
         if ($sbcolumn->isNew()) {
             $columnID = $this->db->genId($this->db->prefix('sbcolumns') . '_columnID_seq');
-            $sql      = sprintf(
-                'INSERT INTO `%s` (columnID, author, NAME, description, total, weight, colimage, created) VALUES (%u, %u, %s, %s, %u, %u, %s, %u)',
-                $this->db->prefix('sbcolumns'),
-                $columnID,
-                $author,
-                $this->db->quoteString($name),
-                $this->db->quoteString($description),
-                $total,
-                $weight,
-                                $this->db->quoteString($colimage),
-                $created
-            );
+            $sql      = sprintf('INSERT INTO `%s` (columnID, author, NAME, description, total, weight, colimage, created) VALUES (%u, %u, %s, %s, %u, %u, %s, %u)', $this->db->prefix('sbcolumns'), $columnID, $author, $this->db->quoteString($name), $this->db->quoteString($description), $total,
+                                $weight, $this->db->quoteString($colimage), $created);
         } else {
-            $sql = sprintf(
-                'UPDATE `%s` SET author = %s, NAME = %s, description = %s, total = %u, weight = %u, colimage = %s, created = %u WHERE columnID = %u',
-                $this->db->prefix('sbcolumns'),
-                $author,
-                $this->db->quoteString($name),
-                $this->db->quoteString($description),
-                $total,
-                $weight,
-                           $this->db->quoteString($colimage),
-                $created,
-                $columnID
-            );
+            $sql = sprintf('UPDATE `%s` SET author = %s, NAME = %s, description = %s, total = %u, weight = %u, colimage = %s, created = %u WHERE columnID = %u', $this->db->prefix('sbcolumns'), $author, $this->db->quoteString($name), $this->db->quoteString($description), $total, $weight,
+                           $this->db->quoteString($colimage), $created, $columnID);
         }
         if (false !== $force) {
             $result = $this->db->queryF($sql);
@@ -194,7 +175,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
      */
     public function delete(\XoopsObject $sbcolumn, $force = false)//delete($sbcolumn, $force = false)
     {
-        if (strtolower(get_class($sbcolumn)) !== strtolower('Columns')) {
+        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower('Columns')) {
             return false;
         }
         $sql = sprintf('DELETE FROM `%s` WHERE columnID = %u', $this->db->prefix('sbcolumns'), $sbcolumn->getVar('columnID'));
@@ -242,7 +223,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
      */
     public function updateByField($entry, $fieldName, $fieldValue, $force = false)
     {
-        if (strtolower(get_class($entry)) !== strtolower('Columns')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Columns')) {
             return false;
         }
         $entry->setVar($fieldName, $fieldValue);

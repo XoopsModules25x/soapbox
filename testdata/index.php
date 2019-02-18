@@ -1,7 +1,6 @@
 <?php
 
 /**
- *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
  * which is considered copyrighted (c) material of the original comment or credit authors.
@@ -20,9 +19,9 @@ use Xmf\Request;
 use XoopsModules\Soapbox;
 use XoopsModules\Soapbox\Common;
 
-require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-include  dirname(__DIR__) . '/preloads/autoloader.php';
-$op = Request::getCmd('op', '');
+require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+require dirname(__DIR__) . '/preloads/autoloader.php';
+$op = Request::getString('op', '');
 
 switch ($op) {
     case 'load':
@@ -40,7 +39,6 @@ switch ($op) {
 
 function loadSampleData()
 {
-
     //    $tables = [
     //        'meta',
     //        'broken',
@@ -56,37 +54,37 @@ function loadSampleData()
     //    ];
 
     $moduleDirName      = basename(dirname(__DIR__));
-    $moduleDirNameUpper = strtoupper($moduleDirName);
+    $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
-    $helper        = Soapbox\Helper::getInstance();
-    $utility       = new Soapbox\Utility();
-    $configurator  = new Common\Configurator();
+    /** @var Soapbox\Helper $helper */
+    $helper       = Soapbox\Helper::getInstance();
+    $utility      = new Soapbox\Utility();
+    $configurator = new Common\Configurator();
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');
     $helper->loadLanguage('common');
 
-
     $tables = \Xmf\Module\Helper::getHelper($moduleDirName)->getModule()->getInfo('tables');
 
     foreach ($tables as $table) {
         try {
-        $tabledata = \Xmf\Yaml::readWrapped($table . '.yml');
-        \Xmf\Database\TableLoad::truncateTable($table);
-        \Xmf\Database\TableLoad::loadTableFromArray($table, $tabledata);
-        } catch (\Exception $e) {
+            $tabledata = \Xmf\Yaml::readWrapped($table . '.yml');
+            \Xmf\Database\TableLoad::truncateTable($table);
+            \Xmf\Database\TableLoad::loadTableFromArray($table, $tabledata);
+        }
+        catch (\Exception $e) {
             exit(constant('CO_' . $moduleDirNameUpper . '_' . 'IMPORT_ERROR'));
         }
     }
 
-
     //  ---  COPY test folder files ---------------
-    if (is_array ($configurator->copyTestFolders) && count($configurator->copyTestFolders) > 0) {
+    if ($configurator->copyTestFolders && is_array($configurator->copyTestFolders)) {
         //        $file =  dirname(__DIR__) . '/testdata/images/';
         foreach (array_keys($configurator->copyTestFolders) as $i) {
             $src  = $configurator->copyTestFolders[$i][0];
             $dest = $configurator->copyTestFolders[$i][1];
-            $utility::xcopy($src, $dest);
+            $utility::rcopy($src, $dest);
         }
     }
 
@@ -96,7 +94,7 @@ function loadSampleData()
 function saveSampleData()
 {
     $moduleDirName      = basename(dirname(__DIR__));
-    $moduleDirNameUpper = strtoupper($moduleDirName);
+    $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
     $tables = \Xmf\Module\Helper::getHelper($moduleDirName)->getModule()->getInfo('tables');
 
@@ -111,13 +109,14 @@ function exportSchema()
 {
     try {
         $moduleDirName      = basename(dirname(__DIR__));
-        $moduleDirNameUpper = strtoupper($moduleDirName);
+        $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
         $migrate = new  \Xmf\Database\Migrate($moduleDirName);
         $migrate->saveCurrentSchema();
 
         redirect_header('../admin/index.php', 1, constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_SUCCESS'));
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
         exit(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_ERROR'));
     }
 }

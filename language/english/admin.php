@@ -1,13 +1,11 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
  * Author: hsalazar
  * Licence: GNU
  */
-
 define('_AM_SOAPBOX_ABOUT', 'About');
 define('_AM_SOAPBOX_ACTION', 'Action');
 define('_AM_SOAPBOX_ADMINARTMNGMT', 'Articles Management');
@@ -107,10 +105,8 @@ define('_AM_SOAPBOX_OPTS', 'Module Config Options');
 define('_AM_SOAPBOX_ORDERUPDATED', 'Weight reordered');
 define('_AM_SOAPBOX_PERMS', 'Permissions');
 define('_AM_SOAPBOX_PERMSMNGMT', 'Permissions Management');
-define(
-    '_AM_SOAPBOX_PERMSNOTE',
-       '<div><b>NOTE:</b> Please be aware that even if you&#8217ve set correct viewing permissions here, a group might not see the articles or blocks if you don&#8217t also grant that group permissions to access the module. To do that, go to <b>System admin > Groups</b>, choose the appropriate group and click the checkboxes to grant its members the access.</div>'
-);
+define('_AM_SOAPBOX_PERMSNOTE',
+       '<div><b>NOTE:</b> Please be aware that even if you&#8217ve set correct viewing permissions here, a group might not see the articles or blocks if you don&#8217t also grant that group permissions to access the module. To do that, go to <b>System admin > Groups</b>, choose the appropriate group and click the checkboxes to grant its members the access.</div>');
 define('_AM_SOAPBOX_REORDERCOL', 'Reorder columns');
 define('_AM_SOAPBOX_SELALL', 'All articles');
 define('_AM_SOAPBOX_SELAPV', 'Approved articles');

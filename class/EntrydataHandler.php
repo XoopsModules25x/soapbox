@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Soapbox;
+<?php
+
+namespace XoopsModules\Soapbox;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -26,7 +28,6 @@ if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+
     echo('invalid dirname: ' . htmlspecialchars($this->mydirname, ENT_QUOTES | ENT_HTML5));
 }
 
-
 /**
  * Soapbox entrydata handler class.
  * This class provides simple interface (a facade class) for handling sbarticles/sbcolumns/sbvotedata
@@ -40,9 +41,9 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
 {
     /**
      * constructor
-     * @param \XoopsDatabase $db
+     * @param \XoopsDatabase|null $db
      */
-    public function __construct(\XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db);
         global $moduleDirName;
@@ -101,7 +102,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      * insert a new entry in the database
      *
      * @param  Articles $sbarticle reference to the {@link Articles} object
-     * @param  bool              $force
+     * @param  bool     $force
      * @return bool              FALSE if failed, TRUE if already present and unchanged or successful
      */
     public function insertArticle(Articles $sbarticle, $force = false)
@@ -220,8 +221,8 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      * delete  entrys from the database
      *
      * @param  \CriteriaElement $criteria {@link CriteriaElement} conditions to be match
-     * @param  bool            $force
-     * @param  bool            $re_count
+     * @param  bool             $force
+     * @param  bool             $re_count
      * @return bool   FALSE if failed.
      */
     public function deleteArticlesEntrys(\CriteriaElement $criteria = null, $force = false, $re_count = false)
@@ -244,7 +245,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      */
     public function updateRating(&$sbarticle, $force = false) // updates rating data in itemtable for a given item
     {
-        if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
             return false;
         }
         $totalrating = 0.00;
@@ -265,7 +266,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
             $finalrating = ($totalrating / $votesDB) + 0.00005;
             $finalrating = number_format($finalrating, 4);
         }
-        //
+
         $sbarticle->setVar('rating', $finalrating);
         $sbarticle->setVar('votes', $votesDB);
         if (!$this->insertArticle($sbarticle, $force)) {
@@ -303,8 +304,8 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      * updates a single field in a Article record
      *
      * @param  Articles $sbarticle  reference to the {@link Articles} object
-     * @param  string            $fieldName  name of the field to update
-     * @param  string            $fieldValue updated value for the field
+     * @param  string   $fieldName  name of the field to update
+     * @param  string   $fieldValue updated value for the field
      * @return bool   TRUE if success or unchanged, FALSE on failure
      */
     public function updateArticleByField($sbarticle, $fieldName, $fieldValue)
@@ -316,8 +317,8 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      * updates a single field in a Column record
      *
      * @param  Columns $sbcolumns  reference to the {@link Columns} object
-     * @param  string           $fieldName  name of the field to update
-     * @param  string           $fieldValue updated value for the field
+     * @param  string  $fieldName  name of the field to update
+     * @param  string  $fieldValue updated value for the field
      * @return bool   TRUE if success or unchanged, FALSE on failure
      */
     public function updateColumnByField($sbcolumns, $fieldName, $fieldValue)
@@ -409,7 +410,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      */
     public function newColumnTriggerEvent($sbcolumn, $events = 'new_column')
     {
-        if (strtolower(get_class($sbcolumn)) !== strtolower('Columns')) {
+        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower('Columns')) {
             return false;
         }
         if (1 !== $sbcolumn->getVar('notifypub')) {
@@ -436,7 +437,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      */
     public function newArticleTriggerEvent(&$sbarticle, $events = 'new_article')
     {
-        if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
             return false;
         }
         $sbcolumns = $this->getColumn($sbarticle->getVar('columnID'));

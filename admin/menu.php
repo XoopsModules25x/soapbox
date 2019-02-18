@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -8,26 +7,27 @@
 
 use XoopsModules\Soapbox;
 
-// require_once  dirname(__DIR__) . '/class/Helper.php';
 //require_once  dirname(__DIR__) . '/include/common.php';
+/** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
-$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
-
+if (is_object($helper->getModule())) {
+    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+}
 
 $adminmenu = [];
 
 $adminmenu[] = [
     'title' => _MI_SOAPBOX_HOME,
     'link'  => 'admin/index.php',
-    'icon'  => $pathIcon32 . '/home.png'
+    'icon'  => $pathIcon32 . '/home.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_SOAPBOX_ADMENU1,
     'link'  => 'admin/main.php',
-    'icon'  => $pathIcon32 . '/manage.png'
+    'icon'  => $pathIcon32 . '/manage.png',
 ];
 
 //$adminmenu[] = [
@@ -45,17 +45,17 @@ $adminmenu[] = [
 $adminmenu[] = [
     'title' => _MI_SOAPBOX_SUBMITS,
     'link'  => 'admin/submissions.php',
-    'icon'  => $pathIcon32 . '/button_ok.png'
+    'icon'  => $pathIcon32 . '/button_ok.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_SOAPBOX_ADMENU4,
     'link'  => 'admin/permissions.php',
-    'icon'  => $pathIcon32 . '/permissions.png'
+    'icon'  => $pathIcon32 . '/permissions.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_SOAPBOX_ABOUT,
     'link'  => 'admin/about.php',
-    'icon'  => $pathIcon32 . '/about.png'
+    'icon'  => $pathIcon32 . '/about.png',
 ];

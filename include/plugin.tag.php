@@ -24,7 +24,7 @@ function soapbox_tag_iteminfo(&$items)
                 'link'    => "article.php?articleID={$itemId}",
                 'time'    => $itemObj->getVar('datesub'),
                 'tags'    => tag_parse_tag($itemObj->getVar('item_tag', 'n')), // optional
-                'content' => $itemObj->getVar('lead')
+                'content' => $itemObj->getVar('lead'),
             ];
         }
     }

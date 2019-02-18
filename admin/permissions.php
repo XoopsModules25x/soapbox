@@ -72,7 +72,7 @@ switch ($permission) {
         $globalPerms = [
             '4'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_4,
             '8'  => _AM_SOAPBOX_PERMISSIONS_GLOBAL_8,
-            '16' => _AM_SOAPBOX_PERMISSIONS_GLOBAL_16
+            '16' => _AM_SOAPBOX_PERMISSIONS_GLOBAL_16,
         ];
         break;
     case 2:

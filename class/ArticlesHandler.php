@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Soapbox;
+<?php
+
+namespace XoopsModules\Soapbox;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -25,7 +27,6 @@ use XoopsModules\Soapbox;
 if (!defined('XOBJ_SOAPBOX_DTYPE_FLOAT')) {
     define('XOBJ_SOAPBOX_DTYPE_FLOAT', 21);
 }
-
 
 /**
  * Class ArticlesHandler
@@ -88,10 +89,10 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
      * retrieve entrys from the database
      *
      * @param  \CriteriaElement $criteria  {@link CriteriaElement} conditions to be match
-     * @param  bool            $id_as_key use the articleID as key for the array?
-     * @param  bool            $as_object
+     * @param  bool             $id_as_key use the articleID as key for the array?
+     * @param  bool             $as_object
      * @return array           array of <a href='psi_element://Articles'>Articles</a> objects
-     *                                    objects
+     *                                     objects
      */
     public function &getObjects(\CriteriaElement $criteria = null, $id_as_key = false, $as_object = true)
     {
@@ -135,7 +136,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
      */
     public function insert(\XoopsObject $sbarticle, $force = false)
     {
-        if ('soapboxsbarticles' !== strtolower(get_class($sbarticle))) {
+        if ('soapboxsbarticles' !== mb_strtolower(get_class($sbarticle))) {
             return false;
         }
         if (!$sbarticle->isDirty()) {
@@ -150,59 +151,13 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
         // RMV-NOTIFY
         if ($sbarticle->isNew()) {
             $articleID = $this->db->genId($this->db->prefix('sbarticles') . '_articleID_seq');
-            $sql       = sprintf(
-                'INSERT INTO `%s` (articleID, columnID, headline, lead, bodytext, teaser, uid, submit, datesub, counter, weight, html, smiley, xcodes, breaks, BLOCK, artimage, votes, rating, commentable, offline, notifypub) VALUES (%u, %u, %s, %s, %s, %s, %u, %u, %u, %u, %u, %u, %u, %u, %u, %u, %s, %u, %f, %u, %u, %u )',
-                                 $this->db->prefix('sbarticles'),
-                $articleID,
-                $columnID,
-                $this->db->quoteString($headline),
-                $this->db->quoteString($lead),
-                $this->db->quoteString($bodytext),
-                $this->db->quoteString($teaser),
-                $uid,
-                $submit,
-                $datesub,
-                $counter,
-                $weight,
-                $html,
-                $smiley,
-                $xcodes,
-                $breaks,
-                                 $block,
-                $this->db->quoteString($artimage),
-                $votes,
-                $rating,
-                $commentable,
-                $offline,
-                $notifypub
-            );
+            $sql       = sprintf('INSERT INTO `%s` (articleID, columnID, headline, lead, bodytext, teaser, uid, submit, datesub, counter, weight, html, smiley, xcodes, breaks, BLOCK, artimage, votes, rating, commentable, offline, notifypub) VALUES (%u, %u, %s, %s, %s, %s, %u, %u, %u, %u, %u, %u, %u, %u, %u, %u, %s, %u, %f, %u, %u, %u )',
+                                 $this->db->prefix('sbarticles'), $articleID, $columnID, $this->db->quoteString($headline), $this->db->quoteString($lead), $this->db->quoteString($bodytext), $this->db->quoteString($teaser), $uid, $submit, $datesub, $counter, $weight, $html, $smiley, $xcodes, $breaks,
+                                 $block, $this->db->quoteString($artimage), $votes, $rating, $commentable, $offline, $notifypub);
         } else {
-            $sql = sprintf(
-                'UPDATE `%s` SET columnID = %u , headline = %s , lead = %s , bodytext = %s , teaser = %s , uid = %u , submit = %u , datesub = %u , counter = %u , weight = %u , html = %u , smiley = %u , xcodes = %u , breaks = %u , BLOCK = %u , artimage = %s , votes = %u , rating = %f , commentable = %u , offline = %u , notifypub = %u WHERE articleID = %u',
-                           $this->db->prefix('sbarticles'),
-                $columnID,
-                $this->db->quoteString($headline),
-                $this->db->quoteString($lead),
-                $this->db->quoteString($bodytext),
-                $this->db->quoteString($teaser),
-                $uid,
-                $submit,
-                $datesub,
-                $counter,
-                $weight,
-                $html,
-                $smiley,
-                $xcodes,
-                $breaks,
-                $block,
-                           $this->db->quoteString($artimage),
-                $votes,
-                $rating,
-                $commentable,
-                $offline,
-                $notifypub,
-                $articleID
-            );
+            $sql = sprintf('UPDATE `%s` SET columnID = %u , headline = %s , lead = %s , bodytext = %s , teaser = %s , uid = %u , submit = %u , datesub = %u , counter = %u , weight = %u , html = %u , smiley = %u , xcodes = %u , breaks = %u , BLOCK = %u , artimage = %s , votes = %u , rating = %f , commentable = %u , offline = %u , notifypub = %u WHERE articleID = %u',
+                           $this->db->prefix('sbarticles'), $columnID, $this->db->quoteString($headline), $this->db->quoteString($lead), $this->db->quoteString($bodytext), $this->db->quoteString($teaser), $uid, $submit, $datesub, $counter, $weight, $html, $smiley, $xcodes, $breaks, $block,
+                           $this->db->quoteString($artimage), $votes, $rating, $commentable, $offline, $notifypub, $articleID);
         }
         if (false !== $force) {
             $result = $this->db->queryF($sql);
@@ -230,7 +185,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
     public function delete(\XoopsObject $sbarticle, $force = false)
     {
         global $xoopsModule;
-        if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
             return false;
         }
         $sql = sprintf('DELETE FROM `%s` WHERE articleID = %u', $this->db->prefix('sbarticles'), $sbarticle->getVar('articleID'));
@@ -272,14 +227,14 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
      * updates a single field in a Article record
      *
      * @param  Articles $entry      reference to the {@link Articles} object
-     * @param  string            $fieldName  name of the field to update
-     * @param  string            $fieldValue updated value for the field
-     * @param  bool              $force
+     * @param  string   $fieldName  name of the field to update
+     * @param  string   $fieldValue updated value for the field
+     * @param  bool     $force
      * @return bool   TRUE if success or unchanged, FALSE on failure
      */
     public function updateByField($entry, $fieldName, $fieldValue, $force = false)
     {
-        if (strtolower(get_class($entry)) !== strtolower('Articles')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Articles')) {
             return false;
         }
         $entry->setVar($fieldName, $fieldValue);

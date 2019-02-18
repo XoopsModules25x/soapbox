@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -9,7 +8,7 @@
 use Xmf\Request;
 use XoopsModules\Soapbox;
 
-include __DIR__ . '/header.php';
+require __DIR__ . '/header.php';
 
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
@@ -23,11 +22,11 @@ if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+
 //require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 
 //$articleID = Request::getInt('$articleID', Request::getInt('$articleID', 0, 'POST'), 'GET');
-if (\Xmf\Request::hasVar('articleID', 'GET')) { 
- $articleID = \Xmf\Request::getInt('articleID', 0, 'GET');
+if (\Xmf\Request::hasVar('articleID', 'GET')) {
+    $articleID = \Xmf\Request::getInt('articleID', 0, 'GET');
 }
-if (\Xmf\Request::hasVar('articleID', 'POST')) { 
- $articleID = \Xmf\Request::getInt('articleID', 0, 'POST');
+if (\Xmf\Request::hasVar('articleID', 'POST')) {
+    $articleID = \Xmf\Request::getInt('articleID', 0, 'POST');
 }
 if (0 === $articleID) {
     redirect_header('index.php');
@@ -54,11 +53,11 @@ function PrintPage($articleID)
         redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, 'Not Found');
     }
     //-------------------------------------
-    $articles    = $_entryob->toArray();
+    $articles = $_entryob->toArray();
     //get category object
     $_categoryob = $_entryob->_sbcolumns;
     //get vars
-    $category    = $_categoryob->toArray();
+    $category = $_categoryob->toArray();
     //-------------------------------------
     //get author
     $authorname = Soapbox\Utility::getAuthorName($category['author']);
@@ -87,31 +86,13 @@ function PrintPage($articleID)
     //Column: --> _MD_SOAPBOX_COLUMNPRN , Author: --> _MD_SOAPBOX_AUTHORPRN
     echo "<body bgcolor='#ffffff' text='#000000'>
             <div style='width: 600px; border: 1px solid #000; padding: 20px;'>
-                <div style='text-align: center; display: block; padding-bottom: 12px; margin: 0 0 6px 0; border-bottom: 2px solid #ccc;'><h2 style='margin: 0;'>"
-         . $sitename
-         . '<br>'
-         . $articles['headline']
-         . '</h2></div>
+                <div style='text-align: center; display: block; padding-bottom: 12px; margin: 0 0 6px 0; border-bottom: 2px solid #ccc;'><h2 style='margin: 0;'>" . $sitename . '<br>' . $articles['headline'] . '</h2></div>
                 <div></div>
-                <div>'
-         . _MD_SOAPBOX_COLUMNPRN
-         . '<b>'
-         . $category['name']
-         . "</b></div>
-                <div style='padding-bottom: 6px; border-bottom: 1px solid #ccc;'>"
-         . _MD_SOAPBOX_AUTHORPRN
-         . ' <b>'
-         . $authorname
-         . '</b></div>
-                <p>'
-         . $articles['lead']
-         . '</p>
-                <p>'
-         . $articles['bodytext']
-         . "</p>
-                <div style='padding-top: 12px; border-top: 2px solid #ccc;'><small><b>Published:</b>&nbsp;"
-         . $datetime
-         . '<br></div>
+                <div>' . _MD_SOAPBOX_COLUMNPRN . '<b>' . $category['name'] . "</b></div>
+                <div style='padding-bottom: 6px; border-bottom: 1px solid #ccc;'>" . _MD_SOAPBOX_AUTHORPRN . ' <b>' . $authorname . '</b></div>
+                <p>' . $articles['lead'] . '</p>
+                <p>' . $articles['bodytext'] . "</p>
+                <div style='padding-top: 12px; border-top: 2px solid #ccc;'><small><b>Published:</b>&nbsp;" . $datetime . '<br></div>
             </div>
             <br>
           </body>

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Soapbox;
+<?php
+
+namespace XoopsModules\Soapbox;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -20,13 +22,11 @@
 
 use XoopsModules\Soapbox;
 
-
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(dirname(__DIR__));
 if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES | ENT_HTML5));
 }
-
 
 /**
  * Soapbox entrydata handler class.
@@ -71,9 +71,9 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
 
     /**
      * constructor
-     * @param \XoopsDatabase $db
+     * @param \XoopsDatabase|null $db
      */
-    public function __construct(\XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db);
         $moduleDirName = basename(dirname(__DIR__));
@@ -135,7 +135,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
      * retrieve Articles from the database
      *
      * @param  \CriteriaElement $criteria  {@link CriteriaElement}
-     * @param  bool            $id_as_key use the Article's ID as key for the array?
+     * @param  bool             $id_as_key use the Article's ID as key for the array?
      * @return array  array of {@link Articles} objects
      */
     public function getArticles(\CriteriaElement $criteria = null, $id_as_key = false)
@@ -149,7 +149,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
      * retrieve Columns from the database
      *
      * @param  \CriteriaElement $criteria  {@link \CriteriaElement}
-     * @param  bool            $id_as_key use the Column's ID as key for the array?
+     * @param  bool             $id_as_key use the Column's ID as key for the array?
      * @return array  array of {@link Columns} objects
      */
     public function getColumns(\CriteriaElement $criteria = null, $id_as_key = false)
@@ -163,7 +163,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
      * retrieve Votedatas from the database
      *
      * @param  \CriteriaElement $criteria  {@link \CriteriaElement}
-     * @param  bool            $id_as_key use the Votedata's ID as key for the array?
+     * @param  bool             $id_as_key use the Votedata's ID as key for the array?
      * @return array  array of {@link Votedata} objects
      */
     public function getVotedatas(\CriteriaElement $criteria = null, $id_as_key = false)
@@ -220,7 +220,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbcolumns)) {
-            if (strtolower(get_class($sbcolumns)) === strtolower('Columns')) {
+            if (mb_strtolower(get_class($sbcolumns)) === mb_strtolower('Columns')) {
                 $columnIDs[] = $sbcolumns->getVar('columnID');
             }
         } else {
@@ -231,7 +231,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
                 $sbcolumns = array_unique($sbcolumns);
                 foreach ($sbcolumns as $k => $v) {
                     if (is_object($v)) {
-                        if (strtolower(get_class($v)) === strtolower('Columns')) {
+                        if (mb_strtolower(get_class($v)) === mb_strtolower('Columns')) {
                             $columnIDs[] = $v->getVar('columnID');
                         }
                     } else {
@@ -261,7 +261,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbarticles)) {
-            if (strtolower(get_class($sbarticles)) === strtolower('Articles')) {
+            if (mb_strtolower(get_class($sbarticles)) === mb_strtolower('Articles')) {
                 $articleIDs[] = $sbarticles->getVar('articleID');
             }
         } else {
@@ -272,7 +272,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
                 $sbarticles = array_unique($sbarticles);
                 foreach ($sbarticles as $k => $v) {
                     if (is_object($v)) {
-                        if (strtolower(get_class($v)) === strtolower('Articles')) {
+                        if (mb_strtolower(get_class($v)) === mb_strtolower('Articles')) {
                             $articleIDs[] = $v->getVar('articleID');
                         }
                     } else {
@@ -310,8 +310,8 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         $sortorder = 'ASC',
         $sbcolumns = null,
         $NOTsbcolumns = null,
-        $id_as_key = false
-    ) {
+        $id_as_key = false)
+    {
         global $xoopsUser;
         $ret                                = [];
         $this->total_getColumnsAllPermcheck = 0;
@@ -329,7 +329,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         }
         if ($checkRight) {
             $gperm_name         = 'Column Permissions';
-            $grouppermHandler       = xoops_getHandler('groupperm');
+            $grouppermHandler   = xoops_getHandler('groupperm');
             $can_read_columnIDs = $grouppermHandler->getItemIds($gperm_name, $groups, $this->moduleId);
         }
         //--------------------------
@@ -405,8 +405,8 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         $select_sbcolumns = null,
         $NOTsbarticles = null,
         $approve_submit = false,
-        $id_as_key = false
-    ) {
+        $id_as_key = false)
+    {
         global $xoopsUser;
         $ret                                 = [];
         $this->total_getArticlesAllPermcheck = 0;
@@ -501,20 +501,20 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         }
         if (empty($this->total_getArticlesAllPermcheck)) {
             return $ret;
-        } else {
-            if (isset($sortname) && '' !== trim($sortname)) {
-                $criteria->setSort($sortname);
-            }
-            if (isset($sortorder) && '' !== trim($sortorder)) {
-                $criteria->setOrder($sortorder);
-            }
-            $criteria->setLimit((int)$limit);
-            $criteria->setStart((int)$start);
-            $sbarticle_arr = $this->getArticles($criteria, $id_as_key);
-            foreach ($sbarticle_arr as $k => $sbarticle) {
-                $sbarticle_arr[$k]->_sbcolumns = $_sbcolumns_arr[$sbarticle->getVar('columnID')];
-            }
         }
+        if (isset($sortname) && '' !== trim($sortname)) {
+            $criteria->setSort($sortname);
+        }
+        if (isset($sortorder) && '' !== trim($sortorder)) {
+            $criteria->setOrder($sortorder);
+        }
+        $criteria->setLimit((int)$limit);
+        $criteria->setStart((int)$start);
+        $sbarticle_arr = $this->getArticles($criteria, $id_as_key);
+        foreach ($sbarticle_arr as $k => $sbarticle) {
+            $sbarticle_arr[$k]->_sbcolumns = $_sbcolumns_arr[$sbarticle->getVar('columnID')];
+        }
+
         unset($criteria);
 
         return $sbarticle_arr;
@@ -603,8 +603,8 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         $limit = 0,
         $start = 0,
         $sortname = null,
-        $sortorder = null
-    ) {
+        $sortorder = null)
+    {
         $ret                               = [];
         $this->total_getArticlesByColumnID = 0;
 
@@ -656,8 +656,8 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         $limit = 0,
         $start = 0,
         $sortname = null,
-        $sortorder = null
-    ) {
+        $sortorder = null)
+    {
         $ret                                 = [];
         $this->total_getVotedatasByArticleID = 0;
         $criteria                            = new \CriteriaCompo();
@@ -707,8 +707,8 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         $limit = 0,
         $start = 0,
         $sortname = null,
-        $sortorder = null
-    ) {
+        $sortorder = null)
+    {
         $ret                            = [];
         $this->total_getColumnsByAuthor = 0;
         $criteria                       = new \CriteriaCompo();
@@ -761,18 +761,18 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         $limit = 0,
         $start = 0,
         $sortname = null,
-        $sortorder = null
-    ) {
+        $sortorder = null)
+    {
         $ret       = [];
         $columnIDs = [];
         if (is_array($_sbarticle_arr)) {
             foreach ($_sbarticle_arr as $sbarticle) {
-                if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
+                if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
                     $columnIDs[] = $sbarticle->getVar('columnID');
                 }
             }
         } else {
-            if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
+            if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
                 $columnIDs[] = $_sbarticle_arr->getVar('columnID');
             }
         }
@@ -840,7 +840,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
      * update count up hit's counter of sbarticles obects ,with author user check
      *
      * @param  Articles $sbarticle reference to the {@link Articles} object
-     * @param  bool              $force
+     * @param  bool     $force
      * @return bool   FALSE if failed, TRUE
      */
     public function getUpArticlecount(Articles $sbarticle, $force = false)
@@ -849,7 +849,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         /** @var Soapbox\Helper $helper */
         $helper = Soapbox\Helper::getInstance();
 
-        if (strtolower(get_class($sbarticle)) !== strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
             return false;
         }
         $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -883,14 +883,14 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
     /**
      * get edit icon display html layout for admin or author
      *
-     * @param  Articles $sbarticle reference to the {@link Articles} object
+     * @param  Articles          $sbarticle reference to the {@link Articles} object
      * @param                    $sbcolumns
      * @return string (html tags)
      */
     public function getadminlinks(Articles $sbarticle, &$sbcolumns)
     {
         global $xoopsUser, $xoopsModule;
-        $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
         $myts       = \MyTextSanitizer:: getInstance();
         // Functional links
         $ret = '';
@@ -969,7 +969,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
     public function getuserlinks(Articles $sbarticle)
     {
         global $xoopsConfig, $xoopsModule;
-        $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
 
         $myts = \MyTextSanitizer:: getInstance();
         // Functional links

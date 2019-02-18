@@ -16,6 +16,5 @@
  * @since
  * @author         XOOPS Development Team
  */
-
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
-include XOOPS_ROOT_PATH . '/include/comment_reply.php';
+require dirname(dirname(__DIR__)) . '/mainfile.php';
+require XOOPS_ROOT_PATH . '/include/comment_reply.php';

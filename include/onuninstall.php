@@ -10,11 +10,10 @@
 
 /**
  * Prepares system prior to attempting to uninstall module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if ready to uninstall, false if not
  */
-
 function xoops_module_pre_uninstall_soapbox(\XoopsModule $module)
 {
     // Do some synchronization
@@ -22,9 +21,8 @@ function xoops_module_pre_uninstall_soapbox(\XoopsModule $module)
 }
 
 /**
- *
  * Performs tasks required during uninstallation of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if uninstallation successful, false if not
  */
@@ -38,7 +36,7 @@ function xoops_module_uninstall_soapbox(\XoopsModule $module)
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * @param XoopsModule $module
+ * @param \XoopsModule $module
  *
  * @return bool
  */
@@ -48,7 +46,6 @@ function xoops_module_uninstall_XXXX(\XoopsModule $module)
     //
     // nothing to do yet
     return true;
-
     //routine to delete a cache directory
     /*
      $cacheDir = XOOPS_ROOT_PATH . '/uploads/shoutbox';
@@ -76,7 +73,6 @@ function xoops_module_uninstall_XXXX(\XoopsModule $module)
  * @param  string $dirname The directory to delete
  * @return bool   Returns true on success, false on failure
  */
-
 function rmdirr($dirname)
 {
     // Simple delete for a file

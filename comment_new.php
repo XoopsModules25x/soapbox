@@ -16,8 +16,7 @@
  * @since
  * @author         XOOPS Development Team
  */
-
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require dirname(dirname(__DIR__)) . '/mainfile.php';
 // HACK for  Get file title 2004/4/19 by domifara
 $com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
 if ($com_itemid > 0) {
@@ -27,4 +26,4 @@ if ($com_itemid > 0) {
     $row            = $xoopsDB->fetchArray($result);
     $com_replytitle = $row['headline'];
 }
-include XOOPS_ROOT_PATH . '/include/comment_new.php';
+require XOOPS_ROOT_PATH . '/include/comment_new.php';

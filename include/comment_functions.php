@@ -1,7 +1,6 @@
 <?php
-//
+
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 25 April 2004

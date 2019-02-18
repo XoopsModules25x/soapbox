@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -20,8 +19,8 @@ function b_arts_new_show($options)
     $myts          = \MyTextSanitizer:: getInstance();
     $block_outdata = [];
     $module_name   = 'soapbox';
-    $hModule       = xoops_getHandler('module');
-    $soapModule    = $hModule->getByDirname($module_name);
+    $moduleHandler = xoops_getHandler('module');
+    $soapModule    = $moduleHandler->getByDirname($module_name);
     if (!is_object($soapModule)) {
         return '';
     }
@@ -29,7 +28,7 @@ function b_arts_new_show($options)
     $module_id  = $soapModule->getVar('mid');
     $soapConfig = $hModConfig->getConfigsByCat(0, $module_id);
     //-------------------------------------
-    if (!in_array($options[0], ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
+    if (!in_array($options[0], ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
         $options[0] = 'datesub';
     }
     $sortorder = 'DESC';

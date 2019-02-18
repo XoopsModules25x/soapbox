@@ -1,7 +1,6 @@
 <?php
-//
+
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -35,7 +34,7 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
     */
     //    $moduleDirName = 'soapbox';
     $pathparts     = explode('/', __DIR__);
-    $moduleDirName = $pathparts[array_search('modules', $pathparts) + 1];
+    $moduleDirName = $pathparts[array_search('modules', $pathparts, true) + 1];
     $item_id       = (int)$item_id;
     $item          = [];
     if ('global' === $category) {

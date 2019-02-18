@@ -16,13 +16,7 @@
  *
  * ****************************************************************************
  */
-
 $pathIcon32 = \Xmf\Module\Admin::iconUrl('', 32);
-echo "<div class='adminfooter'>"
-      . "<div style='text-align: center;'>"
-      . "<a href='https://xoops.org' rel='external'><img src='{$pathIcon32}/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>"
-     . '</div>'
-      . _AM_MODULEADMIN_ADMIN_FOOTER
-      . '</div>';
+echo "<div class='adminfooter'>" . "<div style='text-align: center;'>" . "<a href='https://xoops.org' rel='external'><img src='{$pathIcon32}/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>" . '</div>' . _AM_MODULEADMIN_ADMIN_FOOTER . '</div>';
 
 xoops_cp_footer();

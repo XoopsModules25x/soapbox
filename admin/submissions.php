@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -14,10 +13,10 @@ require_once __DIR__ . '/admin_header.php';
 $adminObject = \Xmf\Module\Admin::getInstance();
 
 $op = '';
-if (isset($_GET['op'])) {
+if (\Xmf\Request::hasVar('op', 'GET')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_GET['op'])));
 }
-if (isset($_POST['op'])) {
+if (\Xmf\Request::hasVar('op', 'POST')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
@@ -92,7 +91,7 @@ function editarticle($articleID = '')
     }
 
     if (isset($headline)) {
-        $headline = $myts->htmlspecialchars(stripslashes($headline));
+        $headline = $myts->htmlSpecialChars(stripslashes($headline));
     }
 
     // HEADLINE, LEAD, BODYTEXT
@@ -238,19 +237,19 @@ function editarticle($articleID = '')
 
     $sform->addElement(new \XoopsFormHidden('articleID', $e_articles['articleID']));
 
-    $button_tray = new \XoopsFormElementTray('', '');
-    $hidden      = new \XoopsFormHidden('op', 'authart');
-    $button_tray->addElement($hidden);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $hidden     = new \XoopsFormHidden('op', 'authart');
+    $buttonTray->addElement($hidden);
 
     $butt_save = new \XoopsFormButton('', '', _AM_SOAPBOX_AUTHORIZE, 'submit');
     $butt_save->setExtra('onclick="this.form.elements.op.value=\'authart\'"');
-    $button_tray->addElement($butt_save);
+    $buttonTray->addElement($butt_save);
 
     $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
     $butt_cancel->setExtra('onclick="history.go(-1)"');
-    $button_tray->addElement($butt_cancel);
+    $buttonTray->addElement($butt_cancel);
 
-    $sform->addElement($button_tray);
+    $sform->addElement($buttonTray);
     //-----------
     //    $xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
     //-----------
@@ -265,11 +264,10 @@ switch ($op) {
         require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
         xoops_cp_header();
         $adminObject->displayNavigation(basename(__FILE__));
-        $articleID = Request::getInt('articleID', Request::getInt('articleID', 0, 'GET'), 'POST');// (isset($_POST['articleID'])) ? (int)($_POST['articleID']) : (int)($_GET['articleID']);
+        $articleID = Request::getInt('articleID', Request::getInt('articleID', 0, 'GET'), 'POST'); // (isset($_POST['articleID'])) ? (int)($_POST['articleID']) : (int)($_GET['articleID']);
         editarticle($articleID);
         Soapbox\Utility::showSubmissions();
         break;
-
     case 'authart':
         //-------------------------
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -288,7 +286,7 @@ switch ($op) {
         } else {
             $columnID = Request::getInt('columnID', 0, 'POST');
         }
-        
+
         //get category object
         $_categoryob = $entrydataHandler->getColumn($columnID);
         if (!is_object($_categoryob)) {
@@ -352,39 +350,38 @@ switch ($op) {
         }
 
         if (Request::hasVar('smiley', 'POST')) {
-            $_entryob->setVar('smiley',  Request::getInt('smiley', 0, 'POST'));
+            $_entryob->setVar('smiley', Request::getInt('smiley', 0, 'POST'));
         }
 
         if (Request::hasVar('xcodes', 'POST')) {
-            $_entryob->setVar('xcodes',  Request::getInt('xcodes', 0, 'POST'));
+            $_entryob->setVar('xcodes', Request::getInt('xcodes', 0, 'POST'));
         }
         if (Request::hasVar('breaks', 'POST')) {
-            $_entryob->setVar('breaks',  Request::getInt('breaks', 0, 'POST'));
+            $_entryob->setVar('breaks', Request::getInt('breaks', 0, 'POST'));
         }
         if (Request::hasVar('artimage', 'POST')) {
-            $_entryob->setVar('artimage',  Request::getInt('artimage', 0, 'POST'));
+            $_entryob->setVar('artimage', Request::getInt('artimage', 0, 'POST'));
         }
 
         if (Request::hasVar('headline', 'POST')) {
-            $_entryob->setVar('headline',  Request::getString('headline', '', 'POST'));
+            $_entryob->setVar('headline', Request::getString('headline', '', 'POST'));
         }
         if (Request::hasVar('lead', 'POST')) {
-            $_entryob->setVar('lead',  Request::getText('lead', '', 'POST'));
+            $_entryob->setVar('lead', Request::getText('lead', '', 'POST'));
         }
         if (Request::hasVar('bodytext', 'POST')) {
-            $_entryob->setVar('bodytext',  Request::getText('bodytext', '', 'POST'));
+            $_entryob->setVar('bodytext', Request::getText('bodytext', '', 'POST'));
         }
         if (Request::hasVar('votes', 'POST')) {
-            $_entryob->setVar('votes',  Request::getInt('votes', 0, 'POST'));
-        }
-        
-        if (Request::hasVar('rating', 'POST')) {
-            $_entryob->setVar('rating',  Request::getInt('rating', 0, 'POST'));
-        }
-        if (Request::hasVar('teaser', 'POST')) {
-            $_entryob->setVar('teaser',  Request::getInt('teaser', 0, 'POST'));
+            $_entryob->setVar('votes', Request::getInt('votes', 0, 'POST'));
         }
 
+        if (Request::hasVar('rating', 'POST')) {
+            $_entryob->setVar('rating', Request::getInt('rating', 0, 'POST'));
+        }
+        if (Request::hasVar('teaser', 'POST')) {
+            $_entryob->setVar('teaser', Request::getInt('teaser', 0, 'POST'));
+        }
 
         $autoteaser = Request::getInt('autoteaser', 0, 'POST');
         $charlength = Request::getInt('teaseramount', 0, 'POST');
@@ -402,7 +399,6 @@ switch ($op) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTAUTHORIZED);
         }
         break;
-
     case 'del':
 
         $confirm = Request::getInt('confirm', 0, 'POST');
@@ -419,8 +415,8 @@ switch ($op) {
                 redirect_header('index.php', 1, _NOPERM);
             } else {
                 $articleID = Request::getInt('articleID', 0, 'POST');
-            } 
-            
+            }
+
             $_entryob = $entrydataHandler->getArticle($articleID);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);
@@ -429,10 +425,9 @@ switch ($op) {
             if (!$entrydataHandler->deleteArticle($_entryob)) {
                 trigger_error('ERROR:not deleted from database');
                 exit();
-            } else {
-                $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
-                redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
             }
+            $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
+            redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
         } else {
             $articleID = Request::getInt('articleID', Request::getInt('articleID', 0, 'GET'), 'POST');
             $_entryob  = $entrydataHandler->getArticle($articleID);
@@ -446,13 +441,12 @@ switch ($op) {
                               'op'        => 'del',
                               'articleID' => $articleID,
                               'confirm'   => 1,
-                              'headline'  => $headline
+                              'headline'  => $headline,
                           ], 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
             require_once __DIR__ . '/admin_footer.php';
         }
         exit();
         break;
-
     case 'default':
     default:
 

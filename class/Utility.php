@@ -1,7 +1,7 @@
-<?php namespace XoopsModules\Soapbox;
+<?php
 
-use Xmf\Request;
-use XoopsModules\Soapbox\Common;
+namespace XoopsModules\Soapbox;
+
 use XoopsModules\Soapbox;
 
 /**
@@ -18,8 +18,8 @@ class Utility extends \XoopsObject
     /**
      * getLinkedUnameFromId()
      *
-     * @param  integer $userid Userid of author etc
-     * @param  integer $name   :  0 Use Usenamer 1 Use realname
+     * @param  int $userid Userid of author etc
+     * @param  int $name   :  0 Use Usenamer 1 Use realname
      * @return string
      */
     public static function getLinkedUnameFromId($userid = 0, $name = 0)
@@ -78,6 +78,7 @@ class Utility extends \XoopsObject
         return $showimage;
     }
     */
+
     /**
      * @param        $allowed_mimetypes
      * @param        $httppostfiles
@@ -331,19 +332,19 @@ class Utility extends \XoopsObject
         //        require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/cleantags.php';
 
         $module_id = $xoopsModule->getVar('mid');
-        $startart = \Xmf\Request::getInt('startart', 0, 'GET');
+        $startart  = \Xmf\Request::getInt('startart', 0, 'GET');
         if (\Xmf\Request::hasVar('entries', 'POST')) {
             $entries = \Xmf\Request::getInt('entries', 0, 'POST');
         } else {
             $entries = \Xmf\Request::getInt('entries', 0, 'GET');
         }
         //---GET view sort --
-        $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-        if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
+        $sortname = isset($_GET['sortname']) ? mb_strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
+        if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
             $sortname = 'datesub';
         }
-        $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-        if (!in_array($sortorder, ['ASC', 'DESC'])) {
+        $sortorder = isset($_GET['sortorder']) ? mb_strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
+        if (!in_array($sortorder, ['ASC', 'DESC'], true)) {
             $sortorder = 'DESC';
         }
         //---------------
@@ -581,12 +582,12 @@ class Utility extends \XoopsObject
         $datesub   = \Xmf\Request::getInt('datesub', 0, 'GET');
 
         //---GET view sort --
-        $sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-        if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'])) {
+        $sortname = isset($_GET['sortname']) ? mb_strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
+        if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
             $sortname = 'datesub';
         }
-        $sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-        if (!in_array($sortorder, ['ASC', 'DESC'])) {
+        $sortorder = isset($_GET['sortorder']) ? mb_strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
+        if (!in_array($sortorder, ['ASC', 'DESC'], true)) {
             $sortorder = 'DESC';
         }
         //---------------
@@ -658,18 +659,17 @@ class Utility extends \XoopsObject
     {
         //---access language
         $al = 'en';
-        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        if (\Xmf\Request::hasVar('HTTP_ACCEPT_LANGUAGE', 'SERVER')) {
             $accept_langs = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
             foreach ($accept_langs as $al) {
-                $al     = strtolower($al);
-                $al_len = strlen($al);
+                $al     = mb_strtolower($al);
+                $al_len = mb_strlen($al);
                 if ($al_len > 2) {
                     if (preg_match('/([a-z]{2});q=[0-9.]+$/', $al, $al_match)) {
                         $al = $al_match[1];
                         break;
-                    } else {
-                        continue;
                     }
+                    continue;
                 }
             }
         }

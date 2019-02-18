@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -9,12 +8,11 @@
 
 require_once __DIR__ . '/preloads/autoloader.php';
 
-
 $moduleDirName = basename(__DIR__);
 
 // ------------------- Informations ------------------- //
 $modversion = [
-    'version'             =>  1.70,
+    'version'             => 1.70,
     'module_status'       => 'Beta 1',
     'release_date'        => '2018/03/30',
     'name'                => _MI_SOAPBOX_NAME,
@@ -66,51 +64,48 @@ $modversion = [
     'adminmenu'           => 'admin/menu.php',
     // ------------------- Main Menu -------------------
     'hasMain'             => 1,
-//    'sub'                 => [
-//        [
-//            'name' => _MI_SOAPBOX_VIEW_SEARCH,
-//            'url'  => 'index.php'
-//        ],
-//    ],
+    //    'sub'                 => [
+    //        [
+    //            'name' => _MI_SOAPBOX_VIEW_SEARCH,
+    //            'url'  => 'index.php'
+    //        ],
+    //    ],
 
     // ------------------- Install/Update -------------------
     'onInstall'           => 'include/oninstall.php',
     'onUpdate'            => 'include/onupdate.php',
-//    'onUninstall'         => 'include/onuninstall.php',
+    //    'onUninstall'         => 'include/onuninstall.php',
     // -------------------  PayPal ---------------------------
     'paypal'              => [
         'business'      => 'foundation@xoops.org',
         'item_name'     => 'Donation : ' . _MI_SOAPBOX_NAME,
         'amount'        => 0,
-        'currency_code' => 'USD'
+        'currency_code' => 'USD',
     ],
     // ------------------- Search ---------------------------
     'hasSearch'           => 1,
     'search'              => [
         'file' => 'include/search.inc.php',
-        'func' => 'sb_search'
+        'func' => 'sb_search',
     ],
 
     // ------------------- Mysql -----------------------------
     'sqlfile'             => ['mysql' => 'sql/mysql.sql'],
     // ------------------- Tables ----------------------------
-//    'tables'              => [
-//        $moduleDirName . '_' . 'XXX',
-//        $moduleDirName . '_' . 'XXX',
-//        $moduleDirName . '_' . 'XXX',
-//        $moduleDirName . '_' . 'XXX',
-//        $moduleDirName . '_' . 'XXX',
-//        $moduleDirName . '_' . 'XXX',
-//    ],
+    //    'tables'              => [
+    //        $moduleDirName . '_' . 'XXX',
+    //        $moduleDirName . '_' . 'XXX',
+    //        $moduleDirName . '_' . 'XXX',
+    //        $moduleDirName . '_' . 'XXX',
+    //        $moduleDirName . '_' . 'XXX',
+    //        $moduleDirName . '_' . 'XXX',
+    //    ],
 ];
-
-
 
 // Tables created by sql file (without prefix!)
 $modversion['tables'][0] = 'sbcolumns';
 $modversion['tables'][1] = 'sbarticles';
 $modversion['tables'][2] = 'sbvotedata';
-
 
 // Menu
 $modversion['hasMain'] = 1;
@@ -129,11 +124,11 @@ $modversion['onUpdate']    = 'include/onupdate.php';
 $modversion['onUninstall'] = 'include/onuninstall.php';
 
 global $xoopsDB, $xoopsUser;
-$hModule = xoops_getHandler('module');
-$i       = 0;
-if ($soapModule = $hModule->getByDirname('soapbox')) {
+$moduleHandler = xoops_getHandler('module');
+$i             = 0;
+if ($soapModule = $moduleHandler->getByDirname('soapbox')) {
     $grouppermHandler = xoops_getHandler('groupperm');
-    $hModConfig   = xoops_getHandler('config');
+    $hModConfig       = xoops_getHandler('config');
 
     $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
 
@@ -272,7 +267,7 @@ $modversion['config'][] = [
         '20' => 20,
         '25' => 25,
         '30' => 30,
-        '50' => 50
+        '50' => 50,
     ],
 ];
 
@@ -290,7 +285,7 @@ $modversion['config'][] = [
         '20' => 20,
         '25' => 25,
         '30' => 30,
-        '50' => 50
+        '50' => 50,
     ],
 ];
 
@@ -391,7 +386,7 @@ $modversion['config'][] = [
         '20' => 20,
         '25' => 25,
         '30' => 30,
-        '50' => 50
+        '50' => 50,
     ],
 ];
 
@@ -432,8 +427,7 @@ $modversion['config'][] = [
 ];
 
 xoops_load('xoopseditorhandler');
-$editorHandler  = XoopsEditorHandler::getInstance();
-
+$editorHandler = XoopsEditorHandler::getInstance();
 
 $modversion['config'][] = [
     'name'        => 'editorAdmin',
@@ -442,7 +436,7 @@ $modversion['config'][] = [
     'formtype'    => 'select',
     'valuetype'   => 'text',
     'options'     => array_flip($editorHandler->getList()),
-    'default'     => 'tinymce'
+    'default'     => 'tinymce',
 ];
 
 $modversion['config'][] = [
@@ -452,9 +446,8 @@ $modversion['config'][] = [
     'formtype'    => 'select',
     'valuetype'   => 'text',
     'options'     => array_flip($editorHandler->getList()),
-    'default'     => 'dhtmltextarea'
+    'default'     => 'dhtmltextarea',
 ];
-
 
 // Теги
 $modversion['config'][] = [
@@ -490,9 +483,9 @@ $modversion['comments']['callback']['approve'] = 'sb_com_approve';
 $modversion['comments']['callback']['update']  = 'sb_com_update';
 
 // Notification
-$modversion['hasNotification']                                = 1;
-$modversion['notification']['lookup_file']                    = 'include/notification.inc.php';
-$modversion['notification']['lookup_func']                    = 'sb_notify_iteminfo';
+$modversion['hasNotification']             = 1;
+$modversion['notification']['lookup_file'] = 'include/notification.inc.php';
+$modversion['notification']['lookup_func'] = 'sb_notify_iteminfo';
 
 $modversion['notification']['category'][] = [
     'name'           => 'global',
@@ -582,10 +575,9 @@ $modversion['notification']['event'][] = [
     'mail_subject'  => _MI_SOAPBOX_ARTICLE_APPROVE_NOTIFYSBJ,
 ];
 
-
 // On Update
 if (!empty($_POST['fct']) && !empty($_POST['op']) && !empty($_POST['diranme']) && 'modulesadmin' === $_POST['fct']
     && 'update_ok' === $_POST['op']
     && $_POST['dirname'] === $modversion['dirname']) {
-    include __DIR__ . '/include/onupdate.inc.php';
+    require __DIR__ . '/include/onupdate.inc.php';
 }

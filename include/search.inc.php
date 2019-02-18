@@ -1,7 +1,6 @@
 <?php
-//
+
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 25 April 2004
@@ -45,7 +44,7 @@ function sb_search($queryarray, $andor, $limit, $offset, $userid)
             $_userinfo_authors_column[] = $_categoryob->getVar('columnID');
         }
     }
-    //
+
     if (empty($canread_columnIDs)) {
         return $ret;
     }

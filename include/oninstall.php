@@ -21,16 +21,15 @@ use Xmf\Language;
 use XoopsModules\Soapbox;
 
 /**
- *
  * Prepares system prior to attempting to install module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if ready to install, false if not
  */
 function xoops_module_pre_install_soapbox(\XoopsModule $module)
 {
     /** @var Soapbox\Utility $utility */
-    $utility =  new \XoopsModules\Soapbox\Utility();
+    $utility = new \XoopsModules\Soapbox\Utility();
 
     //check for minimum XOOPS version
     if (!$utility::checkVerXoops($module)) {
@@ -51,27 +50,25 @@ function xoops_module_pre_install_soapbox(\XoopsModule $module)
 }
 
 /**
- *
  * Performs tasks required during installation of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if installation successful, false if not
  */
 function xoops_module_install_soapbox(\XoopsModule $module)
 {
     require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    require_once  dirname(__DIR__) . '/include/config.php';
+    require_once dirname(__DIR__) . '/include/config.php';
 
     $moduleDirName = basename(dirname(__DIR__));
-    $helper = \XoopsModules\Soapbox\Helper::getInstance();
+    $helper        = \XoopsModules\Soapbox\Helper::getInstance();
 
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');
 
     $configurator = new \XoopsModules\Soapbox\Common\Configurator();
-    $utility = \XoopsModules\Soapbox\Utility();
-
+    $utility      = \XoopsModules\Soapbox\Utility();
 
     //  ---  CREATE FOLDERS ---------------
     if (count($configurator->uploadFolders) > 0) {
@@ -83,7 +80,7 @@ function xoops_module_install_soapbox(\XoopsModule $module)
 
     //  ---  COPY blank.png FILES ---------------
     if (count($configurator->copyBlankFiles) > 0) {
-        $file =  dirname(__DIR__) . '/assets/images/blank.png';
+        $file = dirname(__DIR__) . '/assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $utility::copyFile($file, $dest);

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Soapbox;
+<?php
+
+namespace XoopsModules\Soapbox;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -49,6 +51,7 @@ class Votedata extends \XoopsObject
 
     //##################### HACK Methods ######################
     //HACK for utf-8   clean when if utf-8 text is lost bytes
+
     /**
      * returns a specific variable for the object in a proper format
      *
@@ -60,7 +63,7 @@ class Votedata extends \XoopsObject
     public function getVar($key, $format = 's')
     {
         $cleantags = new Soapbox\Cleantags();
-        $ret = $this->vars[$key]['value'];
+        $ret       = $this->vars[$key]['value'];
         //HACK for lost last byte cleaning of multi byte string
         //---------------------------------------
         if (XOOPS_USE_MULTIBYTES === 1) {
@@ -75,9 +78,8 @@ class Votedata extends \XoopsObject
         }
         //---------------------------------------
         switch ($this->vars[$key]['data_type']) {
-
             case XOBJ_DTYPE_TXTBOX:
-                switch (strtolower($format)) {
+                switch (mb_strtolower($format)) {
                     case 's':
                     case 'show':
                         $ts  = \MyTextSanitizer::getInstance();
@@ -102,7 +104,7 @@ class Votedata extends \XoopsObject
                 }
                 break;
             case XOBJ_DTYPE_TXTAREA:
-                switch (strtolower($format)) {
+                switch (mb_strtolower($format)) {
                     case 's':
                     case 'show':
                         $ts     = \MyTextSanitizer::getInstance();
@@ -163,7 +165,7 @@ class Votedata extends \XoopsObject
                 $ret = unserialize($ret);
                 break;
             case XOBJ_DTYPE_SOURCE:
-                switch (strtolower($format)) {
+                switch (mb_strtolower($format)) {
                     case 's':
                     case 'show':
                         break 1;
@@ -189,7 +191,7 @@ class Votedata extends \XoopsObject
                 break;
             default:
                 if ('' !== $ret && '' !== $this->vars[$key]['options']) {
-                    switch (strtolower($format)) {
+                    switch (mb_strtolower($format)) {
                         case 's':
                         case 'show':
                             $selected = explode('|', $ret);
@@ -197,7 +199,7 @@ class Votedata extends \XoopsObject
                             $i        = 1;
                             $ret      = [];
                             foreach ($options as $op) {
-                                if (in_array($i, $selected)) {
+                                if (in_array($i, $selected, true)) {
                                     $ret[] = $op;
                                 }
                                 ++$i;
@@ -224,32 +226,32 @@ class Votedata extends \XoopsObject
      */
     public function getJ_cleanLostByteTail($text)
     {
-        if ('UTF-8' === strtoupper(_CHARSET)) {
+        if ('UTF-8' === mb_strtoupper(_CHARSET)) {
             $text = preg_replace('/[\xC0-\xFD]$/', '', $text);
             $text = preg_replace('/[\xE0-\xFD][\x80-\xBF]$/', '', $text);
             $text = preg_replace('/[\xF0-\xFD][\x80-\xBF]{2}$/', '', $text);
             $text = preg_replace('/[\xF8-\xFD][\x80-\xBF]{3}$/', '', $text);
             $text = preg_replace('/[\xFC-\xFD][\x80-\xBF]{4}$/', '', $text);
             $text = preg_replace('/^([\x80-\xBF]+)/', '', $text);
-        } elseif ('EUC-JP' === strtoupper(_CHARSET)) {
+        } elseif ('EUC-JP' === mb_strtoupper(_CHARSET)) {
             if (preg_match('/[\x80-\xff]$/', $text)) {
                 $tmp = preg_replace('/\x8F[\x80-\xff]{2}/', '', $text); //EUC-jp EX 3 byte Foreign string
                 $tmp = preg_replace('/[\x80-\xff]{2}/', '', $tmp);
                 if (preg_match('/[\x80-\xff]$/', $tmp)) {
-                    $text = substr($text, 0, -1);
+                    $text = mb_substr($text, 0, -1);
                 }
                 if (preg_match('/^[\x80-\xff]/', $tmp)) {
-                    $text = substr($text, 1);
+                    $text = mb_substr($text, 1);
                 }
             }
         } else {
             if (preg_match('/[\x80-\xff]$/', $text)) {
                 $tmp = preg_replace('/[\x80-\xff]{2}/', '', $text);
                 if (preg_match('/[\x80-\xff]$/', $tmp)) {
-                    $text = substr($text, 0, -1);
+                    $text = mb_substr($text, 0, -1);
                 }
                 if (preg_match('/^[\x80-\xff]/', $tmp)) {
-                    $text = substr($text, 1);
+                    $text = mb_substr($text, 1);
                 }
             }
         }

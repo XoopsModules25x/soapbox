@@ -17,7 +17,6 @@
  * @author       XOOPS Development Team
  */
 
-use Xmf\Language;
 use XoopsModules\Soapbox;
 
 if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof \XoopsUser)
@@ -38,9 +37,8 @@ function tableExists($tablename)
 }
 
 /**
- *
  * Prepares system prior to attempting to install module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if ready to install, false if not
  */
@@ -49,39 +47,35 @@ function xoops_module_pre_update_soapbox(\XoopsModule $module)
     /** @var Soapbox\Helper $helper */
     /** @var Soapbox\Utility $utility */
     $moduleDirName = basename(dirname(__DIR__));
-    $helper       = Soapbox\Helper::getInstance();
-    $utility      = new Soapbox\Utility();
+    $helper        = Soapbox\Helper::getInstance();
+    $utility       = new Soapbox\Utility();
 
     $xoopsSuccess = $utility::checkVerXoops($module);
     $phpSuccess   = $utility::checkVerPhp($module);
+
     return $xoopsSuccess && $phpSuccess;
 }
 
 /**
- *
  * Performs tasks required during update of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  * @param null        $previousVersion
- *
- * @return void true if update successful, false if not
  */
-
 function xoops_module_update_soapbox(\XoopsModule $module, $previousVersion = null)
 {
     global $xoopsDB;
-    require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    $moduleDirName = basename(dirname(__DIR__));
-    $capsDirName   = strtoupper($moduleDirName);
+    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+    $moduleDirName      = basename(dirname(__DIR__));
+    $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
     /** @var Soapbox\Helper $helper */
     /** @var Soapbox\Utility $utility */
     /** @var Soapbox\Common\Configurator $configurator */
-    $helper  = Soapbox\Helper::getInstance();
-    $utility = new Soapbox\Utility();
+    $helper       = Soapbox\Helper::getInstance();
+    $utility      = new Soapbox\Utility();
     $configurator = new Soapbox\Common\Configurator();
 
     if ($previousVersion < 240) {
-
         //delete old HTML templates
         if (count($configurator->{'templateFolders'}) > 0) {
             foreach ($configurator->{'templateFolders'} as $folder) {
@@ -133,7 +127,7 @@ function xoops_module_update_soapbox(\XoopsModule $module, $previousVersion = nu
 
         //  ---  COPY blank.png FILES ---------------
         if (count($configurator->copyBlankFiles) > 0) {
-            $file =  dirname(__DIR__) . '/assets/images/blank.png';
+            $file = dirname(__DIR__) . '/assets/images/blank.png';
             foreach (array_keys($configurator->copyBlankFiles) as $i) {
                 $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
                 $utility::copyFile($file, $dest);

@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -11,7 +10,7 @@
 use Xmf\Request;
 use XoopsModules\Soapbox;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require dirname(dirname(__DIR__)) . '/mainfile.php';
 
 /** @var Soapbox\Helper $helper */
 $helper = Soapbox\Helper::getInstance();
@@ -27,30 +26,30 @@ if (!is_object($xoopsUser)) {
     redirect_header('index.php', 1, _NOPERM);
 }
 
-//include XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/gtickets.php';
+//require XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/gtickets.php';
 
 $xoopsConfig['module_cache'] = 0; //disable caching since the URL will be the same, but content different from one user to another
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 $myts = \MyTextSanitizer:: getInstance();
 //----------------------------------------------
 //post op check
 $op = 'form';
-if (isset($_POST['post'])) {
+if (\Xmf\Request::hasVar('post', 'POST')) {
     $op = 'post';
-} elseif (isset($_POST['edit'])) {
+} elseif (\Xmf\Request::hasVar('edit', 'POST')) {
     $op = 'edit';
 }
 
-$op = Request::getCmd('op', 'check', 'POST');
+$op = Request::getString('op', 'check', 'POST');
 
 //----------------------------------------------
 //post or get articleID check
 $articleID = 0;
 if (\Xmf\Request::hasVar('articleID', 'GET')) {
- $articleID = \Xmf\Request::getInt('articleID', 0, 'GET');
+    $articleID = \Xmf\Request::getInt('articleID', 0, 'GET');
 }
 if (\Xmf\Request::hasVar('articleID', 'POST')) {
- $articleID = \Xmf\Request::getInt('articleID', 0, 'POST');
+    $articleID = \Xmf\Request::getInt('articleID', 0, 'POST');
 }
 //----------------------------------------------
 //user group , edit_uid
@@ -82,7 +81,7 @@ switch ($op) {
         }
         //-------------------------
         //articleID check
-        if (isset($_POST['articleID'])) {
+        if (\Xmf\Request::hasVar('articleID', 'POST')) {
             $_entryob = $entrydataHandler->getArticleOnePermcheck($articleID, true, true);
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);
@@ -96,7 +95,7 @@ switch ($op) {
 
         //set
         $_entryob->setVar('uid', $edit_uid);
-        if (isset($_POST['columnID'])) {
+        if (\Xmf\Request::hasVar('columnID', 'POST')) {
             $_entryob->setVar('columnID', \Xmf\Request::getInt('columnID', 0, 'POST'));
         }
         //get category object
@@ -112,20 +111,20 @@ switch ($op) {
             $_entryob->setVar('breaks', 1);
         }
 
-        if (isset($_POST['weight'])) {
+        if (\Xmf\Request::hasVar('weight', 'POST')) {
             $_entryob->setVar('weight', \Xmf\Request::getInt('weight', 0, 'POST'));
         }
 
-        if (isset($_POST['commentable'])) {
+        if (\Xmf\Request::hasVar('commentable', 'POST')) {
             $_entryob->setVar('commentable', \Xmf\Request::getInt('commentable', 0, 'POST'));
         }
-        if (isset($_POST['offline'])) {
+        if (\Xmf\Request::hasVar('offline', 'POST')) {
             $_entryob->setVar('offline', \Xmf\Request::getInt('offline', 0, 'POST'));
         }
-        if (isset($_POST['block'])) {
+        if (\Xmf\Request::hasVar('block', 'POST')) {
             $_entryob->setVar('block', \Xmf\Request::getInt('block', 0, 'POST'));
         }
-        if (isset($_POST['notifypub'])) {
+        if (\Xmf\Request::hasVar('notifypub', 'POST')) {
             $_entryob->setVar('notifypub', \Xmf\Request::getInt('notifypub', 0, 'POST'));
         }
 
@@ -142,16 +141,16 @@ switch ($op) {
             }
         }
 
-        if (isset($_POST['headline'])) {
+        if (\Xmf\Request::hasVar('headline', 'POST')) {
             $_entryob->setVar('headline', $_POST['headline']);
         }
-        if (isset($_POST['lead'])) {
+        if (\Xmf\Request::hasVar('lead', 'POST')) {
             $_entryob->setVar('lead', $_POST['lead']);
         }
-        if (isset($_POST['bodytext'])) {
+        if (\Xmf\Request::hasVar('bodytext', 'POST')) {
             $_entryob->setVar('bodytext', $_POST['bodytext']);
         }
-        if (isset($_POST['artimage'])) {
+        if (\Xmf\Request::hasVar('artimage', 'POST')) {
             $_entryob->setVar('artimage', $_POST['artimage']);
         }
 
@@ -161,12 +160,12 @@ switch ($op) {
             $_entryob->setVar('offline', 1);
         } else {
             $_entryob->setVar('submit', 0);
-            if (isset($_POST['submit'])) {
+            if (\Xmf\Request::hasVar('submit', 'POST')) {
                 $_entryob->setVar('submit', \Xmf\Request::getInt('submit', 0, 'POST'));
             }
             $_entryob->setVar('offline', 0);
         }
-        if (isset($_POST['teaser'])) {
+        if (\Xmf\Request::hasVar('teaser', 'POST')) {
             $_entryob->setVar('teaser', $_POST['teaser']);
         }
         $autoteaser = \Xmf\Request::getInt('autoteaser', 0, 'POST');
@@ -194,7 +193,6 @@ switch ($op) {
         }
         exit();
         break;
-
     case 'form':
     case 'edit':
     default:
@@ -247,6 +245,6 @@ switch ($op) {
 
         //$xoopsTpl->assign("xoops_module_header", '<link rel="stylesheet" type="text/css" href="style.css">');
         $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/css/style.css">');
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
         break;
 }

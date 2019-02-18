@@ -17,8 +17,6 @@
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
-use XoopsModules\Soapbox;
-
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/formelement.php';
@@ -113,7 +111,7 @@ class MyXoopsGroupPermForm extends \XoopsForm
             'permname' => $permName,
             'itemid'   => $itemId,
             'itemname' => $itemName,
-            'selected' => false
+            'selected' => false,
         ];
     }
 
@@ -148,16 +146,14 @@ class MyXoopsGroupPermForm extends \XoopsForm
      */
     public function render()
     {
-
-
         // load all child ids for javascript codes
         foreach (array_keys($this->_itemTree) as $item_id) {
             $this->_itemTree[$item_id]['allchild'] = [];
             $this->_loadAllChildItemIds($item_id, $this->_itemTree[$item_id]['allchild']);
         }
-        $grouppermHandler  = xoops_getHandler('groupperm');
-        $memberHandler = xoops_getHandler('member');
-        $glist         = $memberHandler->getGroupList();
+        $grouppermHandler = xoops_getHandler('groupperm');
+        $memberHandler    = xoops_getHandler('member');
+        $glist            = $memberHandler->getGroupList();
         foreach (array_keys($glist) as $i) {
             // get selected item id(s) for each group
             $selected = $grouppermHandler->getItemIds($this->_permName, $i, $this->_modid);
@@ -374,7 +370,7 @@ class MyXoopsGroupFormCheckBox extends \XoopsFormElement
             $tree      .= "var ele = xoopsGetElementById('" . $child_ele . "'); if (this.checked !== true) {ele.checked = false;}";
         }
         $tree .= '" value="1"';
-        if (isset($this->_value) && in_array($option['id'], $this->_value)) {
+        if (isset($this->_value) && in_array($option['id'], $this->_value, true)) {
             $tree .= ' checked';
         }
         $tree .= '>'
@@ -390,7 +386,8 @@ class MyXoopsGroupFormCheckBox extends \XoopsFormElement
                  . '[itemname]['
                  . $option['id']
                  . ']" value="'
-                 . htmlspecialchars($option['name'], ENT_QUOTES | ENT_HTML5)
+                 . htmlspecialchars($option['name'], ENT_QUOTES
+                                                     | ENT_HTML5)
                  . "\"><br>\n";
         if (isset($option['children'])) {
             foreach ($option['children'] as $child) {

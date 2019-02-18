@@ -23,13 +23,13 @@ if (!is_object($xoopsUser) || !is_object($xoopsModule) || !$xoopsUser->isAdmin($
     exit('Access Denied');
 }
 require_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
-include XOOPS_ROOT_PATH . '/modules/system/admin/blocksadmin/blocksadmin.php';
+require XOOPS_ROOT_PATH . '/modules/system/admin/blocksadmin/blocksadmin.php';
 
 $op  = Request::getCmd('op', 'list', 'POST');
 $bid = Request::getInt('bid', 0, 'POST');
 
 $opArray = ['edit', 'delete', 'delete_ok', 'clone'];
-$temp    = $op = Request::getCmd('op', '', 'GET');
+$temp    = $op = Request::getString('op', '', 'GET');
 if (isset($temp)) {
     if (in_array($temp, $opArray, true)) {
         $op  = $temp;
@@ -37,7 +37,7 @@ if (isset($temp)) {
     }
 }
 
-//if (isset($_POST['previewblock'])) {
+//if (\Xmf\Request::hasVar('previewblock', 'POST')) {
 if (Request::hasVar('previewblock', 'POST')) {
     //if ( !admin_refcheck("/modules/$admin_mydirname/admin/") ) {
     //  exit('Invalid Referer');
@@ -61,9 +61,9 @@ if (Request::hasVar('previewblock', 'POST')) {
 
     xoops_cp_header();
     require_once XOOPS_ROOT_PATH . '/class/template.php';
-    $xoopsTpl = new \XoopsTpl();
-    $xoopsTpl->caching= 0;
-    $block['bid'] = $bid;
+    $xoopsTpl          = new \XoopsTpl();
+    $xoopsTpl->caching = 0;
+    $block['bid']      = $bid;
 
     if ('clone_ok' === $op) {
         $block['form_title']    = _AM_CLONEBLOCK;
@@ -100,9 +100,9 @@ if (Request::hasVar('previewblock', 'POST')) {
     $block['is_custom'] = true;
     $block['cachetime'] = $bcachetime;
     echo '<a href="myblocksadmin.php">' . _AM_BADMIN . '</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;' . $block['form_title'] . '<br><br>';
-    include  dirname(__DIR__) . '/admin/myblockform.php'; //GIJ
+    require dirname(__DIR__) . '/admin/myblockform.php'; //GIJ
     //echo '<a href="admin.php?fct=blocksadmin">'. _AM_BADMIN .'</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;'.$block['form_title'].'<br><br>';
-    //include XOOPS_ROOT_PATH.'/modules/system/admin/blocksadmin/blockform.php';
+    //require XOOPS_ROOT_PATH.'/modules/system/admin/blocksadmin/blockform.php';
     //    $xoopsGTicket->addTicketXoopsFormElement($form, __LINE__, 1800, 'myblocksadmin'); //GIJ
     $form->display();
 
@@ -132,7 +132,7 @@ if (Request::hasVar('previewblock', 'POST')) {
   }
   $file = str_replace('..', '', XOOPS_CACHE_PATH.'/'.trim($_GET['file']));
   if (file_exists($file)) {
-    include $file;
+    require $file;
     @unlink($file);
   }
   exit();
@@ -182,7 +182,7 @@ if ('order' === $op) {
         //    if ( $oldweight[$i] != $weight[$i] || $oldvisible[$i] != $visible[$i] || $oldside[$i] != $side[$i] )
         //    order_block($bid[$i], $weight[$i], $visible[$i], $side[$i]);
     }
-    $query4redirect = '?dirname=' . urlencode(strip_tags(substr(Request::getString('query4redirect', '', 'POST'), 9)));
+    $query4redirect = '?dirname=' . urlencode(strip_tags(mb_substr(Request::getString('query4redirect', '', 'POST'), 9)));
     redirect_header("myblocksadmin.php$query4redirect", 1, _AM_DBUPDATED);
     // GIJ end
 }
@@ -199,7 +199,6 @@ if ('order2' === $op) {
             myblocksadmin_update_blockinstance(0, 0, 0, 0, '', null, null, 0, [], [], (int)$bid);
         }
     } else {
-
         // else change order
         $side    = Request::getArray('side', [], 'POST');
         $visible = Request::getArray('visible', [], 'POST');
@@ -227,7 +226,7 @@ if ('order2' === $op) {
         }
     }
 
-    $query4redirect = '?dirname=' . urlencode(strip_tags(substr(Request::getString('query4redirect', '', 'POST'), 9)));
+    $query4redirect = '?dirname=' . urlencode(strip_tags(mb_substr(Request::getString('query4redirect', '', 'POST'), 9)));
     redirect_header("myblocksadmin.php$query4redirect", 1, _MD_AM_DBUPDATED);
 }
 
@@ -322,7 +321,7 @@ if ('delete' === $op) {
         xoops_confirm([
                           'fct' => 'blocksadmin',
                           'op'  => 'delete_ok',
-                          'bid' => $myblock->getVar('bid')
+                          'bid' => $myblock->getVar('bid'),
                       ], 'admin.php', sprintf(_AM_RUSUREDEL, $myblock->getVar('title')));
     }
     // end of delete_block() GIJ
@@ -360,11 +359,11 @@ if ('edit' === $op) {
         'edit_form'     => $myblock->getOptions(),
         'template'      => $myblock->getVar('template'),
         'options'       => $myblock->getVar('options'),
-        'submit_button' => _SUBMIT
+        'submit_button' => _SUBMIT,
     ];
 
     echo '<a href="myblocksadmin.php">' . _AM_BADMIN . '</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;' . _AM_EDITBLOCK . '<br><br>';
-    include  dirname(__DIR__) . '/admin/myblockform.php'; //GIJ
+    require dirname(__DIR__) . '/admin/myblockform.php'; //GIJ
     //    $xoopsGTicket->addTicketXoopsFormElement($form, __LINE__, 1800, 'myblocksadmin'); //GIJ
     $form->display();
     // end of edit_block() GIJ
@@ -401,10 +400,10 @@ if ('clone' === $op) {
         'edit_form'     => $myblock->getOptions(),
         'template'      => $myblock->getVar('template'),
         'options'       => $myblock->getVar('options'),
-        'submit_button' => _CLONE
+        'submit_button' => _CLONE,
     ];
     echo '<a href="myblocksadmin.php">' . _AM_BADMIN . '</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;' . _AM_CLONEBLOCK . '<br><br>';
-    include  dirname(__DIR__) . '/admin/myblockform.php';
+    require dirname(__DIR__) . '/admin/myblockform.php';
     //    $xoopsGTicket->addTicketXoopsFormElement($form, __LINE__, 1800, 'myblocksadmin'); //GIJ
     $form->display();
     xoops_cp_footer();
@@ -470,7 +469,7 @@ if ('clone_ok' === $op) {
     }
     /*    if ($cblock->getVar('template') != '') {
             $tplfileHandler = xoops_getHandler('tplfile');
-            $btemplate =& $tplfileHandler->find($GLOBALS['xoopsConfig']['template_set'], 'block', $bid);
+            $btemplate = $tplfileHandler->find($GLOBALS['xoopsConfig']['template_set'], 'block', $bid);
             if (count($btemplate) > 0) {
                 $tplclone =& $btemplate[0]->clone();
                 $tplclone->setVar('tpl_id', 0);
@@ -529,8 +528,8 @@ function myblocksadmin_update_block(
     $bctype,
     $bcachetime,
     $bmodule,
-    $options = []
-) {
+    $options = [])
+{
     global $xoopsConfig;
     /* if (empty($bmodule)) {
         xoops_cp_header();
@@ -584,8 +583,8 @@ function myblocksadmin_update_block(
             $db->query($sql);
         }
         require_once XOOPS_ROOT_PATH . '/class/template.php';
-        $xoopsTpl = new \XoopsTpl();
-        $xoopsTpl->caching= 2;
+        $xoopsTpl          = new \XoopsTpl();
+        $xoopsTpl->caching = 2;
         if ('' !== $myblock->getVar('template')) {
             if ($xoopsTpl->is_cached('db:' . $myblock->getVar('template'))) {
                 if (!$xoopsTpl->clear_cache('db:' . $myblock->getVar('template'))) {
@@ -633,8 +632,8 @@ function myblocksadmin_update_blockinstance(
     $bcachetime,
     $bmodule,
     $options = [],
-    $bid = null
-) {
+    $bid = null)
+{
     global $xoopsDB;
 
     $instanceHandler = xoops_getHandler('blockinstance');
@@ -679,7 +678,6 @@ function myblocksadmin_update_blockinstance(
     }
 
     return 'Failed update of block instance. ID:' . $id;
-
     /*        // NAME for CUSTOM BLOCK
             if ( $instance->getVar('block_type') == 'C') {
                 switch ( $instance->getVar('c_type') ) {

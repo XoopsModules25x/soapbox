@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Author: hsalazar
  * Licence: GNU
@@ -16,10 +15,10 @@ $adminObject = \Xmf\Module\Admin::getInstance();
 $helper = Soapbox\Helper::getInstance();
 
 $op = '';
-if (isset($_GET['op'])) {
+if (\Xmf\Request::hasVar('op', 'GET')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_GET['op'])));
 }
-if (isset($_POST['op'])) {
+if (\Xmf\Request::hasVar('op', 'POST')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
@@ -71,7 +70,7 @@ function editarticle($articleID = 0)
          *initial first variables before we start
          */
         $columnID = 1;
-        if  (null !== $helper->getConfig('editorUser') && 'dhtml' !== $helper->getConfig('editorUser')) {
+        if (null !== $helper->getConfig('editorUser') && 'dhtml' !== $helper->getConfig('editorUser')) {
             $html   = 1;
             $breaks = 0;
         }
@@ -179,8 +178,7 @@ function editarticle($articleID = 0)
     $artimage_select->setExtra("onchange='showImgSelected(\"image5\", \"artimage\", \"" . $helper->getConfig('sbuploaddir') . '", "", "' . XOOPS_URL . "\")'");
     $artimage_tray = new \XoopsFormElementTray(_AM_SOAPBOX_SELECT_IMG, '&nbsp;');
     $artimage_tray->addElement($artimage_select);
-    $artimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/'
-                                                                            . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
+    $artimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_URL . '/' . $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')) . '/' . $e_articles['artimage'] . "' name='image5' id='image5' alt=''>"));
     $sform->addElement($artimage_tray);
 
     // Code to call the file browser to select an image to upload
@@ -209,7 +207,7 @@ function editarticle($articleID = 0)
             require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
             $itemid = \Xmf\Request::getInt('articleID', 0, 'GET');
             $catid  = 0;
-            $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemid, $catid = 0));
+            $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemid, $catid = 0));
         }
     }
     // COMMENTS
@@ -239,7 +237,7 @@ function editarticle($articleID = 0)
     //----------
     $options_tray = new \XoopsFormElementTray(_AM_SOAPBOX_OPTIONS, '<br>');
 
-    $html_checkbox   = new \XoopsFormCheckBox('', 'html', $e_articles['html']);
+    $html_checkbox = new \XoopsFormCheckBox('', 'html', $e_articles['html']);
     $html_checkbox->addOption(1, _AM_SOAPBOX_DOHTML);
     $options_tray->addElement($html_checkbox);
 
@@ -260,32 +258,32 @@ function editarticle($articleID = 0)
 
     $sform->addElement(new \XoopsFormHidden('articleID', $e_articles['articleID']));
 
-    $button_tray = new \XoopsFormElementTray('', '');
-    $hidden      = new \XoopsFormHidden('op', 'addart');
-    $button_tray->addElement($hidden);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $hidden     = new \XoopsFormHidden('op', 'addart');
+    $buttonTray->addElement($hidden);
 
     if (!$e_articles['articleID']) { // there's no articleID? Then it's a new article
         $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_CREATE, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addart\'"');
-        $button_tray->addElement($butt_create);
+        $buttonTray->addElement($butt_create);
 
         $butt_clear = new \XoopsFormButton('', '', _AM_SOAPBOX_CLEAR, 'reset');
-        $button_tray->addElement($butt_clear);
+        $buttonTray->addElement($butt_clear);
 
         $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
-        $button_tray->addElement($butt_cancel);
+        $buttonTray->addElement($butt_cancel);
     } else { // else, we're editing an existing article
         $butt_create = new \XoopsFormButton('', '', _AM_SOAPBOX_MODIFY, 'submit');
         $butt_create->setExtra('onclick="this.form.elements.op.value=\'addart\'"');
-        $button_tray->addElement($butt_create);
+        $buttonTray->addElement($butt_create);
 
         $butt_cancel = new \XoopsFormButton('', '', _AM_SOAPBOX_CANCEL, 'button');
         $butt_cancel->setExtra('onclick="history.go(-1)"');
-        $button_tray->addElement($butt_cancel);
+        $buttonTray->addElement($butt_cancel);
     }
 
-    $sform->addElement($button_tray);
+    $sform->addElement($buttonTray);
     //-----------
     //    $xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
     //-----------
@@ -301,7 +299,6 @@ switch ($op) {
         $articleID = \Xmf\Request::getInt('articleID', \Xmf\Request::getInt('articleID', 0, 'GET'), 'POST');
         editarticle($articleID);
         break;
-
     case 'addart':
         //-------------------------
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -344,60 +341,60 @@ switch ($op) {
             redirect_header('index.php', 1, _AM_SOAPBOX_ARTNOTCREATED);
         }
 
-        if (isset($_POST['articleID'])) {
+        if (\Xmf\Request::hasVar('articleID', 'POST')) {
             $_entryob->setVar('articleID', $articleID);
         }
-        if (isset($_POST['columnID'])) {
+        if (\Xmf\Request::hasVar('columnID', 'POST')) {
             $_entryob->setVar('columnID', $columnID);
         }
 
-        if (isset($_POST['weight'])) {
+        if (\Xmf\Request::hasVar('weight', 'POST')) {
             $_entryob->setVar('weight', \Xmf\Request::getInt('weight', 0, 'POST'));
         }
 
-        if (isset($_POST['commentable'])) {
+        if (\Xmf\Request::hasVar('commentable', 'POST')) {
             $_entryob->setVar('commentable', \Xmf\Request::getInt('commentable', 0, 'POST'));
         }
-        if (isset($_POST['block'])) {
+        if (\Xmf\Request::hasVar('block', 'POST')) {
             $_entryob->setVar('block', \Xmf\Request::getInt('block', 0, 'POST'));
         }
-        if (isset($_POST['offline'])) {
+        if (\Xmf\Request::hasVar('offline', 'POST')) {
             $_entryob->setVar('offline', \Xmf\Request::getInt('offline', 0, 'POST'));
         }
-        if (isset($_POST['notifypub'])) {
+        if (\Xmf\Request::hasVar('notifypub', 'POST')) {
             $_entryob->setVar('notifypub', \Xmf\Request::getInt('notifypub', 0, 'POST'));
         }
 
-        if (isset($_POST['breaks'])) {
+        if (\Xmf\Request::hasVar('breaks', 'POST')) {
             $_entryob->setVar('breaks', \Xmf\Request::getInt('breaks', 0, 'POST'));
         }
-        if (isset($_POST['html'])) {
+        if (\Xmf\Request::hasVar('html', 'POST')) {
             $_entryob->setVar('html', \Xmf\Request::getInt('html', 0, 'POST'));
         }
-        if (isset($_POST['smiley'])) {
+        if (\Xmf\Request::hasVar('smiley', 'POST')) {
             $_entryob->setVar('smiley', \Xmf\Request::getInt('smiley', 0, 'POST'));
         }
-        if (isset($_POST['xcodes'])) {
+        if (\Xmf\Request::hasVar('xcodes', 'POST')) {
             $_entryob->setVar('xcodes', \Xmf\Request::getInt('xcodes', 0, 'POST'));
         }
 
-        if (isset($_POST['headline'])) {
+        if (\Xmf\Request::hasVar('headline', 'POST')) {
             $_entryob->setVar('headline', $_POST['headline']);
         }
-        if (isset($_POST['lead'])) {
+        if (\Xmf\Request::hasVar('lead', 'POST')) {
             $_entryob->setVar('lead', $_POST['lead']);
         }
-        if (isset($_POST['bodytext'])) {
+        if (\Xmf\Request::hasVar('bodytext', 'POST')) {
             $_entryob->setVar('bodytext', $_POST['bodytext']);
         }
-        if (isset($_POST['votes'])) {
+        if (\Xmf\Request::hasVar('votes', 'POST')) {
             $_entryob->setVar('votes', \Xmf\Request::getInt('votes', 0, 'POST'));
         }
-        if (isset($_POST['rating'])) {
+        if (\Xmf\Request::hasVar('rating', 'POST')) {
             $_entryob->setVar('rating', \Xmf\Request::getInt('rating', 0, 'POST'));
         }
 
-        if (isset($_POST['teaser'])) {
+        if (\Xmf\Request::hasVar('teaser', 'POST')) {
             $_entryob->setVar('teaser', $_POST['teaser']);
         }
 
@@ -419,7 +416,7 @@ switch ($op) {
                 $_entryob->setVar('datesub', $datesub);
             }
         }
-         
+
         $_entryob->setVar('submit', 0);
 
         // ARTICLE IMAGE
@@ -431,7 +428,7 @@ switch ($op) {
         $date   = time();
         //-----------------
         //artimage
-        if (isset($_POST['artimage'])) {
+        if (\Xmf\Request::hasVar('artimage', 'POST')) {
             $_entryob->setVar('artimage', $_POST['artimage']);
         }
         if (isset($_FILES['cimage']['name'])) {
@@ -453,12 +450,12 @@ switch ($op) {
         }
         //-----------------
         //-- module Tag
-    $moduleHandler = xoops_getHandler('module');
-    $tagsModule    = $moduleHandler->getByDirname('tag');
-    if (is_object($tagsModule)) {
-        $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag'); // xoops_getModuleHandler('tag', 'tag');
-        $tagHandler->updateByItem($_POST['item_tag'], $articleID, $xoopsModule->getVar('dirname'), $catid = 0);
-    }
+        $moduleHandler = xoops_getHandler('module');
+        $tagsModule    = $moduleHandler->getByDirname('tag');
+        if (is_object($tagsModule)) {
+            $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag'); // $helper->getHandler('tag', 'tag');
+            $tagHandler->updateByItem($_POST['item_tag'], $articleID, $xoopsModule->getVar('dirname'), $catid = 0);
+        }
         // Save to database
         if ($_entryob->_isNew) {
             if (!$entrydataHandler->insertArticle($_entryob)) {
@@ -472,7 +469,6 @@ switch ($op) {
                 // Notify of to admin only for approve
                 $entrydataHandler->newArticleTriggerEvent($_entryob, 'new_article');
                 redirect_header('index.php', 1, _AM_SOAPBOX_ARTCREATEDOK);
-                //
             }
         } else {
             if (!$entrydataHandler->insertArticle($_entryob)) {
@@ -480,12 +476,10 @@ switch ($op) {
             } else {
                 $entrydataHandler->newArticleTriggerEvent($_entryob, 'new_article');
                 redirect_header('index.php', 1, _AM_SOAPBOX_ARTMODIFIED);
-                //
             }
         }
         exit();
         break;
-
     case 'del':
 
         $confirm = \Xmf\Request::getInt('confirm', 0, 'POST');
@@ -508,14 +502,13 @@ switch ($op) {
             if (!is_object($_entryob)) {
                 redirect_header('index.php', 1, _NOPERM);
             }
-            //
+
             if (!$entrydataHandler->deleteArticle($_entryob)) {
                 trigger_error('ERROR:not deleted from database');
                 exit();
-            } else {
-                $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
-                redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
             }
+            $headline = $myts->htmlSpecialChars($_entryob->getVar('headline'));
+            redirect_header('index.php', 1, sprintf(_AM_SOAPBOX_ARTISDELETED, $headline));
         } else {
             $articleID = \Xmf\Request::getInt('articleID', \Xmf\Request::getInt('articleID', 0, 'GET'), 'POST');
             $_entryob  = $entrydataHandler->getArticle($articleID);
@@ -529,7 +522,7 @@ switch ($op) {
                               'op'        => 'del',
                               'articleID' => $articleID,
                               'confirm'   => 1,
-                              'headline'  => $headline
+                              'headline'  => $headline,
                           ], 'article.php', _AM_SOAPBOX_DELETETHISARTICLE . '<br><br>' . $headline, _AM_SOAPBOX_DELETE);
             xoops_cp_footer();
         }
@@ -543,7 +536,6 @@ switch ($op) {
         $entrydataHandler->reorderArticlesUpdate($_POST['articleweight']);
         redirect_header('index.php', 1, _AM_SOAPBOX_ORDERUPDATED);
         break;
-
     case 'default':
     default:
         xoops_cp_header();
@@ -551,6 +543,5 @@ switch ($op) {
         editarticle(0);
         //showArticles (0);
         break;
-
 }
 require_once __DIR__ . '/admin_footer.php';

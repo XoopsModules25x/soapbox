@@ -19,10 +19,12 @@
 
 use XoopsModules\Soapbox;
 
-require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+include dirname(__DIR__) . '/preloads/autoloader.php';
+
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
-require_once  dirname(__DIR__) . '/include/common.php';
+require_once dirname(__DIR__) . '/include/common.php';
 
 $moduleDirName = basename(dirname(__DIR__));
 
@@ -31,7 +33,7 @@ require_once $GLOBALS['xoops']->path('www/class/xoopstree.php');
 require_once $GLOBALS['xoops']->path('www/class/xoopslists.php');
 
 /** @var Soapbox\Helper $helper */
-$helper = Soapbox\Helper::getInstance();
+$helper      = Soapbox\Helper::getInstance();
 $adminObject = \Xmf\Module\Admin::getInstance();
 
 $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);

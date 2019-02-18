@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -88,7 +87,6 @@ $artimage_tray->addElement(new \XoopsFormLabel('', "<br><br><img src='" . XOOPS_
 $sform->addElement($artimage_tray);
 
 if (is_object($xoopsUser)) {
-
     // WEIGHT
     $sform->addElement(new \XoopsFormText(_MD_SOAPBOX_WGT, 'weight', 4, 4, $e_articles['weight']));
     //----------
@@ -112,7 +110,7 @@ if (is_object($xoopsUser)) {
         $addcommentable_radio = new \XoopsFormRadioYN(_MD_SOAPBOX_ALLOWCOMMENTS, 'commentable', $e_articles['commentable'], ' ' . _MD_SOAPBOX_YES . '', ' ' . _MD_SOAPBOX_NO . '');
         $sform->addElement($addcommentable_radio);
     }
-    if  (null !== $helper->getConfig('autoapprove') && 1 === $helper->getConfig('autoapprove')) {
+    if (null !== $helper->getConfig('autoapprove') && 1 === $helper->getConfig('autoapprove')) {
         if ($xoopsUser->isAdmin($xoopsModule->mid())) {
             // OFFLINE
             // Code to take article offline, for maintenance purposes
@@ -140,12 +138,12 @@ if (is_object($xoopsUser)) {
     }
 }
 
-$button_tray = new \XoopsFormElementTray('', '');
-$hidden      = new \XoopsFormHidden('op', 'post');
-$button_tray->addElement($hidden);
-$button_tray->addElement(new \XoopsFormButton('', 'post', _MD_SOAPBOX_CREATE, 'submit'));
+$buttonTray = new \XoopsFormElementTray('', '');
+$hidden     = new \XoopsFormHidden('op', 'post');
+$buttonTray->addElement($hidden);
+$buttonTray->addElement(new \XoopsFormButton('', 'post', _MD_SOAPBOX_CREATE, 'submit'));
 
-$sform->addElement($button_tray);
+$sform->addElement($buttonTray);
 //-----------
 //$xoopsGTicket->addTicketXoopsFormElement($sform, __LINE__);
 //-----------
