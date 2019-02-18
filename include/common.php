@@ -29,7 +29,7 @@ if (!defined('SOAPBOX_MODULE_PATH')) {
 }
 xoops_loadLanguage('common', SOAPBOX_DIRNAME);
 
-require_once SOAPBOX_ROOT_PATH . '/class/utility.php';
+require_once SOAPBOX_ROOT_PATH . '/class/Utility.php';
 //require_once SOAPBOX_ROOT_PATH . '/include/constants.php';
 //require_once SOAPBOX_ROOT_PATH . '/include/seo_functions.php';
 //require_once SOAPBOX_ROOT_PATH . '/class/metagen.php';

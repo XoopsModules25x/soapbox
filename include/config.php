@@ -60,41 +60,65 @@ $oldFiles = [
 ];
 
 //Configurator
-/*
-return array(
-    'name'           => 'Module Configurator',
-    'uploadFolders'  => array(
-        constant($capsDirName . '_UPLOAD_PATH'),
-        constant($capsDirName . '_UPLOAD_PATH') . '/XXX'
-    ),
-    'blankFiles' => array(
-        constant($capsDirName . '_UPLOAD_PATH'),
-        constant($capsDirName . '_UPLOAD_PATH') . '/XXXX'
-    ),
+function getConfig()
+{
+$moduleDirName = basename(dirname(__DIR__));
+$capsDirName   = strtoupper($moduleDirName);
+return (object)[
+        'name'           => 'Module Configurator',
+        'paths'          => [
+                'dirname'    => $moduleDirName,
+                'admin'      => XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/admin',
+                'modPath'    => XOOPS_ROOT_PATH . '/modules/' . $moduleDirName,
+                'modUrl'     => XOOPS_URL . '/modules/' . $moduleDirName,
+                'uploadPath' => XOOPS_UPLOAD_PATH . '/' . $moduleDirName,
+                'uploadUrl'  => XOOPS_UPLOAD_URL . '/' . $moduleDirName,
+            ],    
+        'uploadFolders'  => [
+            constant($capsDirName . '_UPLOAD_PATH'),
+            constant($capsDirName . '_UPLOAD_PATH') . '/screenshots'
+        ],
+        'blankFiles' => [
+            constant($capsDirName . '_UPLOAD_PATH'),
+            constant($capsDirName . '_UPLOAD_PATH') . '/blank.png'
+        ],
+    
+        'templateFolders' =>[
+            '/templates/',
+            '/templates/blocks/',
+            '/templates/admin/'
+    
+        ],
+        'oldFiles'        => [
+            '/include/update_functions.php',
+            '/include/install_functions.php'
+        ],
+        'oldFolders'      => [
+            '/images',
+            '/css',
+            '/js',
+            '/tcpdf',
+            '/images',
+        ],
+            'copyBlankFiles' => [
+                XOOPS_UPLOAD_PATH . '/' . $moduleDirName,
+                XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/screenshots',
+                //XOOPS_UPLOAD_PATH . '/flags'
+        ],
 
-    'templateFolders' => array(
-        '/templates/',
-        '/templates/blocks/',
-        '/templates/admin/'
-
-    ),
-    'oldFiles'        => array(
-        '/include/update_functions.php',
-        '/include/install_functions.php'
-    ),
-    'oldFolders'      => array(
-        '/images',
-        '/css',
-        '/js',
-        '/tcpdf',
-        '/images',
-    ),
-);
-*/
-// module information
-$modCopyright = "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
-                     <img src='" . $capsDirName . '_AUTHOR_LOGOIMG' . "' alt='XOOPS Project'></a>";
-
+        'copyTestFolders' => [
+            //[
+            //    constant($moduleDirNameUpper . '_PATH') . '/testdata/images',
+            //    XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/images',
+            //]
+        ],
+        'renameTables'    => [//         'XX_archive'     => 'ZZZZ_archive',
+        ],
+        // module information
+        'modCopyright' => "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
+                             <img src='" . $capsDirName . '_AUTHOR_LOGOIMG' . "' alt='XOOPS Project'></a>",
+];
+}
 /**
  * Class SoapboxConfigurator
  */
