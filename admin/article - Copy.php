@@ -22,7 +22,8 @@ if (\Xmf\Request::hasVar('op', 'POST')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
-$entrydataHandler = $helper->getHandler('Entrydata');
+/** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
 $totalcats        = $entrydataHandler->getColumnCount();
 if (0 === $totalcats) {
     redirect_header('index.php', 1, _AM_SOAPBOX_NEEDONECOLUMN);
@@ -49,8 +50,9 @@ function editarticle($articleID = 0)
     }
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
-    $articleID        = (int)$articleID;
-    $entrydataHandler = $helper->getHandler('Entrydata');
+    $articleID = (int)$articleID;
+    /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
     if (0 !== $articleID) {
         //articleID check
         $_entryob = $entrydataHandler->getArticleOnePermcheck($articleID, false, false);

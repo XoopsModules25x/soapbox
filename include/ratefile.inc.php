@@ -45,7 +45,8 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     }
 
     //module entry data handler
-    $entrydataHandler = $helper->getHandler('Entrydata');
+    /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
     //get entry object
     $_entryob = $entrydataHandler->getArticleOnePermcheck($lid, true);
     if (!is_object($_entryob)) {
@@ -91,7 +92,7 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     }
 
     $_votedataob = $entrydataHandler->createVotedata(true);
-    $_votedataob->cleanVars();
+    //    $_votedataob->cleanVars();
     $_votedataob->setVar('lid', $lid);
     $_votedataob->setVar('ratinguser', $ratinguser);
     $_votedataob->setVar('rating', $rating);

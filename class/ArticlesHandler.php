@@ -99,7 +99,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
         $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbarticles');
-        if (null !== $criteria && is_subclass_of($criteria, 'CriteriaElement')) {
+        if (null !== $criteria && $criteria instanceof \CriteriaElement) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' !== $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -160,7 +160,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
                            $this->db->prefix('sbarticles'), $columnID, $this->db->quoteString($headline), $this->db->quoteString($lead), $this->db->quoteString($bodytext), $this->db->quoteString($teaser), $uid, $submit, $datesub, $counter, $weight, $html, $smiley, $xcodes, $breaks, $block,
                            $this->db->quoteString($artimage), $votes, $rating, $commentable, $offline, $notifypub, $articleID);
         }
-        if (false !== $force) {
+        if ($force) {
             $result = $this->db->queryF($sql);
         } else {
             $result = $this->db->query($sql);
@@ -190,7 +190,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
             return false;
         }
         $sql = sprintf('DELETE FROM `%s` WHERE articleID = %u', $this->db->prefix('sbarticles'), $sbarticle->getVar('articleID'));
-        if (false !== $force) {
+        if ($force) {
             $result = $this->db->queryF($sql);
         } else {
             $result = $this->db->query($sql);
@@ -212,7 +212,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('sbarticles');
 
-        if (null !== $criteria && is_subclass_of($criteria, 'CriteriaElement')) {
+        if (null !== $criteria && $criteria instanceof \CriteriaElement) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         $result = $this->db->query($sql);

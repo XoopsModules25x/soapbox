@@ -59,7 +59,8 @@ if (\Xmf\Request::hasVar('submit', 'POST') && !empty($_POST['lid'])) {
 $articles = [];
 $category = [];
 //module entry data handler
-$entrydataHandler = $helper->getHandler('Entryget');
+/** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
 if (empty($articleID)) {
     //get entry object
     $entryobArray = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, null, null, true, false);

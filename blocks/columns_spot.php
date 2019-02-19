@@ -112,7 +112,8 @@ function b_columns_spot_show($options)
     //    $resultB = $xoopsDB -> query( "SELECT name, colimage FROM ". $xoopsDB -> prefix( "sbcolumns" ) . " WHERE columnID = " . $options[0] . " " );
     //    list ( $name, $colimage ) = $xoopsDB -> fetchRow( $resultB );
     //-------------------------------------
-    $entrydataHandler = $helper->getHandler('Entryget');
+    /** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
     //-------------------------------------
     //get category object
     $categoryobArray = $entrydataHandler->getColumnsAllPermcheck(0, 0, true, 'weight', 'ASC', $columnIDs, null, true, false);
@@ -324,7 +325,8 @@ function b_columns_spot_edit($options)
             $columnIDs[] = (int)$v;
         }
     }
-    $entrydataHandler = $helper->getHandler('Entryget');
+    /** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
     $categoryobArray  = $entrydataHandler->getColumns();
     $form             .= '<br>' . _MB_SOAPBOX_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
     $form             .= "<option value='0'>(ALL)</option>";

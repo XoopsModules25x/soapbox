@@ -44,7 +44,8 @@ require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 $start = Request::getInt('start', 0, 'GET');
 
 //-------------------------------------
-$entrydataHandler = $helper->getHandler('Entryget');
+/** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
 //-------------------------------------
 $entryobArray = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('indexperpage'), $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
 $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;

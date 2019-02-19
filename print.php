@@ -47,7 +47,8 @@ function PrintPage($articleID)
     $myts      = \MyTextSanitizer:: getInstance();
     $articleID = (int)$articleID;
     //get entry object
-    $entrydataHandler = $helper->getHandler('Entryget');
+    /** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
     $_entryob         = $entrydataHandler->getArticleOnePermcheck($articleID, true, true);
     if (!is_object($_entryob)) {
         redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, 'Not Found');

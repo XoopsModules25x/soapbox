@@ -220,7 +220,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbcolumns)) {
-            if (mb_strtolower(get_class($sbcolumns)) === mb_strtolower('Columns')) {
+            if (mb_strtolower(get_class($sbcolumns)) === mb_strtolower(Columns::class)) {
                 $columnIDs[] = $sbcolumns->getVar('columnID');
             }
         } else {
@@ -231,7 +231,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
                 $sbcolumns = array_unique($sbcolumns);
                 foreach ($sbcolumns as $k => $v) {
                     if (is_object($v)) {
-                        if (mb_strtolower(get_class($v)) === mb_strtolower('Columns')) {
+                        if (mb_strtolower(get_class($v)) === mb_strtolower(Columns::class)) {
                             $columnIDs[] = $v->getVar('columnID');
                         }
                     } else {
@@ -261,7 +261,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
             return $ret;
         }
         if (is_object($sbarticles)) {
-            if (mb_strtolower(get_class($sbarticles)) === mb_strtolower('Articles')) {
+            if (mb_strtolower(get_class($sbarticles)) === mb_strtolower(Articles::class)) {
                 $articleIDs[] = $sbarticles->getVar('articleID');
             }
         } else {
@@ -272,7 +272,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
                 $sbarticles = array_unique($sbarticles);
                 foreach ($sbarticles as $k => $v) {
                     if (is_object($v)) {
-                        if (mb_strtolower(get_class($v)) === mb_strtolower('Articles')) {
+                        if (mb_strtolower(get_class($v)) === mb_strtolower(Articles::class)) {
                             $articleIDs[] = $v->getVar('articleID');
                         }
                     } else {
@@ -410,7 +410,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         global $xoopsUser;
         $ret                                 = [];
         $this->total_getArticlesAllPermcheck = 0;
-        //getColmuns
+        //get Columns
         $can_read_columnIDs      = [];
         $can_read_column_authors = [];
         $NOTarticleIDs           = [];
@@ -682,7 +682,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         if ($asobject) {
             $ret = $sbvotedata_arr;
         } else {
-            foreach ($sbvotedata_arrr as $key => $sbvotedata) {
+            foreach ($sbvotedata_arr as $key => $sbvotedata) {
                 $ret[] = $key;
             }
         }

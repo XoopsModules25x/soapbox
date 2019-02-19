@@ -60,7 +60,8 @@ if ($xoopsUser->isAdmin($xoopsModule->mid())) {
 $edit_uid = $xoopsUser->getVar('uid');
 $name     = $xoopsUser->getVar('uname');
 //-------------------------------------
-$entrydataHandler = $helper->getHandler('Entrydata');
+/** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
 //-------------------------------------
 //get can edit category object
 if (XOOPS_GROUP_ADMIN === $thisgrouptype) {
@@ -90,7 +91,7 @@ switch ($op) {
             }
         } else {
             $_entryob = $entrydataHandler->createArticle(true);
-            $_entryob->cleanVars();
+            //            $_entryob->cleanVars();
         }
 
         //set
@@ -213,7 +214,7 @@ switch ($op) {
         } else {
             // there's no parameter, so we're adding an entry
             $_entryob = $entrydataHandler->createArticle(true);
-            $_entryob->cleanVars();
+            //            $_entryob->cleanVars();
         }
         //get vars mode E
         $entry_vars = $_entryob->getVars();

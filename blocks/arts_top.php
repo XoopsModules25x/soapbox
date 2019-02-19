@@ -36,7 +36,8 @@ function b_arts_top_show($options)
     if ('weight' === $options[0]) {
         $sortorder = 'ASC';
     }
-    $entrydataHandler = $helper->getHandler('Entryget');
+    /** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
     $entryobArray     = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $options[0], $sortorder, null, null, false, false);
     if (empty($entryobArray) || 0 === count($entryobArray)) {
         return $block_outdata;

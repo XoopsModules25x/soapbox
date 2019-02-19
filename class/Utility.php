@@ -246,7 +246,8 @@ class Utility extends \XoopsObject
         // To create existing columns table
         //----------------------------
         //get category object
-        $entrydataHandler = $helper->getHandler('Entrydata');
+        /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+        $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
         $numrows          = $entrydataHandler->getColumnCount();
         $criteria         = new \CriteriaCompo();
         $criteria->setSort('weight');
@@ -358,7 +359,8 @@ class Utility extends \XoopsObject
         //            . _AM_SOAPBOX_CREATEART . "</a><br><br>";
         //    }
         // Articles count
-        $entrydataHandler = $helper->getHandler('Entrydata');
+        /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+        $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
         //----------------------------
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('submit', 0));
@@ -405,7 +407,7 @@ class Utility extends \XoopsObject
         /* Code to show selected articles */
         echo "<form name='pick' id='pick' action='" . $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')) . "' method='POST' style='margin: 0;'>"; ?>
         <table width='100%' cellspacing='1' cellpadding='2' border='0'
-               style='border-left: 1px solid silver; border-top: 1px solid silver; border-right: 1px solid silver;'>
+               style='border-left: 1px solid #c0c0c0; border-top: 1px solid #c0c0c0; border-right: 1px solid #c0c0c0;'>
             <tr>
                 <td class='odd'><span style='font-weight: bold; font-variant: small-caps;'><?php echo $string ?></span></td>
                 <td class='odd' width='40%' align='right'><?php echo _AM_SOAPBOX_SELECTSTATUS; ?>
@@ -614,7 +616,8 @@ class Utility extends \XoopsObject
         //         $approve_submit = false ,
         //         $id_as_key = false )
         // Articles count
-        $entrydataHandler = $helper->getHandler('Entrydata');
+        /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+        $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
         //-------------------------------------
         $entryobArray = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false);
         // Get number of articles in the selected condition ($cond)

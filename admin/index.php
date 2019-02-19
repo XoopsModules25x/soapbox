@@ -13,7 +13,8 @@ $utility = new Soapbox\Utility();
 
 //get category count
 //----------------------------
-$entrydataHandler = $helper->getHandler('Entrydata');
+/** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
 $totcol           = $entrydataHandler->getColumnCount();
 //----------------------------
 $criteria = new \CriteriaCompo();

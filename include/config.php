@@ -45,10 +45,10 @@ function getConfig()
         ],
 
         'copyTestFolders' => [
-            //[
-            //    constant($moduleDirNameUpper . '_PATH') . '/testdata/images',
-            //    XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/images',
-            //]
+            [
+                XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/testdata/uploads',
+                XOOPS_UPLOAD_PATH . '/' . $moduleDirName,
+            ]
         ],
 
         'templateFolders' => [

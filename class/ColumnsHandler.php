@@ -92,7 +92,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
         $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbcolumns');
-        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
+        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' !== $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -150,7 +150,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
             $sql = sprintf('UPDATE `%s` SET author = %s, NAME = %s, description = %s, total = %u, weight = %u, colimage = %s, created = %u WHERE columnID = %u', $this->db->prefix('sbcolumns'), $author, $this->db->quoteString($name), $this->db->quoteString($description), $total, $weight,
                            $this->db->quoteString($colimage), $created, $columnID);
         }
-        if (false !== $force) {
+        if ($force) {
             $result = $this->db->queryF($sql);
         } else {
             $result = $this->db->query($sql);
@@ -175,11 +175,11 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
      */
     public function delete(\XoopsObject $sbcolumn, $force = false)//delete($sbcolumn, $force = false)
     {
-        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower('Columns')) {
+        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower(Columns::class)) {
             return false;
         }
         $sql = sprintf('DELETE FROM `%s` WHERE columnID = %u', $this->db->prefix('sbcolumns'), $sbcolumn->getVar('columnID'));
-        if (false !== $force) {
+        if ($force) {
             $result = $this->db->queryF($sql);
         } else {
             $result = $this->db->query($sql);
@@ -200,7 +200,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
     public function getCount(\CriteriaElement $criteria = null)//getCount($criteria = null)
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('sbcolumns');
-        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
+        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         $result = $this->db->query($sql);
@@ -223,7 +223,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
      */
     public function updateByField($entry, $fieldName, $fieldValue, $force = false)
     {
-        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Columns')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower(Columns::class)) {
             return false;
         }
         $entry->setVar($fieldName, $fieldValue);

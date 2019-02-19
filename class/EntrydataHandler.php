@@ -37,7 +37,7 @@ if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+
  * @author  domifara
  * @package modules
  */
-class EntrydataHandler extends Soapbox\EntrygetHandler
+class EntrydataHandler extends \XoopsModules\Soapbox\EntrygetHandler
 {
     /**
      * constructor

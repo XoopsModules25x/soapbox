@@ -23,7 +23,8 @@ if (\Xmf\Request::hasVar('op', 'POST')) {
     $op = trim(strip_tags($myts->stripSlashesGPC($_POST['op'])));
 }
 
-$entrydataHandler = $helper->getHandler('Entrydata');
+/** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
 
 /**
  * @param int|string $columnID
@@ -40,8 +41,9 @@ function editcol($columnID = '')
     $myts        = \MyTextSanitizer::getInstance();
 
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-    $columnID         = (int)$columnID;
-    $entrydataHandler = $helper->getHandler('Entrydata');
+    $columnID = (int)$columnID;
+    /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
     // If there is a parameter, and the id exists, retrieve data: we're editing a column
     if (0 !== $columnID) {
         //get category object
@@ -65,7 +67,7 @@ function editcol($columnID = '')
         $sform = new \XoopsThemeForm(_AM_SOAPBOX_MODCOL . ': ' . $_categoryob->getVar('name'), 'op', $myts->htmlSpecialChars(xoops_getenv('PHP_SELF')), 'post', true);
     } else {
         $_categoryob = $entrydataHandler->createColumn(true);
-        $_categoryob->cleanVars();
+        //mb        $_categoryob->cleanVars();
 
         //get vars
         $category_vars = $_categoryob->getVars();
@@ -209,12 +211,13 @@ switch ($op) {
         }
 
         //get category object
-        $entrydataHandler = $helper->getHandler('Entrydata');
+        /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+        $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
         $_categoryob      = $entrydataHandler->getColumn($columnID);
         //new data or edit
         if (!is_object($_categoryob)) {
             $_categoryob = $entrydataHandler->createColumn(true);
-            $_categoryob->cleanVars();
+            //            $_categoryob->cleanVars();
 
             $_categoryob->setVar('created', time());
         }

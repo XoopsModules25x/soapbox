@@ -90,7 +90,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
         $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->db->prefix('sbvotedata');
-        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
+        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' !== $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -126,7 +126,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
      */
     public function insert(\XoopsObject $entry, $force = false)
     {
-        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Votedata')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower(Votedata::class)) {
             return false;
         }
         if (!$entry->isDirty()) {
@@ -145,7 +145,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
         } else {
             $sql = sprintf('UPDATE `%s` SET lid = %u, ratinguser = %u, rating = %u, ratinghostname = %s, ratingtimestamp = %uratingtimestamp WHERE ratingid = %u', $this->db->prefix('sbvotedata'), $ratinguser, $rating, $this->db->quoteString($ratinghostname), $ratingtimestamp, $ratingid);
         }
-        if (false !== $force) {
+        if ($force) {
             $result = $this->db->queryF($sql);
         } else {
             $result = $this->db->query($sql);
@@ -170,11 +170,11 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
      */
     public function delete(\XoopsObject $entry, $force = false)
     {
-        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Votedata')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower(Votedata::class)) {
             return false;
         }
         $sql = sprintf('DELETE FROM `%s` WHERE ratingid = %u', $this->db->prefix('sbvotedata'), $entry->getVar('ratingid'));
-        if (false !== $force) {
+        if ($force) {
             $result = $this->db->queryF($sql);
         } else {
             $result = $this->db->query($sql);
@@ -196,10 +196,10 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
     public function deleteEntrys($criteria = null, $force = false)
     {
         $sql = sprintf('DELETE FROM `%s` ', $this->db->prefix('sbvotedata'));
-        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
+        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
             $sql .= ' ' . $criteria->renderWhere();
         }
-        if (false !== $force) {
+        if ($force) {
             $result = $this->db->queryF($sql);
         } else {
             $result = $this->db->query($sql);
@@ -221,7 +221,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('sbvotedata');
 
-        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
+        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         $result = $this->db->query($sql);
@@ -244,7 +244,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
      */
     public function updateByField($entry, $fieldName, $fieldValue, $force = false)
     {
-        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Votedata')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower(Votedata::class)) {
             return false;
         }
         $entry->setVar($fieldName, $fieldValue);

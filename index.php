@@ -50,7 +50,9 @@ switch ($op) {
     case 'default':
     default:
         //-------------------------------------
-        $entrydataHandler = $helper->getHandler('Entryget');
+        /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+        $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
+
         //-------------------------------------
 
         $author = \Xmf\Request::getInt('author', 0, 'GET');
@@ -107,7 +109,7 @@ switch ($op) {
                     $articles['headline'] = '[' . _MD_SOAPBOX_SELSUBMITS . ']' . $articles['headline'];
                     $articles['teaser']   = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
                     $articles['lead']     = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
-                } elseif (0 === $entryob->getVar('datesub') || $entryob->getVar('datesub') > time()) {
+                } elseif (0 === $entryob->getVar('datesub') || ($entryob->getVar('datesub') > time())) {
                     $articles['headline'] = '[' . _MD_SOAPBOX_SELWAITEPUBLISH . ']' . $articles['headline'];
                     $articles['teaser']   = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
                     $articles['lead']     = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
@@ -118,7 +120,7 @@ switch ($op) {
                 $articles['userlinks']  = $entrydataHandler->getuserlinks($entryob);
                 //loop tail
                 $category['content'][] = $articles;
-                //                unset($articles);
+                unset($articles);
             }
 
             $category['total']  = $totalcols;

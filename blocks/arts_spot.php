@@ -109,7 +109,8 @@ function b_arts_spot_show($options)
     //    $resultB = $xoopsDB -> query( "SELECT name, colimage FROM ". $xoopsDB -> prefix( "sbcolumns" ) . " WHERE columnID = " . $options[0] . " " );
     //    list ( $name, $colimage ) = $xoopsDB -> fetchRow( $resultB );
     //-------------------------------------
-    $entrydataHandler = $helper->getHandler('Entryget');
+    /** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
     //-------------------------------------
     // Retrieve the latest article in the selected column
     $entryobArray = $entrydataHandler->getArticlesAllPermcheck($options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
@@ -299,7 +300,8 @@ function b_arts_spot_edit($options)
     $form .= '&nbsp;<br>' . _MB_SOAPBOX_CHARS . "&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "'>&nbsp;" . _MB_SOAPBOX_LENGTH . '';
 
     //-------------------------------------
-    $entrydataHandler = $helper->getHandler('Entryget');
+    /** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
     $categoryobArray  = $entrydataHandler->getColumns();
     $form             .= '<br>' . _MB_SOAPBOX_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
     $form             .= "<option value='0'>(ALL)</option>";

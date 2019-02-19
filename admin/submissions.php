@@ -21,7 +21,8 @@ if (\Xmf\Request::hasVar('op', 'POST')) {
 }
 
 //-------------------------------------
-$entrydataHandler = $helper->getHandler('Entrydata');
+/** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
 
 // -- Edit function -- //
 /**
@@ -45,7 +46,8 @@ function editarticle($articleID = '')
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
     //-------------------------------------
-    $entrydataHandler = $helper->getHandler('Entrydata');
+    /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
 
     if (!$articleID) {
         redirect_header('index.php', 1, _AM_SOAPBOX_NOARTS);
