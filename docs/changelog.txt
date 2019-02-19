@@ -6,6 +6,7 @@
 - added feedback (mamba)
 - added test data button (mamba)
 - added migrate (mamba)
+- added test data (mamba)
 
 <h5>1.70 Beta 1      [2017-05-23]</h5>
 <hr>
