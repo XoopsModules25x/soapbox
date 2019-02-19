@@ -22,9 +22,9 @@ trait VersionChecks
     /**
      * Verifies XOOPS version meets minimum requirements for this module
      * @static
-     * @param \XoopsModule $module
+     * @param \XoopsModule|null $module
      *
-     * @param null|string  $requiredVer
+     * @param null|string       $requiredVer
      * @return bool true if meets requirements, false if not
      */
     public static function checkVerXoops(\XoopsModule $module = null, $requiredVer = null)
@@ -111,7 +111,7 @@ trait VersionChecks
                 $curlReturn = curl_exec($curlHandle);
                 if (false === $curlReturn) {
                     trigger_error(curl_error($curlHandle));
-                } elseif (false !== strpos($curlReturn, 'Not Found')) {
+                } elseif (strpos($curlReturn, 'Not Found')) {
                     trigger_error('Repository Not Found: ' . $infoReleasesUrl);
                 } else {
                     $file              = json_decode($curlReturn, false);

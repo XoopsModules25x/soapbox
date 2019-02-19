@@ -6,15 +6,20 @@
  */
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-require_once __DIR__ . '/preloads/autoloader.php';
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-$moduleDirName = basename(__DIR__);
+$moduleDirName      = basename(__DIR__);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+
+xoops_load('xoopseditorhandler');
+$editorHandler = \XoopsEditorHandler::getInstance();
+//$xoopsUrl = parse_url(XOOPS_URL);
 
 // ------------------- Informations ------------------- //
 $modversion = [
     'version'             => 1.70,
-    'module_status'       => 'Beta 1',
-    'release_date'        => '2018/03/30',
+    'module_status'       => 'Beta 2',
+    'release_date'        => '2019/02/18',
     'name'                => _MI_SOAPBOX_NAME,
     'description'         => _MI_SOAPBOX_DESC,
     'official'            => 0,
@@ -295,7 +300,7 @@ $modversion['config'][] = [
     'description' => '_MI_SOAPBOX_IMGDIRDSC',
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
-    'default'     => 'modules/soapbox/assets/images',
+    'default'     => "modules/$moduleDirName/assets/images",
 ];
 
 $modversion['config'][] = [
@@ -304,7 +309,8 @@ $modversion['config'][] = [
     'description' => '_MI_SOAPBOX_UPLOADDIRDSC',
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
-    'default'     => 'modules/soapbox/assets/images/uploads',
+    //    'default'     => 'modules/soapbox/assets/images/uploads',
+    'default'     => 'uploads/' . $moduleDirName . '/images',
 ];
 
 $modversion['config'][] = [
@@ -462,10 +468,34 @@ $modversion['config'][] = [
 /**
  * Make Sample button visible?
  */
+//$modversion['config'][] = [
+//    'name'        => 'displaySampleButton',
+//    'title'       => '_MI_SOAPBOX_SHOW_SAMPLE_BUTTON',
+//    'description' => '_MI_SOAPBOX_SHOW_SAMPLE_BUTTON_DESC',
+//    'formtype'    => 'yesno',
+//    'valuetype'   => 'int',
+//    'default'     => 0,
+//];
+
+/**
+ * Make Sample button visible?
+ */
 $modversion['config'][] = [
     'name'        => 'displaySampleButton',
-    'title'       => '_MI_XOOPSTUBE_SHOW_SAMPLE_BUTTON',
-    'description' => '_MI_XOOPSTUBE_SHOW_SAMPLE_BUTTON_DESC',
+    'title'       => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_SAMPLE_BUTTON',
+    'description' => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_SAMPLE_BUTTON_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
+
+/**
+ * Show Developer Tools?
+ */
+$modversion['config'][] = [
+    'name'        => 'displayDeveloperTools',
+    'title'       => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS',
+    'description' => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS_DESC',
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => 0,

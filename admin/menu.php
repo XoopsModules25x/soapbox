@@ -5,11 +5,15 @@
  * Licence: GNU
  */
 
-use XoopsModules\Soapbox;
+include dirname(__DIR__) . '/preloads/autoloader.php';
+
+$moduleDirName      = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 //require_once  dirname(__DIR__) . '/include/common.php';
-/** @var Soapbox\Helper $helper */
-$helper = Soapbox\Helper::getInstance();
+/** @var \XoopsModules\Soapbox\Helper $helper */
+$helper = \XoopsModules\Soapbox\Helper::getInstance();
+$helper->loadLanguage('common');
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
 if (is_object($helper->getModule())) {
@@ -53,6 +57,28 @@ $adminmenu[] = [
     'link'  => 'admin/permissions.php',
     'icon'  => $pathIcon32 . '/permissions.png',
 ];
+
+// Blocks Admin
+$adminmenu[] = [
+    'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS'),
+    'link'  => 'admin/blocksadmin.php',
+    'icon'  => $pathIcon32 . '/block.png',
+];
+
+//Feedback
+$adminmenu[] = [
+    'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_FEEDBACK'),
+    'link'  => 'admin/feedback.php',
+    'icon'  => $pathIcon32 . '/mail_foward.png',
+];
+
+if ($helper->getConfig('displayDeveloperTools')) {
+    $adminmenu[] = [
+        'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE'),
+        'link'  => 'admin/migrate.php',
+        'icon'  => $pathIcon32 . '/database_go.png',
+    ];
+}
 
 $adminmenu[] = [
     'title' => _MI_SOAPBOX_ABOUT,

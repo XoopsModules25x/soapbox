@@ -1,7 +1,11 @@
-<h5>1.70 Beta 2      [NOT RELEASED]</h5>  Dev: Xoops 2.5.9, PHP 7.2.4
+<h5>1.70 Beta 2      [NOT RELEASED]</h5>  Dev: Xoops 2.5.10, PHP 7.3.2
 <hr>
 - clear sbvotedata table when adding test data (mamba)
 - namespaces/autoloading refactoring (mamba)
+- fixes (aerograf)
+- added feedback (mamba)
+- added test data button (mamba)
+- added migrate (mamba)
 
 <h5>1.70 Beta 1      [2017-05-23]</h5>
 <hr>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -8,20 +7,19 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project (https://xoops.org)
+ * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package
  * @since           2.5.9
  * @author          Michael Beck (aka Mamba)
  */
 
-use Xmf\Request;
 use XoopsModules\Soapbox;
 use XoopsModules\Soapbox\Common;
 
-require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-require dirname(__DIR__) . '/preloads/autoloader.php';
-$op = Request::getString('op', '');
+require dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+include dirname(__DIR__) . '/preloads/autoloader.php';
+$op = \Xmf\Request::getCmd('op', '');
 
 switch ($op) {
     case 'load':
@@ -30,57 +28,37 @@ switch ($op) {
     case 'save':
         saveSampleData();
         break;
-    case 'export':
-        exportSchema();
-        break;
 }
 
 // XMF TableLoad for SAMPLE data
 
 function loadSampleData()
 {
-    //    $tables = [
-    //        'meta',
-    //        'broken',
-    //        'cat',
-    //        'downloads',
-    //        'indexpage',
-    //        'ip_log',
-    //        'mimetypes',
-    //        'mirrors',
-    //        'mod',
-    //        'reviews',
-    //        'votedata',
-    //    ];
-
     $moduleDirName      = basename(dirname(__DIR__));
     $moduleDirNameUpper = mb_strtoupper($moduleDirName);
-
-    /** @var Soapbox\Helper $helper */
-    $helper       = Soapbox\Helper::getInstance();
-    $utility      = new Soapbox\Utility();
-    $configurator = new Common\Configurator();
+    $helper             = Soapbox\Helper::getInstance();
+    $utility            = new Soapbox\Utility();
+    $configurator       = new Common\Configurator();
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');
     $helper->loadLanguage('common');
 
+    //    $items = \Xmf\Yaml::readWrapped('quotes_data.yml');
+    //    \Xmf\Database\TableLoad::truncateTable($moduleDirName . '_quotes');
+    //    \Xmf\Database\TableLoad::loadTableFromArray($moduleDirName . '_quotes', $items);
+
     $tables = \Xmf\Module\Helper::getHelper($moduleDirName)->getModule()->getInfo('tables');
 
     foreach ($tables as $table) {
-        try {
-            $tabledata = \Xmf\Yaml::readWrapped($table . '.yml');
-            \Xmf\Database\TableLoad::truncateTable($table);
-            \Xmf\Database\TableLoad::loadTableFromArray($table, $tabledata);
-        }
-        catch (\Exception $e) {
-            exit(constant('CO_' . $moduleDirNameUpper . '_' . 'IMPORT_ERROR'));
-        }
+        $tabledata = \Xmf\Yaml::readWrapped($table . '.yml');
+        \Xmf\Database\TableLoad::truncateTable($table);
+        \Xmf\Database\TableLoad::loadTableFromArray($table, $tabledata);
     }
 
     //  ---  COPY test folder files ---------------
-    if ($configurator->copyTestFolders && is_array($configurator->copyTestFolders)) {
-        //        $file =  dirname(__DIR__) . '/testdata/images/';
+    if (is_array($configurator->copyTestFolders) && count($configurator->copyTestFolders) > 0) {
+        //        $file = __DIR__ . '/../testdata/images/';
         foreach (array_keys($configurator->copyTestFolders) as $i) {
             $src  = $configurator->copyTestFolders[$i][0];
             $dest = $configurator->copyTestFolders[$i][1];

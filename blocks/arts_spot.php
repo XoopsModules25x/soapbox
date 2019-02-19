@@ -20,6 +20,7 @@ function b_arts_spot_show($options)
     $block_outdata = [];
     //-------------------------------------
     $myts          = \MyTextSanitizer:: getInstance();
+    $helper        = \XoopsModules\Soapbox\Helper::getInstance();
     $module_name   = 'soapbox';
     $moduleHandler = xoops_getHandler('module');
     $soapModule    = $moduleHandler->getByDirname($module_name);
@@ -111,10 +112,10 @@ function b_arts_spot_show($options)
     $entrydataHandler = $helper->getHandler('Entryget');
     //-------------------------------------
     // Retrieve the latest article in the selected column
-    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck($options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
+    $entryobArray = $entrydataHandler->getArticlesAllPermcheck($options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $columnIDs, null, false, false);
     $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
     // If there's no article result (which means there's no article yet...
-    if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
+    if (empty($entryobArray) || 0 === count($entryobArray)) {
         $block_outdata['display'] = 0;
 
         return $block_outdata;
@@ -128,7 +129,7 @@ function b_arts_spot_show($options)
     //-------------------------------------
     $i = 1;
     xoops_load('XoopsUserUtility');
-    foreach ($_entryob_arr as $key => $_entryob) {
+    foreach ($entryobArray as $key => $_entryob) {
         // get vars initialize
         //-------------------------------------
         $articles = $_entryob->toArray();
@@ -180,6 +181,8 @@ function b_arts_spot_edit($options)
 {
     global $xoopsDB;
     $myts          = \MyTextSanitizer:: getInstance();
+    $helper        = \XoopsModules\Soapbox\Helper::getInstance();
+    $columnIDs     = [];
     $module_name   = 'soapbox';
     $moduleHandler = xoops_getHandler('module');
     $soapModule    = $moduleHandler->getByDirname($module_name);

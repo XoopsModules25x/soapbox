@@ -27,6 +27,6 @@ class SoapboxCorePreload extends \XoopsPreloadItem
      */
     public static function eventCoreIncludeCommonEnd($args)
     {
-        require __DIR__ . '/autoloader.php';
+        include __DIR__ . '/autoloader.php';
     }
 }

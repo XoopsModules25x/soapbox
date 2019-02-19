@@ -17,6 +17,7 @@ use XoopsModules\Soapbox;
 function b_arts_rated($options)
 {
     $myts          = \MyTextSanitizer:: getInstance();
+    $helper        = \XoopsModules\Soapbox\Helper::getInstance();
     $block_outdata = [];
     $module_name   = 'soapbox';
     $moduleHandler = xoops_getHandler('module');
@@ -36,12 +37,12 @@ function b_arts_rated($options)
         $sortorder = 'ASC';
     }
     $entrydataHandler = $helper->getHandler('Entryget');
-    $_entryob_arr     = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $options[0], $sortorder, null, null, false, false);
-    if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
+    $entryobArray     = $entrydataHandler->getArticlesAllPermcheck((int)$options[1], 0, true, true, 0, 0, 1, $options[0], $sortorder, null, null, false, false);
+    if (empty($entryobArray) || 0 === count($entryobArray)) {
         return $block_outdata;
     }
     //-------------------------------------
-    foreach ($_entryob_arr as $_entryob) {
+    foreach ($entryobArray as $_entryob) {
         if (is_object($_entryob)) {
             //-----------
             $newarts['linktext'] = xoops_substr($_entryob->getVar('headline'), 0, (int)$options[2]);

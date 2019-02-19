@@ -17,8 +17,8 @@
  * @author       XOOPS Development Team
  */
 
-use Xmf\Language;
 use XoopsModules\Soapbox;
+use XoopsModules\Soapbox\Common;
 
 /**
  * Prepares system prior to attempting to install module
@@ -28,25 +28,24 @@ use XoopsModules\Soapbox;
  */
 function xoops_module_pre_install_soapbox(\XoopsModule $module)
 {
-    /** @var Soapbox\Utility $utility */
-    $utility = new \XoopsModules\Soapbox\Utility();
+    include __DIR__ . '/common.php';
+    //    /** @var \XoopsModules\Soapbox\Utility $utility */
+    //    $utility = new \XoopsModules\Soapbox\Utility();
 
     //check for minimum XOOPS version
-    if (!$utility::checkVerXoops($module)) {
-        return false;
-    }
+    $xoopsSuccess = $utility::checkVerXoops($module);
 
     // check for minimum PHP version
-    if (!$utility::checkVerPhp($module)) {
-        return false;
+    $phpSuccess = $utility::checkVerPhp($module);
+
+    if ($xoopsSuccess && $phpSuccess) {
+        $moduleTables = &$module->getInfo('tables');
+        foreach ($moduleTables as $table) {
+            $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
+        }
     }
 
-    $mod_tables = $module->getInfo('tables');
-    foreach ($mod_tables as $table) {
-        $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
-    }
-
-    return true;
+    return $xoopsSuccess && $phpSuccess;
 }
 
 /**
@@ -57,18 +56,31 @@ function xoops_module_pre_install_soapbox(\XoopsModule $module)
  */
 function xoops_module_install_soapbox(\XoopsModule $module)
 {
-    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    require_once dirname(__DIR__) . '/include/config.php';
-
+    require_once dirname(__DIR__) . '/preloads/autoloader.php';
     $moduleDirName = basename(dirname(__DIR__));
-    $helper        = \XoopsModules\Soapbox\Helper::getInstance();
 
+    /** @var \XoopsModules\Soapbox\Helper $helper */
+    /** @var \XoopsModules\Soapbox\Utility $utility */
+    /** @var \XoopsModules\Soapbox\Common\Configurator $configurator */
+    $helper       = \XoopsModules\Soapbox\Helper::getInstance();
+    $utility      = new \XoopsModules\Soapbox\Utility();
+    $configurator = new \XoopsModules\Soapbox\Common\Configurator();
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');
 
-    $configurator = new \XoopsModules\Soapbox\Common\Configurator();
-    $utility      = \XoopsModules\Soapbox\Utility();
+    // default Permission Settings ----------------------
+
+    $moduleId = $module->getVar('mid');
+    //    $moduleId2 = $helper->getModule()->mid();
+    //$moduleName = $module->getVar('name');
+    $grouppermHandler = xoops_getHandler('groupperm');
+    // access rights ------------------------------------------
+    $grouppermHandler->addRight($moduleDirName . '_approve', 1, XOOPS_GROUP_ADMIN, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_submit', 1, XOOPS_GROUP_ADMIN, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_ADMIN, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_USERS, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_ANONYMOUS, $moduleId);
 
     //  ---  CREATE FOLDERS ---------------
     if (count($configurator->uploadFolders) > 0) {

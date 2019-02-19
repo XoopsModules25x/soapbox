@@ -59,7 +59,7 @@ function xoops_module_pre_update_soapbox(\XoopsModule $module)
 /**
  * Performs tasks required during update of the module
  * @param \XoopsModule $module {@link XoopsModule}
- * @param null        $previousVersion
+ * @param null         $previousVersion
  */
 function xoops_module_update_soapbox(\XoopsModule $module, $previousVersion = null)
 {

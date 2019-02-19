@@ -159,7 +159,7 @@ define('_AM_SOAPBOX_PERMISSIONS_VIEW', 'Permissions to view');
 define('_AM_SOAPBOX_PERMISSIONS_VIEW_DESC', 'Only users in the group that you select may view this');
 define('_AM_SOAPBOX_PERMISSIONS_SUBMIT', 'Permissions to submit');
 define('_AM_SOAPBOX_PERMISSIONS_SUBMIT_DESC', 'Only users in the group that you select may submit this');
-define('_AM_SOAPBOX_PERMISSIONS_NOPERMSSET', 'Permission cannot be set: No Rate created yet! Please create a Rate first.');
+define('_AM_SOAPBOX_PERMISSIONS_NOPERMSSET', 'Permission cannot be set: No Column created yet! Please create a Column first.');
 
 define('_AM_SOAPBOX_UPGRADEFAILED0', "Update failed - couldn't rename field '%s'");
 define('_AM_SOAPBOX_UPGRADEFAILED1', "Update failed - couldn't add new fields");

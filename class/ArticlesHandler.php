@@ -136,7 +136,8 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
      */
     public function insert(\XoopsObject $sbarticle, $force = false)
     {
-        if ('soapboxsbarticles' !== mb_strtolower(get_class($sbarticle))) {
+        //        if ('soapboxsbarticles' !== mb_strtolower(get_class($sbarticle))) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower(Articles::class)) {
             return false;
         }
         if (!$sbarticle->isDirty()) {
@@ -185,7 +186,7 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
     public function delete(\XoopsObject $sbarticle, $force = false)
     {
         global $xoopsModule;
-        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower(Articles::class)) {
             return false;
         }
         $sql = sprintf('DELETE FROM `%s` WHERE articleID = %u', $this->db->prefix('sbarticles'), $sbarticle->getVar('articleID'));
@@ -234,7 +235,8 @@ class ArticlesHandler extends \XoopsPersistableObjectHandler
      */
     public function updateByField($entry, $fieldName, $fieldValue, $force = false)
     {
-        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Articles')) {
+        //        if (mb_strtolower(get_class($entry)) !== mb_strtolower('Articles')) {
+        if (mb_strtolower(get_class($entry)) !== mb_strtolower(Articles::class)) {
             return false;
         }
         $entry->setVar($fieldName, $fieldValue);

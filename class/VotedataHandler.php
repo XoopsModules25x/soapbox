@@ -187,7 +187,7 @@ class VotedataHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     * delete  entrys from the database
+     * delete entry from the database
      *
      * @param  object $criteria {@link CriteriaElement} conditions to be match
      * @param  bool   $force

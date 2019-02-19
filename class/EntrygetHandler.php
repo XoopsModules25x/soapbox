@@ -373,7 +373,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     * get sbcolumns objects with pemission check , sort
+     * get sbcolumns objects with permission check , sort
      *
      * @param int                $limit          number of records to return
      * @param int                $start          offset of first record to return
@@ -767,12 +767,12 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         $columnIDs = [];
         if (is_array($_sbarticle_arr)) {
             foreach ($_sbarticle_arr as $sbarticle) {
-                if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
+                if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower(Articles::class)) {
                     $columnIDs[] = $sbarticle->getVar('columnID');
                 }
             }
         } else {
-            if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
+            if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower(Articles::class)) {
                 $columnIDs[] = $_sbarticle_arr->getVar('columnID');
             }
         }
@@ -849,7 +849,7 @@ class EntrygetHandler extends \XoopsPersistableObjectHandler
         /** @var Soapbox\Helper $helper */
         $helper = Soapbox\Helper::getInstance();
 
-        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower(Articles::class)) {
             return false;
         }
         $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;

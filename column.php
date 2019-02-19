@@ -46,13 +46,13 @@ $start = Request::getInt('start', 0, 'GET');
 //-------------------------------------
 $entrydataHandler = $helper->getHandler('Entryget');
 //-------------------------------------
-$_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('indexperpage'), $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
+$entryobArray = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('indexperpage'), $start, true, true, 0, 0, null, $sortname, $sortorder, $columnID, null, true, false);
 $totalarts    = $entrydataHandler->total_getArticlesAllPermcheck;
-if (empty($_entryob_arr) || 0 === $totalarts) {
+if (empty($entryobArray) || 0 === $totalarts) {
     redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, _MD_SOAPBOX_MAINNOTOPICS);
 }
 //get category object
-$_categoryob = $_entryob_arr[0]->_sbcolumns;
+$_categoryob = $entryobArray[0]->_sbcolumns;
 //get vars
 
 $category = [];
@@ -66,7 +66,7 @@ $category['total']      = $totalarts;
 $xoopsTpl->assign('category', $category);
 
 //------------------------------------------------------
-foreach ($_entryob_arr as $_entryob) {
+foreach ($entryobArray as $_entryob) {
     //-----------
     unset($articles);
     $articles = [];

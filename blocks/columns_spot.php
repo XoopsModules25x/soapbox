@@ -21,6 +21,7 @@ function b_columns_spot_show($options)
     $block_outdata = [];
     //-------------------------------------
     $myts          = \MyTextSanitizer:: getInstance();
+    $helper        = \XoopsModules\Soapbox\Helper::getInstance();
     $module_name   = 'soapbox';
     $moduleHandler = xoops_getHandler('module');
     $soapModule    = $moduleHandler->getByDirname($module_name);
@@ -141,12 +142,12 @@ function b_columns_spot_show($options)
         } else {
             //-------------------------------------
             // Retrieve the latest article in the selected column
-            $_entryob_arr              = $entrydataHandler->getArticlesAllPermcheck($options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $category['columnID'], null, false, false);
+            $entryobArray              = $entrydataHandler->getArticlesAllPermcheck($options[1], 0, true, true, 0, 0, 1, $sortname, $sortorder, $category['columnID'], null, false, false);
             $_outdata_arr['totalarts'] = $entrydataHandler->total_getArticlesAllPermcheck;
             //----------------------------
             //xoops_load('XoopsUserUtility');
             $i = 1;
-            foreach ($_entryob_arr as $key => $_entryob) {
+            foreach ($entryobArray as $key => $_entryob) {
                 // get vars initialize
                 //-------------------------------------
                 $articles   = $_entryob->toArray();
@@ -195,6 +196,8 @@ function b_columns_spot_show($options)
 function b_columns_spot_edit($options)
 {
     $myts          = \MyTextSanitizer:: getInstance();
+    $helper        = \XoopsModules\Soapbox\Helper::getInstance();
+    $columnIDs     = [];
     $module_name   = 'soapbox';
     $moduleHandler = xoops_getHandler('module');
     $soapModule    = $moduleHandler->getByDirname($module_name);

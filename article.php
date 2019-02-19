@@ -62,12 +62,12 @@ $category = [];
 $entrydataHandler = $helper->getHandler('Entryget');
 if (empty($articleID)) {
     //get entry object
-    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, null, null, true, false);
+    $entryobArray = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, null, null, true, false);
     //    $totalarts = $entrydataHandler->total_getArticlesAllPermcheck;
-    if (empty($_entryob_arr) || 0 === count($_entryob_arr)) {
+    if (empty($entryobArray) || 0 === count($entryobArray)) {
         redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, _MD_SOAPBOX_NOTHING);
     }
-    $_entryob = $_entryob_arr[0];
+    $_entryob = $entryobArray[0];
 } else {
     //get entry object
     $_entryob = $entrydataHandler->getArticleOnePermcheck($articleID, true, true);

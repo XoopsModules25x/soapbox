@@ -209,7 +209,8 @@ switch ($op) {
         }
 
         //get category object
-        $_categoryob = $entrydataHandler->getColumn($columnID);
+        $entrydataHandler = $helper->getHandler('Entrydata');
+        $_categoryob      = $entrydataHandler->getColumn($columnID);
         //new data or edit
         if (!is_object($_categoryob)) {
             $_categoryob = $entrydataHandler->createColumn(true);
@@ -268,6 +269,11 @@ switch ($op) {
         //-----------------
 
         // Save to database
+        if (!isset($GLOBALS['xoTheme']) || !is_object($GLOBALS['xoTheme'])) {
+            require $GLOBALS['xoops']->path('class/theme.php');
+            $GLOBALS['xoTheme'] = new \xos_opal_Theme();
+        }
+
         if ($_categoryob->_isNew) {
             if (!$entrydataHandler->insertColumn($_categoryob)) {
                 xoops_cp_header();
@@ -288,7 +294,7 @@ switch ($op) {
                 redirect_header('index.php', 1, _AM_SOAPBOX_COLMODIFIED);
             }
         }
-        exit();
+        //        exit();
         break;
     case 'del':
 

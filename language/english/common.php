@@ -9,12 +9,12 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 /**
- * Wfdownloads module
+ * SoapBox module
  *
  * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
- * @package         wfdownload
- * @since           3.23
+ * @package         SoapBox
+ * @since           1.7**
  * @author          Xoops Development Team
  */
 $moduleDirName      = basename(dirname(dirname(__DIR__)));
@@ -124,7 +124,7 @@ define('CO_' . $moduleDirNameUpper . '_' . 'FOLDER_YES', 'Folder "%s" exist');
 define('CO_' . $moduleDirNameUpper . '_' . 'FOLDER_NO', 'Folder "%s" does not exist. Create the specified folder with CHMOD 777.');
 define('CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS', 'Show Development Tools Button?');
 define('CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS_DESC', 'If yes, the "Migrate" Tab and other Development tools will be visible to the Admin.');
-
+define('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_FEEDBACK', 'Feedback');
 
 //Latest Version Check
 define('CO_' . $moduleDirNameUpper . '_' . 'NEW_VERSION', 'New Version: ');

@@ -67,7 +67,6 @@ if ($totsub > 0) {
 }
 $adminObject->displayNavigation(basename(__FILE__));
 
-
 //check for latest release
 $newRelease = $utility::checkVerModule($helper);
 if (!empty($newRelease)) {

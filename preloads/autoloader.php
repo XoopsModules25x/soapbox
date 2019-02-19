@@ -8,7 +8,7 @@ spl_autoload_register(function ($class) {
     $prefix = 'XoopsModules\\' . ucfirst(basename(dirname(__DIR__)));
 
     // base directory for the namespace prefix
-    $baseDir = dirname(__DIR__) . '/class/';
+    $baseDir = __DIR__ . '/../class/';
 
     // does the class use the namespace prefix?
     $len = mb_strlen($prefix);
@@ -27,6 +27,6 @@ spl_autoload_register(function ($class) {
 
     // if the file exists, require it
     if (file_exists($file)) {
-        require_once $file;
+        require $file;
     }
 });

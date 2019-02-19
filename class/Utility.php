@@ -482,7 +482,7 @@ class Utility extends \XoopsObject
         //         $approve_submit = false ,
         //         $id_as_key = false )
         //-------------------------------------
-        $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startart, false, false, $submit, $offline, null, $sortname, $sortorder, null, null, false, true);
+        $entryobArray = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startart, false, false, $submit, $offline, null, $sortname, $sortorder, null, null, false, true);
         // Get number of articles in the selected condition ($cond)
         $numrows = $entrydataHandler->total_getArticlesAllPermcheck;
         if ($numrows > 0) {
@@ -505,7 +505,7 @@ class Utility extends \XoopsObject
             $colarray = [];
             $cont     = 0;
 
-            foreach ($_entryob_arr as $key => $_entryob) {
+            foreach ($entryobArray as $key => $_entryob) {
                 //get vars
                 ++$cont;
                 //-------------------------------------
@@ -616,12 +616,12 @@ class Utility extends \XoopsObject
         // Articles count
         $entrydataHandler = $helper->getHandler('Entrydata');
         //-------------------------------------
-        $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false);
+        $entryobArray = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('perpage'), $startsub, false, false, 1, null, null, $sortname, $sortorder, null, null, false);
         // Get number of articles in the selected condition ($cond)
         $numrows = $entrydataHandler->total_getArticlesAllPermcheck;
 
         if ($numrows > 0) { // That is, if there ARE unauthorized articles in the system
-            foreach ($_entryob_arr as $_entryob) {
+            foreach ($entryobArray as $_entryob) {
                 //get vars
                 //-------------------------------------
                 $articles = $_entryob->toArray();

@@ -129,7 +129,7 @@ class ColumnsHandler extends \XoopsPersistableObjectHandler
      */
     public function insert(\XoopsObject $sbcolumn, $force = false)//insert($sbcolumn, $force = false)
     {
-        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower('Columns')) {
+        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower(Columns::class)) {
             return false;
         }
         if (!$sbcolumn->isDirty()) {

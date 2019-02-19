@@ -245,7 +245,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      */
     public function updateRating(&$sbarticle, $force = false) // updates rating data in itemtable for a given item
     {
-        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower(Articles::class)) {
             return false;
         }
         $totalrating = 0.00;
@@ -410,7 +410,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      */
     public function newColumnTriggerEvent($sbcolumn, $events = 'new_column')
     {
-        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower('Columns')) {
+        if (mb_strtolower(get_class($sbcolumn)) !== mb_strtolower(Columns::class)) {
             return false;
         }
         if (1 !== $sbcolumn->getVar('notifypub')) {
@@ -437,7 +437,7 @@ class EntrydataHandler extends Soapbox\EntrygetHandler
      */
     public function newArticleTriggerEvent(&$sbarticle, $events = 'new_article')
     {
-        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower('Articles')) {
+        if (mb_strtolower(get_class($sbarticle)) !== mb_strtolower(Articles::class)) {
             return false;
         }
         $sbcolumns = $this->getColumn($sbarticle->getVar('columnID'));

@@ -10,10 +10,12 @@
 use Xmf\Request;
 use XoopsModules\Soapbox;
 
-require_once __DIR__ . '/header.php';
+require __DIR__ . '/header.php';
 
-/** @var Soapbox\Helper $helper */
-$helper = Soapbox\Helper::getInstance();
+$moduleDirName = basename(__DIR__);
+
+/** @var \XoopsModules\Soapbox\Helper $helper */
+$helper = \XoopsModules\Soapbox\Helper::getInstance();
 
 $op = '';
 if (is_object($xoopsUser)) {
@@ -22,28 +24,27 @@ if (is_object($xoopsUser)) {
 $GLOBALS['xoopsOption']['template_main'] = 'sb_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-$moduleDirName = basename(__DIR__);
-
 //$moduleDirName =  & $myts->htmlSpecialChars(basename(__DIR__));
 //if ($moduleDirName !== "soapbox" && $moduleDirName !== "" && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
 //    echo("invalid dirname: " . htmlspecialchars($moduleDirName, ENT_QUOTES));
 //}
 
 //---GET view sort --
-$sortname = isset($_GET['sortname']) ? mb_strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
+$sortname = \Xmf\Request::getString('sortname', 'datesub', 'GET');
 if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
     $sortname = 'datesub';
 }
-$sortorder = isset($_GET['sortorder']) ? mb_strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
+$sortorder = \Xmf\Request::getString('sortorder', 'DESC', 'GET');
 if (!in_array($sortorder, ['ASC', 'DESC'], true)) {
     $sortorder = 'DESC';
 }
 //---------------
-require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-$start = Request::getInt('start', 0, 'GET'); //$start = isset($_GET['start']) ? (int)($_GET['start']) : 0;
+require XOOPS_ROOT_PATH . '/class/pagenav.php';
+$start = \Xmf\Request::getInt('start', 0, 'GET'); //$start = isset($_GET['start']) ? (int)($_GET['start']) : 0;
 //---------------
 
-$columna = [];
+$category = [];
+$articles = [];
 // Options
 switch ($op) {
     case 'default':
@@ -74,9 +75,9 @@ switch ($op) {
             $xoopsTpl->assign('lang_nothing', _MD_SOAPBOX_NOTHING);
         }
         //----------------------------
-        foreach ($categoryobArray as $_categoryob) {
+        foreach ($categoryobArray as $categoryob) {
             //----------------------------
-            $category = $_categoryob->toArray(); //all assign
+            $category = $categoryob->toArray(); //all assign
             //-------------------------------------
             //get author
             $category['authorname'] = Soapbox\Utility::getAuthorName($category['author']);
@@ -87,16 +88,15 @@ switch ($op) {
                 $category['imagespan'] = '';
             }
             //-------------------------------------
-            $_entryob_arr          = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, $_categoryob, null, true, false);
+            $entryobArray          = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, $categoryob, null, true, false);
             $totalarts             = $entrydataHandler->total_getArticlesAllPermcheck;
             $category['totalarts'] = $totalarts;
             //------------------------------------------------------
-            foreach ($_entryob_arr as $_entryob) {
+            foreach ($entryobArray as $entryob) {
                 //-----------
                 unset($articles);
-                $articles = [];
                 //get vars
-                $articles            = $_entryob->toArray();
+                $articles            = $entryob->toArray();
                 $articles['id']      = $articles['articleID'];
                 $articles['datesub'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
                 //        $articles['poster'] = XoopsUserUtility::getUnameFromId( $articles['uid'] );
@@ -107,17 +107,18 @@ switch ($op) {
                     $articles['headline'] = '[' . _MD_SOAPBOX_SELSUBMITS . ']' . $articles['headline'];
                     $articles['teaser']   = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
                     $articles['lead']     = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
-                } elseif (0 === $_entryob->getVar('datesub') || $_entryob->getVar('datesub') > time()) {
+                } elseif (0 === $entryob->getVar('datesub') || $entryob->getVar('datesub') > time()) {
                     $articles['headline'] = '[' . _MD_SOAPBOX_SELWAITEPUBLISH . ']' . $articles['headline'];
                     $articles['teaser']   = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
                     $articles['lead']     = $xoopsUser->getVar('uname') . _MD_SOAPBOX_SUB_SNEWNAMEDESC;
                 }
 
                 // Functional links
-                $articles['adminlinks'] = $entrydataHandler->getadminlinks($_entryob, $_categoryob);
-                $articles['userlinks']  = $entrydataHandler->getuserlinks($_entryob);
+                $articles['adminlinks'] = $entrydataHandler->getadminlinks($entryob, $categoryob);
+                $articles['userlinks']  = $entrydataHandler->getuserlinks($entryob);
                 //loop tail
                 $category['content'][] = $articles;
+                //                unset($articles);
             }
 
             $category['total']  = $totalcols;
