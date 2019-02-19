@@ -1,0 +1,18 @@
+-
+    columnID: '1'
+    author: '1'
+    name: 'Charles Dickens'
+    description: 'Books by Charles Dickens'
+    total: '3'
+    weight: '1'
+    colimage: CharlesDickens.jpg
+    created: '1550550995'
+-
+    columnID: '2'
+    author: '55'
+    name: 'Jane Austen'
+    description: 'Books by Jane Austen'
+    total: '4'
+    weight: '2'
+    colimage: janeausten.jpg
+    created: '1550551131'

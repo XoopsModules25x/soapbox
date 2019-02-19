@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -9,40 +8,46 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Soapbox;
 
 require_once __DIR__ . '/header.php';
+
+/** @var Soapbox\Helper $helper */
+$helper = Soapbox\Helper::getInstance();
+
+$cleantags = new Soapbox\Cleantags();
 
 $xoopsConfig['module_cache']             = 0; //disable caching since the URL will be the same, but content different from one user to another
 $GLOBALS['xoopsOption']['template_main'] = 'sb_article.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 global $xoopsModule;
 //$pathIcon16 = $xoopsModule->getInfo('sysicons16');
-$pathIcon16 = Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
 
 $moduleDirName = $myts->htmlSpecialChars(basename(__DIR__));
-if ($moduleDirName !== 'soapbox' && $moduleDirName !== '' && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
+if ('soapbox' !== $moduleDirName && '' !== $moduleDirName && !preg_match('/^(\D+)(\d*)$/', $moduleDirName)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName, ENT_QUOTES));
 }
 //---GET view sort --
-$sortname = isset($_GET['sortname']) ? strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
-if (!in_array($sortname, array('datesub', 'weight', 'counter', 'rating', 'headline'))) {
+$sortname = isset($_GET['sortname']) ? mb_strtolower(trim(strip_tags($myts->stripSlashesGPC($_GET['sortname'])))) : 'datesub';
+if (!in_array($sortname, ['datesub', 'weight', 'counter', 'rating', 'headline'], true)) {
     $sortname = 'datesub';
 }
-$sortorder = isset($_GET['sortorder']) ? strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
-if (!in_array($sortorder, array('ASC', 'DESC'))) {
+$sortorder = isset($_GET['sortorder']) ? mb_strtoupper(trim(strip_tags($myts->stripSlashesGPC($_GET['sortorder'])))) : 'DESC';
+if (!in_array($sortorder, ['ASC', 'DESC'], true)) {
     $sortorder = 'DESC';
 }
 //---------------
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/cleantags.php';
 //for ratefile update by domifara
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
 
 $articleID = Request::getInt('articleID', 0, 'GET'); //isset($_GET['articleID']) ? (int)($_GET['articleID']) : 0;
 $startpage = Request::getInt('page', 0, 'GET'); //isset($_GET['page']) ? (int)($_GET['page']) : 0;
 //-------------------------------------
 //move here  form ratefile.php
-if (isset($_POST['submit']) && !empty($_POST['lid'])) {
+if (\Xmf\Request::hasVar('submit', 'POST') && !empty($_POST['lid'])) {
     if (file_exists(XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/ratefile.inc.php')) {
         require XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/ratefile.inc.php';
     }
@@ -51,18 +56,19 @@ if (isset($_POST['submit']) && !empty($_POST['lid'])) {
 }
 //-------------------------------------
 //view start
-$articles = array();
-$category = array();
+$articles = [];
+$category = [];
 //module entry data handler
-$entrydataHandler = xoops_getModuleHandler('entryget', $moduleDirName);
+/** @var \XoopsModules\Soapbox\EntrygetHandler $entrydataHandler */
+$entrydataHandler = new \XoopsModules\Soapbox\EntrygetHandler();
 if (empty($articleID)) {
     //get entry object
-    $_entryob_arr = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, null, null, true, false);
+    $entryobArray = $entrydataHandler->getArticlesAllPermcheck(1, 0, true, true, 0, 0, null, $sortname, $sortorder, null, null, true, false);
     //    $totalarts = $entrydataHandler->total_getArticlesAllPermcheck;
-    if (empty($_entryob_arr) || count($_entryob_arr) === 0) {
+    if (empty($entryobArray) || 0 === count($entryobArray)) {
         redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 1, _MD_SOAPBOX_NOTHING);
     }
-    $_entryob = $_entryob_arr[0];
+    $_entryob = $entryobArray[0];
 } else {
     //get entry object
     $_entryob = $entrydataHandler->getArticleOnePermcheck($articleID, true, true);
@@ -82,35 +88,35 @@ $entrydataHandler->getUpArticlecount($_entryob, true);
 
 //assign
 $articles['id']     = $articles['articleID'];
-$articles['posted'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $xoopsModuleConfig['dateformat']));
+$articles['posted'] = $myts->htmlSpecialChars(formatTimestamp($articles['datesub'], $helper->getConfig('dateformat')));
 
 // includes code by toshimitsu
-if (trim($articles['bodytext']) !== '') {
+if ('' !== trim($articles['bodytext'])) {
     $articletext    = explode('[pagebreak]', $_entryob->getVar('bodytext', 'none'));
     $articles_pages = count($articletext);
     if ($articles_pages > 1) {
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-        $pagenav = new XoopsPageNav($articles_pages, 1, $startpage, 'page', 'articleID=' . $articles['articleID']);
+        $pagenav = new \XoopsPageNav($articles_pages, 1, $startpage, 'page', 'articleID=' . $articles['articleID']);
         $xoopsTpl->assign('pagenav', $pagenav->renderNav());
-        if ($startpage === 0) {
+        if (0 === $startpage) {
             $articles['bodytext'] = $articles['lead'] . '<br><br>' . $myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
         } else {
-            $articles['bodytext'] =& $myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
+            $articles['bodytext'] = &$myts->displayTarea($articletext[$startpage], $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
         }
     } else {
         $articles['bodytext'] = $articles['lead'] . '<br><br>' . $myts->displayTarea($_entryob->getVar('bodytext', 'none'), $articles['html'], $articles['smiley'], $articles['xcodes'], 1, $articles['breaks']);
     }
 }
 //Cleantags
-$articles['bodytext'] = $GLOBALS['SoapboxCleantags']->cleanTags($articles['bodytext']);
+$articles['bodytext'] = $cleantags->cleanTags($articles['bodytext']);
 
-if ($xoopsModuleConfig['includerating'] === 1) {
+if (1 === $helper->getConfig('includerating')) {
     $xoopsTpl->assign('showrating', '1');
     //-------------------------------------
     //for ratefile update by domifara
-    $xoopsTpl->assign('rate_gtickets', $xoopsGTicket->getTicketHtml(__LINE__));
+    $xoopsTpl->assign('rate_gtickets', $GLOBALS['xoopsSecurity']->getTokenHTML());
     //-------------------------------------
-    if ($articles['rating'] != 0.0000) {
+    if (0.0000 != $articles['rating']) {
         $articles['rating'] = '' . _MD_SOAPBOX_RATING . ': ' . $myts->htmlSpecialChars(number_format($articles['rating'], 2));
         $articles['votes']  = '' . _MD_SOAPBOX_VOTES . ': ' . $myts->htmlSpecialChars($articles['votes']);
     } else {
@@ -119,17 +125,45 @@ if ($xoopsModuleConfig['includerating'] === 1) {
 }
 
 if (is_object($xoopsUser)) {
-    $xoopsTpl->assign('authorpm_link', "<a href=\"javascript:openWithSelfMain('" . XOOPS_URL . '/pmlite.php?send2=1&amp;to_userid=' . $category['author'] . "', 'pmlite', 450, 380);\"><img src='" . $pathIcon16 . "/mail_new.png' alt=\"" . _MD_SOAPBOX_WRITEAUTHOR . '" /></a>');
+    $xoopsTpl->assign('authorpm_link', "<a href=\"javascript:openWithSelfMain('" . XOOPS_URL . '/pmlite.php?send2=1&amp;to_userid=' . $category['author'] . "', 'pmlite', 450, 380);\"><img src='" . $pathIcon16 . "/mail_new.png' alt=\"" . _MD_SOAPBOX_WRITEAUTHOR . '"></a>');
 } else {
     $xoopsTpl->assign('user_pmlink', '');
 }
+// Теги
+if (xoops_getModuleOption('usetag', 'soapbox')) {
+    $moduleHandler = xoops_getHandler('module');
+    $tagsModule    = $moduleHandler->getByDirname('tag');
+    if (is_object($tagsModule)) {
+        require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+
+        $itemid = \Xmf\Request::getInt('articleID', 0, 'GET');
+        $catid  = 0;
+        $tagbar = tagBar($itemid, $catid);
+        if ($tagbar) {
+            $xoopsTpl->assign('tagbar', $tagbar);
+            $tagsmeta = implode(' ', $tagbar['tags']);
+        } else {
+            $tagsmeta = '';
+        }
+    } else {
+        $xoopsTpl->assign('tagbar', false);
+        $tagsmeta = '';
+    }
+}
+//if ( xoops_getModuleOption( 'usetag', 'soapbox') ){
+//  require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+//  $xoopsTpl->assign( 'tags', true );
+//  $xoopsTpl->assign( 'tagbar', tagBar( $_REQUEST['articleID'], 0 ) );
+//} else {
+//  $xoopsTpl->assign( 'tags', false );
+//}
 
 // Functional links
 $articles['adminlinks'] = $entrydataHandler->getadminlinks($_entryob, $_categoryob);
 $articles['userlinks']  = $entrydataHandler->getuserlinks($_entryob);
 
-$articles['author']     = SoapboxUtility::getLinkedUnameFromId($category['author'], 0);
-$articles['authorname'] = SoapboxUtility::getAuthorName($category['author']);
+$articles['author']     = Soapbox\Utility::getLinkedUnameFromId($category['author'], 0);
+$articles['authorname'] = Soapbox\Utility::getAuthorName($category['author']);
 $articles['colname']    = $category['name'];
 $articles['coldesc']    = $category['description'];
 $articles['colimage']   = $category['colimage'];
@@ -139,8 +173,8 @@ $xoopsTpl->assign('story', $articles);
 //-----------------------------
 $mbmail_subject = sprintf(_MD_SOAPBOX_INTART, $xoopsConfig['sitename']);
 $mbmail_body    = sprintf(_MD_SOAPBOX_INTARTFOUND, $xoopsConfig['sitename']);
-$al             = SoapboxUtility::getAcceptLang();
-if ($al === 'ja') {
+$al             = Soapbox\Utility::getAcceptLang();
+if ('ja' === $al) {
     if (function_exists('mb_convert_encoding') && function_exists('mb_encode_mimeheader')
         && @mb_internal_encoding(_CHARSET)) {
         $mbmail_subject = mb_convert_encoding($mbmail_subject, 'SJIS', _CHARSET);
@@ -155,26 +189,26 @@ $xoopsTpl->assign('articleID', $articles['articleID']);
 $xoopsTpl->assign('lang_ratethis', _MD_SOAPBOX_RATETHIS);
 $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
 $xoopsTpl->assign('lang_moduledirname', $moduleDirName);
-$xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($xoopsModuleConfig['sbimgdir']));
-$xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($xoopsModuleConfig['sbuploaddir']));
+$xoopsTpl->assign('imgdir', $myts->htmlSpecialChars($helper->getConfig('sbimgdir')));
+$xoopsTpl->assign('uploaddir', $myts->htmlSpecialChars($helper->getConfig('sbuploaddir')));
 
 //-------------------------------------
 //box view
-$listarts = array();
+$listarts = [];
 //-------------------------------------
-$_other_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$xoopsModuleConfig['morearts'], 0, true, true, 0, 0, null, $sortname, $sortorder, $_categoryob, $articles['articleID'], true, false);
+$_other_entryob_arr = $entrydataHandler->getArticlesAllPermcheck((int)$helper->getConfig('morearts'), 0, true, true, 0, 0, null, $sortname, $sortorder, $_categoryob, $articles['articleID'], true, false);
 $totalartsbyauthor  = (int)$entrydataHandler->total_getArticlesAllPermcheck + 1;
 
 if (!empty($_other_entryob_arr)) {
     foreach ($_other_entryob_arr as $_other_entryob) {
-        $link = array();
+        $link = [];
         $link = $_other_entryob->toArray();
         //--------------------
         $link['id']        = $link['articleID'];
         $link['arttitle']  = $_other_entryob->getVar('headline');
-        $link['published'] = $myts->htmlSpecialChars(formatTimestamp($_other_entryob->getVar('datesub'), $xoopsModuleConfig['dateformat']));
+        $link['published'] = $myts->htmlSpecialChars(formatTimestamp($_other_entryob->getVar('datesub'), $helper->getConfig('dateformat')));
         //        $link['poster'] = XoopsUserUtility::getUnameFromId( $link['uid'] );
-        $link['poster']      = SoapboxUtility::getLinkedUnameFromId($category['author']);
+        $link['poster']      = Soapbox\Utility::getLinkedUnameFromId($category['author']);
         $link['bodytext']    = xoops_substr($link['bodytext'], 0, 255);
         $listarts['links'][] = $link;
     }
@@ -183,13 +217,13 @@ if (!empty($_other_entryob_arr)) {
 }
 
 if (isset($GLOBALS['xoopsModuleConfig']['globaldisplaycomments'])
-    && $GLOBALS['xoopsModuleConfig']['globaldisplaycomments'] === 1) {
-    if ($articles['commentable'] === 1) {
-        include XOOPS_ROOT_PATH . '/include/comment_view.php';
+    && 1 === $GLOBALS['xoopsModuleConfig']['globaldisplaycomments']) {
+    if (1 === $articles['commentable']) {
+        require XOOPS_ROOT_PATH . '/include/comment_view.php';
     }
 } else {
-    include XOOPS_ROOT_PATH . '/include/comment_view.php';
+    require XOOPS_ROOT_PATH . '/include/comment_view.php';
 }
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/style.css">');
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

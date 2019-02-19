@@ -1,9 +1,9 @@
 <{$xoops_module_header}>
 
 <div id="moduleName"><img src="<{$xoops_url}>/<{$imgdir}>/icon/open.png" width="36"
-                          height="24"/>&nbsp;<{$lang_modulename}>&nbsp;<img
+                          height="24">&nbsp;<{$lang_modulename}>&nbsp;<img
             src="<{$xoops_url}>/<{$imgdir}>/icon/close.png" width="36"
-            height="24"/></div>
+            height="24"></div>
 <div id="pagePath"><a href="<{$xoops_url}>"><{$smarty.const._MD_SOAPBOX_HOME}></a> &bull; <a
             href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/"><{$lang_modulename}></a> &bull; <a
             href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/column.php?columnID=<{$story.columnID}>"><{$story.colname}></a> &bull; <{$story.headline}>
@@ -23,7 +23,7 @@
 </table>
 <div class="spacer6"></div>
 <{if $story.colimage != 'blank.png'}>
-    <div class="picleft"><img class="pic" src="<{$xoops_url}>/<{$uploaddir}>/<{$story.colimage}>" width="80"/></div>
+    <div class="picleft"><img class="pic" src="<{$xoops_url}>/<{$uploaddir}>/<{$story.colimage}>" width="80"></div>
 <{/if}>
 
 <{if $listarts.links != 0 }>
@@ -44,7 +44,7 @@
             </tr>
             <tr>
                 <td>
-                    <div class="pad18"><img src="<{$xoops_url}>/<{$imgdir}>/rarrow.gif" width="10"/><{$readmore}></div>
+                    <div class="pad18"><img src="<{$xoops_url}>/<{$imgdir}>/rarrow.gif" width="10"><{$readmore}></div>
                 </td>
             </tr>
         </table>
@@ -55,7 +55,7 @@
 <div class="texto"><{$story.bodytext}></div>
 
 <{if $story.artimage}>
-    <div class="storypic"><img src="<{$xoops_url}>/<{$uploaddir}>/<{$story.artimage}>"/></div>
+    <div class="storypic"><img src="<{$xoops_url}>/<{$uploaddir}>/<{$story.artimage}>"></div>
 <{/if}>
 
 <div class="storynav"><{if $pagenav}><{$smarty.const._MD_SOAPBOX_PAGE}><{$pagenav}><{/if}></div>
@@ -78,13 +78,14 @@
     <{$authorpm_link}>
     <{ /if }>
     <a href="print.php?articleID=<{$story.id}>"><img src="<{xoModuleIcons16 printer.png}>" border="0"
-                                                     alt="<{$smarty.const._MD_SOAPBOX_PRINTERFRIENDLY}>"/></a>
+                                                     alt="<{$smarty.const._MD_SOAPBOX_PRINTERFRIENDLY}>"></a>
     <a href="<{$mail_link}>" target="_top"><img src="<{xoModuleIcons16 mail_forward.png}>" border="0"
-                                                alt="<{$smarty.const._MD_SOAPBOX_SENDSTORY}>"/></a>
+                                                alt="<{$smarty.const._MD_SOAPBOX_SENDSTORY}>"></a>
 </div>
 
 <{if $showrating != 0}>
     <form method="POST" action="article.php">
+        <{securityToken}><{*//mb*}>
         <input type="hidden" name="lid" value="<{$articleID}>">
         <div align="center"></div>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="outer">
@@ -135,6 +136,12 @@
 <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
 <fb:comments href="<{$xoops_url}>/modules/soapbox/article.php?articleID=<{$story.id}>" num_posts="5"
              width="650"></fb:comments>
+
+<{if $tagbar}>
+   <div>
+      <{include file="db:lx_tag_bar.tpl"}>
+   </div>
+<{/if}>
 
 <table border="0" width="100%" cellspacing="1" cellpadding="0" align="center">
     <tr>

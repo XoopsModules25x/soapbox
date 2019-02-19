@@ -1,66 +1,87 @@
 <?php
 /**
- *
  * Module: Soapbox
- * Version: v 1.5
- * Release Date: 23 August 2004
  * Author: hsalazar
  * Licence: GNU
  */
 
-if (!isset($moduleDirName)) {
-    $moduleDirName = basename(dirname(__DIR__));
-}
+include dirname(__DIR__) . '/preloads/autoloader.php';
 
-if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-} else {
-    $moduleHelper = Xmf\Module\Helper::getHelper('system');
-}
-$adminObject = \Xmf\Module\Admin::getInstance();
+$moduleDirName      = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+
+//require_once  dirname(__DIR__) . '/include/common.php';
+/** @var \XoopsModules\Soapbox\Helper $helper */
+$helper = \XoopsModules\Soapbox\Helper::getInstance();
+$helper->loadLanguage('common');
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
-//$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
+if (is_object($helper->getModule())) {
+    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+}
 
-$moduleHelper->loadLanguage('modinfo');
+$adminmenu = [];
 
-$adminmenu = array();
-
-$adminmenu[] = array(
-    'title' => _AM_MODULEADMIN_HOME,
+$adminmenu[] = [
+    'title' => _MI_SOAPBOX_HOME,
     'link'  => 'admin/index.php',
-    'icon'  => $pathIcon32 . '/home.png'
-);
+    'icon'  => $pathIcon32 . '/home.png',
+];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _MI_SOAPBOX_ADMENU1,
     'link'  => 'admin/main.php',
-    'icon'  => $pathIcon32 . '/manage.png'
-);
+    'icon'  => $pathIcon32 . '/manage.png',
+];
 
-//++$i;
-//$adminmenu[$i]['title'] =  _MI_SOAPBOX_ADMENU2;
-//$adminmenu[$i]['link']  = 'admin/column.php';
-//$adminmenu[$i]['icon']  = $pathIcon32 . '/categoryadd.png';
+//$adminmenu[] = [
+//'title' =>   _MI_SOAPBOX_ADMENU2,
+//'link' =>  'admin/column.php',
+//'icon' =>  $pathIcon32 . '/categoryadd.png',
+//];
 
-//++$i;
-//$adminmenu[$i]['title'] = _MI_SOAPBOX_ADMENU3;
-//$adminmenu[$i]['link']  = 'admin/article.php';
-//$adminmenu[$i]['icon']  = $pathIcon32 . '/add.png';
+//$adminmenu[] = [
+//'title' =>  _MI_SOAPBOX_ADMENU3,
+//'link' =>  'admin/article.php',
+//'icon' =>  $pathIcon32 . '/add.png',
+//];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _MI_SOAPBOX_SUBMITS,
     'link'  => 'admin/submissions.php',
-    'icon'  => $pathIcon32 . '/button_ok.png'
-);
+    'icon'  => $pathIcon32 . '/button_ok.png',
+];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _MI_SOAPBOX_ADMENU4,
     'link'  => 'admin/permissions.php',
-    'icon'  => $pathIcon32 . '/permissions.png'
-);
+    'icon'  => $pathIcon32 . '/permissions.png',
+];
 
-$adminmenu[] = array(
-    'title' => _AM_MODULEADMIN_ABOUT,
+// Blocks Admin
+$adminmenu[] = [
+    'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS'),
+    'link'  => 'admin/blocksadmin.php',
+    'icon'  => $pathIcon32 . '/block.png',
+];
+
+//Feedback
+$adminmenu[] = [
+    'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_FEEDBACK'),
+    'link'  => 'admin/feedback.php',
+    'icon'  => $pathIcon32 . '/mail_foward.png',
+];
+
+if ($helper->getConfig('displayDeveloperTools')) {
+    $adminmenu[] = [
+        'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE'),
+        'link'  => 'admin/migrate.php',
+        'icon'  => $pathIcon32 . '/database_go.png',
+    ];
+}
+
+$adminmenu[] = [
+    'title' => _MI_SOAPBOX_ABOUT,
     'link'  => 'admin/about.php',
-    'icon'  => $pathIcon32 . '/about.png'
-);
+    'icon'  => $pathIcon32 . '/about.png',
+];

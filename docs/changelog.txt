@@ -1,3 +1,13 @@
+<h5>1.70 Beta 2      [NOT RELEASED]</h5>  Dev: Xoops 2.5.10, PHP 7.3.2
+<hr>
+- clear sbvotedata table when adding test data (mamba)
+- namespaces/autoloading refactoring (mamba)
+- fixes (aerograf)
+- added feedback (mamba)
+- added test data button (mamba)
+- added migrate (mamba)
+- added test data (mamba)
+
 <h5>1.70 Beta 1      [2017-05-23]</h5>
 <hr>
 - XOOPS 2.5.9, PHP 7 (mamba)
@@ -11,7 +21,7 @@
 - Hardening to type safe (mamba)
 - update Help (mamba)
 - changed _handler to Handler (mamba)
-- removed '/' from void HTML elements (&lt;br&gt;, &lt;img&gt;, etc) (mamba)
+- removed '/' from void HTML elements (&lt;br>, &lt;img>, etc) (mamba)
 - HTML 5: removed 'selected' and 'checked' (mamba)
 - updated file headers for consistency (mamba)
 - renamed several $indexAdmin with $adminObject for consistency (mamba)

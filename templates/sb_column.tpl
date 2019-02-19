@@ -1,9 +1,9 @@
 <{$xoops_module_header}>
 
 <div id="moduleName"><img src="<{$xoops_url}>/<{$imgdir}>/icon/open.png" width="36"
-                          height="24"/>&nbsp;<{$lang_modulename}>&nbsp;<img
+                          height="24">&nbsp;<{$lang_modulename}>&nbsp;<img
             src="<{$xoops_url}>/<{$imgdir}>/icon/close.png" width="36"
-            height="24"/></div>
+            height="24"></div>
 <div id="pagePath"><a href="<{$xoops_url}>"><{$smarty.const._MD_SOAPBOX_HOME}></a> &bull; <a
             href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/"><{$lang_modulename}></a> &bull; <{$category.name}>
 </div>
@@ -13,7 +13,7 @@
         <td>
 
             <{if $category.image != 'blank.png'}>
-                <span class="picleft"><img class="pic" src="<{$xoops_url}>/<{$uploaddir}>/<{$category.image}>"/></span>
+                <span class="picleft"><img class="pic" src="<{$xoops_url}>/<{$uploaddir}>/<{$category.image}>"></span>
             <{/if}>
 
             <h3 class="reddish"><{$category.name}></h3>

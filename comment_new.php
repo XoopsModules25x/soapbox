@@ -10,16 +10,15 @@
  */
 
 /**
- * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
-
-include __DIR__ . '/../../mainfile.php';
+require dirname(dirname(__DIR__)) . '/mainfile.php';
 // HACK for  Get file title 2004/4/19 by domifara
-$com_itemid = isset($HTTP_GET_VARS['com_itemid']) ? (int)$HTTP_GET_VARS['com_itemid'] : 0;
+$com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
 if ($com_itemid > 0) {
     // Get file title
     $sql            = 'SELECT headline FROM ' . $xoopsDB->prefix('sbarticles') . ' WHERE articleID=' . $com_itemid . '';
@@ -27,4 +26,4 @@ if ($com_itemid > 0) {
     $row            = $xoopsDB->fetchArray($result);
     $com_replytitle = $row['headline'];
 }
-include XOOPS_ROOT_PATH . '/include/comment_new.php';
+require XOOPS_ROOT_PATH . '/include/comment_new.php';

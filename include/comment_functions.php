@@ -1,7 +1,6 @@
 <?php
-//
+
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 25 April 2004
@@ -10,7 +9,7 @@
  * @param $art_id
  * @param $total_num
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 function sb_com_update($art_id, $total_num)
 {
     //HACK
@@ -22,8 +21,8 @@ function sb_com_update($art_id, $total_num)
     if (isset($soapModuleConfig['globaldisplaycomments'])) {
         $globaldisplaycomments = $soapModuleConfig['globaldisplaycomments'];
     }
-    if ($globaldisplaycomments === 0) {
-        $db  = XoopsDatabaseFactory::getDatabaseConnection();
+    if (0 === $globaldisplaycomments) {
+        $db  = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'UPDATE ' . $db->prefix('sbarticles') . ' SET commentable = ' . (int)$total_num . ' WHERE articleID = ' . (int)$art_id;
         $db->query($sql);
     }

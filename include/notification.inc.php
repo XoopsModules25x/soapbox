@@ -1,7 +1,6 @@
 <?php
-//
+
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -12,7 +11,7 @@
  * @param  null  $event
  * @return array
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 function sb_notify_iteminfo($category, $item_id, $event = null)
 {
     /*
@@ -35,10 +34,10 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
     */
     //    $moduleDirName = 'soapbox';
     $pathparts     = explode('/', __DIR__);
-    $moduleDirName = $pathparts[array_search('modules', $pathparts) + 1];
+    $moduleDirName = $pathparts[array_search('modules', $pathparts, true) + 1];
     $item_id       = (int)$item_id;
-    $item          = array();
-    if ($category === 'global') {
+    $item          = [];
+    if ('global' === $category) {
         $item['name'] = '';
         $item['url']  = '';
 
@@ -47,7 +46,7 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
 
     global $xoopsDB;
 
-    if ($category === 'column') {
+    if ('column' === $category) {
         // Assume we have a valid category id
 
         $sql    = 'SELECT name FROM ' . $xoopsDB->prefix('sbcolumns') . ' WHERE columnID  = ' . $item_id;
@@ -62,7 +61,7 @@ function sb_notify_iteminfo($category, $item_id, $event = null)
         return $item;
     }
 
-    if ($category === 'article') {
+    if ('article' === $category) {
         // Assume we have a valid story id
         $sql    = 'SELECT headline FROM ' . $xoopsDB->prefix('sbarticles') . ' WHERE articleID = ' . $item_id;
         $result = $xoopsDB->query($sql);

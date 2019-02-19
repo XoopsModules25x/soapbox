@@ -27,8 +27,8 @@
         <div style="margin: 8px 0 2px 0;">
             <{if $block.showpicask == 1}>
                 <{if $column.colimage != "blank.png" }>
-                    <div style="float: left; width: 80px; margin-right: 10px; border: 1px solid black; "><img
-                                src="<{$xoops_url}>/<{$block.sbuploaddir}>/<{$column.colimage}>" width="80"/></div>
+                    <div style="float: left; width: 80px; margin-right: 10px; border: 1px #000000; "><img
+                                src="<{$xoops_url}>/<{$block.sbuploaddir}>/<{$column.colimage}>" width="80"></div>
                 <{/if}>
             <{/if}>
             <{$column.description}></div>
@@ -97,8 +97,8 @@
             <div style="margin: 8px 0 2px 0;">
                 <{if $block.showpicask == 1}>
                     <{if $column.colimage != "blank.png" }>
-                        <div style="float: left; width: 80px; margin-right: 10px; border: 1px solid black; "><img
-                                    src="<{$xoops_url}>/<{$block.sbuploaddir}>/<{$column.colimage}>" width="80"/></div>
+                        <div style="float: left; width: 80px; margin-right: 10px; border: 1px #000000; "><img
+                                    src="<{$xoops_url}>/<{$block.sbuploaddir}>/<{$column.colimage}>" width="80"></div>
                     <{/if}>
                 <{/if}>
                 <{$column.description}></div>

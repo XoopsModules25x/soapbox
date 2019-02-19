@@ -1,8 +1,5 @@
 <?php
-//
-
 /**
- *
  * Module: Soapbox
  * Version: v 1.5
  * Release Date: 23 August 2004
@@ -12,7 +9,7 @@
 
 use Xmf\Request;
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 //if (!isset($_POST['submit'])) {
 //    exit;
 //}
@@ -27,7 +24,7 @@ if (!Request::hasVar('submit', 'POST') || !Request::hasVar('lid', 'POST')) {
 if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     //-------------------------
     //    if (!$GLOBALS['xoopsSecurity']->check()) {
-    if (!$xoopsGTicket->check()) {
+    if (!$GLOBALS['xoopsSecurity']->check()) {
         redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
     }
     //-------------------------
@@ -35,9 +32,9 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     if (function_exists('floatval')) {
         $rating = $_POST['rating'] ? (float)$_POST['rating'] : 0;
     } else {
-        $rating = $_POST['rating'] ? (int)$_POST['rating'] : 0;
+        $rating = $_POST['rating'] ? \Xmf\Request::getInt('rating', 0, 'POST') : 0;
     }
-    $lid = $_POST['lid'] ? (int)$_POST['lid'] : 0;
+    $lid = $_POST['lid'] ? \Xmf\Request::getInt('lid', 0, 'POST') : 0;
 
     // Make sure only 1 anonymous from an IP in a single day.
     $anonwaitdays = 1;
@@ -48,14 +45,15 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     }
 
     //module entry data handler
-    $entrydataHandler = xoops_getModuleHandler('entrydata', $xoopsModule->dirname());
+    /** @var \XoopsModules\Soapbox\EntrydataHandler $entrydataHandler */
+    $entrydataHandler = new \XoopsModules\Soapbox\EntrydataHandler();
     //get entry object
     $_entryob = $entrydataHandler->getArticleOnePermcheck($lid, true);
     if (!is_object($_entryob)) {
         redirect_header(XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/article.php', 1, _MD_SOAPBOX_CANTVOTEOWN);
     }
     // Check if Download POSTER is voting (UNLESS Anonymous users allowed to post)
-    if ($ratinguser !== 0) {
+    if (0 !== $ratinguser) {
         //get category object
         $_categoryob = $_entryob->_sbcolumns;
         if (!is_object($_categoryob)) {
@@ -67,9 +65,9 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
 
         //uid check
         //uid check
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $lid));
-        $criteria->add(new Criteria('ratinguser', $ratinguser));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $lid));
+        $criteria->add(new \Criteria('ratinguser', $ratinguser));
         $ratinguservotecount = $entrydataHandler->getVotedataCount($criteria);
         unset($criteria);
         if ($ratinguservotecount > 0) {
@@ -78,14 +76,14 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     }
 
     // Check if ANONYMOUS user is trying to vote more than once per day.
-    if ($ratinguser === 0) {
+    if (0 === $ratinguser) {
         $yesterday = (time() - (86400 * $anonwaitdays));
         //uid check
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $lid));
-        $criteria->add(new Criteria('ratinguser', 0));
-        $criteria->add(new Criteria('ratinghostname', $ip));
-        $criteria->add(new Criteria('ratingtimestamp', $yesterday, '>'));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $lid));
+        $criteria->add(new \Criteria('ratinguser', 0));
+        $criteria->add(new \Criteria('ratinghostname', $ip));
+        $criteria->add(new \Criteria('ratingtimestamp', $yesterday, '>'));
         $anonvotecount = $entrydataHandler->getVotedataCount($criteria);
         unset($criteria);
         if ($anonvotecount > 0) {
@@ -94,7 +92,7 @@ if (Request::hasVar('submit', 'POST')) { //($_POST['submit']) {
     }
 
     $_votedataob = $entrydataHandler->createVotedata(true);
-    $_votedataob->cleanVars();
+    //    $_votedataob->cleanVars();
     $_votedataob->setVar('lid', $lid);
     $_votedataob->setVar('ratinguser', $ratinguser);
     $_votedataob->setVar('rating', $rating);

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright:: XOOPS Project (http://xoops.org)
+ * @copyright:: XOOPS Project (https://xoops.org)
  * @license::   http://www.fsf.org/copyleft/gpl.html GNU public license
  * @package::   mylinks
  * @since::     2.5.0
@@ -159,8 +159,7 @@ fieldset p {
 }
 
 .ui-corner-all {
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 /* Buttons style */
@@ -220,9 +219,6 @@ div.rmmenuicon a {
     color: #666666;
 
     background-color: #f0f0f0;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -khtml-border-radius: 6px;
     border-radius: 6px;
 
 }
